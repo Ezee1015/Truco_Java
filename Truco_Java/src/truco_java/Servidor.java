@@ -12,7 +12,6 @@ public class Servidor extends Conexion{
     public Servidor(String ip, int puerto) throws IOException{
         super("servidor", ip, puerto);
         cs = ss.accept();
-        System.out.println("servidor");
     }
 
 
@@ -37,7 +36,7 @@ public class Servidor extends Conexion{
                 reconectar();
                 return recibirMensaje();
             }
-            System.out.println(e.getMessage());
+            System.out.println("Error en el Servidor: " + e.getMessage());
         }
         return "";
     }
@@ -53,7 +52,7 @@ public class Servidor extends Conexion{
                 enviaMensaje(mensaje);
                 return;
             }
-            System.out.println(e.getMessage());
+            System.out.println("Error en el Servidor: " + e.getMessage());
         }
     }
 

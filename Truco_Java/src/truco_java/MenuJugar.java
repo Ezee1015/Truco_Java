@@ -259,13 +259,17 @@ public class MenuJugar extends JFrame{
                           try {
                                 fondos.get(x).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugadores/fondoInactivo.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
                           } catch (Exception ex) {
-                                System.out.println("NO SE ENCUENTRA LA IMAGEN DE FONDO");
+                                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar la imagen de fondo: " + ex.getMessage());
+                                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                                efectos.play();
                           }
                     }
                     try {
                           fondos.get(pos).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugadores/fondo.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
                     } catch (Exception ex) {
-                          System.out.println("NO SE ENCUENTRA LA IMAGEN DE FONDO");
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar la imagen de fondo: " + ex.getMessage());
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
                     }
                     numeroJugador=pos;
               });

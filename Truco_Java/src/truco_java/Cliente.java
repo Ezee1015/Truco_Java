@@ -11,7 +11,6 @@ public class Cliente extends Conexion {
 
     public Cliente(String ip, int puerto) throws IOException{
         super("cliente", ip, puerto);
-        System.out.println("cliente");
     }
 
     public String recibirMensaje() throws IOException{
@@ -21,9 +20,7 @@ public class Cliente extends Conexion {
         try {
             String mensaje="";
 
-            System.out.println("Comienza la escucha");
             while(!entrada.ready());
-            System.out.println("Conexion");
             while(entrada.ready()){
                 mensaje+=(char) entrada.read();
                 if(mensaje.charAt(mensaje.length()-1)=='ç'){
@@ -36,7 +33,7 @@ public class Cliente extends Conexion {
                 reconectar();
                 return recibirMensaje();
             }
-            System.out.println(e.getMessage());
+            System.out.println("Error en la clase Cliente: " + e.getMessage());
         }
         return "";
     }

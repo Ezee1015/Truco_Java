@@ -72,7 +72,10 @@ public class InterfazServidor extends JFrame {
                     server = new Servidor(ip, puerto);
                     recibirMensaje(server.recibirMensaje());
                 } catch(IOException er){
-                    System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    efectos.play();
                 }
                 interfaz.setVisible(true);
                 esperar.dispose();
@@ -80,7 +83,10 @@ public class InterfazServidor extends JFrame {
                 try{
                     recibirMensaje(server.recibirMensaje());
                 } catch(IOException er){
-                    System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    efectos.play();
                 }
             }
         };
@@ -326,7 +332,10 @@ public class InterfazServidor extends JFrame {
                     try{
                         recibirMensaje(server.enviaIrAlMazo());
                     } catch(IOException er){
-                        System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
                     }
                 }
             };
@@ -372,7 +381,10 @@ public class InterfazServidor extends JFrame {
                     try{
                         recibirMensaje(server.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
                     } catch(IOException er){
-                        System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
                     }
                 }
             };
@@ -414,7 +426,10 @@ public class InterfazServidor extends JFrame {
                     try{
                         recibirMensaje(server.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
                     } catch(IOException er){
-                        System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
                     }
                 }
             };
@@ -458,7 +473,10 @@ public class InterfazServidor extends JFrame {
                     try{
                         recibirMensaje(server.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
                     } catch(IOException er){
-                        System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
                     }
                 }
             };
@@ -501,7 +519,10 @@ public class InterfazServidor extends JFrame {
                     try{
                         recibirMensaje(server.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
                     } catch(IOException er){
-                        System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
                     }
                 }
             };
@@ -539,7 +560,10 @@ public class InterfazServidor extends JFrame {
                     try{
                         recibirMensaje(server.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
                     } catch(IOException er){
-                        System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
                     }
                 }
             };
@@ -576,7 +600,10 @@ public class InterfazServidor extends JFrame {
                     try{
                         recibirMensaje(server.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
                     } catch(IOException er){
-                        System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
                     }
                 }
             };
@@ -619,7 +646,10 @@ public class InterfazServidor extends JFrame {
                         try{
                             recibirMensaje(server.enviaTruco(nivelTruco, habilitadoARetrucar));
                         } catch(IOException er){
-                            System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
                         }
                     }
                 };
@@ -627,7 +657,10 @@ public class InterfazServidor extends JFrame {
                 try {
                     imprimeAITruco(0, false);
                 } catch (Exception ex) {
-                    System.out.println("Paso algo con los mensajes");
+                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes o sonidos: " + ex.getMessage());
+                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    efectos.play();
                 }
             }
         });
@@ -660,7 +693,10 @@ public class InterfazServidor extends JFrame {
                     try{
                         recibirMensaje(server.enviaTruco(4, habilitadoARetrucar));
                     } catch(IOException er){
-                        System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
                     }
                 }
             };
@@ -688,7 +724,10 @@ public class InterfazServidor extends JFrame {
                     try{
                         recibirMensaje(server.enviaTruco(-1,habilitadoARetrucar));
                     } catch(IOException er){
-                        System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
                     }
                 }
             };
@@ -738,7 +777,10 @@ public class InterfazServidor extends JFrame {
                 try {
                     server.enviaMensaje("retira");
                 } catch (Exception ex) {
-                    System.out.println("No se pudo enviar el mensaje");
+                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + ex.getMessage());
+                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    efectos.play();
                 }
                 menuJugar.setVisible(true);
                 dispose();
@@ -1090,7 +1132,6 @@ public class InterfazServidor extends JFrame {
         else
             estadoPersChar = 'b'; // personaje AI Pregunta (truco, envido, o retrucar cualquiera de las anteriores)
 
-        System.out.println("FONDO: " + numeroPersonaje);
         String imagen = "src/truco_java/fondos/bg" + numeroPersonaje + estadoPersChar + ".png";
         fondo.setIcon(new ImageIcon(imagen));
     }
@@ -1259,7 +1300,10 @@ public class InterfazServidor extends JFrame {
                           server.tirarCarta(pos);
                           recibirMensaje(server.recibirMensaje());
                       } catch(IOException er){
-                          System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                          fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                          JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                          efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                          efectos.play();
                       }
                   }
               };
@@ -1278,22 +1322,30 @@ public class InterfazServidor extends JFrame {
           try {
               recibirMensaje(server.recibirMensaje());
           } catch (Exception e) {
-              System.out.println("Error de conexion");
+              fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+              JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + e.getMessage());
+              efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+              efectos.play();
           }
           return;
       }
-      System.out.println("MENSAJEEEEEEE: " + mensaje.trim());
       Scanner scanf = new Scanner(mensaje.trim());
       String cat="";
       if(scanf.hasNext()) cat = scanf.next();
       else {
-          System.out.println("HUBO UN ERROR EN LA COMUNICACION. SI SE CRASHEA EL JUEGO, REINICIE LA CONEXION");
+          fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+          JOptionPane.showMessageDialog(null, "Ha sucedido un error en la comunicación. Mensaje corrupto");
+          efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+          efectos.play();
           Thread thread = new Thread(){
               public void run(){
                   try{
                       recibirMensaje(server.recibirMensaje());
                   } catch(IOException er){
-                      System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                      fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                      JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                      efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                      efectos.play();
                   }
               }
           };
@@ -1338,7 +1390,10 @@ public class InterfazServidor extends JFrame {
                     try {
                         moverCartaAI(nuevaCantCartasOponente, 2-nuevaCantCartasOponente);
                     } catch (Exception e) {
-                        System.out.println("No se pudo hacer la animacion de la carta: " + e.getMessage());
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
                     }
                 }
 
@@ -1350,7 +1405,10 @@ public class InterfazServidor extends JFrame {
                     try {
                         dibujarBotones();
                     } catch (Exception e) {
-                        System.out.println("Error al dibujar botones");
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
                     }
                     if(habilitadoARetrucar==2 || habilitadoARetrucar==0)
                         truco.setEnabled(true);
@@ -1384,26 +1442,35 @@ public class InterfazServidor extends JFrame {
                             try{
                                 recibirMensaje(server.recibirMensaje());
                             } catch(IOException er){
-                                System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                                JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                                efectos.play();
                             }
                         }
                     };
                     thread.start();
                 }
 
-                    if(!animarOponente){
-                        try {
-                            dibujarCartas();
-                        } catch (Exception e) {
-                            System.out.println("error al dibujar las cartas");
-                        }
+                if(!animarOponente){
+                    try {
+                        dibujarCartas();
+                    } catch (Exception e) {
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
                     }
+                }
                 oponente.setPuntaje(Integer.parseInt(scanf.next()), this);
                 jugador.setPuntaje(Integer.parseInt(scanf.next()), this);
                 try {
                     dibujarPuntaje();
                 } catch (Exception e) {
-                    System.out.println("ERROR AL DIBUJAR PUNTAJE");
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
                 }
                 break;
             case "envido":
@@ -1439,7 +1506,10 @@ public class InterfazServidor extends JFrame {
                             try{
                                 recibirMensaje(server.recibirMensaje());
                             } catch(IOException er){
-                                System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                                JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                                efectos.play();
                             }
                         }
                     };
@@ -1480,14 +1550,17 @@ public class InterfazServidor extends JFrame {
                         try{
                             recibirMensaje(server.recibirMensaje());
                         } catch(IOException er){
-                            System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                            JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                            efectos.play();
                         }
                     }
                 };
                 thread.start();
                 break;
             case "kill":
-                menu.setVisible(true);
+                menuJugar.setVisible(true);
                 dispose();
                 break;
             case "truco":
@@ -1502,7 +1575,10 @@ public class InterfazServidor extends JFrame {
                 try {
                     imprimeAITruco(nivelTrucoTemp, false);
                 } catch (Exception e) {
-                    System.out.println("No se pudo dibujar las cartas o reproducir las voces");
+                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes o sonidos: " + e.getMessage());
+                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    efectos.play();
                 }
                 if(nivelTrucoTemp!=4 && nivelTrucoTemp!=-1){
                     quieroTruco.setVisible(true);
@@ -1527,7 +1603,10 @@ public class InterfazServidor extends JFrame {
                             try{
                                 recibirMensaje(server.recibirMensaje());
                             } catch(IOException er){
-                                System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                                JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                                efectos.play();
                             }
                         }
                     };
@@ -1540,14 +1619,20 @@ public class InterfazServidor extends JFrame {
                 try {
                     dibujarPuntaje();
                 } catch (Exception e) {
-                    System.out.println("no se pudo dibujar porque  no se encontraron las cartas");
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
                 }
                 Thread thread3 = new Thread(){
                     public void run(){
                         try{
                             recibirMensaje(server.recibirMensaje());
                         } catch(IOException er){
-                            System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                            JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                            efectos.play();
                         }
                     }
                 };
@@ -1556,7 +1641,7 @@ public class InterfazServidor extends JFrame {
             case "retira":
                 oponente.setPuntaje(15, this);
                 JOptionPane.showMessageDialog(null, "El oponente " + nombreOponente + " se ha retirado. Has ganado!");
-                menu.setVisible(true);
+                menuJugar.setVisible(true);
                 dispose();
                 break;
             case "persona":
@@ -1582,18 +1667,24 @@ public class InterfazServidor extends JFrame {
                 try {
                     server.enviaPersona(MenuJugar.numeroJugador+1, nombre);
                 } catch (Exception e) {
-                    System.out.println("ERROR EN LA COMUNICACION INICIAL! NO SE PUDO IDENTIFICAR AL JUGADOR");
+              fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+              JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + e.getMessage());
+              efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+              efectos.play();
                 }
                 try {
                     puntajeFondo.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg"+ numeroPersonaje +".png")).getScaledInstance(100, 150, Image.SCALE_SMOOTH)));
                 } catch (Exception e) {
-                    System.out.println("NO SE HA PODIDO CARGAR LA IMAGEN");
+                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
+                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    efectos.play();
                 }
                 break;
             default:
-                System.out.println("No se detecto la categoria del mensaje: " + cat);
-                for(int i=0;i<cat.length();i++)
-                    System.out.println(i+": "+cat.charAt(i));
+                // System.out.println("No se detecto la categoria del mensaje: " + cat);
+                // for(int i=0;i<cat.length();i++)
+                //     System.out.println(i+": "+cat.charAt(i));
                 //Repite el mensaje con un caracter menos (caracteres basura del Socket)
                 String catTemp="";
                 for(int i=1;i<cat.length();i++){

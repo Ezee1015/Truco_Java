@@ -98,8 +98,6 @@ public class EsperaServidor extends JFrame {
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
-
-        System.out.println();
   }
 
   private String obtenerIPs(){
