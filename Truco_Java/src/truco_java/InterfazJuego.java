@@ -1,5 +1,11 @@
 package truco_java;
 
-public class InterfazJuego {
-    
+import javax.swing.JFrame;
+
+public class InterfazJuego extends JFrame {
+
+  public InterfazJuego () {
+
+  }
+
 }
