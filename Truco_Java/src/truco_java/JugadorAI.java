@@ -73,6 +73,65 @@ public class JugadorAI extends Jugador {
         return 0;
       }
 
+      if(estado==0 && calcularEnvido()>25)    // Más de 25 de envido y no se cantó, obliga a cantar
+        obligado = 1;
+
+      if(calcularEnvido()>30){                 // Más de 30 de envido, canta
+        if(estado==4)
+          return 4;
+        return random.nextInt(obligado,4);
+      }
+
+      if(calcularEnvido()>27){
+        if(estado==3)
+          desicion = 3;
+        if(estado<4)
+          desicion = random.nextInt(obligado,3);
+        else
+          desicion = 0;
+      }
+
+      else if(calcularEnvido()>25){
+        if(estado<3) {
+          if (estado==2)
+            desicion = 2;
+          else
+            desicion = random.nextInt(obligado,2);
+        } else
+          desicion = 0;
+      }
+
+      else if(calcularEnvido()>23){
+        if(estado==1)
+          desicion = 1;
+        if(estado<2)
+          desicion = random.nextInt(obligado,1);
+        else
+          desicion = 0;
+      }
+
+      if(desicion==2 && estado!=1){
+        if(calcularEnvido()>27)
+          return 3;
+        else {
+          if(estado==2)
+            return 2;
+          return 1;
+        }
+      }
+
+      if(desicion==0 && estado>=3 && calcularEnvido()>26 && random.nextInt(2)==2) //Agrega una opcion para arriesgar
+        return estado;
+
+      if(desicion==0 && estado==0 && esMano==false && random.nextInt(4) == 3)
+        return 1;
+
+      return desicion;
+      /*
+      if(calcularEnvido()<=23){               // Menos de 23 de envido, nada
+        return 0;
+      }
+
       if(calcularEnvido()>30)                 // Más de 30 de envido, canta
         desicion = random.nextInt(obligado,4);
 
@@ -96,6 +155,7 @@ public class JugadorAI extends Jugador {
       }
 
       return desicion;
+      */
 
       /*
       if(calcularEnvido()>27 && estado==0)   // Obliga a jugar a la AI si tiene como mínimo más de 27 de envido

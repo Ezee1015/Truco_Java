@@ -75,8 +75,11 @@ public class Truco_Java {
 
         while(basura!=4 && basura != 0){
             basura++;
+            int basuraN = pepe.desidirEnvido(basura);
             System.out.println("Leo: " + (basura));
-            System.out.println("Pepe: " + pepe.desidirEnvido(basura));
+            System.out.println("Pepe: " + basuraN);
+            if(basura==basuraN)
+                return;
         }
 
         // InterfazJuego juego = new InterfazJuego();
