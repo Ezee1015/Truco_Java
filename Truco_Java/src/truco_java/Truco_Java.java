@@ -57,7 +57,6 @@ public class Truco_Java {
         for(int x=0;x<mazo.size();x++){
             System.out.println(mazo.get(x).getNumero() + " de " + mazo.get(x).getPalo());
         }*/
-/*
         ArrayList<Carta> mazo1 = new ArrayList<>();
         mazo1.add(mazo.get(0));
         mazo1.add(mazo.get(2));
@@ -73,14 +72,16 @@ public class Truco_Java {
         }
         int basura = pepe.desidirEnvido(0);
         System.out.println("Pepe: " + basura);
-        if(basura > 0){
-            System.out.println("Leo: " + (basura+1));
-            System.out.println("Pepe: " + pepe.desidirEnvido(basura+1));
-        }*/
 
-        InterfazJuego juego = new InterfazJuego();
-        juego.setBounds(0,0,500,800);
-        juego.setVisible(true);
+        while(basura!=4 && basura != 0){
+            basura++;
+            System.out.println("Leo: " + (basura));
+            System.out.println("Pepe: " + pepe.desidirEnvido(basura));
+        }
+
+        // InterfazJuego juego = new InterfazJuego();
+        // juego.setBounds(0,0,500,800);
+        // juego.setVisible(true);
     }
 
     private static void mezclarMazo(){
