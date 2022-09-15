@@ -1,5 +1,6 @@
 package truco_java;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -13,6 +14,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextPane;
 
 public class InterfazJuego extends JFrame {
 
@@ -29,6 +32,7 @@ public class InterfazJuego extends JFrame {
     ArrayList<Integer> envidosCantados;
     boolean envidoFinalizado = false;
     JButton noQuieroEnv, quieroEnv;
+    JTextPane estado;
 
     public InterfazJuego() throws IOException {
         cargarMazo();
@@ -74,7 +78,11 @@ public class InterfazJuego extends JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
             }
-            habilitaTurno();
+            try {
+                habilitaTurno();
+            } catch (IOException ex) {
+                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 
         // Persona Carta 2
@@ -89,7 +97,11 @@ public class InterfazJuego extends JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
             }
-            habilitaTurno();
+            try {
+                habilitaTurno();
+            } catch (IOException ex) {
+                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 
         // Persona Carta 3
@@ -104,7 +116,11 @@ public class InterfazJuego extends JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
             }
-            habilitaTurno();
+            try {
+                habilitaTurno();
+            } catch (IOException ex) {
+                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 
         JButton repartir = new JButton("Repartir");
@@ -117,7 +133,11 @@ public class InterfazJuego extends JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
             }
-            habilitaTurno();
+            try {
+                habilitaTurno();
+            } catch (IOException ex) {
+                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 
         /*
@@ -183,9 +203,20 @@ public class InterfazJuego extends JFrame {
         truco.setEnabled(false);
         fondo.add(truco);
         truco.addActionListener((ActionEvent e) -> {
-            habilitaTurno();
+            try {
+                habilitaTurno();
+            } catch (IOException ex) {
+                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 
+        estado = new JTextPane();
+        estado.setBounds(50,150,400,50);
+        estado.setEditable(false);
+        estado.setBackground(Color.white);
+        estado.setVisible(true);
+        fondo.add(estado);
+        
         // Boton envido general
         envido = new JButton("Envido");
         envido.setBounds(170, 710, 155, 60);
@@ -219,7 +250,12 @@ public class InterfazJuego extends JFrame {
         fondo.add(envidoEsp);
         envidoEsp.addActionListener((ActionEvent e) -> {
             envidosCantados.add(1);
-            AICantaEnvido();
+            try {
+                AICantaEnvido();
+            } catch (IOException ex) {
+                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            ImprimeAIEnvido(0);
         });
 
         // Boton envido-envido
@@ -231,7 +267,12 @@ public class InterfazJuego extends JFrame {
             envidosCantados.add(2);
             envidoEsp.setVisible(false);
             envidoEnvido.setVisible(false);
-            AICantaEnvido();
+            try {
+                AICantaEnvido();
+            } catch (IOException ex) {
+                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            ImprimeAIEnvido(0);
         });
 
         // Boton Real Envido
@@ -244,7 +285,12 @@ public class InterfazJuego extends JFrame {
             envidoEsp.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
-            AICantaEnvido();
+            try {
+                AICantaEnvido();
+            } catch (IOException ex) {
+                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            ImprimeAIEnvido(0);
         });
 
         // Boton Falta Envido
@@ -258,7 +304,12 @@ public class InterfazJuego extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
-            AICantaEnvido();
+            try {
+                AICantaEnvido();
+            } catch (IOException ex) {
+                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            ImprimeAIEnvido(0);
         });
 
         //Botones de Quiero y No quiero envido
@@ -278,6 +329,12 @@ public class InterfazJuego extends JFrame {
             noQuieroEnv.setVisible(false);
             fondo.remove(quieroEnv);
             fondo.remove(noQuieroEnv);
+            try {
+                // Continua con el juego
+                habilitaTurno();
+            } catch (IOException ex) {
+                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 
         quieroEnv = new JButton("Quiero");
@@ -304,6 +361,12 @@ public class InterfazJuego extends JFrame {
             quieroEnv.setVisible(false);
             noQuieroEnv.setVisible(false);
 
+            try {
+                // Continua con el juego
+                habilitaTurno();
+            } catch (IOException ex) {
+                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
     }
 
@@ -364,6 +427,10 @@ public class InterfazJuego extends JFrame {
     }
 
     public void dibujarCartas() throws IOException {
+        AIC1.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+        AIC2.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+        AIC3.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+
         switch (ai.getMano().size()) {
             case 0:
                 AIC1.setVisible(false);
@@ -538,7 +605,7 @@ public class InterfazJuego extends JFrame {
 
     }
 
-    private void habilitaTurno() {
+    private void habilitaTurno() throws IOException {
         if (jugador.getCartasJugadas().isEmpty() && ai.getCartasJugadas().isEmpty()) { // No jugo nadie
             if (jugador.isMano() == true) {
                 truco.setEnabled(true);
@@ -551,10 +618,16 @@ public class InterfazJuego extends JFrame {
                 truco.setEnabled(false);
                 envido.setEnabled(false);
                 irAlMazo.setEnabled(false);
-                ai.jugarTurno(jugador, this);
                 PC1.setEnabled(false);
                 PC2.setEnabled(false);
                 PC3.setEnabled(false);
+                if(envidosCantados.size() == 0){
+                    if (AICantaEnvido() == 0);
+                    else return;
+                }
+                ai.jugarTurno(jugador, this);
+                dibujarCartas();
+                habilitaTurno();
             }
         } else if (jugador.getCartasJugadas().isEmpty() && !ai.getCartasJugadas().isEmpty()) { // Ya Jugó la AI. Turno Jugador
             truco.setEnabled(true);
@@ -564,20 +637,23 @@ public class InterfazJuego extends JFrame {
             PC2.setEnabled(true);
             PC3.setEnabled(true);
         } else if (!jugador.getCartasJugadas().isEmpty() && ai.getCartasJugadas().isEmpty()) { // Ya Jugó el Jugador. Turno AI
-            if (envidosCantados.isEmpty()) {
-                AICantaEnvido();
-            }
-            ai.jugarTurno(jugador, this);
-            truco.setEnabled(false);
-            envido.setEnabled(false);
-            irAlMazo.setEnabled(false);
-            PC1.setEnabled(false);
-            PC2.setEnabled(false);
-            PC3.setEnabled(false);
+                truco.setEnabled(false);
+                envido.setEnabled(false);
+                irAlMazo.setEnabled(false);
+                PC1.setEnabled(false);
+                PC2.setEnabled(false);
+                PC3.setEnabled(false);
+                if(envidoFinalizado==false){
+                    AICantaEnvido();
+                    return;
+                }
+                ai.jugarTurno(jugador, this);
+                dibujarCartas();
+                habilitaTurno();
         } else if (!jugador.getCartasJugadas().isEmpty() && !ai.getCartasJugadas().isEmpty()) { // Siguiente Ronda
             if (jugador.getCartasJugadas().size() == ai.getCartasJugadas().size()) { // Si es una ronda en la que nadie jugó
-                int rankingJugador = jugador.getCartasJugadas().get(jugador.getCartasJugadas().size()).rankingCarta();
-                int rankingAI = ai.getCartasJugadas().get(ai.getCartasJugadas().size()).rankingCarta();
+                int rankingJugador = jugador.getCartasJugadas().get(jugador.getCartasJugadas().size()-1).rankingCarta();
+                int rankingAI = ai.getCartasJugadas().get(ai.getCartasJugadas().size()-1).rankingCarta();
 
                 if (rankingJugador > rankingAI) { // Si gano jugador en la anterior ronda
                     truco.setEnabled(true);
@@ -593,6 +669,8 @@ public class InterfazJuego extends JFrame {
                     PC1.setEnabled(false);
                     PC2.setEnabled(false);
                     PC3.setEnabled(false);
+                    dibujarCartas();
+                    habilitaTurno();
                 }
             } else if (jugador.getCartasJugadas().size() == ai.getCartasJugadas().size() + 1) { // Si ya la AI tiró en esa ronda
                 truco.setEnabled(true);
@@ -609,46 +687,62 @@ public class InterfazJuego extends JFrame {
                 PC1.setEnabled(false);
                 PC2.setEnabled(false);
                 PC3.setEnabled(false);
+                dibujarCartas();
+                habilitaTurno();
             }
         }
     }
 
-    public void AICantaEnvido() {
-        if (envidoFinalizado == true) {
-            return;
-        }
+    public int AICantaEnvido() throws IOException {
+        if (envidoFinalizado == true)
+            return 0;
 
         int desicion;
         if (envidosCantados.isEmpty())
             desicion = ai.desidirEnvido(0);
         else {
             desicion = ai.desidirEnvido(envidosCantados.get(envidosCantados.size() - 1));
-            if (desicion == envidosCantados.get(envidosCantados.size() - 1)){
-                if (jugador.calcularEnvido() > ai.calcularEnvido())   //Si gana el jugador
+            /*System.out.println("desicion= " + desicion);
+            System.out.println("lista de envidos= " + envidosCantados.get(envidosCantados.size() - 1));*/
+            if (desicion == envidosCantados.get(envidosCantados.size() - 1)) { // Si la AI Quiere
+                if (jugador.calcularEnvido() > ai.calcularEnvido()) { //Si gana el jugador
+                    JOptionPane.showMessageDialog(null, "Has ganado. La PC tenía " + ai.calcularEnvido() + " de envido.");
                     jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()));
-                if (jugador.calcularEnvido() < ai.calcularEnvido())   // Si gana la AI
-                    ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()));
-                if (jugador.calcularEnvido() == ai.calcularEnvido()) { // Si emparatan...
-                    if (jugador.isMano() == true) // .. y el jugador es mano
-                        jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()));
-                    else // .. y la AI es mano
-                        ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()));
                 }
+                if (jugador.calcularEnvido() < ai.calcularEnvido()) { // Si gana la AI
+                    JOptionPane.showMessageDialog(null, "Has perdido. La PC tenía " + ai.calcularEnvido() + " de envido.");
+                    ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()));
+                }
+                if (jugador.calcularEnvido() == ai.calcularEnvido()) { // Si empatan...
+                    if (jugador.isMano() == true) { // .. y el jugador es mano
+                        JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has ganado por mano");
+                        jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()));
+                    } else { // .. y la AI es mano
+                        JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has perdido, la PC es mano");
+                        ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()));
+                    }
+                }
+                habilitaTurno();
+                quieroEnv.setVisible(false);
+                noQuieroEnv.setVisible(false);
+                envido.setEnabled(false);
+                envidoEsp.setVisible(false);
+                envidoEnvido.setVisible(false);
+                realEnvido.setVisible(false);
+                faltaEnvido.setVisible(false);
+                return 1;
             }
-
+/*
             envido.setEnabled(false);
             envidoEsp.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
-            faltaEnvido.setVisible(false);
-            // habilitaTurno();
-            return;
+            faltaEnvido.setVisible(false);*/
         }
 
         switch (desicion) {
             case 0:
-                //habilitaTurno();
-                return;
+                return 0;
             case 1:
                 envido.setEnabled(false);
                 envidoEsp.setVisible(false);
@@ -677,8 +771,9 @@ public class InterfazJuego extends JFrame {
                 break;
         }
 
-        // Agrega el envido que eligio la AI a la lista
+        // Agrega el envido que eligio la AI a la lista y lo imprime
         envidosCantados.add(desicion);
+        ImprimeAIEnvido(desicion);
 
         // Boton Quiero Envido
         quieroEnv.setVisible(true);
@@ -687,7 +782,9 @@ public class InterfazJuego extends JFrame {
         noQuieroEnv.setVisible(true);
 
         // Continua con el juego
-        habilitaTurno();
+        // habilitaTurno();
+        
+        return 1;
     }
 
     private int calcularEnvidoGanado(int puntajePerdedor) {
@@ -739,6 +836,30 @@ public class InterfazJuego extends JFrame {
         return total;
     }
 
+    private void ImprimeAIEnvido(int envido){
+        estado.setVisible(true);
+        
+        switch(envido){
+            case 0:
+                estado.setText("");
+                estado.setVisible(false);
+                break;
+            case 1:
+                estado.setText("Envido! Carajo");
+                break;
+            case 2:
+                estado.setText("Envido Envido!");
+                break;
+            case 3:
+                estado.setText("Real Envido!");
+                break;
+            case 4:
+                estado.setText("Falta Envido!");
+                break;
+        }
+    }
+    
+    
     /*
     private void sumarPuntosEnvido (){
 

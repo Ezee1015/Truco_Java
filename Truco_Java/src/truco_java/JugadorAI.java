@@ -9,6 +9,7 @@ Plus:
 
 package truco_java;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -19,13 +20,14 @@ public class JugadorAI extends Jugador {
     }
 
     
-  public Carta jugarTurno(Persona p, InterfazJuego mesa){
+  public Carta jugarTurno(Persona p, InterfazJuego mesa) throws IOException{
       Random random = new Random();
       Carta aTirar;
-      
-      if(cartasJugadas.isEmpty() && mesa.envidoFinalizado==false)
+      /*
+      if(cartasJugadas.isEmpty() && mesa.envidoFinalizado==false){
           mesa.AICantaEnvido();
-      mesa.AICantaEnvido();
+          return;
+      }*/
       
       if(cartasJugadas.isEmpty())
           return tirarCartaRandom();
