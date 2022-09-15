@@ -31,6 +31,7 @@ public class InterfazJuego extends JFrame {
     int nivelTruco = 0;
     ArrayList<Integer> envidosCantados;
     boolean envidoFinalizado = false;
+    JButton noQuieroEnv, quieroEnv;
 
     public InterfazJuego() throws IOException {
         cargarMazo();
@@ -263,6 +264,50 @@ public class InterfazJuego extends JFrame {
             AICantaEnvido();
         });
 
+        //Botones de Quiero y No quiero envido
+        noQuieroEnv = new JButton("No Quiero");
+        noQuieroEnv.setBounds(255, 400, 235, 60);
+        noQuieroEnv.setVisible(false);
+        fondo.add(noQuieroEnv);
+        noQuieroEnv.addActionListener((ActionEvent e) -> {
+            ai.setPuntaje(ai.getPuntaje() + calcularEnvidoPerdido(jugador.getPuntaje()));
+
+            envido.setEnabled(false);
+            envidoEsp.setVisible(false);
+            envidoEnvido.setVisible(false);
+            realEnvido.setVisible(false);
+            faltaEnvido.setVisible(false);
+            quieroEnv.setVisible(false);
+            noQuieroEnv.setVisible(false);
+            fondo.remove(quieroEnv);
+            fondo.remove(noQuieroEnv);
+        });
+
+        quieroEnv = new JButton("Quiero");
+        quieroEnv.setBounds(10, 400, 235, 60);
+        quieroEnv.setVisible(false);
+        fondo.add(quieroEnv);
+        quieroEnv.addActionListener((ActionEvent e) -> {
+            if (jugador.calcularEnvido() > ai.calcularEnvido()) //Si gana el jugador
+                jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()));
+            if (jugador.calcularEnvido() < ai.calcularEnvido()) // Si gana la AI
+                ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()));
+            if (jugador.calcularEnvido() == ai.calcularEnvido()) { // Si emparatan...
+                if (jugador.isMano() == true) // .. y el jugador es mano
+                    jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()));
+                else // .. y la AI es mano
+                    ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()));
+            }
+
+            envido.setEnabled(false);
+            envidoEsp.setVisible(false);
+            envidoEnvido.setVisible(false);
+            realEnvido.setVisible(false);
+            faltaEnvido.setVisible(false);
+            quieroEnv.setVisible(false);
+            noQuieroEnv.setVisible(false);
+
+        });
     }
 
     private void cargarMazo() {
@@ -631,8 +676,6 @@ public class InterfazJuego extends JFrame {
                 envido.setEnabled(false);
                 envidoEsp.setVisible(false);
                 envidoEnvido.setVisible(false);
-                realEnvido.setVisible(false);
-                faltaEnvido.setVisible(false);
                 break;
         }
 
@@ -640,53 +683,10 @@ public class InterfazJuego extends JFrame {
         envidosCantados.add(desicion);
 
         // Boton Quiero Envido
-        JButton noQuieroEnv = new JButton("No Quiero");
-
-        JButton quieroEnv = new JButton("Quiero");
-        quieroEnv.setBounds(10, 400, 235, 60);
         quieroEnv.setVisible(true);
-        fondo.add(quieroEnv);
-        quieroEnv.addActionListener((ActionEvent e) -> {
-            if (jugador.calcularEnvido() > ai.calcularEnvido()) //Si gana el jugador
-                jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()));
-            if (jugador.calcularEnvido() < ai.calcularEnvido()) // Si gana la AI
-                ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()));
-            if (jugador.calcularEnvido() == ai.calcularEnvido()) { // Si emparatan...
-                if (jugador.isMano() == true) // .. y el jugador es mano
-                    jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()));
-                else // .. y la AI es mano
-                    ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()));
-            }
-
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
-            envidoEnvido.setVisible(false);
-            realEnvido.setVisible(false);
-            faltaEnvido.setVisible(false);
-            quieroEnv.setVisible(false);
-            noQuieroEnv.setVisible(false);
-            fondo.remove(quieroEnv);
-            fondo.remove(noQuieroEnv);
-
-        });
 
         // Boton No Quiero Envido
-        noQuieroEnv.setBounds(255, 400, 235, 60);
         noQuieroEnv.setVisible(true);
-        fondo.add(noQuieroEnv);
-        noQuieroEnv.addActionListener((ActionEvent e) -> {
-            ai.setPuntaje(ai.getPuntaje() + calcularEnvidoPerdido(jugador.getPuntaje()));
-
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
-            envidoEnvido.setVisible(false);
-            realEnvido.setVisible(false);
-            faltaEnvido.setVisible(false);
-            quieroEnv.setVisible(false);
-            noQuieroEnv.setVisible(false);
-            fondo.remove(quieroEnv);
-            fondo.remove(noQuieroEnv);
-        });
 
         // Continua con el juego
         habilitaTurno();
