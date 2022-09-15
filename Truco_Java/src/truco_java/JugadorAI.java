@@ -28,6 +28,7 @@ public class JugadorAI extends Jugador {
           mesa.AICantaEnvido();
           return;
       }*/
+      System.out.println("** Tira Carta **");
       
       if(cartasJugadas.isEmpty())
           return tirarCartaRandom();

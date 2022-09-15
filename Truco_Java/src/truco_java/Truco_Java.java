@@ -19,6 +19,7 @@ public class Truco_Java {
         }*/
         InterfazJuego juego = new InterfazJuego();
         juego.setBounds(0,0,500,800);
+        juego.setLocationRelativeTo(null);
         juego.setVisible(true);
     }
 
