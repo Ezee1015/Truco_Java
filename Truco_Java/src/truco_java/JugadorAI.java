@@ -19,20 +19,26 @@ public class JugadorAI extends Jugador {
         super(mano, esMano);
     }
 
-    
+
   public Carta jugarTurno(Persona p, InterfazJuego mesa) throws IOException{
-      Random random = new Random();
-      Carta aTirar;
-      /*
-      if(cartasJugadas.isEmpty() && mesa.envidoFinalizado==false){
-          mesa.AICantaEnvido();
-          return;
-      }*/
-      System.out.println("** Tira Carta **");
-      
-      if(cartasJugadas.isEmpty())
+      if(p.cartasJugadas.isEmpty()) // si es la primera vez que tiro
           return tirarCartaRandom();
-      
+
+      if(p.getCartasJugadas().size()-1 == cartasJugadas.size()) {
+          for(int i=mano.size()-1;i>=0;i--) { // Si el jugado ya tiro y me toca a mi, intento ganar
+                // Si hay una carta que empata la que ya tiro, y soy gan ador de la primera mano. Tirarla
+                if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == mano.get(i).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() == mano.get(0).rankingCarta() )
+                    return tirarCartaPos(i);
+                // Buscar la carta de menor rango que le gane
+                if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() < mano.get(i).rankingCarta()){
+                    System.out.println("ahahahahah");
+                    return tirarCartaPos(i);
+                }
+          }
+          return tirarPeorCarta();
+        }
+
+
       else if(cartasJugadas.size()==1){
           if(p.getCartasJugadas().get(0).rankingCarta() == cartasJugadas.get(0).rankingCarta())
               return tirarMejorCarta();
@@ -41,12 +47,19 @@ public class JugadorAI extends Jugador {
           if(p.getCartasJugadas().get(0).rankingCarta() < cartasJugadas.get(0).rankingCarta())
               return tirarPeorCarta();
       }
-      
+
       return tirarMejorCarta(); // Tira la ultima carta que queda
   }
-    
+
   public Carta tirarCartaRandom(){
     int pos = new Random().nextInt(mano.size());
+    Carta aTirar = mano.get(pos);
+    mano.remove(pos);
+    cartasJugadas.add(aTirar);
+    return aTirar;
+  }
+
+  public Carta tirarCartaPos (int pos){
     Carta aTirar = mano.get(pos);
     mano.remove(pos);
     cartasJugadas.add(aTirar);
@@ -97,7 +110,9 @@ public class JugadorAI extends Jugador {
       Random random = new Random();
 
       if(calcularEnvido()<=23){               // Menos de 23 de envido, nada
-        return 0;
+        if(random.nextInt(8) == 7)            //El 7 es un numero de ejemplo para la probabilidad de 1/8
+            desicion = estado + 1;
+        return desicion;
       }
 
       if(estado==0 && calcularEnvido()>25)    // Más de 25 de envido y no se cantó, obliga a cantar
@@ -129,32 +144,35 @@ public class JugadorAI extends Jugador {
       }
 
       else if(calcularEnvido()>23){
-        if(estado==1)
-          desicion = 1;
-        else if(estado<2)
-          desicion = estado + random.nextInt(1-estado);
-        else
-          desicion = 0;
+          switch (estado) {
+              case 1:
+                  desicion = 1;
+                  break;
+              case 0:
+                  desicion = random.nextInt(1-estado);
+                  break;
+              default:
+                  desicion = 0;
+                  break;
+          }
       }
 
       if(desicion==2 && estado!=1){
         if(calcularEnvido()>27)
           return 3;
-        else {
-          if(estado==2)
-            return 2;
+        else
           return 1;
-        }
       }
 
-      if(desicion==0 && estado>=3 && calcularEnvido()>26 && random.nextInt(2)==2) //Agrega una opcion para arriesgar
+      if(desicion==0 && estado>=3 && calcularEnvido()>26 && random.nextInt(2)==0) //Agrega una opcion para arriesgar
         return estado;
 
       if(desicion==0 && estado==0 && esMano==false && random.nextInt(4) == 3)
         return 1;
 
       return desicion;
-      /*
+
+      /* FUNCION 1:
       if(calcularEnvido()<=23){               // Menos de 23 de envido, nada
         return 0;
       }
@@ -184,7 +202,7 @@ public class JugadorAI extends Jugador {
       return desicion;
       */
 
-      /*
+      /* FUNCION 2:
       if(calcularEnvido()>27 && estado==0)   // Obliga a jugar a la AI si tiene como mínimo más de 27 de envido
           obligado=1;
 
@@ -218,7 +236,27 @@ public class JugadorAI extends Jugador {
       */
   }
 
-  public int desidirTruco () {
+  private int cantBuenasCartas () {
+    int cant=0;
+
+    for (int i = 0; i < mano.size(); i++)
+      if(mano.get(i).rankingCarta()>7)
+        cant++;
+
+    return cant;
+  }
+
+  private int cantMedianasCartas () {
+    int cant=0;
+
+    for (int i = 0; i < mano.size(); i++)
+      if(mano.get(i).rankingCarta()>4 && mano.get(i).rankingCarta()<8)
+        cant++;
+
+    return cant;
+  }
+
+  public int desidirTruco (int estado) {
       /*
       Estados:
         0 --> No quiero / No se cantó
@@ -227,16 +265,36 @@ public class JugadorAI extends Jugador {
         3 --> Vale 4
       *** Si devuelve el mismo numero que se le paso a la funcion, se le interpreta como un quiero
       */
+    Random random = new Random();
+
+    if(cartasJugadas.isEmpty()){ // Si es la primera mano..
+      if(estado == 0)            // .. Y no se canto nada..
+        return 0;                // .. No cantar.
+      else {                     // Pero si me cantaron..
+        if(cantBuenasCartas()>=1 && cantMedianasCartas()>=1) // .. Solo aceptar si tengo más de una buena carta y una media
+          return estado;
+      }
+    }
+
+    if(cartasJugadas.size()==2 && cantBuenasCartas()==1) // Si esta en la ultima ronda y le queda una buena carta
+      return estado+random.nextInt(3-estado);      // Apostar todo
+
+
+    if(cantBuenasCartas()>1 || cantMedianasCartas()>1 && estado<=2) // Si tengo mas de una buena carta,
+                                                                    // mas de una mediana y estamos en retruco o menos,
+                                                                    // apostar hasta retruco
+      return estado+random.nextInt(2-estado);
+
+    if(cantMedianasCartas()>1 && estado<=2)
+      return estado+random.nextInt(2-estado);
+
+
+
+
 
       /***********/
 
       return 0;
   }
 
-  private int desidirSiONoRandom(int num){ // Funcion para agregarle aleatoriedad al juego
-      Random random = new Random();
-      if(random.nextInt(5) == 3) // El 3 representa una probabilidad de 1/5 para no jugar
-          return 0;
-      return num;
-  }
 }
