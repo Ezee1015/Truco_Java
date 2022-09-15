@@ -18,6 +18,30 @@ public class JugadorAI extends Jugador {
         super(mano, esMano);
     }
 
+    
+  public Carta jugarTurno(Persona p, InterfazJuego mesa){
+      Random random = new Random();
+      Carta aTirar;
+      
+      if(cartasJugadas.isEmpty() && mesa.envidoFinalizado==false)
+          mesa.AICantaEnvido();
+      mesa.AICantaEnvido();
+      
+      if(cartasJugadas.isEmpty())
+          return tirarCartaRandom();
+      
+      else if(cartasJugadas.size()==1){
+          if(p.getCartasJugadas().get(0).rankingCarta() == cartasJugadas.get(0).rankingCarta())
+              return tirarMejorCarta();
+          if(p.getCartasJugadas().get(0).rankingCarta() > cartasJugadas.get(0).rankingCarta())
+              return tirarMejorCarta();
+          if(p.getCartasJugadas().get(0).rankingCarta() < cartasJugadas.get(0).rankingCarta())
+              return tirarPeorCarta();
+      }
+      
+      return tirarMejorCarta(); // Tira la ultima carta que queda
+  }
+    
   public Carta tirarCartaRandom(){
     int pos = new Random().nextInt(mano.size());
     Carta aTirar = mano.get(pos);
@@ -85,7 +109,7 @@ public class JugadorAI extends Jugador {
       if(calcularEnvido()>27){
         if(estado==3)
           desicion = 3;
-        if(estado<4)
+        else if(estado<4)
           desicion = random.nextInt(obligado,3);
         else
           desicion = 0;
@@ -104,8 +128,8 @@ public class JugadorAI extends Jugador {
       else if(calcularEnvido()>23){
         if(estado==1)
           desicion = 1;
-        if(estado<2)
-          desicion = random.nextInt(obligado,1);
+        else if(estado<2)
+          desicion = random.nextInt(estado,1);
         else
           desicion = 0;
       }
@@ -191,7 +215,7 @@ public class JugadorAI extends Jugador {
       */
   }
 
-  public int desidirTruco (int estado) {
+  public int desidirTruco () {
       /*
       Estados:
         0 --> No quiero / No se cantó
