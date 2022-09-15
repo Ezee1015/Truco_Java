@@ -1,9 +1,7 @@
 package truco_java;
 
-import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +13,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 public class InterfazJuego extends JFrame {
 
@@ -41,32 +38,32 @@ public class InterfazJuego extends JFrame {
         setDefaultCloseOperation(3);
 
         // Fondo
-        fondo = new JLabel(new ImageIcon("src/Truco_Java/imagenes/fondo.png"));
+        fondo = new JLabel(new ImageIcon("src/truco_java/Imagenes/fondo.png"));
         fondo.setBounds(0, 0, 500, 800);
         fondo.setVisible(true);
         add(fondo);
 
         // Mezclar el fondo y el personaje y hacer diferetes fondos. Luego se eligen aleatorios.
         // AI Carta 1
-        AIC1 = new JLabel(new ImageIcon(ImageIO.read(new File("src/Truco_Java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+        AIC1 = new JLabel();
         AIC1.setBounds(100, 50, 75, 100);
         AIC1.setVisible(true);
         fondo.add(AIC1);
 
         // AI Carta 2
-        AIC2 = new JLabel(new ImageIcon(ImageIO.read(new File("src/Truco_Java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+        AIC2 = new JLabel();
         AIC2.setBounds(200, 50, 75, 100);
         AIC2.setVisible(true);
         fondo.add(AIC2);
 
         // AI Carta 3
-        AIC3 = new JLabel(new ImageIcon(ImageIO.read(new File("src/Truco_Java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+        AIC3 = new JLabel();
         AIC3.setBounds(300, 50, 75, 100);
         AIC3.setVisible(true);
         fondo.add(AIC3);
 
         // Persona Carta 1
-        PC1 = new JButton(new ImageIcon(ImageIO.read(new File("src/Truco_Java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+        PC1 = new JButton();
         PC1.setBounds(10, 450, 155, 200);
         PC1.setVisible(true);
         PC1.setBorderPainted(false);
@@ -81,7 +78,7 @@ public class InterfazJuego extends JFrame {
         });
 
         // Persona Carta 2
-        PC2 = new JButton(new ImageIcon(ImageIO.read(new File("src/Truco_Java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+        PC2 = new JButton();
         PC2.setBounds(170, 450, 155, 200);
         PC2.setVisible(true);
         PC2.setBorderPainted(false);
@@ -96,7 +93,7 @@ public class InterfazJuego extends JFrame {
         });
 
         // Persona Carta 3
-        PC3 = new JButton(new ImageIcon(ImageIO.read(new File("src/Truco_Java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+        PC3 = new JButton();
         PC3.setBounds(330, 450, 155, 200);
         PC3.setVisible(true);
         PC3.setBorderPainted(false);
@@ -358,7 +355,7 @@ public class InterfazJuego extends JFrame {
             Random random = new Random();
             ArrayList<Carta> mazoTemp = new ArrayList<>();
             for (int x = 0; x < mazo.size() + mazoTemp.size(); x++) {
-                int posMezcla = random.nextInt(0, mazo.size());
+                int posMezcla = random.nextInt(mazo.size()); // Puede dar numeros negativos !!!!!
                 mazoTemp.add(mazo.get(posMezcla));
                 mazo.remove(posMezcla);
             }
@@ -393,19 +390,19 @@ public class InterfazJuego extends JFrame {
         switch (jugador.getMano().size()) {
             case 0:
                 PC1.setVisible(false);
-                PC1.setIcon(new ImageIcon(ImageIO.read(new File("src/Truco_Java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+                PC1.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
                 PC2.setVisible(false);
-                PC1.setIcon(new ImageIcon(ImageIO.read(new File("src/Truco_Java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+                PC1.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
                 PC3.setVisible(false);
-                PC1.setIcon(new ImageIcon(ImageIO.read(new File("src/Truco_Java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+                PC1.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
                 break;
             case 1:
                 PC1.setVisible(true);
                 PC1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(0).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
                 PC2.setVisible(false);
-                PC2.setIcon(new ImageIcon(ImageIO.read(new File("src/Truco_Java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+                PC2.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
                 PC3.setVisible(false);
-                PC3.setIcon(new ImageIcon(ImageIO.read(new File("src/Truco_Java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+                PC3.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
                 break;
             case 2:
                 PC1.setVisible(true);
@@ -413,7 +410,7 @@ public class InterfazJuego extends JFrame {
                 PC2.setVisible(true);
                 PC2.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(1).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
                 PC3.setVisible(false);
-                PC3.setIcon(new ImageIcon(ImageIO.read(new File("src/Truco_Java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+                PC3.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
                 break;
             case 3:
                 PC1.setVisible(true);
@@ -505,6 +502,7 @@ public class InterfazJuego extends JFrame {
         nivelTruco = 0;
         envidosCantados = new ArrayList();
         envidoFinalizado = false;
+        dibujarBotones();
 
         // Limpia las manos
         jugador.setMano(new ArrayList());

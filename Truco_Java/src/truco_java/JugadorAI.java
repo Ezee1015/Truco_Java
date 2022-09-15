@@ -103,14 +103,14 @@ public class JugadorAI extends Jugador {
       if(calcularEnvido()>30){                 // Más de 30 de envido, canta
         if(estado==4)
           return 4;
-        return random.nextInt(obligado,4);
+        return obligado + random.nextInt(4-obligado);
       }
 
       if(calcularEnvido()>27){
         if(estado==3)
           desicion = 3;
         else if(estado<4)
-          desicion = random.nextInt(obligado,3);
+          desicion = obligado + random.nextInt(3-obligado);
         else
           desicion = 0;
       }
@@ -120,7 +120,7 @@ public class JugadorAI extends Jugador {
           if (estado==2)
             desicion = 2;
           else
-            desicion = random.nextInt(obligado,2);
+            desicion = obligado + random.nextInt(2 - obligado);
         } else
           desicion = 0;
       }
@@ -129,7 +129,7 @@ public class JugadorAI extends Jugador {
         if(estado==1)
           desicion = 1;
         else if(estado<2)
-          desicion = random.nextInt(estado,1);
+          desicion = estado + random.nextInt(1-estado);
         else
           desicion = 0;
       }
@@ -232,7 +232,7 @@ public class JugadorAI extends Jugador {
 
   private int desidirSiONoRandom(int num){ // Funcion para agregarle aleatoriedad al juego
       Random random = new Random();
-      if(random.nextInt(0,5) == 3) // El 3 representa una probabilidad de 1/5 para no jugar
+      if(random.nextInt(5) == 3) // El 3 representa una probabilidad de 1/5 para no jugar
           return 0;
       return num;
   }
