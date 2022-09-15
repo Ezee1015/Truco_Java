@@ -60,4 +60,8 @@ public class Carta {
   public String linkCarta(){
       return "src/Truco_Java/mazo/" + numero + " de " + palo + ".png";
   }
+  
+  public String texto(){
+      return numero + " de " + palo;
+  }
 }

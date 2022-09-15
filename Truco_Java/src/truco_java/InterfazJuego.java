@@ -272,7 +272,7 @@ public class InterfazJuego extends JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
             }
-            ImprimeAIEnvido(0);
+            ImprimeAIEnvido(0); /// aca hay un problema. esto imprime un envido. arreglado
         });
 
         // Boton Real Envido
@@ -335,6 +335,8 @@ public class InterfazJuego extends JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
             }
+            ImprimeAIEnvido(0);
+            
         });
 
         quieroEnv = new JButton("Quiero");
@@ -368,6 +370,7 @@ public class InterfazJuego extends JFrame {
                 Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+        ImprimeAIEnvido(0);
     }
 
     private void cargarMazo() {
@@ -579,6 +582,16 @@ public class InterfazJuego extends JFrame {
 
         mezclarMazo();
 
+        // Oculta y resetea botones
+        quieroEnv.setVisible(false);
+        noQuieroEnv.setVisible(false);
+        envido.setEnabled(false);
+        envidoEsp.setVisible(false);
+        envidoEnvido.setVisible(false);
+        realEnvido.setVisible(false);
+        faltaEnvido.setVisible(false);
+        ImprimeAIEnvido(0);
+        
         //Reparte
         ArrayList<Carta> mano1 = new ArrayList<>();
         mano1.add(mazo.get(0));
@@ -606,6 +619,15 @@ public class InterfazJuego extends JFrame {
     }
 
     private void habilitaTurno() throws IOException {
+        if(compruebaSiTerminoPartida()==1) {
+            JOptionPane.showMessageDialog(null, "Termino Partida. Gano el Jugador.");
+            return;
+        }
+        if(compruebaSiTerminoPartida()==2) {
+            JOptionPane.showMessageDialog(null, "Termino Partida. Gano la PC.");
+            return;
+        }
+        
         if (jugador.getCartasJugadas().isEmpty() && ai.getCartasJugadas().isEmpty()) { // No jugo nadie
             if (jugador.isMano() == true) {
                 truco.setEnabled(true);
@@ -644,17 +666,18 @@ public class InterfazJuego extends JFrame {
                 PC2.setEnabled(false);
                 PC3.setEnabled(false);
                 if(envidoFinalizado==false){
-                    AICantaEnvido();
-                    return;
+                    if(AICantaEnvido()==0);
+                    else return;
                 }
                 ai.jugarTurno(jugador, this);
+                System.out.println("juega");
                 dibujarCartas();
                 habilitaTurno();
         } else if (!jugador.getCartasJugadas().isEmpty() && !ai.getCartasJugadas().isEmpty()) { // Siguiente Ronda
             if (jugador.getCartasJugadas().size() == ai.getCartasJugadas().size()) { // Si es una ronda en la que nadie jugó
                 int rankingJugador = jugador.getCartasJugadas().get(jugador.getCartasJugadas().size()-1).rankingCarta();
                 int rankingAI = ai.getCartasJugadas().get(ai.getCartasJugadas().size()-1).rankingCarta();
-
+                
                 if (rankingJugador > rankingAI) { // Si gano jugador en la anterior ronda
                     truco.setEnabled(true);
                     irAlMazo.setEnabled(true);
@@ -662,31 +685,31 @@ public class InterfazJuego extends JFrame {
                     PC2.setEnabled(true);
                     PC3.setEnabled(true);
                 } else if (rankingAI > rankingJugador) { // si gano AI en la anterior ronda
-                    ai.jugarTurno(jugador, this);
                     truco.setEnabled(false);
                     envido.setEnabled(false);
                     irAlMazo.setEnabled(false);
                     PC1.setEnabled(false);
                     PC2.setEnabled(false);
                     PC3.setEnabled(false);
+                    ai.jugarTurno(jugador, this);
                     dibujarCartas();
                     habilitaTurno();
                 }
-            } else if (jugador.getCartasJugadas().size() == ai.getCartasJugadas().size() + 1) { // Si ya la AI tiró en esa ronda
+            } else if (jugador.getCartasJugadas().size() == ai.getCartasJugadas().size() - 1) { // Si ya la AI tiró en esa ronda
                 truco.setEnabled(true);
                 envido.setEnabled(true);
                 irAlMazo.setEnabled(true);
                 PC1.setEnabled(true);
                 PC2.setEnabled(true);
                 PC3.setEnabled(true);
-            } else if (jugador.getCartasJugadas().size() + 1 == ai.getCartasJugadas().size()) { // Si ya el jugador tiró en esa ronda
-                ai.jugarTurno(jugador, this);
+            } else if (jugador.getCartasJugadas().size() - 1 == ai.getCartasJugadas().size()) { // Si ya el jugador tiró en esa ronda
                 truco.setEnabled(false);
                 envido.setEnabled(false);
                 irAlMazo.setEnabled(false);
                 PC1.setEnabled(false);
                 PC2.setEnabled(false);
                 PC3.setEnabled(false);
+                ai.jugarTurno(jugador, this);
                 dibujarCartas();
                 habilitaTurno();
             }
@@ -702,8 +725,7 @@ public class InterfazJuego extends JFrame {
             desicion = ai.desidirEnvido(0);
         else {
             desicion = ai.desidirEnvido(envidosCantados.get(envidosCantados.size() - 1));
-            /*System.out.println("desicion= " + desicion);
-            System.out.println("lista de envidos= " + envidosCantados.get(envidosCantados.size() - 1));*/
+            
             if (desicion == envidosCantados.get(envidosCantados.size() - 1)) { // Si la AI Quiere
                 if (jugador.calcularEnvido() > ai.calcularEnvido()) { //Si gana el jugador
                     JOptionPane.showMessageDialog(null, "Has ganado. La PC tenía " + ai.calcularEnvido() + " de envido.");
@@ -722,7 +744,6 @@ public class InterfazJuego extends JFrame {
                         ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()));
                     }
                 }
-                habilitaTurno();
                 quieroEnv.setVisible(false);
                 noQuieroEnv.setVisible(false);
                 envido.setEnabled(false);
@@ -730,18 +751,18 @@ public class InterfazJuego extends JFrame {
                 envidoEnvido.setVisible(false);
                 realEnvido.setVisible(false);
                 faltaEnvido.setVisible(false);
+                habilitaTurno();
                 return 1;
             }
-/*
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
-            envidoEnvido.setVisible(false);
-            realEnvido.setVisible(false);
-            faltaEnvido.setVisible(false);*/
         }
-
+        
         switch (desicion) {
             case 0:
+                if(!envidosCantados.isEmpty()){
+                    System.out.println("decision: " + desicion + " y la anterior: " + envidosCantados.get(envidosCantados.size() - 1));
+                    ImprimeAIEnvido(-1);
+                    envidoFinalizado=true;
+                }
                 return 0;
             case 1:
                 envido.setEnabled(false);
@@ -777,9 +798,12 @@ public class InterfazJuego extends JFrame {
 
         // Boton Quiero Envido
         quieroEnv.setVisible(true);
+        System.out.println("lo pone visiblemente");
 
         // Boton No Quiero Envido
         noQuieroEnv.setVisible(true);
+        
+        
 
         // Continua con el juego
         // habilitaTurno();
@@ -856,7 +880,131 @@ public class InterfazJuego extends JFrame {
             case 4:
                 estado.setText("Falta Envido!");
                 break;
+            case -1:
+                estado.setText("No quiero!");
+                break;
         }
+    }
+    
+    private int compruebaSiTerminoPartida(){
+        if(jugador.getCartasJugadas().size() != ai.getCartasJugadas().size() || ai.getCartasJugadas().isEmpty())
+            return 0;
+        
+        int ganoJugador=0, ganoAI=0, ganador=0;
+        boolean empateDefine=false;
+        
+        for(int i=0;i<jugador.getCartasJugadas().size();i++){ // se fija por cada ronda
+            if(ganador!=0)
+                break;
+            
+            OUTER:
+            OUTER_1:
+            switch (i) {
+                case 0:
+                    switch (ganaRonda(i)) {
+                        case 1:
+                            ganoJugador++;
+                            break;
+                        case 2:
+                            ganoAI++;
+                            break;
+                        case 0:
+                            empateDefine=true;
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case 1:
+                    switch (ganaRonda(i)) {
+                        case 1:
+                            if (empateDefine==true) {
+                                ganador=1;
+                                break OUTER_1;
+                            } else {
+                                ganoJugador++;
+                            }
+                            break;
+                        case 2:
+                            if (empateDefine==true) {
+                                ganador=2;
+                                break OUTER_1;
+                            } else {
+                                ganoAI++;
+                            }
+                            break;
+                        case 0:
+                            switch(ganaRonda(0)){
+                                case 0:
+                                    empateDefine=true; break;
+                                case 1:
+                                    ganador=1;
+                                    break;
+                                case 2:
+                                    ganador=2;
+                                    break;
+                            }   break;
+                        default:
+                            break;
+                    }
+                    break;
+                case 2:
+                    switch (ganaRonda(i)) {
+                        case 1:
+                            if (empateDefine==true) {
+                                ganador=1;
+                                break OUTER;
+                            } else {
+                                ganoJugador++;
+                            }
+                            break;
+                        case 2:
+                            if (empateDefine==true) {
+                                ganador=2;
+                                break OUTER;
+                            } else {
+                                ganoAI++;
+                            }
+                            break;
+                        case 0:
+                            switch(ganaRonda(0)){
+                                case 0:
+                                    empateDefine=true; break;
+                                case 1:
+                                    ganador=1;
+                                    break;
+                                case 2:
+                                    ganador=2;
+                                    break;
+                            }   break;
+                        default:
+                            break;
+                    }
+                    break;
+            }   
+        }
+        
+        if(empateDefine==false && (ganoJugador>=2 || ganoAI>=2)){
+            if(ganoJugador>ganoAI)
+                ganador=1;
+            else
+                ganador=2;
+        }
+                
+        return ganador;
+    }
+    
+    
+    private int ganaRonda(int pos){
+        int rankingJugador = jugador.getCartasJugadas().get(pos).rankingCarta(); // carrta ddel jugador
+        int rankingAI = ai.getCartasJugadas().get(pos).rankingCarta(); // carta de la AI
+            
+        if(rankingJugador > rankingAI) // si gana jugador
+            return 1;
+        if(rankingJugador < rankingAI) // si gana AI
+            return 2;
+        // Si empata
+        return 0;
     }
     
     
