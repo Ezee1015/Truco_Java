@@ -283,12 +283,15 @@ public class JugadorAI extends Jugador {
                                                                     // apostar hasta retruco
       return estado+random.nextInt(2-estado);
     
+    if(cantBuenasCartas()>1)
+      return estado+random.nextInt(3-estado);
+    
     if(cantBuenasCartas()>=1 && estado<=2)
-      return estado+random.nextInt(estado);
-
+      return random.nextInt(estado);
+/* DEMASIADO ARRIESGADO
     if(cantMedianasCartas()>=1 && estado<=2)
       return estado+random.nextInt(estado);
-    
+*/    
     if(p.getCartasJugadas().size()-1 == cartasJugadas.size() && p.getCartasJugadas().size() == 3){ // Si estoy en la ultima mano y solo falto yo tirar...
         if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta()) // Si le gano, canto
             return estado+random.nextInt(4-estado);

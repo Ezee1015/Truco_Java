@@ -1,6 +1,7 @@
 package truco_java;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -16,6 +17,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 public class InterfazJuego extends JFrame {
 
@@ -51,19 +55,19 @@ public class InterfazJuego extends JFrame {
         // Mezclar el fondo y el personaje y hacer diferetes fondos. Luego se eligen aleatorios.
         // AI Carta 1
         AIC1 = new JLabel();
-        AIC1.setBounds(100, 50, 75, 100);
+        AIC1.setBounds(100, 10, 75, 100);
         AIC1.setVisible(true);
         fondo.add(AIC1);
 
         // AI Carta 2
         AIC2 = new JLabel();
-        AIC2.setBounds(200, 50, 75, 100);
+        AIC2.setBounds(200, 10, 75, 100);
         AIC2.setVisible(true);
         fondo.add(AIC2);
 
         // AI Carta 3
         AIC3 = new JLabel();
-        AIC3.setBounds(300, 50, 75, 100);
+        AIC3.setBounds(300, 10, 75, 100);
         AIC3.setVisible(true);
         fondo.add(AIC3);
 
@@ -188,11 +192,17 @@ public class InterfazJuego extends JFrame {
         fondo.add(PCT3);
 
         estado = new JTextPane();
-        estado.setBounds(50,100,400,50);
+        estado.setBounds(50,110,400,50);
+        estado.setFont(new Font("Serif", Font.ITALIC, 30));
         estado.setEditable(false);
         estado.setBackground(Color.white);
         estado.setVisible(false);
         fondo.add(estado);
+        //Centra el texto
+        StyledDocument doc = estado.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
         // Boton envido general
         envido = new JButton("Envido");
@@ -705,6 +715,7 @@ public class InterfazJuego extends JFrame {
             if (jugador.getCartasJugadas().size() == ai.getCartasJugadas().size()) { // Si es una ronda en la que nadie jugó
                 int rankingJugador = jugador.getCartasJugadas().get(jugador.getCartasJugadas().size()-1).rankingCarta();
                 int rankingAI = ai.getCartasJugadas().get(ai.getCartasJugadas().size()-1).rankingCarta();
+                envido.setEnabled(false); // Deshabilita el envido en la segunda ronda
 
                 if (rankingJugador > rankingAI) { // Si gano jugador en la anterior ronda
                     truco.setEnabled(true);
@@ -1158,4 +1169,6 @@ public class InterfazJuego extends JFrame {
     private void sumarPuntosEnvido (){
 
     }*/
+    
+    
 }
