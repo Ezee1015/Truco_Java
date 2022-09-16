@@ -119,10 +119,10 @@ public class JugadorAI extends Jugador {
       if(calcularEnvido()>30){                 // Más de 30 de envido, canta
         if(estado==4)
           return 4;
-        return obligado + random.nextInt(4-obligado);
+        desicion = obligado + random.nextInt(4-obligado);
       }
 
-      if(calcularEnvido()>27){
+      else if(calcularEnvido()>27){
         if(estado==3)
           desicion = 3;
         else if(estado<4)
@@ -282,16 +282,16 @@ public class JugadorAI extends Jugador {
                                                                     // mas de una mediana y estamos en retruco o menos,
                                                                     // apostar hasta retruco
       return estado+random.nextInt(2-estado);
-    
+
     if(cantBuenasCartas()>1)
       return estado+random.nextInt(3-estado);
-    
+
     if(cantBuenasCartas()>=1 && estado<=2)
       return random.nextInt(estado);
 /* DEMASIADO ARRIESGADO
     if(cantMedianasCartas()>=1 && estado<=2)
       return estado+random.nextInt(estado);
-*/    
+*/
     if(p.getCartasJugadas().size()-1 == cartasJugadas.size() && p.getCartasJugadas().size() == 3){ // Si estoy en la ultima mano y solo falto yo tirar...
         if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta()) // Si le gano, canto
             return estado+random.nextInt(4-estado);
