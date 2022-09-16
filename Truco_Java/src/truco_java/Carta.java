@@ -56,11 +56,11 @@ public class Carta {
     }
     return -1;
   }
-  
+
   public String linkCarta(){
-      return "src/Truco_Java/mazo/" + numero + " de " + palo + ".png";
+      return "src/truco_java/mazo/" + numero + " de " + palo + ".png";
   }
-  
+
   public String texto(){
       return numero + " de " + palo;
   }
