@@ -29,6 +29,9 @@ public class Jugador {
     public void setMano(ArrayList<Carta> mano) {
         this.mano = mano;
         ordenarMano();
+        for(int i=0;i<mano.size();i++)
+            System.out.println("Carta: " + mano.get(i).texto());
+        System.out.println("_________");
     }
 
     public void ordenarMano(){
