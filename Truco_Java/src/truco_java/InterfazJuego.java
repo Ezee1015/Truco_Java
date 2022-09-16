@@ -69,8 +69,11 @@ public class InterfazJuego extends JFrame {
 
         // Persona Carta 1
         PC1 = new JButton();
-        PC1.setBounds(10, 450, 155, 200);
+        PC1.setBounds(10, 400, 155, 200);
         PC1.setVisible(true);
+        PC1.setOpaque(false);
+        PC1.setContentAreaFilled(false);
+        PC1.setBorderPainted(false);
         PC1.setBorderPainted(false);
         fondo.add(PC1);
         PC1.addActionListener((ActionEvent e) -> {
@@ -89,8 +92,11 @@ public class InterfazJuego extends JFrame {
 
         // Persona Carta 2
         PC2 = new JButton();
-        PC2.setBounds(170, 450, 155, 200);
+        PC2.setBounds(170, 400, 155, 200);
         PC2.setVisible(true);
+        PC2.setBorderPainted(false);
+        PC2.setOpaque(false);
+        PC2.setContentAreaFilled(false);
         PC2.setBorderPainted(false);
         fondo.add(PC2);
         PC2.addActionListener((ActionEvent e) -> {
@@ -108,8 +114,11 @@ public class InterfazJuego extends JFrame {
 
         // Persona Carta 3
         PC3 = new JButton();
-        PC3.setBounds(330, 450, 155, 200);
+        PC3.setBounds(330, 400, 155, 200);
         PC3.setVisible(true);
+        PC3.setBorderPainted(false);
+        PC3.setOpaque(false);
+        PC3.setContentAreaFilled(false);
         PC3.setBorderPainted(false);
         fondo.add(PC3);
         PC3.addActionListener((ActionEvent e) -> {
@@ -144,42 +153,42 @@ public class InterfazJuego extends JFrame {
 
         // AI Carta Tirada 1
         AICT1 = new JLabel();
-        AICT1.setBounds(130, 200, 70, 80);
+        AICT1.setBounds(130, 150, 70, 80);
         AICT1.setVisible(true);
         fondo.add(AICT1);
 
         // AI Carta Tirada 2
         AICT2 = new JLabel();
-        AICT2.setBounds(210, 200, 70, 80);
+        AICT2.setBounds(210, 150, 70, 80);
         AICT2.setVisible(true);
         fondo.add(AICT2);
 
         // AI Carta Tirada 3
         AICT3 = new JLabel();
-        AICT3.setBounds(290, 200, 70, 80);
+        AICT3.setBounds(290, 150, 70, 80);
         AICT3.setVisible(true);
         fondo.add(AICT3);
 
         // Persona Carta Tirada 1
         PCT1 = new JLabel();
-        PCT1.setBounds(130, 300, 70, 80);
+        PCT1.setBounds(130, 250, 70, 80);
         PCT1.setVisible(true);
         fondo.add(PCT1);
 
         // Persona Carta Tirada 2
         PCT2 = new JLabel();
-        PCT2.setBounds(210, 300, 70, 80);
+        PCT2.setBounds(210, 250, 70, 80);
         PCT2.setVisible(true);
         fondo.add(PCT2);
 
         // Persona Carta Tirada 3
         PCT3 = new JLabel();
-        PCT3.setBounds(290, 300, 70, 80);
+        PCT3.setBounds(290, 250, 70, 80);
         PCT3.setVisible(true);
         fondo.add(PCT3);
 
         estado = new JTextPane();
-        estado.setBounds(50,150,400,50);
+        estado.setBounds(50,100,400,50);
         estado.setEditable(false);
         estado.setBackground(Color.white);
         estado.setVisible(false);
@@ -187,9 +196,9 @@ public class InterfazJuego extends JFrame {
 
         // Boton envido general
         envido = new JButton("Envido");
-        envido.setBounds(170, 710, 155, 60);
+        envido.setBounds(170, 660, 155, 60);
         envido.setVisible(true);
-        envido.setEnabled(true);
+        envido.setEnabled(false);
         fondo.add(envido);
         envido.addActionListener((ActionEvent e) -> {
             if (envidoEsp.isVisible() == true) {
@@ -207,13 +216,14 @@ public class InterfazJuego extends JFrame {
 
         // Boton Ir al mazo
         irAlMazo = new JButton("Mazo");
-        irAlMazo.setBounds(330, 710, 155, 60);
+        irAlMazo.setBounds(330, 660, 155, 60);
         irAlMazo.setVisible(true);
+        irAlMazo.setEnabled(false);
         fondo.add(irAlMazo);
 
         // Boton envido especifico
         envidoEsp = new JButton("Envido");
-        envidoEsp.setBounds(10, 645, 117, 60);
+        envidoEsp.setBounds(10, 595, 117, 50);
         envidoEsp.setVisible(false);
         fondo.add(envidoEsp);
         envidoEsp.addActionListener((ActionEvent e) -> {
@@ -227,7 +237,7 @@ public class InterfazJuego extends JFrame {
 
         // Boton envido-envido
         envidoEnvido = new JButton("Envido Doble");
-        envidoEnvido.setBounds(131, 645, 117, 60);
+        envidoEnvido.setBounds(131, 595, 117, 50);
         envidoEnvido.setVisible(false);
         fondo.add(envidoEnvido);
         envidoEnvido.addActionListener((ActionEvent e) -> {
@@ -243,7 +253,7 @@ public class InterfazJuego extends JFrame {
 
         // Boton Real Envido
         realEnvido = new JButton("Real Envido");
-        realEnvido.setBounds(252, 645, 117, 60);
+        realEnvido.setBounds(252, 595, 117, 50);
         realEnvido.setVisible(false);
         fondo.add(realEnvido);
         realEnvido.addActionListener((ActionEvent e) -> {
@@ -260,7 +270,7 @@ public class InterfazJuego extends JFrame {
 
         // Boton Falta Envido
         faltaEnvido = new JButton("Falta Envido");
-        faltaEnvido.setBounds(373, 645, 117, 60);
+        faltaEnvido.setBounds(373, 595, 117, 50);
         faltaEnvido.setVisible(false);
         fondo.add(faltaEnvido);
         faltaEnvido.addActionListener((ActionEvent e) -> {
@@ -278,7 +288,7 @@ public class InterfazJuego extends JFrame {
 
         //Botones de Quiero y No quiero envido
         quieroEnv = new JButton("Quiero");
-        quieroEnv.setBounds(10, 400, 235, 60);
+        quieroEnv.setBounds(10, 350, 235, 40);
         quieroEnv.setVisible(false);
         fondo.add(quieroEnv);
         quieroEnv.addActionListener((ActionEvent e) -> {
@@ -320,7 +330,7 @@ public class InterfazJuego extends JFrame {
             });
 
         noQuieroEnv = new JButton("No Quiero");
-        noQuieroEnv.setBounds(255, 400, 235, 60);
+        noQuieroEnv.setBounds(255, 350, 235, 40);
         noQuieroEnv.setVisible(false);
         fondo.add(noQuieroEnv);
         noQuieroEnv.addActionListener((ActionEvent e) -> {
@@ -333,8 +343,7 @@ public class InterfazJuego extends JFrame {
             faltaEnvido.setVisible(false);
             quieroEnv.setVisible(false);
             noQuieroEnv.setVisible(false);
-            fondo.remove(quieroEnv);
-            fondo.remove(noQuieroEnv);
+            
             try {
                 // Continua con el juego
                 habilitaTurno();
@@ -347,7 +356,7 @@ public class InterfazJuego extends JFrame {
 
         // Boton Truco
         truco = new JButton("Truco");
-        truco.setBounds(10, 710, 155, 60);
+        truco.setBounds(10, 660, 155, 60);
         truco.setVisible(true);
         truco.setEnabled(false);
         fondo.add(truco);
@@ -365,7 +374,7 @@ public class InterfazJuego extends JFrame {
 
         //Botones de Quiero y No quiero truco
         quieroTruco = new JButton("Quiero");
-        quieroTruco.setBounds(10, 400, 235, 60);
+        quieroTruco.setBounds(10, 350, 235, 40);
         quieroTruco.setVisible(false);
         fondo.add(quieroTruco);
         quieroTruco.addActionListener((ActionEvent e) -> {
@@ -377,7 +386,7 @@ public class InterfazJuego extends JFrame {
 
 
         noQuieroTruco = new JButton("No Quiero");
-        noQuieroTruco.setBounds(255, 400, 235, 60);
+        noQuieroTruco.setBounds(255, 350, 235, 40);
         noQuieroTruco.setVisible(false);
         fondo.add(noQuieroTruco);
         noQuieroTruco.addActionListener((ActionEvent e) -> {
@@ -744,6 +753,7 @@ public class InterfazJuego extends JFrame {
             desicion = ai.desidirEnvido(0);
         else {
             desicion = ai.desidirEnvido(envidosCantados.get(envidosCantados.size() - 1));
+            System.out.println(desicion);
 
             if (desicion == envidosCantados.get(envidosCantados.size() - 1)) { // Si la AI Quiere
                 if (jugador.calcularEnvido() > ai.calcularEnvido()) { //Si gana el jugador
@@ -790,6 +800,9 @@ public class InterfazJuego extends JFrame {
                     envidoEnvido.setVisible(false);
                     realEnvido.setVisible(false);
                     faltaEnvido.setVisible(false);
+                    quieroEnv.setVisible(false);
+                    noQuieroEnv.setVisible(false);
+                    habilitaTurno();  //Puede llegar a causar problemas con los turnos, pero en teoria no
                 }
                 return 0;
             case 1:
@@ -825,6 +838,7 @@ public class InterfazJuego extends JFrame {
 
         // Boton Quiero Envido
         quieroEnv.setVisible(true);
+        System.out.println("Boton envido: " + quieroEnv.isVisible());
 
         // Boton No Quiero Envido
         noQuieroEnv.setVisible(true);
@@ -1042,7 +1056,7 @@ public class InterfazJuego extends JFrame {
             else return 0;
         }
 
-        int desicion = ai.desidirTruco(nivelTruco);
+        int desicion = ai.desidirTruco(nivelTruco, jugador);
 
         if(desicion == nivelTruco){ // Acepto el truco
             imprimeAITruco(4);

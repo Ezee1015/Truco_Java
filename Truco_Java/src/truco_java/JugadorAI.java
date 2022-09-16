@@ -30,10 +30,8 @@ public class JugadorAI extends Jugador {
                 if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == mano.get(i).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() == mano.get(0).rankingCarta() )
                     return tirarCartaPos(i);
                 // Buscar la carta de menor rango que le gane
-                if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() < mano.get(i).rankingCarta()){
-                    System.out.println("ahahahahah");
+                if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() < mano.get(i).rankingCarta())
                     return tirarCartaPos(i);
-                }
           }
           return tirarPeorCarta();
         }
@@ -256,7 +254,7 @@ public class JugadorAI extends Jugador {
     return cant;
   }
 
-  public int desidirTruco (int estado) {
+  public int desidirTruco (int estado, Persona p) {
       /*
       Estados:
         0 --> No quiero / No se cantó
@@ -280,21 +278,28 @@ public class JugadorAI extends Jugador {
       return estado+random.nextInt(3-estado);      // Apostar todo
 
 
-    if(cantBuenasCartas()>1 || cantMedianasCartas()>1 && estado<=2) // Si tengo mas de una buena carta,
+    if((cantBuenasCartas()>=1 && cantMedianasCartas()>=1) && estado<=2) // Si tengo mas de una buena carta,
                                                                     // mas de una mediana y estamos en retruco o menos,
                                                                     // apostar hasta retruco
       return estado+random.nextInt(2-estado);
+    
+    if(cantBuenasCartas()>=1 && estado<=2)
+      return estado+random.nextInt(estado);
 
-    if(cantMedianasCartas()>1 && estado<=2)
-      return estado+random.nextInt(2-estado);
+    if(cantMedianasCartas()>=1 && estado<=2)
+      return estado+random.nextInt(estado);
+    
+    if(p.getCartasJugadas().size()-1 == cartasJugadas.size() && p.getCartasJugadas().size() == 3){ // Si estoy en la ultima mano y solo falto yo tirar...
+        if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta()) // Si le gano, canto
+            return estado+random.nextInt(4-estado);
+        // Si le empata, pero gano la primera
+        else if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() == mano.get(0).rankingCarta())
+            return estado+random.nextInt(4-estado);
+        else if(random.nextInt(4)==3) // Random, aceptar
+            return estado+random.nextInt(3-estado);
+    }
 
-
-
-
-
-      /***********/
-
-      return 0;
+    return 0;
   }
 
 }
