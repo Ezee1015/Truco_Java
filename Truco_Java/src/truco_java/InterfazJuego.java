@@ -353,7 +353,7 @@ public class InterfazJuego extends JFrame {
             faltaEnvido.setVisible(false);
             quieroEnv.setVisible(false);
             noQuieroEnv.setVisible(false);
-            
+
             try {
                 // Continua con el juego
                 habilitaTurno();
@@ -853,7 +853,7 @@ public class InterfazJuego extends JFrame {
 
         // Boton No Quiero Envido
         noQuieroEnv.setVisible(true);
-        
+
         // No puede tirar cartas mientras este en envido
         PC1.setEnabled(false);
         PC2.setEnabled(false);
@@ -1061,7 +1061,7 @@ public class InterfazJuego extends JFrame {
     public int AICantaTruco() throws IOException {
         if (habilitadoARetrucar == 1)
             return 0;
-        
+
         if(!envidoFinalizado && ai.getCartasJugadas().isEmpty()){
             if(AICantaEnvido()==0);
             else return 0;
@@ -1169,6 +1169,6 @@ public class InterfazJuego extends JFrame {
     private void sumarPuntosEnvido (){
 
     }*/
-    
-    
+
+
 }
