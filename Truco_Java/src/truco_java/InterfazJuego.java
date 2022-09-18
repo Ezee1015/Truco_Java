@@ -38,6 +38,8 @@ public class InterfazJuego extends JFrame {
     JButton noQuieroEnv, quieroEnv, noQuieroTruco, quieroTruco;
     JTextPane estado;
     int habilitadoARetrucar = 0; // 1--> Jugador; 2--> AI
+    JLabel fondoEstado;
+
 
     public InterfazJuego() throws IOException {
         cargarMazo();
@@ -191,13 +193,21 @@ public class InterfazJuego extends JFrame {
         PCT3.setVisible(true);
         fondo.add(PCT3);
 
+        // Fondo de la respuesta de la AI
+        fondoEstado = new JLabel(new ImageIcon("src/truco_java/Imagenes/burbuja.png"));
+        fondoEstado.setBounds(50,110,400,45);
+        fondoEstado.setOpaque(false);
+        fondoEstado.setVisible(false);
+        fondo.add(fondoEstado);
+
         estado = new JTextPane();
-        estado.setBounds(50,110,400,50);
+        estado.setBounds(0,0,400,45);
         estado.setFont(new Font("Serif", Font.ITALIC, 30));
         estado.setEditable(false);
-        estado.setBackground(Color.white);
-        estado.setVisible(false);
-        fondo.add(estado);
+        estado.setOpaque(false);
+        estado.setVisible(true);
+        fondoEstado.add(estado);
+
         //Centra el texto
         StyledDocument doc = estado.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
@@ -912,7 +922,7 @@ public class InterfazJuego extends JFrame {
     }
 
     private void imprimeAIEnvido(int envido){
-        estado.setVisible(true);
+        fondoEstado.setVisible(true);
 
         switch(envido){
             case -1:
@@ -920,7 +930,7 @@ public class InterfazJuego extends JFrame {
                 break;
             case 0:
                 estado.setText("");
-                estado.setVisible(false);
+                fondoEstado.setVisible(false);
                 break;
             case 1:
                 estado.setText("Envido! Carajo");
@@ -1105,7 +1115,7 @@ public class InterfazJuego extends JFrame {
     }
 
     private void imprimeAITruco(int envido){
-        estado.setVisible(true);
+        fondoEstado.setVisible(true);
 
         switch(envido){
             case -1:
@@ -1113,7 +1123,7 @@ public class InterfazJuego extends JFrame {
                 break;
             case 0:
                 estado.setText("");
-                estado.setVisible(false);
+                fondoEstado.setVisible(false);
                 break;
             case 1:
                 estado.setText("Truco!");
