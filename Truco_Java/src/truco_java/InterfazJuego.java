@@ -1,6 +1,5 @@
 package truco_java;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -24,7 +23,7 @@ import javax.swing.text.StyledDocument;
 public class InterfazJuego extends JFrame {
 
     private static ArrayList<Carta> mazo = new ArrayList<>();
-    JLabel fondo;
+    JLabel fondo = new JLabel();
     JLabel AIC1, AIC2, AIC3;
     JLabel AICT1, AICT2, AICT3;
     JButton PC1, PC2, PC3;
@@ -49,7 +48,7 @@ public class InterfazJuego extends JFrame {
         setDefaultCloseOperation(3);
 
         // Fondo
-        fondo = new JLabel(new ImageIcon("src/truco_java/Imagenes/fondo.png"));
+        setFondo(0);
         fondo.setBounds(0, 0, 500, 800);
         fondo.setVisible(true);
         add(fondo);
@@ -411,6 +410,18 @@ public class InterfazJuego extends JFrame {
         fondo.add(noQuieroTruco);
         noQuieroTruco.addActionListener((ActionEvent e) -> {
             ai.setPuntaje(ai.getPuntaje() + calcularTrucoPerdido());
+            quieroTruco.setVisible(false);
+            noQuieroTruco.setVisible(false);
+            try {
+                otraPartida();
+            } catch (IOException ex) {
+                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                habilitaTurno();
+            } catch (IOException ex) {
+                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 
     }
@@ -616,6 +627,8 @@ public class InterfazJuego extends JFrame {
         envidoFinalizado = false;
         habilitadoARetrucar = 0;
         dibujarBotones();
+        truco.setText("Truco");
+        truco.setVisible(true);
 
         // Limpia las manos
         jugador.setMano(new ArrayList());
@@ -1099,8 +1112,8 @@ public class InterfazJuego extends JFrame {
             return 1;
         }
 
-        if(desicion==0){
-            if (habilitadoARetrucar == 2) { // si no quiere truco la AI
+        if(desicion==0){ // si no quiere truco la AI
+            if (habilitadoARetrucar == 2) {
                 imprimeAITruco(-1);
                 quieroTruco.setVisible(false);
                 noQuieroTruco.setVisible(false);
@@ -1128,10 +1141,10 @@ public class InterfazJuego extends JFrame {
         return 1;
     }
 
-    private void imprimeAITruco(int truco){
+    private void imprimeAITruco(int trucoMSG){
         fondoEstado.setVisible(true);
 
-        switch(truco){
+        switch(trucoMSG){
             case -1:
                 estado.setText("No quiero!");
                 break;
@@ -1141,12 +1154,15 @@ public class InterfazJuego extends JFrame {
                 break;
             case 1:
                 estado.setText("Truco!");
+                truco.setLabel("Retruco");
                 break;
             case 2:
                 estado.setText("Re truco!");
+                truco.setText("Vale cuatro");
                 break;
             case 3:
                 estado.setText("Quiero vale 4!");
+                truco.setVisible(false);
                 break;
             case 4:
                 estado.setText("Quiero!");
@@ -1194,5 +1210,20 @@ public class InterfazJuego extends JFrame {
 
     }*/
 
+
+    // Este numero representa el personaje que fue generado
+    private int numeroPersonaje = new Random().nextInt(2) + 1; // TODO: Ponerlo como constante
+
+    private void setFondo(int estadoPers){
+        char estadoPersChar;
+        if(estadoPers==0) // Fondo persoonaje normal
+            estadoPersChar = 'a';
+        else
+            estadoPersChar = 'b';
+
+        String imagen = "src/truco_java/Imagenes/bg" + numeroPersonaje + estadoPersChar;
+        fondo.setIcon(new ImageIcon(imagen));
+
+    }
 
 }
