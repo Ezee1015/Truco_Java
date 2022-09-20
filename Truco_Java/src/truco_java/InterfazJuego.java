@@ -679,7 +679,7 @@ public class InterfazJuego extends JFrame {
 
         if (jugador.getCartasJugadas().isEmpty() && ai.getCartasJugadas().isEmpty()) { // No jugo nadie
             if (jugador.isMano() == true) {
-                truco.setEnabled(true);
+                if(habilitadoARetrucar == 1 || habilitadoARetrucar == 0) truco.setEnabled(true);
                 envido.setEnabled(true);
                 irAlMazo.setEnabled(true);
                 PC1.setEnabled(true);
@@ -701,7 +701,9 @@ public class InterfazJuego extends JFrame {
                 habilitaTurno();
             }
         } else if (jugador.getCartasJugadas().isEmpty() && !ai.getCartasJugadas().isEmpty()) { // Ya Jugó la AI. Turno Jugador
-            truco.setEnabled(true);
+            if(habilitadoARetrucar == 1 || habilitadoARetrucar == 0) truco.setEnabled(true);
+            // Si la ultima carta que le queda al oponente es un 4, no se puede cantar truco
+            if(ai.getCartasJugadas().size() == 3) if(ai.getCartasJugadas().get(2).rankingCarta()==0) truco.setEnabled(false);
             if(!envidoFinalizado) envido.setEnabled(true);
             irAlMazo.setEnabled(true);
             PC1.setEnabled(true);
@@ -728,7 +730,7 @@ public class InterfazJuego extends JFrame {
                 envido.setEnabled(false); // Deshabilita el envido en la segunda ronda
 
                 if (rankingJugador > rankingAI) { // Si gano jugador en la anterior ronda
-                    truco.setEnabled(true);
+                    if(habilitadoARetrucar == 1 || habilitadoARetrucar == 0) truco.setEnabled(true);
                     irAlMazo.setEnabled(true);
                     PC1.setEnabled(true);
                     PC2.setEnabled(true);
@@ -745,7 +747,7 @@ public class InterfazJuego extends JFrame {
                     habilitaTurno();
                 }
             } else if (jugador.getCartasJugadas().size() == ai.getCartasJugadas().size() - 1) { // Si ya la AI tiró en esa ronda
-                truco.setEnabled(true);
+                if(habilitadoARetrucar == 1 || habilitadoARetrucar == 0) truco.setEnabled(true);
                 envido.setEnabled(true);
                 irAlMazo.setEnabled(true);
                 PC1.setEnabled(true);
@@ -1072,52 +1074,64 @@ public class InterfazJuego extends JFrame {
         if (habilitadoARetrucar == 1)
             return 0;
 
-        if(!envidoFinalizado && ai.getCartasJugadas().isEmpty()){
-            if(AICantaEnvido()==0);
+        // Si la ultima carta que le queda al oponente es un 4, no se puede cantar truco
+        if(ai.getCartasJugadas().size() == 3) if(ai.getCartasJugadas().get(2).rankingCarta()==0) truco.setEnabled(false);
+
+        if(!envidoFinalizado && ai.getCartasJugadas().isEmpty()){ // Si no se canto envido y es la primer ronda
+            if(AICantaEnvido()==0); // Se pregunta si quiere cantar envido
             else return 0;
         }
 
         int desicion = ai.desidirTruco(nivelTruco, jugador);
 
-        if(desicion == nivelTruco){ // Acepto el truco
+        if(desicion == nivelTruco){ // Si acepta el truco
             imprimeAITruco(4);
             habilitadoARetrucar=2;
             truco.setEnabled(false);
+            quieroTruco.setVisible(false);
+            noQuieroTruco.setVisible(false);
+            // Al cantar truco se deshabilita el truco
+            envido.setVisible(false);
+            envidoEsp.setVisible(false);
+            envidoEnvido.setVisible(false);
+            realEnvido.setVisible(false);
+            faltaEnvido.setVisible(false);
             return 1;
         }
 
-        switch (desicion) {
-            case 0:
-                if (habilitadoARetrucar == 2) { // si no quiere truco la AI
-                System.out.println("alala");
-                    imprimeAITruco(-1);
-                    jugador.setPuntaje(jugador.getPuntaje() + calcularTrucoPerdido());
-                    JOptionPane.showMessageDialog(null, "La PC ha rechazado el Truco.");
-                    otraPartida();
-                    habilitaTurno();
-                }
-                return 0;
-            case 1:
-                habilitadoARetrucar=1;
-                truco.setText("Retruco");
-                break;
-            case 2:
-                habilitadoARetrucar=1;
-                truco.setText("Quiero vale 4");
-                break;
+        if(desicion==0){
+            if (habilitadoARetrucar == 2) { // si no quiere truco la AI
+                imprimeAITruco(-1);
+                quieroTruco.setVisible(false);
+                noQuieroTruco.setVisible(false);
+                jugador.setPuntaje(jugador.getPuntaje() + calcularTrucoPerdido());
+                JOptionPane.showMessageDialog(null, "La PC ha rechazado el Truco. Repartiendo...");
+                otraPartida();
+                habilitaTurno();
+            }
+            return 0;
         }
 
+        // Si retruca, imprime el mensaje y le pasa el mando a jugador a aceptar o aumentar la apuesta
+        habilitadoARetrucar=1;
         imprimeAITruco(desicion);
         quieroTruco.setVisible(true);
         noQuieroTruco.setVisible(true);
 
+        // Al cantar truco se deshabilita el truco
+        envido.setVisible(false);
+        envidoEsp.setVisible(false);
+        envidoEnvido.setVisible(false);
+        realEnvido.setVisible(false);
+        faltaEnvido.setVisible(false);
+
         return 1;
     }
 
-    private void imprimeAITruco(int envido){
+    private void imprimeAITruco(int truco){
         fondoEstado.setVisible(true);
 
-        switch(envido){
+        switch(truco){
             case -1:
                 estado.setText("No quiero!");
                 break;
