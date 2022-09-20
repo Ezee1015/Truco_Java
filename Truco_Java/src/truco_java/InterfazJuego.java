@@ -56,19 +56,19 @@ public class InterfazJuego extends JFrame {
         // Mezclar el fondo y el personaje y hacer diferetes fondos. Luego se eligen aleatorios.
         // AI Carta 1
         AIC1 = new JLabel();
-        AIC1.setBounds(100, 10, 75, 100);
+        AIC1.setBounds(100, 70, 75, 100);
         AIC1.setVisible(true);
         fondo.add(AIC1);
 
         // AI Carta 2
         AIC2 = new JLabel();
-        AIC2.setBounds(200, 10, 75, 100);
+        AIC2.setBounds(200, 70, 75, 100);
         AIC2.setVisible(true);
         fondo.add(AIC2);
 
         // AI Carta 3
         AIC3 = new JLabel();
-        AIC3.setBounds(300, 10, 75, 100);
+        AIC3.setBounds(300, 70, 75, 100);
         AIC3.setVisible(true);
         fondo.add(AIC3);
 
@@ -93,6 +93,7 @@ public class InterfazJuego extends JFrame {
                 Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
             }
             imprimeAIEnvido(0);
+            setFondo(0);
         });
 
         // Persona Carta 2
@@ -158,43 +159,43 @@ public class InterfazJuego extends JFrame {
 
         // AI Carta Tirada 1
         AICT1 = new JLabel();
-        AICT1.setBounds(130, 150, 70, 80);
+        AICT1.setBounds(130, 210, 70, 80);
         AICT1.setVisible(true);
         fondo.add(AICT1);
 
         // AI Carta Tirada 2
         AICT2 = new JLabel();
-        AICT2.setBounds(210, 150, 70, 80);
+        AICT2.setBounds(210, 210, 70, 80);
         AICT2.setVisible(true);
         fondo.add(AICT2);
 
         // AI Carta Tirada 3
         AICT3 = new JLabel();
-        AICT3.setBounds(290, 150, 70, 80);
+        AICT3.setBounds(290, 210, 70, 80);
         AICT3.setVisible(true);
         fondo.add(AICT3);
 
         // Persona Carta Tirada 1
         PCT1 = new JLabel();
-        PCT1.setBounds(130, 250, 70, 80);
+        PCT1.setBounds(130, 310, 70, 80);
         PCT1.setVisible(true);
         fondo.add(PCT1);
 
         // Persona Carta Tirada 2
         PCT2 = new JLabel();
-        PCT2.setBounds(210, 250, 70, 80);
+        PCT2.setBounds(210, 310, 70, 80);
         PCT2.setVisible(true);
         fondo.add(PCT2);
 
         // Persona Carta Tirada 3
         PCT3 = new JLabel();
-        PCT3.setBounds(290, 250, 70, 80);
+        PCT3.setBounds(290, 310, 70, 80);
         PCT3.setVisible(true);
         fondo.add(PCT3);
 
         // Fondo de la respuesta de la AI
         fondoEstado = new JLabel(new ImageIcon("src/truco_java/Imagenes/burbuja.png"));
-        fondoEstado.setBounds(50,110,400,45);
+        fondoEstado.setBounds(50,170,400,45);
         fondoEstado.setOpaque(false);
         fondoEstado.setVisible(false);
         fondo.add(fondoEstado);
@@ -307,7 +308,7 @@ public class InterfazJuego extends JFrame {
 
         //Botones de Quiero y No quiero envido
         quieroEnv = new JButton("Quiero");
-        quieroEnv.setBounds(10, 350, 235, 40);
+        quieroEnv.setBounds(10, 250, 110, 40);
         quieroEnv.setVisible(false);
         fondo.add(quieroEnv);
         quieroEnv.addActionListener((ActionEvent e) -> {
@@ -346,10 +347,11 @@ public class InterfazJuego extends JFrame {
             }
 
             imprimeAIEnvido(0);
+            setFondo(0);
             });
 
         noQuieroEnv = new JButton("No Quiero");
-        noQuieroEnv.setBounds(255, 350, 235, 40);
+        noQuieroEnv.setBounds(10, 300, 110, 40);
         noQuieroEnv.setVisible(false);
         fondo.add(noQuieroEnv);
         noQuieroEnv.addActionListener((ActionEvent e) -> {
@@ -370,6 +372,7 @@ public class InterfazJuego extends JFrame {
                 Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
             }
             imprimeAIEnvido(0);
+            setFondo(0);
 
         });
 
@@ -389,11 +392,12 @@ public class InterfazJuego extends JFrame {
                     Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            setFondo(0);
         });
 
         //Botones de Quiero y No quiero truco
         quieroTruco = new JButton("Quiero");
-        quieroTruco.setBounds(10, 350, 235, 40);
+        quieroTruco.setBounds(10, 250, 110, 40);
         quieroTruco.setVisible(false);
         fondo.add(quieroTruco);
         quieroTruco.addActionListener((ActionEvent e) -> {
@@ -405,7 +409,7 @@ public class InterfazJuego extends JFrame {
 
 
         noQuieroTruco = new JButton("No Quiero");
-        noQuieroTruco.setBounds(255, 350, 235, 40);
+        noQuieroTruco.setBounds(10, 300, 110, 40);
         noQuieroTruco.setVisible(false);
         fondo.add(noQuieroTruco);
         noQuieroTruco.addActionListener((ActionEvent e) -> {
@@ -422,6 +426,7 @@ public class InterfazJuego extends JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
             }
+            setFondo(0);
         });
 
     }
@@ -629,6 +634,7 @@ public class InterfazJuego extends JFrame {
         dibujarBotones();
         truco.setText("Truco");
         truco.setVisible(true);
+        setFondo(0);
 
         // Limpia las manos
         jugador.setMano(new ArrayList());
@@ -758,6 +764,24 @@ public class InterfazJuego extends JFrame {
                     ai.jugarTurno(jugador, this);
                     dibujarCartas();
                     habilitaTurno();
+                } else if(rankingJugador == rankingJugador){ // Si empatan
+                    if(jugador.isMano()){ // Es mano el jugador
+                        if(habilitadoARetrucar == 1 || habilitadoARetrucar == 0) truco.setEnabled(true);
+                        irAlMazo.setEnabled(true);
+                        PC1.setEnabled(true);
+                        PC2.setEnabled(true);
+                        PC3.setEnabled(true);
+                    } else { // Es mano la AI
+                    truco.setEnabled(false);
+                    envido.setEnabled(false);
+                    irAlMazo.setEnabled(false);
+                    PC1.setEnabled(false);
+                    PC2.setEnabled(false);
+                    PC3.setEnabled(false);
+                    ai.jugarTurno(jugador, this);
+                    dibujarCartas();
+                    habilitaTurno();
+                    }
                 }
             } else if (jugador.getCartasJugadas().size() == ai.getCartasJugadas().size() - 1) { // Si ya la AI tiró en esa ronda
                 if(habilitadoARetrucar == 1 || habilitadoARetrucar == 0) truco.setEnabled(true);
@@ -787,9 +811,9 @@ public class InterfazJuego extends JFrame {
         int desicion;
         if (envidosCantados.isEmpty())
             desicion = ai.desidirEnvido(0);
+        
         else {
             desicion = ai.desidirEnvido(envidosCantados.get(envidosCantados.size() - 1));
-            System.out.println(desicion);
 
             if (desicion == envidosCantados.get(envidosCantados.size() - 1)) { // Si la AI Quiere
                 if (jugador.calcularEnvido() > ai.calcularEnvido()) { //Si gana el jugador
@@ -937,6 +961,7 @@ public class InterfazJuego extends JFrame {
     }
 
     private void imprimeAIEnvido(int envido){
+        setFondo(1);
         fondoEstado.setVisible(true);
 
         switch(envido){
@@ -946,6 +971,7 @@ public class InterfazJuego extends JFrame {
             case 0:
                 estado.setText("");
                 fondoEstado.setVisible(false);
+                setFondo(0);
                 break;
             case 1:
                 estado.setText("Envido! Carajo");
@@ -1104,7 +1130,7 @@ public class InterfazJuego extends JFrame {
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
             // Al cantar truco se deshabilita el truco
-            envido.setVisible(false);
+            envido.setEnabled(false);
             envidoEsp.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
@@ -1132,7 +1158,7 @@ public class InterfazJuego extends JFrame {
         noQuieroTruco.setVisible(true);
 
         // Al cantar truco se deshabilita el truco
-        envido.setVisible(false);
+        envido.setEnabled(false);
         envidoEsp.setVisible(false);
         envidoEnvido.setVisible(false);
         realEnvido.setVisible(false);
@@ -1142,6 +1168,7 @@ public class InterfazJuego extends JFrame {
     }
 
     private void imprimeAITruco(int trucoMSG){
+        setFondo(1);
         fondoEstado.setVisible(true);
 
         switch(trucoMSG){
@@ -1151,6 +1178,7 @@ public class InterfazJuego extends JFrame {
             case 0:
                 estado.setText("");
                 fondoEstado.setVisible(false);
+                setFondo(0);
                 break;
             case 1:
                 estado.setText("Truco!");
@@ -1166,6 +1194,7 @@ public class InterfazJuego extends JFrame {
                 break;
             case 4:
                 estado.setText("Quiero!");
+                setFondo(0);
                 break;
         }
     }
@@ -1215,14 +1244,14 @@ public class InterfazJuego extends JFrame {
     private int numeroPersonaje = new Random().nextInt(2) + 1; // TODO: Ponerlo como constante
 
     private void setFondo(int estadoPers){
+        char estadoPersChar;
         if(estadoPers==0) // Fondo persoonaje normal
             estadoPersChar = 'a'; // Personaje AI normal
         else
             estadoPersChar = 'b'; // personaje AI Pregunta (truco, envido, o retrucar cualquiera de las anteriores)
 
-        String imagen = "src/truco_java/Imagenes/bg" + numeroPersonaje + estadoPersChar;
+        String imagen = "src/truco_java/Imagenes/bg" + numeroPersonaje + estadoPersChar + ".png";
         fondo.setIcon(new ImageIcon(imagen));
-
     }
 
 }

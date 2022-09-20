@@ -113,7 +113,7 @@ public class JugadorAI extends Jugador {
         return desicion;
       }
 
-      if(estado==0 && calcularEnvido()>25)    // Más de 25 de envido y no se cantó, obliga a cantar
+      if(estado==0 && calcularEnvido()>25)   // Más de 25 de envido y no se cantó, obliga a cantar
         obligado = 1;
 
       if(calcularEnvido()>30){                 // Más de 30 de envido, canta
@@ -158,9 +158,14 @@ public class JugadorAI extends Jugador {
       if(desicion==2 && estado!=1){
         if(calcularEnvido()>27)
           return 3;
-        else
-          return 1;
+        else {
+          if(estado<2) return 1;
+          else return 0;
+        }
       }
+      
+      if(desicion<estado && desicion!=0) // Si retruca en menor nivel del que está la apuesta, no quiere
+          return 0;
 
       if(desicion==0 && estado>=3 && calcularEnvido()>26 && random.nextInt(2)==0) //Agrega una opcion para arriesgar
         return estado;
