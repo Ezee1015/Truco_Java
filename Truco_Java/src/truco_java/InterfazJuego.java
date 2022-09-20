@@ -1215,11 +1215,10 @@ public class InterfazJuego extends JFrame {
     private int numeroPersonaje = new Random().nextInt(2) + 1; // TODO: Ponerlo como constante
 
     private void setFondo(int estadoPers){
-        char estadoPersChar;
         if(estadoPers==0) // Fondo persoonaje normal
-            estadoPersChar = 'a';
+            estadoPersChar = 'a'; // Personaje AI normal
         else
-            estadoPersChar = 'b';
+            estadoPersChar = 'b'; // personaje AI Pregunta (truco, envido, o retrucar cualquiera de las anteriores)
 
         String imagen = "src/truco_java/Imagenes/bg" + numeroPersonaje + estadoPersChar;
         fondo.setIcon(new ImageIcon(imagen));
