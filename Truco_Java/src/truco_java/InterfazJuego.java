@@ -756,7 +756,7 @@ public class InterfazJuego extends JFrame {
                 }
                 ai.jugarTurno(jugador, this);
                 dibujarCartas();
-                // habilitaTurno(); // ELIMINADO EXPERIMENTAL
+                // habilitaTurno(); // ELIMINADO EXPERIMENTAL - 20-09-22
             }
         } else if (jugador.getCartasJugadas().isEmpty() && !ai.getCartasJugadas().isEmpty()) { // Ya Jugó la AI. Turno Jugador
             if(habilitadoARetrucar == 1 || habilitadoARetrucar == 0) truco.setEnabled(true);
@@ -1026,9 +1026,9 @@ public class InterfazJuego extends JFrame {
                 estado.setText("Falta Envido!");
                 break;
         }
-        System.out.println("envido parametro: " + envido);
-        System.out.println(fondoEstado.isVisible());
-        System.out.println(estado.isVisible());
+        // System.out.println("envido parametro: " + envido);
+        // System.out.println(fondoEstado.isVisible());
+        // System.out.println(estado.isVisible());
     }
 
     private int compruebaSiTerminoPartida(){
