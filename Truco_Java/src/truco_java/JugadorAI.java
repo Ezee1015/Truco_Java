@@ -318,7 +318,7 @@ public class JugadorAI extends Jugador {
             return estado;
         }
       if(cantMedianasCartas()>1 && estado<=2 && random.nextInt(3)==2) // Si tengo más de una carta mediana, y el estado es menos de retruco, de manera random aceptar
-        return estado+random.nextInt(estado);
+        return estado;
       break;
   }
 

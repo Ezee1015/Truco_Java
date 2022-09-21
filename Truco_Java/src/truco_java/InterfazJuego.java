@@ -41,7 +41,7 @@ public class InterfazJuego extends JFrame {
     int habilitadoARetrucar = 0; // 1--> Jugador; 2--> AI
     JLabel fondoEstado;
     JLabel puntajeAI = new JLabel(), puntajeJugador = new JLabel();
-    private final int numeroPersonaje = new Random().nextInt(4) + 1; // Este numero representa el personaje que fue generado;
+    private final int numeroPersonaje = new Random().nextInt(5) + 1; // Este numero representa el personaje que fue generado;
 
     public InterfazJuego() throws IOException {
         cargarMazo();
@@ -141,8 +141,12 @@ public class InterfazJuego extends JFrame {
             }
         });
 
-        JButton repartir = new JButton("Repartir");
-        repartir.setBounds(0, 0, 100, 100);
+        JButton repartir = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cartasMazo.png")).getScaledInstance(80, 80, Image.SCALE_SMOOTH)));
+        repartir.setBounds(365, 280, 80, 80);
+        repartir.setBorderPainted(false);
+        repartir.setOpaque(false);
+        repartir.setContentAreaFilled(false);
+        repartir.setBorderPainted(false);
         repartir.setVisible(true);
         fondo.add(repartir);
         repartir.addActionListener((ActionEvent e) -> {
@@ -1042,6 +1046,7 @@ public class InterfazJuego extends JFrame {
         switch(envido){
             case -1:
                 texto = "No quiero!";
+                if(numeroPersonaje==5) texto = "No tea? so No quiero!";
                 break;
             case 0:
                 fondoEstado.setVisible(false);
@@ -1050,15 +1055,17 @@ public class InterfazJuego extends JFrame {
                 return;
             case 1:
                 texto = "Envido! Carajo";
+                if(numeroPersonaje==5) texto = "Have you heard that? Envido!";
                 break;
             case 2:
                 texto = "Envido Envido!";
+                if(numeroPersonaje==5) texto = "What about another Envido?!";
                 break;
             case 3:
-                texto = "Real Envido!";
+                texto = "I say Real Envido!";
                 break;
             case 4:
-                texto = "Falta Envido!";
+                texto = "Falta Envido my mate!";
                 break;
         }
 
@@ -1290,6 +1297,7 @@ public class InterfazJuego extends JFrame {
         switch(trucoMSG){
             case -1:
                 estado.setText("No quiero!");
+                if(numeroPersonaje==5) estado.setText("This’s a rip-off. No quiero");
                 break;
             case 0:
                 fondoEstado.setVisible(false);
@@ -1298,31 +1306,40 @@ public class InterfazJuego extends JFrame {
                 return;
             case 1:
                 estado.setText("Truco!");
+                if(numeroPersonaje==5) estado.setText("Come on, Truco!");
                 truco.setText("Retruco");
                 truco.setEnabled(true);
                 break;
             case 2:
                 estado.setText("Re truco!");
+                if(numeroPersonaje==5) estado.setText("This’s a rip-off. Re truco!");
                 truco.setText("Vale cuatro");
                 truco.setEnabled(true);
                 break;
             case 3:
                 estado.setText("Quiero vale 4!");
+                if(numeroPersonaje==5) estado.setText("Really? Quiero vale cuatro");
                 truco.setVisible(false);
                 break;
             case 4:
                 estado.setText("Quiero!");
+                if(numeroPersonaje==5) estado.setText("Easy peasy. Quiero!");
                 truco.setEnabled(false);
                 setFondo(0);
                 break;
         }
+
+        final String textoTimer = estado.getText();
+
         new java.util.Timer().schedule(
                 new java.util.TimerTask() {
                     @Override
                     public void run() {
-                        if(quieroTruco.isVisible())
-                            imprimeAITruco(trucoMSG);
-                        else imprimeAITruco(0);
+                        if(estado.getText().equals(textoTimer)){
+                            if(quieroTruco.isVisible())
+                                imprimeAITruco(trucoMSG);
+                            else imprimeAITruco(0);
+                        }
                     }
                 },
                 2000
