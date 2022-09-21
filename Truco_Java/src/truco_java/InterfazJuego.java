@@ -1270,7 +1270,6 @@ public class InterfazJuego extends JFrame {
         if(desicion>(nivelTruco+1))
             desicion = nivelTruco+1;
         imprimeAITruco(desicion);
-        System.out.println("LA DESICION FUE... " + desicion);
         quieroTruco.setVisible(true);
         noQuieroTruco.setVisible(true);
 
