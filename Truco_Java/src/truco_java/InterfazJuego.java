@@ -1082,10 +1082,12 @@ public class InterfazJuego extends JFrame {
                 if(numeroPersonaje==5) texto = "What about another Envido?!";
                 break;
             case 3:
-                texto = "I say Real Envido!";
+                texto = "Real Envido!";
+                if(numeroPersonaje==5) texto = "I say Real Envido!";
                 break;
             case 4:
-                texto = "Falta Envido my mate!";
+                if(numeroPersonaje==5) texto = "Falta Envido my mate!";
+                texto = "Y Falta Envido?";
                 break;
         }
 
