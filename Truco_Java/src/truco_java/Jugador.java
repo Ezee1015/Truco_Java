@@ -67,39 +67,39 @@ public class Jugador {
         this.esMano = esMano;
     }
 
-  protected int calcularEnvido(){
+    protected int calcularEnvido(){
       int envido=0;
       ArrayList<Carta> manoOrigi = mano;
       manoOrigi.addAll(cartasJugadas);
 
-    // Busca por pares por un envido de 20
-    for(int i=0; i<manoOrigi.size();i++){
-      int m1=i%(manoOrigi.size()+1);
-      int m2=(i+1)%(manoOrigi.size());
+      // Busca por pares por un envido de 20
+      for(int i=0; i<manoOrigi.size();i++){
+        int m1=i%(manoOrigi.size()+1);
+        int m2=(i+1)%(manoOrigi.size());
 
-      if(manoOrigi.get(m1).getPalo().equals(manoOrigi.get(m2).getPalo())) {
-        int envidoTemp=20;
+        if(manoOrigi.get(m1).getPalo().equals(manoOrigi.get(m2).getPalo())) {
+          int envidoTemp=20;
 
-        if(manoOrigi.get(m1).getNumero() < 10)
-          envidoTemp += manoOrigi.get(m1).getNumero();
-        if(manoOrigi.get(m2).getNumero() < 10)
-          envidoTemp += manoOrigi.get(m2).getNumero();
+          if(manoOrigi.get(m1).getNumero() < 10)
+            envidoTemp += manoOrigi.get(m1).getNumero();
+          if(manoOrigi.get(m2).getNumero() < 10)
+            envidoTemp += manoOrigi.get(m2).getNumero();
 
-        if (envidoTemp>envido) envido=envidoTemp;
+          if (envidoTemp>envido) envido=envidoTemp;
+        }
       }
-    }
 
-    // Si no hubo más de 20 en envido (no hubo dos del mismo palo)
-    if (envido==0){
+      // Si no hubo más de 20 en envido (no hubo dos del mismo palo)
+      if (envido==0){
         envido = manoOrigi.get(0).getNumero();
-       for(int i=1; i<manoOrigi.size();i++){
-           int num = manoOrigi.get(i).getNumero();
-           if(num < 10 && num > envido) envido= num;
-       }
-    }
+        for(int i=1; i<manoOrigi.size();i++){
+          int num = manoOrigi.get(i).getNumero();
+          if(num < 10 && num > envido) envido= num;
+        }
+      }
 
-    return envido;
-  }
+      return envido;
+    }
 
   public void agregarCartaJugada(Carta c){
       cartasJugadas.add(c);

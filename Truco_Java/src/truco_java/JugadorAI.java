@@ -26,7 +26,7 @@ public class JugadorAI extends Jugador {
 
       if(p.getCartasJugadas().size()-1 == cartasJugadas.size()) { // Si el jugado ya tiro y me toca a mi, intento ganar
           for(int i=mano.size()-1;i>=0;i--) { // Recorre desde la peor a la mejor carta
-                // Si hay una carta que empata la que ya tiro, y soy gan ador de la primera mano. Tirarla
+                // Si hay una carta que empata la que ya tiro, y soy ganador de la primera mano. Tirarla
                 if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == mano.get(i).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() == mano.get(0).rankingCarta() )
                     return tirarCartaPos(i);
                 // Buscar la carta de menor rango que le gane
@@ -40,8 +40,17 @@ public class JugadorAI extends Jugador {
       else if(cartasJugadas.size()>=1){
           if(p.getCartasJugadas().get(0).rankingCarta() == cartasJugadas.get(0).rankingCarta())
               return tirarMejorCarta();
-          if(p.getCartasJugadas().get(0).rankingCarta() > cartasJugadas.get(0).rankingCarta())
+          if(p.getCartasJugadas().get(0).rankingCarta() > cartasJugadas.get(0).rankingCarta()){
+            for(int i=mano.size()-1;i>=0;i--) { // Recorre desde la peor a la mejor carta
+                // Si hay una carta que empata la que ya tiro, y soy ganador de la primera mano. Tirarla
+                if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == mano.get(i).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() == mano.get(0).rankingCarta() )
+                    return tirarCartaPos(i);
+                // Buscar la carta de menor rango que le gane
+                if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() < mano.get(i).rankingCarta())
+                    return tirarCartaPos(i);
+            }
               return tirarMejorCarta();
+          }
           if(p.getCartasJugadas().get(0).rankingCarta() < cartasJugadas.get(0).rankingCarta())
               return tirarPeorCarta();
       }
@@ -163,7 +172,7 @@ public class JugadorAI extends Jugador {
           else return 0;
         }
       }
-      
+
       if(desicion<estado && desicion!=0) // Si retruca en menor nivel del que está la apuesta, no quiere
           return 0;
 
@@ -270,53 +279,48 @@ public class JugadorAI extends Jugador {
       */
     Random random = new Random();
 
-    if(cartasJugadas.isEmpty()){ // Si es la primera mano..
-      if(estado == 0)            // .. Y no se canto nada..
+  int cantCartasTiradas = p.getCartasJugadas().size() + cartasJugadas.size();
+
+  switch(cantCartasTiradas){
+    case 0:
+    case 1: // Primera mano
+      if(estado == 0)            // Si no se canto nada..
         return 0;                // .. No cantar.
       else {                     // Pero si me cantaron..
         if(cantBuenasCartas()>=1 && cantMedianasCartas()>=1) // .. Solo aceptar si tengo más de una buena carta y una media
           return estado;
       }
-    }
-
-    // Si empate la anterior...
-    if(p.getCartasJugadas().size()>=1 && cartasJugadas.size()>=1){
-      if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == cartasJugadas.get(cartasJugadas.size()-1).rankingCarta()){
-        if(cantBuenasCartas()>=1)
-          return estado+random.nextInt(3-estado);
-        if(cantMedianasCartas()>=1 && random.nextInt(2)==1)
-          return estado;
+      // break; // Eliminar?
+    case 4:
+    case 5: // Tercera Mano
+      // Si esta en la ultima mano y solo falta tirar...
+      if(p.getCartasJugadas().size()-1 == cartasJugadas.size() && p.getCartasJugadas().size() == 3){
+          if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta()) // Si le gano, canto
+              return estado+random.nextInt(4-estado);
+          // Si le empata, pero gano la primera
+          else if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() == mano.get(0).rankingCarta())
+              return estado+random.nextInt(4-estado);
+          else if(random.nextInt(4)==3 && estado!=3) // Si pierdo: Random, retruca si no estoy en vale 4
+              return estado+random.nextInt(3-estado)+1;
       }
-    }
-
-    if(cartasJugadas.size()==2 && cantBuenasCartas()==1) // Si esta en la ultima ronda y le queda una buena carta
-      return estado+random.nextInt(3-estado);      // Apostar todo
-
-    if(cantBuenasCartas()>1)
-      return estado+random.nextInt(3-estado);
-
-//     if(cantBuenasCartas()>=1 && estado<=2)
-//       return random.nextInt(estado);
-
-    if(cantMedianasCartas()>1 && estado<=2 && random.nextInt(3)==2) // Si tengo más de una carta mediana, y el estado es menos de retruco
-      return estado+random.nextInt(estado);
-
-    if(p.getCartasJugadas().size()-1 == cartasJugadas.size() && p.getCartasJugadas().size() == 3){ // Si esta en la ultima mano y solo falta tirar...
-        if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta()) // Si le gano, canto
-            return estado+random.nextInt(4-estado);
-        // Si le empata, pero gano la primera
-        else if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() == mano.get(0).rankingCarta())
-            return estado+random.nextInt(4-estado);
-        else if(random.nextInt(4)==3) // Si pierdo: Random, retruca o acepta
-            return estado+random.nextInt(3-estado);
-    }
-
-    if(estado>=1 && cartasJugadas.size()==3){ // Si se cantó truco y ya tiró la carta
-      if(random.nextInt(4) == 2) // Aceptar o retrucar de manera random
+      else if(cantBuenasCartas()==1) // Si queda una buena carta
+        return estado+random.nextInt(3-estado);      // Apostar todo
+      break;
+    case 2:
+    case 3: // Segunda mano
+      if(cantBuenasCartas()>1)  // Si tengo mas de una buena carta apostar todo
         return estado+random.nextInt(3-estado);
-      if(cartasJugadas.get(2).rankingCarta() >= 7 && random.nextInt(2) == 1) // Si tengo una carta mediana para arriba, aceptar
-        return estado;
-    }
+      // Si empaté la anterior...
+        if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == cartasJugadas.get(cartasJugadas.size()-1).rankingCarta()){
+          if(cantBuenasCartas()>=1)
+            return estado+random.nextInt(3-estado);
+          if(cantMedianasCartas()>=1 && random.nextInt(2)==1)
+            return estado;
+        }
+      if(cantMedianasCartas()>1 && estado<=2 && random.nextInt(3)==2) // Si tengo más de una carta mediana, y el estado es menos de retruco, de manera random aceptar
+        return estado+random.nextInt(estado);
+      break;
+  }
 
     return 0;
   }
