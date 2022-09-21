@@ -41,6 +41,7 @@ public class InterfazJuego extends JFrame {
     int habilitadoARetrucar = 0; // 1--> Jugador; 2--> AI
     JLabel fondoEstado;
     JLabel puntajeAI = new JLabel(), puntajeJugador = new JLabel();
+    private final int numeroPersonaje = new Random().nextInt(4) + 1; // Este numero representa el personaje que fue generado;
 
     public InterfazJuego() throws IOException {
         cargarMazo();
@@ -94,7 +95,6 @@ public class InterfazJuego extends JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
             }
-            imprimeAIEnvido(0);
             setFondo(0);
         });
 
@@ -118,7 +118,6 @@ public class InterfazJuego extends JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
             }
-            imprimeAIEnvido(0);
         });
 
         // Persona Carta 3
@@ -141,7 +140,6 @@ public class InterfazJuego extends JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
             }
-            imprimeAIEnvido(0);
         });
 
         JButton repartir = new JButton("Repartir");
@@ -211,7 +209,6 @@ public class InterfazJuego extends JFrame {
         estado.setOpaque(false);
         estado.setVisible(true);
         fondoEstado.add(estado);
-
         //Centra el texto
         StyledDocument doc = estado.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
@@ -349,14 +346,18 @@ public class InterfazJuego extends JFrame {
             PC2.setEnabled(true);
             PC3.setEnabled(true);
             try {
+            dibujarPuntaje();
+            } catch (IOException ex) {
+                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            setFondo(0);
+
+            try {
                 // Continua con el juego
                 habilitaTurno();
             } catch (IOException ex) {
                 Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            imprimeAIEnvido(0);
-            setFondo(0);
             });
 
         noQuieroEnv = new JButton("No Quiero");
@@ -373,17 +374,16 @@ public class InterfazJuego extends JFrame {
             faltaEnvido.setVisible(false);
             quieroEnv.setVisible(false);
             noQuieroEnv.setVisible(false);
+            setFondo(0);
+            try {
+                dibujarPuntaje();
+            } catch (IOException ex) {
+                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
             try {
                 // Continua con el juego
                 habilitaTurno();
-            } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            imprimeAIEnvido(0);
-            setFondo(0);
-            try {
-                dibujarPuntaje();
             } catch (IOException ex) {
                 Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -460,8 +460,24 @@ public class InterfazJuego extends JFrame {
     }
 
     private void dibujarPuntaje() throws IOException {
-        puntajeJugador.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + jugador.getPuntaje() + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
-        puntajeAI.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + ai.getPuntaje() + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
+        int jugadorPunt = jugador.getPuntaje();
+        int aiPunt = ai.getPuntaje();
+        if(jugadorPunt > 15)
+            jugadorPunt = 15;
+        if(aiPunt > 15)
+            aiPunt = 15;
+
+        puntajeJugador.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + jugadorPunt + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
+        puntajeAI.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + aiPunt + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
+
+        if(jugadorPunt==15){
+            JOptionPane.showMessageDialog(null, "Termino el Juego. Gano el Jugador. Felicidades");
+            setVisible(false);
+        }
+        if(aiPunt==15){
+            JOptionPane.showMessageDialog(null, "Termino el Juego. Gano la computadora. Será la próxima...");
+            setVisible(false);
+        }
     }
 
     private void cargarMazo() {
@@ -689,9 +705,6 @@ public class InterfazJuego extends JFrame {
         truco.setText("Truco");
         truco.setEnabled(true);
 
-        // Muestra puntaje
-        dibujarPuntaje();
-
         //Reparte
         ArrayList<Carta> mano1 = new ArrayList<>();
         mano1.add(mazo.get(0));
@@ -714,30 +727,37 @@ public class InterfazJuego extends JFrame {
             jugador.setEsMano(false);
         }
 
-        habilitaTurno(); // EXPERIMENTAL
+        // Aca no tiene que ir un habilitaTurno() porque sino tira dos veces  la AI
+        // Muestra puntaje
+        dibujarPuntaje();
         dibujarCartas();
 
     }
 
     private void habilitaTurno() throws IOException {
         if(compruebaSiTerminoPartida()==1) {
+            System.out.println("jugador: " + jugador.getPuntaje() + " se le agrega " + calcularTrucoGanado());
             JOptionPane.showMessageDialog(null, "Termino Partida. Gano el Jugador.");
             // Suma puntos al ganador
             jugador.setPuntaje(jugador.getPuntaje() + calcularTrucoGanado());
             otraPartida();
+            habilitaTurno(); //Experimental 21-9-22
             return;
         }
         if(compruebaSiTerminoPartida()==2) {
+            System.out.println("ai: " + ai.getPuntaje() + " se le agrega " + calcularTrucoGanado());
             JOptionPane.showMessageDialog(null, "Termino Partida. Gano la PC.");
             // Suma puntos al ganador
             ai.setPuntaje(ai.getPuntaje() + calcularTrucoGanado());
             otraPartida();
-            return;
+        habilitaTurno(); //Experimental 21-9-22
+        return;
         }
 
         if (jugador.getCartasJugadas().isEmpty() && ai.getCartasJugadas().isEmpty()) { // No jugo nadie
             if (jugador.isMano() == true) {
-                if(habilitadoARetrucar == 1 || habilitadoARetrucar == 0) truco.setEnabled(true);
+                if(habilitadoARetrucar < 2) truco.setEnabled(true);
+                System.out.println("mi turno");
                 envido.setEnabled(true);
                 irAlMazo.setEnabled(true);
                 PC1.setEnabled(true);
@@ -756,12 +776,10 @@ public class InterfazJuego extends JFrame {
                 }
                 ai.jugarTurno(jugador, this);
                 dibujarCartas();
-                // habilitaTurno(); // ELIMINADO EXPERIMENTAL - 20-09-22
+                habilitaTurno();
             }
         } else if (jugador.getCartasJugadas().isEmpty() && !ai.getCartasJugadas().isEmpty()) { // Ya Jugó la AI. Turno Jugador
-            if(habilitadoARetrucar == 1 || habilitadoARetrucar == 0) truco.setEnabled(true);
-            // Si la ultima carta que le queda al oponente es un 4, no se puede cantar truco
-            if(ai.getCartasJugadas().size() == 3) if(ai.getCartasJugadas().get(2).rankingCarta()==0) truco.setEnabled(false);
+            if(habilitadoARetrucar < 2) truco.setEnabled(true);
             if(!envidoFinalizado) envido.setEnabled(true);
             irAlMazo.setEnabled(true);
             PC1.setEnabled(true);
@@ -774,21 +792,23 @@ public class InterfazJuego extends JFrame {
                 PC1.setEnabled(false);
                 PC2.setEnabled(false);
                 PC3.setEnabled(false);
-                if(envidoFinalizado==false){
+                if(!envidoFinalizado){
                     if(AICantaEnvido()==0);
                     else return;
                 }
                 ai.jugarTurno(jugador, this);
                 dibujarCartas();
                 habilitaTurno();
-        } else if (!jugador.getCartasJugadas().isEmpty() && !ai.getCartasJugadas().isEmpty()) { // Siguiente Ronda
+        } else if (!jugador.getCartasJugadas().isEmpty() && !ai.getCartasJugadas().isEmpty()) { // Rondas 2 y 3
             if (jugador.getCartasJugadas().size() == ai.getCartasJugadas().size()) { // Si es una ronda en la que nadie jugó
                 int rankingJugador = jugador.getCartasJugadas().get(jugador.getCartasJugadas().size()-1).rankingCarta();
                 int rankingAI = ai.getCartasJugadas().get(ai.getCartasJugadas().size()-1).rankingCarta();
                 envido.setEnabled(false); // Deshabilita el envido en la segunda ronda
 
                 if (rankingJugador > rankingAI) { // Si gano jugador en la anterior ronda
-                    if(habilitadoARetrucar == 1 || habilitadoARetrucar == 0) truco.setEnabled(true);
+                    if(habilitadoARetrucar < 2) truco.setEnabled(true); // Si le corresponde retrucar
+                    // Si la ultima carta que le queda al oponente es un 4, no se puede cantar truco
+                    if(ai.getCartasJugadas().size() == 3) if(ai.getCartasJugadas().get(2).rankingCarta()==0) truco.setEnabled(false);
                     irAlMazo.setEnabled(true);
                     PC1.setEnabled(true);
                     PC2.setEnabled(true);
@@ -803,28 +823,31 @@ public class InterfazJuego extends JFrame {
                     ai.jugarTurno(jugador, this);
                     dibujarCartas();
                     habilitaTurno();
-                } else if(rankingJugador == rankingJugador){ // Si empatan
+                } else if(rankingJugador == rankingAI){ // Si empatan
                     if(jugador.isMano()){ // Es mano el jugador
-                        if(habilitadoARetrucar == 1 || habilitadoARetrucar == 0) truco.setEnabled(true);
+                        if(habilitadoARetrucar < 2) truco.setEnabled(true);
+                        // Si la ultima carta que le queda al oponente es un 4, no se puede cantar truco
+                        if(ai.getCartasJugadas().size() == 3) if(ai.getCartasJugadas().get(2).rankingCarta()==0) truco.setEnabled(false);
                         irAlMazo.setEnabled(true);
                         PC1.setEnabled(true);
                         PC2.setEnabled(true);
                         PC3.setEnabled(true);
                     } else { // Es mano la AI
-                    truco.setEnabled(false);
-                    envido.setEnabled(false);
-                    irAlMazo.setEnabled(false);
-                    PC1.setEnabled(false);
-                    PC2.setEnabled(false);
-                    PC3.setEnabled(false);
-                    ai.jugarTurno(jugador, this);
-                    dibujarCartas();
-                    habilitaTurno();
+                        truco.setEnabled(false);
+                        envido.setEnabled(false);
+                        irAlMazo.setEnabled(false);
+                        PC1.setEnabled(false);
+                        PC2.setEnabled(false);
+                        PC3.setEnabled(false);
+                        ai.jugarTurno(jugador, this);
+                        dibujarCartas();
+                        habilitaTurno();
                     }
                 }
             } else if (jugador.getCartasJugadas().size() == ai.getCartasJugadas().size() - 1) { // Si ya la AI tiró en esa ronda
-                if(habilitadoARetrucar == 1 || habilitadoARetrucar == 0) truco.setEnabled(true);
-                envido.setEnabled(true);
+                if(habilitadoARetrucar < 2) truco.setEnabled(true);
+                // Si la ultima carta que le queda al oponente es un 4, no se puede cantar truco
+                if(ai.getCartasJugadas().size() == 3) if(ai.getCartasJugadas().get(2).rankingCarta()==0) truco.setEnabled(false);
                 irAlMazo.setEnabled(true);
                 PC1.setEnabled(true);
                 PC2.setEnabled(true);
@@ -847,6 +870,8 @@ public class InterfazJuego extends JFrame {
         if (envidoFinalizado == true)
             return 0;
 
+
+        System.out.println("pasa por aca");
         int desicion;
         if (envidosCantados.isEmpty())
             desicion = ai.desidirEnvido(0);
@@ -854,7 +879,7 @@ public class InterfazJuego extends JFrame {
         else {
             desicion = ai.desidirEnvido(envidosCantados.get(envidosCantados.size() - 1));
 
-            if (desicion == envidosCantados.get(envidosCantados.size() - 1)) { // Si la AI Quiere
+            if (desicion == envidosCantados.get(envidosCantados.size() - 1)) { // Si la AI Acepta lo cantado
                 if (jugador.calcularEnvido() > ai.calcularEnvido()) { //Si gana el jugador
                     JOptionPane.showMessageDialog(null, "Has ganado. La PC tenía " + ai.calcularEnvido() + " de envido.");
                     jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()));
@@ -891,7 +916,7 @@ public class InterfazJuego extends JFrame {
         switch (desicion) {
             case 0:
                 if(!envidosCantados.isEmpty()){
-                    // System.out.println("decision: " + desicion + " y la anterior: " + envidosCantados.get(envidosCantados.size() - 1));
+            System.out.println("llamada no quiero");
                     imprimeAIEnvido(-1);
                     jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoPerdido(ai.getPuntaje()));
                     envidoFinalizado=true;
@@ -902,7 +927,7 @@ public class InterfazJuego extends JFrame {
                     faltaEnvido.setVisible(false);
                     quieroEnv.setVisible(false);
                     noQuieroEnv.setVisible(false);
-                    habilitaTurno();  //Puede llegar a causar problemas con los turnos, pero en teoria no
+                    habilitaTurno();
                 }
                 return 0;
             case 1:
@@ -933,6 +958,7 @@ public class InterfazJuego extends JFrame {
                 break;
         }
         // Agrega el envido que eligio la AI a la lista y lo imprime
+        System.out.println("aparentemente es: " + desicion);
         envidosCantados.add(desicion);
         imprimeAIEnvido(desicion);
 
@@ -1003,32 +1029,50 @@ public class InterfazJuego extends JFrame {
         setFondo(1);
         fondoEstado.setVisible(true);
         estado.setVisible(true);
+        String texto = " ";
+
+        System.out.println("quiere un " + envido);
 
         switch(envido){
             case -1:
-                estado.setText("No quiero!");
+                texto = "No quiero!";
                 break;
             case 0:
-                estado.setText("");
                 fondoEstado.setVisible(false);
+                estado.setText("");
                 setFondo(0);
-                break;
+                return;
             case 1:
-                estado.setText("Envido! Carajo");
+                texto = "Envido! Carajo";
                 break;
             case 2:
-                estado.setText("Envido Envido!");
+                texto = "Envido Envido!";
                 break;
             case 3:
-                estado.setText("Real Envido!");
+                texto = "Real Envido!";
                 break;
             case 4:
-                estado.setText("Falta Envido!");
+                texto = "Falta Envido!";
                 break;
         }
+        estado.setText(texto);
+        final String textoTimer = texto; // tengo que crear una variable final porque sino el timer no me la acepta
         // System.out.println("envido parametro: " + envido);
         // System.out.println(fondoEstado.isVisible());
         // System.out.println(estado.isVisible());
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        if(estado.getText().equals(textoTimer)){ // Si sigue siendo el mismo texto que se puso antes y nada lo cambio (por ejemplo retrucar el envido o un truco
+                            if(quieroEnv.isVisible()) // Si todavia el usuario no se decidió
+                                imprimeAIEnvido(envido); // Lo vuelve a imprimir
+                            else imprimeAIEnvido(0); // sino lo desaparece
+                        }
+                    }
+                },
+                2000
+                );
     }
 
     private int compruebaSiTerminoPartida(){
@@ -1219,10 +1263,10 @@ public class InterfazJuego extends JFrame {
                 estado.setText("No quiero!");
                 break;
             case 0:
-                estado.setText("");
                 fondoEstado.setVisible(false);
+                estado.setText("");
                 setFondo(0);
-                break;
+                return;
             case 1:
                 estado.setText("Truco!");
                 truco.setText("Retruco");
@@ -1240,12 +1284,20 @@ public class InterfazJuego extends JFrame {
                 setFondo(0);
                 break;
         }
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        if(quieroTruco.isVisible())
+                            imprimeAITruco(trucoMSG);
+                        else imprimeAITruco(0);
+                    }
+                },
+                2000
+        );
     }
 
     private int calcularTrucoGanado() {
-        if(nivelTruco==0)
-            return 0;
-
         switch(nivelTruco){
             case 0:
                 return 1;
@@ -1256,7 +1308,6 @@ public class InterfazJuego extends JFrame {
             case 3:
                 return 4;
         }
-
         return 0;
     }
 
@@ -1266,7 +1317,7 @@ public class InterfazJuego extends JFrame {
 
         switch(nivelTruco-1){
             case 0:
-                return 1;
+                return 0;
             case 1:
                 return 2;
             case 2:
@@ -1277,9 +1328,6 @@ public class InterfazJuego extends JFrame {
 
         return 0;
     }
-
-    // Este numero representa el personaje que fue generado
-    private int numeroPersonaje = new Random().nextInt(4) + 1; // TODO: Ponerlo como constante
 
     private void setFondo(int estadoPers){
         char estadoPersChar;
