@@ -41,7 +41,7 @@ public class InterfazJuego extends JFrame {
     int habilitadoARetrucar = 0; // 1--> Jugador; 2--> AI
     JLabel fondoEstado;
     JLabel puntajeAI = new JLabel(), puntajeJugador = new JLabel();
-    private final int numeroPersonaje = new Random().nextInt(5) + 1; // Este numero representa el personaje que fue generado;
+    private final int numeroPersonaje = new Random().nextInt(6) + 1; // Este numero representa el personaje que fue generado;
 
     public InterfazJuego() throws IOException {
         cargarMazo();
@@ -239,11 +239,33 @@ public class InterfazJuego extends JFrame {
         });
 
         // Boton Ir al mazo
-        irAlMazo = new JButton("Mazo");
+        irAlMazo = new JButton("Ir al Mazo");
         irAlMazo.setBounds(330, 660, 155, 60);
         irAlMazo.setVisible(true);
         irAlMazo.setEnabled(false);
         fondo.add(irAlMazo);
+        irAlMazo.addActionListener((ActionEvent e) -> {
+            int puntos=0;
+            if(!envidoFinalizado && ai.getCartasJugadas().size()==0)
+                puntos++;
+            System.out.println("puntos envido: " + puntos + " y truco: " +calcularTrucoGanado() );
+            ai.setPuntaje(ai.getPuntaje()+puntos+calcularTrucoGanado());
+            try {
+                dibujarPuntaje();
+            } catch (IOException ex) {
+                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                otraPartida();
+            } catch (IOException ex) {
+                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+            habilitaTurno();
+            } catch (IOException ex) {
+                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
 
         // Boton envido especifico
         envidoEsp = new JButton("Envido");
@@ -744,7 +766,6 @@ public class InterfazJuego extends JFrame {
 
     private void habilitaTurno() throws IOException {
         if(compruebaSiTerminoPartida()==1) {
-            System.out.println("jugador: " + jugador.getPuntaje() + " se le agrega " + calcularTrucoGanado());
             JOptionPane.showMessageDialog(null, "Termino Partida. Gano el Jugador.");
             // Suma puntos al ganador
             jugador.setPuntaje(jugador.getPuntaje() + calcularTrucoGanado());
@@ -753,7 +774,6 @@ public class InterfazJuego extends JFrame {
             return;
         }
         if(compruebaSiTerminoPartida()==2) {
-            System.out.println("ai: " + ai.getPuntaje() + " se le agrega " + calcularTrucoGanado());
             JOptionPane.showMessageDialog(null, "Termino Partida. Gano la PC.");
             // Suma puntos al ganador
             ai.setPuntaje(ai.getPuntaje() + calcularTrucoGanado());
@@ -1361,12 +1381,10 @@ public class InterfazJuego extends JFrame {
     }
 
     private int calcularTrucoPerdido() {
-        if(nivelTruco==0)
-            return 0;
 
         switch(nivelTruco-1){
             case 0:
-                return 0;
+                return 1;
             case 1:
                 return 2;
             case 2:
