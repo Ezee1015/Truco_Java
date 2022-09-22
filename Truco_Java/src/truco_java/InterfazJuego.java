@@ -150,6 +150,7 @@ public class InterfazJuego extends JFrame {
         repartir.setVisible(true);
         fondo.add(repartir);
         repartir.addActionListener((ActionEvent e) -> {
+            repartir.setEnabled(false);
             try {
                 otraPartida();
             } catch (IOException ex) {
@@ -695,6 +696,12 @@ public class InterfazJuego extends JFrame {
     }
 
     private void tirarCarta(int pos) throws IOException {
+        // Intenta solucionar un bug de diferentes llamados que pueden perjudicar a la mano
+        PC1.setEnabled(false);
+        PC2.setEnabled(false);
+        PC3.setEnabled(false);
+
+        System.out.println("tira " + pos);
         jugador.agregarCartaJugada(jugador.getMano().get(pos));
 
         ArrayList<Carta> temp = jugador.getMano();
