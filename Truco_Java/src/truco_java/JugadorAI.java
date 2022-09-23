@@ -303,8 +303,11 @@ public class JugadorAI extends Jugador {
           else if(random.nextInt(4)==3 && estado!=3) // Si pierdo: Random, retruca si no estoy en vale 4
               return estado+random.nextInt(3-estado)+1;
       }
-      else if(cantBuenasCartas()==1) // Si queda una buena carta
+      else if(cantBuenasCartas()==1) { // Si queda una buena carta
+        if(estado == 3)
+          return 3;
         return estado+random.nextInt(3-estado);      // Apostar todo
+      }
       break;
     case 2:
     case 3: // Segunda mano

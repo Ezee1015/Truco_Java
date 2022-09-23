@@ -422,6 +422,7 @@ public class InterfazJuego extends JFrame {
         truco.setEnabled(false);
         fondo.add(truco);
         truco.addActionListener((ActionEvent e) -> {
+            System.out.println("nivel de truco: " + nivelTruco);
             if(habilitadoARetrucar != 2){
                 nivelTruco++;
                 habilitadoARetrucar = 2;
@@ -1082,7 +1083,7 @@ public class InterfazJuego extends JFrame {
                 return;
             case 1:
                 texto = "Envido! Carajo";
-                if(numeroPersonaje==5) texto = "Have you heard that? Envido!";
+                if(numeroPersonaje==5) texto = "Why not? Envido!";
                 break;
             case 2:
                 texto = "Envido Envido!";
@@ -1303,8 +1304,9 @@ public class InterfazJuego extends JFrame {
 
         // Si retruca, imprime el mensaje y le pasa el mando a jugador a aceptar o aumentar la apuesta
         habilitadoARetrucar=1;
-        if(desicion>(nivelTruco+1))
-            desicion = nivelTruco+1;
+        System.out.println("actualmente el estado del truco es " + nivelTruco + " y la desicion es " + desicion);
+        if(desicion>nivelTruco)
+            nivelTruco++;
         imprimeAITruco(desicion);
         quieroTruco.setVisible(true);
         noQuieroTruco.setVisible(true);
@@ -1341,7 +1343,7 @@ public class InterfazJuego extends JFrame {
                 break;
             case 2:
                 estado.setText("Re truco!");
-                if(numeroPersonaje==5) estado.setText("This’s a rip-off. Re truco!");
+                if(numeroPersonaje==5) estado.setText("Re truco if you're brave!");
                 truco.setText("Vale cuatro");
                 truco.setEnabled(true);
                 break;
