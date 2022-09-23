@@ -91,8 +91,7 @@ public class Jugador {
 
       // Si no hubo más de 20 en envido (no hubo dos del mismo palo)
       if (envido==0){
-        envido = manoOrigi.get(0).getNumero();
-        for(int i=1; i<manoOrigi.size();i++){
+        for(int i=0; i<manoOrigi.size();i++){
           int num = manoOrigi.get(i).getNumero();
           if(num < 10 && num > envido) envido= num;
         }
