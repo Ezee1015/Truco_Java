@@ -295,7 +295,7 @@ public class JugadorAI extends Jugador {
     case 4:
     case 5: // Tercera Mano
       // Si esta en la ultima mano y solo falta tirar...
-      if(p.getCartasJugadas().size()-1 == cartasJugadas.size() && p.getCartasJugadas().size() == 3){
+      if(p.getCartasJugadas().size()-1 == cartasJugadas.size()){ //ELIMINADO:  && p.getCartasJugadas().size() == 3
           if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta()) // Si le gano, canto
               return estado+random.nextInt(4-estado);
           // Si le empata, pero gano la primera
@@ -303,12 +303,12 @@ public class JugadorAI extends Jugador {
               return estado+random.nextInt(4-estado);
           else if(random.nextInt(4)==3 && estado!=3) // Si pierdo: Random, retruca si no estoy en vale 4
               return estado+random.nextInt(3-estado)+1;
-      }
-      else if(cantBuenasCartas()==1) { // Si queda una buena carta
+      } else if(cartasJugadas.size() == 3 && cartasJugadas.get(2).rankingCarta()>9) { // Si queda una buena carta
         if(estado == 3)
           return 3;
         return estado+random.nextInt(3-estado);      // Apostar todo
-      }
+      } else if(random.nextInt(4)==2)
+        return estado;
       break;
     case 2:
     case 3: // Segunda mano
