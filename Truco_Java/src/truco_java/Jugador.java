@@ -1,6 +1,9 @@
 package truco_java;
 
 import java.util.ArrayList;
+import java.io.IOException;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class Jugador {
   protected ArrayList<Carta> mano = new ArrayList<Carta>();
@@ -17,9 +20,13 @@ public class Jugador {
         return puntaje;
     }
 
-    public void setPuntaje(int puntaje) {
-        System.out.println("gano puntajeeeeee --> " + puntaje);
-        this.puntaje = puntaje;
+    public void setPuntaje(int puntaje, InterfazJuego interfaz) {
+      this.puntaje = puntaje;
+      try {
+        interfaz.dibujarPuntaje();
+      } catch (IOException ex) {
+        Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+      }
     }
 
     public ArrayList<Carta> getMano() {

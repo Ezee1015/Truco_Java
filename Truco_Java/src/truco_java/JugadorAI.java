@@ -21,10 +21,12 @@ public class JugadorAI extends Jugador {
 
 
   public Carta jugarTurno(Persona p, InterfazJuego mesa) throws IOException{
+    System.out.println("llama a tirar carta");
       if(p.cartasJugadas.isEmpty()) // si es la primera vez que tiro
           return tirarCartaRandom();
 
       if(p.getCartasJugadas().size()-1 == cartasJugadas.size()) { // Si el jugado ya tiro y me toca a mi, intento ganar
+        System.out.println("el jugador tiro y me fijo si le puedo ganar");
           for(int i=mano.size()-1;i>=0;i--) { // Recorre desde la peor a la mejor carta
                 // Si hay una carta que empata la que ya tiro, y soy ganador de la primera mano. Tirarla
                 if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == mano.get(i).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() == mano.get(0).rankingCarta() )
