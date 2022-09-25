@@ -26,8 +26,7 @@ public class JugadorAI extends Jugador {
           return tirarCartaRandom();
 
       if(p.getCartasJugadas().size()-1 == cartasJugadas.size()) { // Si el jugado ya tiro y me toca a mi, intento ganar
-        System.out.println("el jugador tiro y me fijo si le puedo ganar");
-          for(int i=mano.size()-1;i>=0;i--) { // Recorre desde la peor a la mejor carta
+          for(int i=0;i<mano.size();i++) { // Recorre desde la peor a la mejor carta
                 // Si hay una carta que empata la que ya tiro, y soy ganador de la primera mano. Tirarla
                 if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == mano.get(i).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() == mano.get(0).rankingCarta() )
                     return tirarCartaPos(i);
@@ -80,7 +79,7 @@ public class JugadorAI extends Jugador {
 
     int mejor = 0;
     for(int i=1; i<mano.size(); i++){
-      if(mano.get(i).rankingCarta() > mano.get(i).rankingCarta())
+      if(mano.get(mejor).rankingCarta() < mano.get(i).rankingCarta())
         mejor = i;
     }
 
@@ -93,14 +92,14 @@ public class JugadorAI extends Jugador {
   public Carta tirarPeorCarta (){
     if(mano.isEmpty()) return null;
 
-    int mejor = 0;
+    int peor = 0;
     for(int i=1; i<mano.size(); i++){
-      if(mano.get(i).rankingCarta() > mano.get(i).rankingCarta())
-        mejor = i;
+      if(mano.get(peor).rankingCarta() > mano.get(i).rankingCarta())
+        peor = i;
     }
 
-    Carta aTirar = mano.get(mejor);
-    mano.remove(mejor);
+    Carta aTirar = mano.get(peor);
+    mano.remove(peor);
     cartasJugadas.add(aTirar);
     return aTirar;
   }
