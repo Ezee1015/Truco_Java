@@ -291,7 +291,7 @@ public class JugadorAI extends Jugador {
         if(cantBuenasCartas()>=1 && cantMedianasCartas()>=1) // .. Solo aceptar si tengo más de una buena carta y una media
           return estado;
       }
-      break; // Eliminar?
+      break;
     case 4:
     case 5: // Tercera Mano
       // Si esta en la ultima mano y solo falta tirar...
