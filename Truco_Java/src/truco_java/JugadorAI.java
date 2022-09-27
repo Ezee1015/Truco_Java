@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class JugadorAI extends Jugador {
-    private int envidoJugadorCantado = 0;
+    private int envidoJugadorCantado = -1;
 
     public JugadorAI(ArrayList<Carta> mano, boolean esMano) {
         super(mano, esMano);
@@ -295,6 +295,25 @@ public class JugadorAI extends Jugador {
       break;
     case 4:
     case 5: // Tercera Mano
+      // Calcula según el envido del jugador qué carta le queda
+      int jugarEnv = calcularGanoSegunEnvidoCantado(p.getCartasJugadas());
+      System.out.println("ATENCIÓN!! ES LA TERCER RONDA Y PREDICE UN --> " + jugarEnv);
+      switch(jugarEnv){
+        case 0: break;
+        case 1:
+          if(estado==3)
+            return 3;
+          return estado++;
+        case 2:
+          if(random.nextInt(3)==1){
+            if(estado==3)
+              return 3;
+            return estado++;
+          }
+          break;
+        case 3:
+          return 0;
+      }
       // Si esta en la ultima mano y solo falta tirar...
       if(p.getCartasJugadas().size()-1 == cartasJugadas.size()){ //ELIMINADO:  && p.getCartasJugadas().size() == 3
           if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta()) // Si le gano, canto
@@ -340,7 +359,7 @@ public class JugadorAI extends Jugador {
 
     // SOLO LLAMAR A ESTA FUNCION CUANDO EL JUGADOR Y LA AI TIRARON SOLAMENTE 2 CARTAS
   private int calcularGanoSegunEnvidoCantado(ArrayList<Carta> cartasJugadasJugador) { // Calcula si gano segun lo que canto de envido (que puedo deducir la carta)
-    if(cartasJugadasJugador.size()!=2 && cartasJugadas.size()!=2) // Solam
+    if(cartasJugadasJugador.size()!=2 && cartasJugadas.size()>=2 && envidoJugadorCantado==-1) // Solamente juega si es la ultima ronda y si se jugó el envido
       return 0;
       /*
       Devuelve:
@@ -356,9 +375,6 @@ public class JugadorAI extends Jugador {
       ArrayList<Integer> numeros = new ArrayList<>(); // Variable que se usa despues en el codigo para almacenar los numeros tirados
         for(int i=0;i<2;i++)
             numeros.add(cartasJugadasJugador.get(i).getNumero());
-
-      if(cartasJugadasJugador.size()!=3) // Si no está en la ultima ronda
-          return -1;// Devuelve nada
 
       Carta ultimaCarta;
       if(mano.size()==1)
@@ -438,39 +454,39 @@ public class JugadorAI extends Jugador {
       }
 
       // Para cuando es más de 22
-      ArrayList<Carta> posibilidades = new ArrayList<>();
-      //Busca las posibilidades de las cartas que puede tener
-      for (int i = 0; i < 1; i++) {
-        int numPosibili = envidoJugadorCantado - numeros.get(i) - 20;
-        if(numPosibili==0){ //Si le queda un rey
-          posibilidades.add(new Carta(10, palos.get(i)));
-          posibilidades.add(new Carta(11, palos.get(i)));
-          posibilidades.add(new Carta(12, palos.get(i)));
+      if(envidoJugadorCantado>22){
+        ArrayList<Carta> posibilidades = new ArrayList<>();
+        //Busca las posibilidades de las cartas que puede tener
+        for (int i = 0; i < 1; i++) {
+          int numPosibili = envidoJugadorCantado - numeros.get(i) - 20;
+          if(numPosibili==0){ //Si le queda un rey
+            posibilidades.add(new Carta(10, palos.get(i)));
+            posibilidades.add(new Carta(11, palos.get(i)));
+            posibilidades.add(new Carta(12, palos.get(i)));
+          }
+          if (numPosibili>0) // Si el le queda un numero de carta
+            posibilidades.add(new Carta(numPosibili, palos.get(i)));
         }
-        if (numPosibili>0) // Si el le queda un numero de carta
-          posibilidades.add(new Carta(numPosibili, palos.get(i)));
-      }
 
-      // Si hay alguna carta de las que yo supuse que es una posibilidad y ya fue tirada, abandonar
-      for (int i = 0; i < cartasJugadas.size(); i++)
+        // Si hay alguna carta de las que yo supuse que es una posibilidad y ya fue tirada, abandonar
+        for (int i = 0; i < cartasJugadas.size(); i++)
           if(posibilidades.contains(cartasJugadas.get(i)))
             return 0;
 
-      //Busca a cuantas cartas les gano de las probabilidades
-      int cantCartasQueLeGano=0;
-      for (int i = 0; i < posibilidades.size(); i++)
-        if(ultimaCarta.rankingCarta() > posibilidades.get(i).rankingCarta())
-          cantCartasQueLeGano++;
+        //Busca a cuantas cartas les gano de las probabilidades
+        int cantCartasQueLeGano=0;
+        for (int i = 0; i < posibilidades.size(); i++)
+          if(ultimaCarta.rankingCarta() > posibilidades.get(i).rankingCarta())
+            cantCartasQueLeGano++;
 
-      // Hace un calculo para ver si conviene o no jugar
-      double probabiliGanar = cantCartasQueLeGano/posibilidades.size()*100;
-      if (probabiliGanar>80)
-        return 1;
-      if (probabiliGanar>40)
-        return 2;
-      return 3;
-  }
-
-
+        // Hace un calculo para ver si conviene o no jugar
+        double probabiliGanar = cantCartasQueLeGano/posibilidades.size()*100;
+        if (probabiliGanar>80)
+          return 1;
+        if (probabiliGanar>40)
+          return 2;
+        return 3;
+      }
+      return 0;
   }
 }

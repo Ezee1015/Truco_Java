@@ -355,18 +355,22 @@ public class InterfazJuego extends JFrame {
         fondo.add(quieroEnv);
         quieroEnv.addActionListener((ActionEvent e) -> {
             if (jugador.calcularEnvido() > ai.calcularEnvido()) { //Si gana el jugador
+                ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
                 JOptionPane.showMessageDialog(null, "Has ganado. La PC tenía " + ai.calcularEnvido() + " de envido.");
                 jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()), this);
             }
             if (jugador.calcularEnvido() < ai.calcularEnvido()) { // Si gana la AI
+                ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
                 JOptionPane.showMessageDialog(null, "Has perdido. La PC tenía " + ai.calcularEnvido() + " de envido.");
                 ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()), this);
             }
             if (jugador.calcularEnvido() == ai.calcularEnvido()) { // Si empatan...
                 if (jugador.isMano() == true) { // .. y el jugador es mano
+                    ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
                     JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has ganado por mano");
                     jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()), this);
                 } else { // .. y la AI es mano
+                    ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
                     JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has perdido, la PC es mano");
                     ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()), this);
                 }
@@ -750,6 +754,7 @@ public class InterfazJuego extends JFrame {
         truco.setText("Truco");
         truco.setVisible(true);
         setFondo(0);
+        ai.setEnvidoJugadorCantado(-1);
 
         // Limpia las manos
         jugador.setMano(new ArrayList<>());
@@ -950,18 +955,22 @@ public class InterfazJuego extends JFrame {
 
             if (desicion == envidosCantados.get(envidosCantados.size() - 1)) { // Si la AI Acepta lo cantado
                 if (jugador.calcularEnvido() > ai.calcularEnvido()) { //Si gana el jugador
+                    ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
                     JOptionPane.showMessageDialog(null, "Has ganado. La PC tenía " + ai.calcularEnvido() + " de envido.");
                     jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()), this);
                 }
                 if (jugador.calcularEnvido() < ai.calcularEnvido()) { // Si gana la AI
+                    ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
                     JOptionPane.showMessageDialog(null, "Has perdido. La PC tenía " + ai.calcularEnvido() + " de envido.");
                     ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()), this);
                 }
                 if (jugador.calcularEnvido() == ai.calcularEnvido()) { // Si empatan...
                     if (jugador.isMano() == true) { // .. y el jugador es mano
+                        ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
                         JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has ganado por mano");
                         jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()), this);
                     } else { // .. y la AI es mano
+                        ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
                         JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has perdido, la PC es mano");
                         ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()), this);
                     }
