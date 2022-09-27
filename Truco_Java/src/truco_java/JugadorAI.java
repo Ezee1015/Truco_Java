@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class JugadorAI extends Jugador {
+    private int envidoJugadorCantado = 0;
 
     public JugadorAI(ArrayList<Carta> mano, boolean esMano) {
         super(mano, esMano);
@@ -329,4 +330,114 @@ public class JugadorAI extends Jugador {
     return 0;
   }
 
+    public int getEnvidoJugadorCantado() {
+        return envidoJugadorCantado;
+    }
+
+    public void setEnvidoJugadorCantado(int envidoJugadorCantado) {
+        this.envidoJugadorCantado = envidoJugadorCantado;
+    }
+  
+  private int calcularGanoSegunEnvidoCantado(ArrayList<Carta> cartasJugadasJugador) { // Calcula si gano segun lo que canto de envido (que puedo deducir la carta)
+      /*
+      Devuelve:
+        0 --> No sé
+        1 --> Le gano
+        2 --> Hay posibilidades que le gane
+        3 --> No le gano
+      */
+      System.out.println("AAAAAAAAH. Envido que se cantó: " + envidoJugadorCantado);
+      ArrayList<String> palos = new ArrayList<>(); // Variable que se usa despues en el codigo para almacenar los palos tirados
+        for(int i=0;i<2;i++)
+            palos.add(cartasJugadasJugador.get(i).getPalo());
+      ArrayList<Integer> numeros = new ArrayList<>(); // Variable que se usa despues en el codigo para almacenar los numeros tirados
+        for(int i=0;i<2;i++)
+            numeros.add(cartasJugadasJugador.get(i).getNumero());
+      
+      if(cartasJugadasJugador.size()!=3) // Si no está en la ultima ronda
+          return -1;// Devuelve nada
+      
+      Carta ultimaCarta;
+      if(mano.size()==1)
+          ultimaCarta=mano.get(0);
+      else
+          ultimaCarta=cartasJugadas.get(2);
+      
+      
+      if(envidoJugadorCantado==0){
+          if(ultimaCarta.rankingCarta()<4) // Si la carta que tengo es menor de 10
+              return 3;
+          if(ultimaCarta.rankingCarta()>6) // Si la carta que tengo es mayor de 12
+              return 1;
+          return 2; // Si la carta que está entre 10 y 12, hay probabilidades que le gane
+      }
+      
+      
+      if(envidoJugadorCantado==1){
+          if(palos.contains("espada") || palos.contains("basto")){
+              if(ultimaCarta.rankingCarta()==13)
+                  return 1;
+              return 3;
+          }
+            if(ultimaCarta.rankingCarta()>7)
+                    return 1;
+            if(ultimaCarta.rankingCarta()==7)
+                    return 2;
+            return 3;
+      }
+      
+      if(envidoJugadorCantado<4) { // Si tiene un dos o un tres
+          if(ultimaCarta.rankingCarta()>9) // Si tengo mas de un 3
+                  return 1;
+          if(ultimaCarta.rankingCarta()>7) // Si tengo un 2 o un 3
+                  return 2;
+          return 3;
+      }
+      
+      if(envidoJugadorCantado==7) { // Si tiene un siete
+          if(palos.contains("espada") || palos.contains("oro")){
+            if(ultimaCarta.rankingCarta()>10) // Si tengo un 7 de espada en adelante
+                    return 1;
+            return 3;
+          }
+          if(ultimaCarta.rankingCarta()>3) // Si tengo mas de un 7 de copas o de basto
+                  return 1;
+          return 3;
+      }
+      
+      if(envidoJugadorCantado==20){
+          if(numeros.get(0) >= 10 && numeros.get(0) <= 12) // Si en la primer tiro un rey...
+            if(numeros.get(1) >= 10 && numeros.get(1) <= 12) // Y en la Segunda tiro otro rey...
+                if(palos.get(0).equals(palos.get(1))) // Y si son del mismo palo
+                    return 0; // Significa que ya los tiro, por lo tanto no sé
+          if(ultimaCarta.rankingCarta()<4) // Si la carta que tengo es menor de 10
+              return 3;
+          if(ultimaCarta.rankingCarta()>6) // Si la carta que tengo es mayor de 12
+              return 1;
+          return 2; // Si la carta que está entre 10 y 12, hay probabilidades que le gane
+      }
+      
+      if(envidoJugadorCantado<23){
+          if(numeros.contains(1) && numeros.contains(2))
+                if(palos.get(0).equals(palos.get(1))) // Y si son del mismo palo
+                    return 0;
+          
+          // Si ya tiro el ancho de espada o de basto, le queda un dos del otro palo
+          if((palos.contains("espada") || palos.contains("basto")) && numeros.contains(1)) 
+              if(ultimaCarta.rankingCarta()>=8)
+                  return 1;
+          
+          if(ultimaCarta.rankingCarta()<7) // Si la carta que tengo es menor de ancho falso
+              return 3;
+          if(ultimaCarta.rankingCarta()>7) // Si la carta que tengo es mayor de ancho falso
+              return 1;
+          return 2; // Si la carta es un ancho falso
+      }
+      
+      if(envidoJugadorCantado<28){
+          
+      }
+      
+      
+  }
 }
