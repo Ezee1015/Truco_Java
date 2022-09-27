@@ -337,8 +337,11 @@ public class JugadorAI extends Jugador {
     public void setEnvidoJugadorCantado(int envidoJugadorCantado) {
         this.envidoJugadorCantado = envidoJugadorCantado;
     }
-  
+
+    // SOLO LLAMAR A ESTA FUNCION CUANDO EL JUGADOR Y LA AI TIRARON SOLAMENTE 2 CARTAS
   private int calcularGanoSegunEnvidoCantado(ArrayList<Carta> cartasJugadasJugador) { // Calcula si gano segun lo que canto de envido (que puedo deducir la carta)
+    if(cartasJugadasJugador.size()!=2 && cartasJugadas.size()!=2) // Solam
+      return 0;
       /*
       Devuelve:
         0 --> No sé
@@ -353,17 +356,17 @@ public class JugadorAI extends Jugador {
       ArrayList<Integer> numeros = new ArrayList<>(); // Variable que se usa despues en el codigo para almacenar los numeros tirados
         for(int i=0;i<2;i++)
             numeros.add(cartasJugadasJugador.get(i).getNumero());
-      
+
       if(cartasJugadasJugador.size()!=3) // Si no está en la ultima ronda
           return -1;// Devuelve nada
-      
+
       Carta ultimaCarta;
       if(mano.size()==1)
           ultimaCarta=mano.get(0);
       else
           ultimaCarta=cartasJugadas.get(2);
-      
-      
+
+
       if(envidoJugadorCantado==0){
           if(ultimaCarta.rankingCarta()<4) // Si la carta que tengo es menor de 10
               return 3;
@@ -371,8 +374,8 @@ public class JugadorAI extends Jugador {
               return 1;
           return 2; // Si la carta que está entre 10 y 12, hay probabilidades que le gane
       }
-      
-      
+
+
       if(envidoJugadorCantado==1){
           if(palos.contains("espada") || palos.contains("basto")){
               if(ultimaCarta.rankingCarta()==13)
@@ -385,7 +388,7 @@ public class JugadorAI extends Jugador {
                     return 2;
             return 3;
       }
-      
+
       if(envidoJugadorCantado<4) { // Si tiene un dos o un tres
           if(ultimaCarta.rankingCarta()>9) // Si tengo mas de un 3
                   return 1;
@@ -393,7 +396,7 @@ public class JugadorAI extends Jugador {
                   return 2;
           return 3;
       }
-      
+
       if(envidoJugadorCantado==7) { // Si tiene un siete
           if(palos.contains("espada") || palos.contains("oro")){
             if(ultimaCarta.rankingCarta()>10) // Si tengo un 7 de espada en adelante
@@ -404,7 +407,7 @@ public class JugadorAI extends Jugador {
                   return 1;
           return 3;
       }
-      
+
       if(envidoJugadorCantado==20){
           if(numeros.get(0) >= 10 && numeros.get(0) <= 12) // Si en la primer tiro un rey...
             if(numeros.get(1) >= 10 && numeros.get(1) <= 12) // Y en la Segunda tiro otro rey...
@@ -416,28 +419,58 @@ public class JugadorAI extends Jugador {
               return 1;
           return 2; // Si la carta que está entre 10 y 12, hay probabilidades que le gane
       }
-      
+
       if(envidoJugadorCantado<23){
           if(numeros.contains(1) && numeros.contains(2))
                 if(palos.get(0).equals(palos.get(1))) // Y si son del mismo palo
                     return 0;
-          
+
           // Si ya tiro el ancho de espada o de basto, le queda un dos del otro palo
-          if((palos.contains("espada") || palos.contains("basto")) && numeros.contains(1)) 
+          if((palos.contains("espada") || palos.contains("basto")) && numeros.contains(1))
               if(ultimaCarta.rankingCarta()>=8)
                   return 1;
-          
+
           if(ultimaCarta.rankingCarta()<7) // Si la carta que tengo es menor de ancho falso
               return 3;
           if(ultimaCarta.rankingCarta()>7) // Si la carta que tengo es mayor de ancho falso
               return 1;
           return 2; // Si la carta es un ancho falso
       }
-      
-      if(envidoJugadorCantado<28){
-          
+
+      // Para cuando es más de 22
+      ArrayList<Carta> posibilidades = new ArrayList<>();
+      //Busca las posibilidades de las cartas que puede tener
+      for (int i = 0; i < 1; i++) {
+        int numPosibili = envidoJugadorCantado - numeros.get(i) - 20;
+        if(numPosibili==0){ //Si le queda un rey
+          posibilidades.add(new Carta(10, palos.get(i)));
+          posibilidades.add(new Carta(11, palos.get(i)));
+          posibilidades.add(new Carta(12, palos.get(i)));
+        }
+        if (numPosibili>0) // Si el le queda un numero de carta
+          posibilidades.add(new Carta(numPosibili, palos.get(i)));
       }
-      
-      
+
+      // Si hay alguna carta de las que yo supuse que es una posibilidad y ya fue tirada, abandonar
+      for (int i = 0; i < cartasJugadas.size(); i++)
+          if(posibilidades.contains(cartasJugadas.get(i)))
+            return 0;
+
+      //Busca a cuantas cartas les gano de las probabilidades
+      int cantCartasQueLeGano=0;
+      for (int i = 0; i < posibilidades.size(); i++)
+        if(ultimaCarta.rankingCarta() > posibilidades.get(i).rankingCarta())
+          cantCartasQueLeGano++;
+
+      // Hace un calculo para ver si conviene o no jugar
+      double probabiliGanar = cantCartasQueLeGano/posibilidades.size()*100;
+      if (probabiliGanar>80)
+        return 1;
+      if (probabiliGanar>40)
+        return 2;
+      return 3;
+  }
+
+
   }
 }
