@@ -359,7 +359,7 @@ public class JugadorAI extends Jugador {
 
     // SOLO LLAMAR A ESTA FUNCION CUANDO EL JUGADOR Y LA AI TIRARON SOLAMENTE 2 CARTAS
   private int calcularGanoSegunEnvidoCantado(ArrayList<Carta> cartasJugadasJugador) { // Calcula si gano segun lo que canto de envido (que puedo deducir la carta)
-    if(cartasJugadasJugador.size()!=2 && cartasJugadas.size()>=2 && envidoJugadorCantado==-1) // Solamente juega si es la ultima ronda y si se jugó el envido
+    if((cartasJugadasJugador.size()!=2 && cartasJugadas.size()>=2) || envidoJugadorCantado==-1) // Solamente juega si es la ultima ronda y si se jugó el envido
       return 0;
       /*
       Devuelve:
@@ -480,8 +480,13 @@ public class JugadorAI extends Jugador {
       if(envidoJugadorCantado>20){
         ArrayList<Carta> posibilidades = new ArrayList<>();
         //Busca las posibilidades de las cartas que puede tener
-        for (int i = 0; i < 1; i++) {
-          int numPosibili = envidoJugadorCantado - numeros.get(i) - 20;
+        for (int i = 0; i < 2; i++) {
+          int numPosibili;
+          if(numeros.get(i)<10) // Si es del 1 al 7 lo cuenta normal
+            numPosibili = envidoJugadorCantado - numeros.get(i) - 20;
+          else // Si es un 10,11,12 lo cuenta como envido 0
+            numPosibili = envidoJugadorCantado - 20;
+          System.out.println("numero de posibilidad: " + numPosibili);
           if(numPosibili==0){ //Si le queda un rey
             posibilidades.add(new Carta(10, palos.get(i)));
             posibilidades.add(new Carta(11, palos.get(i)));
@@ -524,10 +529,10 @@ public class JugadorAI extends Jugador {
         // Hace un calculo para ver si conviene o no jugar
         double probabiliGanar;
         try {
-          probabiliGanar = (cantCartasQueLeGano/posibilidades.size())*100;
+          probabiliGanar = ((double)cantCartasQueLeGano / (double)posibilidades.size()) * 100.0;
         } catch (Exception e) {
           System.out.println("error en el calculo de la posibilidad de envido, razón: " + e.getMessage());
-          System.out.println(cantCartasQueLeGano + " / " + posibilidades.size());
+          System.out.println("POR ESTO: " + cantCartasQueLeGano + " / " + posibilidades.size()); // ELIMINAR DESPUES
           return 0;
         }
         System.out.println("PROBABILIDAAAAAAD -->" + probabiliGanar);
