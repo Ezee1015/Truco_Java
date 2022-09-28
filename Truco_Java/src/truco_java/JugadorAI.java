@@ -380,7 +380,7 @@ public class JugadorAI extends Jugador {
       if(mano.size()==1)
           ultimaCarta=mano.get(0);
       else
-          ultimaCarta=cartasJugadas.get(2);
+          ultimaCarta=cartasJugadas.get(1);
 
 
       if(envidoJugadorCantado==0){

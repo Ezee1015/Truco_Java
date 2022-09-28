@@ -772,7 +772,7 @@ public class InterfazJuego extends JFrame {
         envidoEnvido.setVisible(false);
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
-        imprimeAIEnvido(0);
+        imprimeAIEnvido(0, false);
         truco.setText("Truco");
         truco.setEnabled(true);
 
@@ -954,6 +954,11 @@ public class InterfazJuego extends JFrame {
             desicion = ai.desidirEnvido(envidosCantados.get(envidosCantados.size() - 1));
 
             if (desicion == envidosCantados.get(envidosCantados.size() - 1)) { // Si la AI Acepta lo cantado
+                Music cantar = new Music();
+                if(numeroPersonaje==5) cantar.setFile("src/truco_java/cantos/envido/55.wav", 1);
+                else cantar.setFile("src/truco_java/cantos/envido/5.wav", 1);
+                cantar.play();
+
                 if (jugador.calcularEnvido() > ai.calcularEnvido()) { //Si gana el jugador
                     ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
                     JOptionPane.showMessageDialog(null, "Has ganado. La PC tenía " + ai.calcularEnvido() + " de envido.");
@@ -994,7 +999,7 @@ public class InterfazJuego extends JFrame {
         switch (desicion) {
             case 0:
                 if(!envidosCantados.isEmpty()){
-                    imprimeAIEnvido(-1);
+                    imprimeAIEnvido(-1, false);
                     jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoPerdido(ai.getPuntaje()), this);
                     envidoFinalizado=true;
                     envido.setEnabled(false);
@@ -1036,7 +1041,7 @@ public class InterfazJuego extends JFrame {
         }
         // Agrega el envido que eligio la AI a la lista y lo imprime
         envidosCantados.add(desicion);
-        imprimeAIEnvido(desicion);
+        imprimeAIEnvido(desicion, false);
 
         // Boton Quiero Envido
         quieroEnv.setVisible(true);
@@ -1101,16 +1106,24 @@ public class InterfazJuego extends JFrame {
         return total;
     }
 
-    private void imprimeAIEnvido(int envido){
+    private void imprimeAIEnvido(int envido, boolean esLlamadoDesdeTimer){
         String texto = " ";
         fondoEstado.setVisible(true);
         estado.setVisible(true);
 
         System.out.println("imprime un envido de " + envido);
 
+        if(!esLlamadoDesdeTimer && envido!=0) {
+            System.out.println("llama a " + "src/truco_java/cantos/envido/5" + envido + ".wav");
+            Music cantar = new Music();
+            if(numeroPersonaje==5) cantar.setFile("src/truco_java/cantos/envido/5" + envido + ".wav", 1);
+            else cantar.setFile("src/truco_java/cantos/envido/" + envido + ".wav", 1);
+            cantar.play();
+        }
+
         switch(envido){
             case -1:
-                texto = "No quiero!";
+                texto = "Em... No quiero!";
                 if(numeroPersonaje==5) texto = "No tea? so No quiero!";
                 break;
             case 0:
@@ -1123,11 +1136,11 @@ public class InterfazJuego extends JFrame {
                 if(numeroPersonaje==5) texto = "Why not? Envido!";
                 break;
             case 2:
-                texto = "Envido Envido!";
+                texto = "Aca te va otro: Envido!";
                 if(numeroPersonaje==5) texto = "What about another Envido?!";
                 break;
             case 3:
-                texto = "Real Envido!";
+                texto = "Seguro? Real Envido!";
                 if(numeroPersonaje==5) texto = "I say Real Envido!";
                 break;
             case 4:
@@ -1146,8 +1159,8 @@ public class InterfazJuego extends JFrame {
                 public void run() {
                     if(estado.getText().equals(textoTimer)){ // Si sigue siendo el mismo texto que se puso antes y nada lo cambio (por ejemplo retrucar el envido o un truco
                         if(quieroEnv.isVisible()) // Si todavia el usuario no se decidió
-                            imprimeAIEnvido(envido); // Lo vuelve a imprimir
-                        else imprimeAIEnvido(0); // sino lo desaparece
+                            imprimeAIEnvido(envido, true); // Lo vuelve a imprim,ir
+                        else imprimeAIEnvido(0, true); // sino lo desaparece
                     }
                 }
             },
@@ -1309,7 +1322,7 @@ public class InterfazJuego extends JFrame {
 
         if(desicion==0){ // si no quiere truco la AI
             if (habilitadoARetrucar == 2 && responder) { // SI tiene que contestar
-                imprimeAITruco(-1);
+                imprimeAITruco(-1, false);
                 quieroTruco.setVisible(false);
                 noQuieroTruco.setVisible(false);
                 jugador.setPuntaje(jugador.getPuntaje() + calcularTrucoPerdido(), this);
@@ -1321,7 +1334,7 @@ public class InterfazJuego extends JFrame {
         }
 
         if(desicion == nivelTruco && responder){ // Si acepta el truco
-            imprimeAITruco(4);
+            imprimeAITruco(4, false);
             habilitadoARetrucar=2;
             truco.setEnabled(false);
             quieroTruco.setVisible(false);
@@ -1339,7 +1352,7 @@ public class InterfazJuego extends JFrame {
         if(!responder && desicion<(nivelTruco+1)) // Si no estoy respondiendo y quiero menos de la oferta actual (lo cual no se puede), no hacer nada
             return 0;
         if(responder && desicion<(nivelTruco+1)){ // Si no estoy respondiendo y quiero menos de la oferta actual (lo cual no se puede), no hacer nada
-            imprimeAITruco(-1);
+            imprimeAITruco(-1, false);
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
             jugador.setPuntaje(jugador.getPuntaje() + calcularTrucoPerdido(), this);
@@ -1354,7 +1367,7 @@ public class InterfazJuego extends JFrame {
         System.out.println("actualmente el estado del truco es " + nivelTruco + " y la desicion es " + desicion);
         if(desicion>nivelTruco)
             nivelTruco++;
-        imprimeAITruco(nivelTruco);
+        imprimeAITruco(nivelTruco, false);
         quieroTruco.setVisible(true);
         noQuieroTruco.setVisible(true);
 
@@ -1368,11 +1381,19 @@ public class InterfazJuego extends JFrame {
         return 1;
     }
 
-    private void imprimeAITruco(int trucoMSG){
+    private void imprimeAITruco(int trucoMSG, boolean esLlamadoDesdeTimer){
         setFondo(1);
         fondoEstado.setVisible(true);
 
         System.out.println("llama a imprimir AITruco un " + trucoMSG);
+
+        if(!esLlamadoDesdeTimer && trucoMSG!=0) {
+            System.out.println("src/truco_java/cantos/truco/" +  numeroPersonaje + trucoMSG + ".wav");
+            Music cantar = new Music();
+            if(numeroPersonaje==5) cantar.setFile("src/truco_java/cantos/truco/5"+ trucoMSG + ".wav", 1);
+            else cantar.setFile("src/truco_java/cantos/truco/" + trucoMSG + ".wav", 1);
+            cantar.play();
+        }
 
         switch(trucoMSG){
             case -1:
@@ -1417,8 +1438,8 @@ public class InterfazJuego extends JFrame {
                     public void run() {
                         if(estado.getText().equals(textoTimer)){
                             if(quieroTruco.isVisible())
-                                imprimeAITruco(trucoMSG);
-                            else imprimeAITruco(0);
+                                imprimeAITruco(trucoMSG, true);
+                            else imprimeAITruco(0, true);
                         }
                     }
                 },
