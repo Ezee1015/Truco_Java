@@ -76,7 +76,8 @@ public class Jugador {
 
     protected int calcularEnvido(){
       int envido=0;
-      ArrayList<Carta> manoOrigi = mano;
+      ArrayList<Carta> manoOrigi = new ArrayList<>();
+      manoOrigi.addAll(mano);
       manoOrigi.addAll(cartasJugadas);
 
       // Busca por pares por un envido de 20
@@ -107,8 +108,9 @@ public class Jugador {
       return envido;
     }
 
-  public void agregarCartaJugada(Carta c){
-      cartasJugadas.add(c);
+  public void agregarCartaJugada(int pos){
+      cartasJugadas.add(mano.get(pos));
+      mano.remove(pos);
   }
 
 }

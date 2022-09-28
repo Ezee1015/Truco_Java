@@ -508,19 +508,12 @@ public class InterfazJuego extends JFrame {
         puntajeAI.setVisible(true);
         puntajeFondo.add(puntajeAI);
 
-        JButton redibujar = new JButton("redraw");
+        JButton redibujar = new JButton("info");
         redibujar.setBounds(10, 10, 50, 50);
         redibujar.setVisible(true);
         fondo.add(redibujar);
         redibujar.addActionListener((ActionEvent e) -> {
-            System.out.println("***********************************************");
-            System.out.println("Cartas AI: " + ai.getMano().size());
-            System.out.println("Cartas Tiradas AI: " + ai.getCartasJugadas().size());
-            System.out.println("Cartas Jugador: " + jugador.getMano().size());
-            System.out.println("Cartas Tiradas Jugador: " + jugador.getCartasJugadas().size());
-            System.out.println("Nivel de truco: " + nivelTruco);
-            System.out.println("Habilitado a retrucar: " + habilitadoARetrucar);
-            System.out.println("***********************************************");
+            info();
         });
     }
 
@@ -668,46 +661,46 @@ public class InterfazJuego extends JFrame {
         }
 
         // Cartas ya tiradas
-        switch (ai.getMano().size()) {
-            case 0:
+        switch (ai.getCartasJugadas().size()) {
+            case 3:
                 AICT1.setIcon(new ImageIcon(ImageIO.read(new File(ai.getCartasJugadas().get(0).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
                 AICT2.setIcon(new ImageIcon(ImageIO.read(new File(ai.getCartasJugadas().get(1).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
                 AICT3.setIcon(new ImageIcon(ImageIO.read(new File(ai.getCartasJugadas().get(2).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
                 break;
-            case 1:
+            case 2:
                 AICT1.setIcon(new ImageIcon(ImageIO.read(new File(ai.getCartasJugadas().get(0).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
                 AICT2.setIcon(new ImageIcon(ImageIO.read(new File(ai.getCartasJugadas().get(1).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
                 AICT3.setIcon(null);
                 break;
-            case 2:
+            case 1:
                 AICT1.setIcon(new ImageIcon(ImageIO.read(new File(ai.getCartasJugadas().get(0).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
                 AICT2.setIcon(null);
                 AICT3.setIcon(null);
                 break;
-            case 3:
+            case 0:
                 AICT1.setIcon(null);
                 AICT2.setIcon(null);
                 AICT3.setIcon(null);
                 break;
         }
 
-        switch (jugador.getMano().size()) {
-            case 0:
+        switch (jugador.getCartasJugadas().size()) {
+            case 3:
                 PCT1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getCartasJugadas().get(0).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
                 PCT2.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getCartasJugadas().get(1).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
                 PCT3.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getCartasJugadas().get(2).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
                 break;
-            case 1:
+            case 2:
                 PCT1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getCartasJugadas().get(0).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
                 PCT2.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getCartasJugadas().get(1).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
                 PCT3.setIcon(null);
                 break;
-            case 2:
+            case 1:
                 PCT1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getCartasJugadas().get(0).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
                 PCT2.setIcon(null);
                 PCT3.setIcon(null);
                 break;
-            case 3:
+            case 0:
                 PCT1.setIcon(null);
                 PCT2.setIcon(null);
                 PCT3.setIcon(null);
@@ -735,11 +728,7 @@ public class InterfazJuego extends JFrame {
         PC2.setEnabled(false);
         PC3.setEnabled(false);
 
-        jugador.agregarCartaJugada(jugador.getMano().get(pos));
-
-        ArrayList<Carta> temp = jugador.getMano();
-        temp.remove(pos);
-        jugador.setMano(temp);
+        jugador.agregarCartaJugada(pos);
 
         dibujarCartas();
     }
@@ -819,21 +808,22 @@ public class InterfazJuego extends JFrame {
             // Suma puntos al ganador
             ai.setPuntaje(ai.getPuntaje() + calcularTrucoGanado(), this);
             otraPartida();
-        habilitaTurno();
-        return;
+            habilitaTurno();
+            return;
         }
-
-        System.out.println("habilita turno: AI " + ai.isMano() + " y el jugador " + jugador.isMano());
 
         if (jugador.getCartasJugadas().isEmpty() && ai.getCartasJugadas().isEmpty()) { // No jugo nadie
             if (jugador.isMano() == true) {
+                System.out.println("habilitaTurno(): No jugo nadie, turno Jugador");
                 if(habilitadoARetrucar < 2) truco.setEnabled(true);
                 envido.setEnabled(true);
                 irAlMazo.setEnabled(true);
                 PC1.setEnabled(true);
                 PC2.setEnabled(true);
                 PC3.setEnabled(true);
+                info();
             } else {
+                System.out.println("habilitaTurno(): No jugo nadie, turno AI");
                 truco.setEnabled(false);
                 envido.setEnabled(false);
                 irAlMazo.setEnabled(false);
@@ -845,16 +835,20 @@ public class InterfazJuego extends JFrame {
                 else return;
                 ai.jugarTurno(jugador, this);
                 dibujarCartas();
+                info();
                 habilitaTurno();
             }
         } else if (jugador.getCartasJugadas().isEmpty() && !ai.getCartasJugadas().isEmpty()) { // Ya Jugó la AI. Turno Jugador
+            System.out.println("habilitaTurno(): Ya jugó la AI, turno Jugador");
             if(habilitadoARetrucar < 2) truco.setEnabled(true);
             if(!envidoFinalizado) envido.setEnabled(true);
             irAlMazo.setEnabled(true);
             PC1.setEnabled(true);
             PC2.setEnabled(true);
             PC3.setEnabled(true);
+            info();
         } else if (!jugador.getCartasJugadas().isEmpty() && ai.getCartasJugadas().isEmpty()) { // Ya Jugó el Jugador. Turno AI
+            System.out.println("habilitaTurno(): Ya jugó el Jugador, turno AI");
                 truco.setEnabled(false);
                 envido.setEnabled(false);
                 irAlMazo.setEnabled(false);
@@ -866,6 +860,7 @@ public class InterfazJuego extends JFrame {
                 else return;
                 ai.jugarTurno(jugador, this);
                 dibujarCartas();
+                info();
                 habilitaTurno();
         } else if (!jugador.getCartasJugadas().isEmpty() && !ai.getCartasJugadas().isEmpty()) { // Rondas 2 y 3
             if (jugador.getCartasJugadas().size() == ai.getCartasJugadas().size()) { // Si es una ronda en la que nadie jugó
@@ -874,6 +869,7 @@ public class InterfazJuego extends JFrame {
                 envido.setEnabled(false); // Deshabilita el envido en la segunda ronda
 
                 if (rankingJugador > rankingAI) { // Si gano jugador en la anterior ronda
+                    System.out.println("habilitaTurno(): Nadie jugó, turno Jugador");
                     if(habilitadoARetrucar < 2) truco.setEnabled(true); // Si le corresponde retrucar
                     // Si la ultima carta que le queda al oponente es un 4, no se puede cantar truco
                     if(ai.getCartasJugadas().size() == 3) if(ai.getCartasJugadas().get(2).rankingCarta()==0) truco.setEnabled(false);
@@ -881,7 +877,9 @@ public class InterfazJuego extends JFrame {
                     PC1.setEnabled(true);
                     PC2.setEnabled(true);
                     PC3.setEnabled(true);
+                    info();
                 } else if (rankingAI > rankingJugador) { // si gano AI en la anterior ronda
+                    System.out.println("habilitaTurno(): Nadie jugó, turno AI");
                     truco.setEnabled(false);
                     envido.setEnabled(false);
                     irAlMazo.setEnabled(false);
@@ -892,9 +890,11 @@ public class InterfazJuego extends JFrame {
                     else return;
                     ai.jugarTurno(jugador, this);
                     dibujarCartas();
+                    info();
                     habilitaTurno();
                 } else if(rankingJugador == rankingAI){ // Si empatan
                     if(jugador.isMano()){ // Es mano el jugador
+                        System.out.println("habilitaTurno(): Empataron, turno Jugador");
                         if(habilitadoARetrucar < 2) truco.setEnabled(true);
                         // Si la ultima carta que le queda al oponente es un 4, no se puede cantar truco
                         if(ai.getCartasJugadas().size() == 3) if(ai.getCartasJugadas().get(2).rankingCarta()==0) truco.setEnabled(false);
@@ -902,7 +902,9 @@ public class InterfazJuego extends JFrame {
                         PC1.setEnabled(true);
                         PC2.setEnabled(true);
                         PC3.setEnabled(true);
+                        info();
                     } else { // Es mano la AI
+                        System.out.println("habilitaTurno(): Empataron, turno AI");
                         truco.setEnabled(false);
                         envido.setEnabled(false);
                         irAlMazo.setEnabled(false);
@@ -913,10 +915,12 @@ public class InterfazJuego extends JFrame {
                         else return;
                         ai.jugarTurno(jugador, this);
                         dibujarCartas();
+                        info();
                         habilitaTurno();
                     }
                 }
             } else if (jugador.getCartasJugadas().size() == ai.getCartasJugadas().size() - 1) { // Si ya la AI tiró en esa ronda
+                System.out.println("habilitaTurno(): Ya jugó AI, turno Jugador");
                 if(habilitadoARetrucar < 2) truco.setEnabled(true);
                 // Si la ultima carta que le queda al oponente es un 4, no se puede cantar truco
                 if(ai.getCartasJugadas().size() == 3) if(ai.getCartasJugadas().get(2).rankingCarta()==0) truco.setEnabled(false);
@@ -924,7 +928,9 @@ public class InterfazJuego extends JFrame {
                 PC1.setEnabled(true);
                 PC2.setEnabled(true);
                 PC3.setEnabled(true);
+                info();
             } else if (jugador.getCartasJugadas().size() - 1 == ai.getCartasJugadas().size()) { // Si ya el jugador tiró en esa ronda
+                System.out.println("habilitaTurno(): Ya jugó Jugador, turno AI");
                 truco.setEnabled(false);
                 envido.setEnabled(false);
                 irAlMazo.setEnabled(false);
@@ -935,6 +941,7 @@ public class InterfazJuego extends JFrame {
                 else return;
                 ai.jugarTurno(jugador, this);
                 dibujarCartas();
+                info();
                 habilitaTurno();
             }
         }
@@ -1488,4 +1495,18 @@ public class InterfazJuego extends JFrame {
         fondo.setIcon(new ImageIcon(imagen));
     }
 
+    private void info () {
+        System.out.println("***********************************************");
+        System.out.println("Cartas AI: " + ai.getMano().size());
+        for(int i=0;i<ai.getMano().size();i++)
+            System.out.println("     mano " + (i+1) + ": " + ai.getMano().get(i).texto());
+        System.out.println("Cartas Tiradas AI: " + ai.getCartasJugadas().size());
+        for(int i=0;i<ai.getCartasJugadas().size();i++)
+            System.out.println("     Tirada " + (i+1) + ": " + ai.getCartasJugadas().get(i).texto());
+        System.out.println("Cartas Jugador: " + jugador.getMano().size());
+        System.out.println("Cartas Tiradas Jugador: " + jugador.getCartasJugadas().size());
+        System.out.println("Nivel de truco: " + nivelTruco);
+        System.out.println("Habilitado a retrucar: " + habilitadoARetrucar);
+        System.out.println("***********************************************");
+    }
 }

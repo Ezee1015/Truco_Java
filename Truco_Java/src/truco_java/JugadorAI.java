@@ -39,7 +39,7 @@ public class JugadorAI extends Jugador {
         }
 
 
-      else if(cartasJugadas.size()>=1){
+      if(cartasJugadas.size()>=1){
           if(p.getCartasJugadas().get(0).rankingCarta() == cartasJugadas.get(0).rankingCarta())
               return tirarMejorCarta();
           if(p.getCartasJugadas().get(0).rankingCarta() > cartasJugadas.get(0).rankingCarta()){
@@ -133,6 +133,7 @@ public class JugadorAI extends Jugador {
         desicion = obligado + random.nextInt(4-obligado);
       }
 
+
       else if(calcularEnvido()>27){
         if(estado==3)
           desicion = 3;
@@ -185,69 +186,6 @@ public class JugadorAI extends Jugador {
         return 1;
 
       return desicion;
-
-      /* FUNCION 1:
-      if(calcularEnvido()<=23){               // Menos de 23 de envido, nada
-        return 0;
-      }
-
-      if(calcularEnvido()>30)                 // Más de 30 de envido, canta
-        desicion = random.nextInt(obligado,4);
-
-      if(estado==0 && calcularEnvido()>25)    // Más de 25 de envido y no se cantó, obliga a cantar
-        obligado = 1;
-
-      if(calcularEnvido()>=27 && estado<=3)   // Más o igual 27 de envido y menor que Real, puede cantar hasta real
-        desicion = random.nextInt(obligado,3);
-
-      if(calcularEnvido()>23 && estado<2){    // Entre 23 y 27 de envido solo puede cantar hasta envido-envido o envido
-        if(random.nextInt(4)==3)              // Probabilidad de 1/4 que retruque a envido envido
-          desicion = random.nextInt(estado,2);
-        else
-          desicion = estado;
-      }
-
-      if(random.nextInt(8) == 7) { //El 7 es un numero de ejemplo para la probabilidad de 1/8
-          // if(random.nextInt(4) == 3 && estado < 4) // El 3 representa un probabilidad entre 1/4 para retrucar sin nada
-            desicion = estado + 1;
-          // desicion = estado; // Acepta sin nada
-      }
-
-      return desicion;
-      */
-
-      /* FUNCION 2:
-      if(calcularEnvido()>27 && estado==0)   // Obliga a jugar a la AI si tiene como mínimo más de 27 de envido
-          obligado=1;
-
-      if(calcularEnvido()>=31){                     // Envido más de 31
-          if (obligado==4) desicion = desidirSiONoRandom(4);
-          else desicion = random.nextInt(obligado,4);
-      }else if(calcularEnvido()>=27 && estado < 3) // Envido más de 27 y se cantó hasta Real Envido
-          desicion = random.nextInt(obligado,3);
-      else if(calcularEnvido()>=25 && estado <= 2) // Envido más de 25 y se cantó envido-envido para abajo
-          desicion = random.nextInt(obligado,3);
-      else if(calcularEnvido()>=23 && estado == 0) // Envido más de 23 y no se cantó nada
-          desicion = desidirSiONoRandom(random.nextInt(obligado,1));
-
-      else if(random.nextInt(8) == 8) { //El 7 es un numero de ejemplo para la probabilidad de 1/8
-          if(random.nextInt(0,4) == 3 && estado < 4) // El 3 representa un probabilidad entre 1/4
-            desicion = estado++;
-          desicion = estado; // Acepta
-      }
-
-      if(desicion==2 && estado!=1){
-          if(estado==0)
-              desicion = 1;
-          else
-              desicion = 3;
-      }
-
-      if(desicion<estado) // Soluciona un bug
-          desicion=estado;
-
-      return desicion;
-      */
   }
 
   private int cantBuenasCartas () {
@@ -303,12 +241,12 @@ public class JugadorAI extends Jugador {
         case 1:
           if(estado==3)
             return 3;
-          return estado++;
+          return estado+1;
         case 2:
           if(random.nextInt(3)==1){
             if(estado==3)
               return 3;
-            return estado++;
+            return estado+1;
           }
           break;
         case 3:
@@ -332,12 +270,18 @@ public class JugadorAI extends Jugador {
       break;
     case 2:
     case 3: // Segunda mano
-      if(cantBuenasCartas()>1)  // Si tengo mas de una buena carta apostar todo
+      if(cantBuenasCartas()>1){  // Si tengo mas de una buena carta apostar todo
+        if(estado==3)
+          return 3;
         return estado+random.nextInt(3-estado);
+      }
       // Si empaté la anterior...
         if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == cartasJugadas.get(cartasJugadas.size()-1).rankingCarta()){
-          if(cantBuenasCartas()>=1)
+          if(cantBuenasCartas()>=1){
+            if(estado==3)
+              return 3;
             return estado+random.nextInt(3-estado);
+          }
           if(cantMedianasCartas()>=1 && random.nextInt(2)==1)
             return estado;
         }
@@ -377,10 +321,10 @@ public class JugadorAI extends Jugador {
             numeros.add(cartasJugadasJugador.get(i).getNumero());
 
       Carta ultimaCarta;
-      if(mano.size()==1)
+      if(cartasJugadas.size()==2) // Si tiro 2 cartas, toma la que tiene en la mano
           ultimaCarta=mano.get(0);
-      else
-          ultimaCarta=cartasJugadas.get(1);
+      else // Si tiro las tres cartas, toma la última que tiró
+          ultimaCarta=cartasJugadas.get(2);
 
 
       if(envidoJugadorCantado==0){
@@ -434,7 +378,7 @@ public class JugadorAI extends Jugador {
       if(envidoJugadorCantado==7) { // Si tiene un siete
           if(numeros.contains(7)) // Si ya tiró esa carta
             return 0;
-          if(palos.contains("espada") || palos.contains("oro")){
+          if(palos.contains("basto") || palos.contains("copa")){
             System.out.println("A VER A VER A VER tiene un siete de oro o de espada");
             if(ultimaCarta.rankingCarta()>10) // Si tengo un 7 de espada en adelante
                     return 1;
@@ -510,8 +454,8 @@ public class JugadorAI extends Jugador {
         // fue tirada, abandonar. Más decir que no estoy seguro a lo que tiene
         // (por eso devulvo un 0) a que eliminar esa probabilidad y quedarme
         // con las otras
-        for (int i = 0; i < cartasJugadas.size(); i++)
-          if(posibilidades.contains(cartasJugadas.get(i)))
+        for (int i = 0; i < cartasJugadasJugador.size(); i++)
+          if(posibilidades.contains(cartasJugadasJugador.get(i)))
             return 0;
 
         //Busca a cuantas cartas les gano de las probabilidades
