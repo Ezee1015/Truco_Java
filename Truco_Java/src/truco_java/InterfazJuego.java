@@ -24,6 +24,7 @@ public class InterfazJuego extends JFrame {
 
     private static ArrayList<Carta> mazo = new ArrayList<>();
     JLabel fondo = new JLabel();
+    private Truco_Java menu;
     JLabel AIC1, AIC2, AIC3;
     JLabel AICT1, AICT2, AICT3;
     JButton PC1, PC2, PC3;
@@ -43,7 +44,8 @@ public class InterfazJuego extends JFrame {
     JLabel puntajeAI = new JLabel(), puntajeJugador = new JLabel();
     private final int numeroPersonaje = new Random().nextInt(6) + 1; // Este numero representa el personaje que fue generado;
 
-    public InterfazJuego() throws IOException {
+    public InterfazJuego(Truco_Java menu) throws IOException {
+        this.menu = menu;
         cargarMazo();
 
         setLayout(null);
@@ -261,8 +263,9 @@ public class InterfazJuego extends JFrame {
         irAlMazo.setEnabled(false);
         fondo.add(irAlMazo);
         irAlMazo.addActionListener((ActionEvent e) -> {
+            JOptionPane.showMessageDialog(null, "Te has ido al mazo. Repartiendo...");
             int puntos=0;
-            if(!envidoFinalizado && ai.getCartasJugadas().size()==0)
+            if(!envidoFinalizado && ai.getCartasJugadas().isEmpty())
                 puntos++;
             System.out.println("puntos envido: " + puntos + " y truco: " +calcularTrucoGanado() );
             ai.setPuntaje(ai.getPuntaje()+puntos+calcularTrucoGanado(), this);
@@ -530,10 +533,12 @@ public class InterfazJuego extends JFrame {
 
         if(jugadorPunt==15){
             JOptionPane.showMessageDialog(null, "Termino el Juego. Gano el Jugador. Felicidades");
+            menu.setVisible(true);
             setVisible(false);
         }
         if(aiPunt==15){
-            JOptionPane.showMessageDialog(null, "Termino el Juego. Gano la computadora. Será la próxima...");
+            JOptionPane.showMessageDialog(null, "Termino el Juego. Gano la PC. Será la próxima...");
+            menu.setVisible(true);
             setVisible(false);
         }
     }
