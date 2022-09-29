@@ -20,8 +20,8 @@ public class Truco_Java extends JFrame{
         setDefaultCloseOperation(3);
 
         // Fondo
-        JLabel fondo = new JLabel(new ImageIcon("src/truco_java/fondos/menu.png"));
-        fondo.setBounds(0, 0, 500, 800);
+        JLabel fondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/menu.png")).getScaledInstance(500, 500, Image.SCALE_SMOOTH)));
+        fondo.setBounds(0, 0, 500, 500);
         fondo.setVisible(true);
         add(fondo);
 
