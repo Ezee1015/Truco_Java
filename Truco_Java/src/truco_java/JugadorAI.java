@@ -445,7 +445,7 @@ public class JugadorAI extends Jugador {
           for (int x = 0; x < mano.size(); x++)
             if(posibilidades.get(i).equals(mano.get(x)))
               posibilidades.remove(i);
-          for (int x = 0; x < cartasJugadasJugador.size(); x++)
+          for (int x = 0; x < cartasJugadas.size(); x++)
             if(posibilidades.get(i).equals(cartasJugadas.get(x)))
               posibilidades.remove(i);
         }
@@ -457,6 +457,22 @@ public class JugadorAI extends Jugador {
         for (int i = 0; i < cartasJugadasJugador.size(); i++)
           if(posibilidades.contains(cartasJugadasJugador.get(i)))
             return 0;
+
+        // Recorre las posibilidades en busqueda de 10,11,12 y convertir lo que encuentre en su carta mayor.
+        // Ej: 10,11,12 --> 12
+        //     11,12    -->12
+        //     11, 10   --> 11
+        for(int i=0; i<posibilidades.size()-1; i++){
+          if(posibilidades.get(i).getPalo() == posibilidades.get(i+1).getPalo()) // Si las cartas son del mismo palo
+             if(posibilidades.get(i).getNumero() >= 10 && posibilidades.get(i).getNumero() <= 12 ) // Si la carta 1 está entre 10,11,12
+               if(posibilidades.get(i+1).getNumero() >= 10 && posibilidades.get(i+1).getNumero() <= 12 ){ // Si la carta 2 está entre 10,11,12
+                 if(posibilidades.get(i).rankingCarta() > posibilidades.get(i+1).rankingCarta())
+                   posibilidades.remove(i+1);
+                 else
+                   posibilidades.remove(i);
+                 i--;
+               }
+        }
 
         //Busca a cuantas cartas les gano de las probabilidades
         int cantCartasQueLeGano=0;

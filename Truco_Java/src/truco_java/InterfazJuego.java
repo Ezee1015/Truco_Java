@@ -43,6 +43,7 @@ public class InterfazJuego extends JFrame {
     JLabel fondoEstado;
     JLabel puntajeAI = new JLabel(), puntajeJugador = new JLabel();
     private final int numeroPersonaje = new Random().nextInt(6) + 1; // Este numero representa el personaje que fue generado;
+    boolean termino = false;
 
     public InterfazJuego(Truco_Java menu) throws IOException {
         this.menu = menu;
@@ -80,6 +81,7 @@ public class InterfazJuego extends JFrame {
         PC1 = new JButton();
         PC1.setBounds(10, 400, 155, 200);
         PC1.setVisible(true);
+        PC1.setEnabled(false);
         PC1.setOpaque(false);
         PC1.setContentAreaFilled(false);
         PC1.setBorderPainted(false);
@@ -108,6 +110,7 @@ public class InterfazJuego extends JFrame {
         PC2 = new JButton();
         PC2.setBounds(170, 400, 155, 200);
         PC2.setVisible(true);
+        PC2.setEnabled(false);
         PC2.setBorderPainted(false);
         PC2.setOpaque(false);
         PC2.setContentAreaFilled(false);
@@ -135,6 +138,7 @@ public class InterfazJuego extends JFrame {
         PC3 = new JButton();
         PC3.setBounds(330, 400, 155, 200);
         PC3.setVisible(true);
+        PC3.setEnabled(false);
         PC3.setBorderPainted(false);
         PC3.setOpaque(false);
         PC3.setContentAreaFilled(false);
@@ -525,6 +529,8 @@ public class InterfazJuego extends JFrame {
     }
 
     public void dibujarPuntaje() throws IOException {
+        if(termino)
+            return;
         int jugadorPunt = jugador.getPuntaje();
         int aiPunt = ai.getPuntaje();
         if(jugadorPunt > 15)
@@ -538,13 +544,13 @@ public class InterfazJuego extends JFrame {
         if(jugadorPunt==15){
             JOptionPane.showMessageDialog(null, "Termino el Juego. Gano el Jugador. Felicidades");
             menu.setVisible(true);
-            setVisible(false);
+            termino=true;
             dispose();
         }
         if(aiPunt==15){
             JOptionPane.showMessageDialog(null, "Termino el Juego. Gano la PC. Será la próxima...");
             menu.setVisible(true);
-            setVisible(false);
+            termino=true;
             dispose();
         }
     }
@@ -806,6 +812,8 @@ public class InterfazJuego extends JFrame {
     }
 
     private void habilitaTurno() throws IOException {
+        if(termino)
+            return;
         if(compruebaSiTerminoPartida()==1) {
             JOptionPane.showMessageDialog(null, "Termino Partida. Gano el Jugador.");
             // Suma puntos al ganador
