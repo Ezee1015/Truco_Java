@@ -18,7 +18,7 @@ public class AcercaDe extends JFrame {
       JTextPane descripcion;
       JButton atras = new JButton("Atras");
       JButton adelante = new JButton("Siguiente");
-      JButton salir = new JButton("Volver Atras");
+      JButton salir = new JButton("Volver al menú");
 
 
   public AcercaDe (Truco_Java menu) throws IOException {
