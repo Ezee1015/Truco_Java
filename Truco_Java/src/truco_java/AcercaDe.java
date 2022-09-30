@@ -1,0 +1,110 @@
+package truco_java;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextPane;
+
+public class AcercaDe extends JFrame {
+      JTextPane descripcion;
+      JButton atras = new JButton("Atras");
+      JButton adelante = new JButton("Siguiente");
+      JButton salir = new JButton("Volver Atras");
+
+
+  public AcercaDe (Truco_Java menu) throws IOException {
+        setLayout(null);
+        setDefaultCloseOperation(3);
+
+        // Fondo
+        JLabel fondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondo_acerca.png")).getScaledInstance(500, 500, Image.SCALE_SMOOTH)));
+        fondo.setBounds(0, 0, 500, 500);
+        fondo.setVisible(true);
+        add(fondo);
+
+        // Logo
+        JLabel logo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/logo.png")).getScaledInstance(300, 100, Image.SCALE_SMOOTH)));
+        logo.setBounds(100, 20, 300, 100);
+        logo.setVisible(true);
+        fondo.add(logo);
+
+        descripcion = new JTextPane();
+        descripcion.setText("     Te despiertas en un sofá, te levantas y miras a tu alrededor: estaba Messi hablando con Maradona compartiendo unos mates, Boris Johnson hablando por celular, Guido Kaczka sentado en una silla admirando la vista y la Roca acariciando a un carpincho.");
+        descripcion.setForeground(Color.WHITE);
+        descripcion.setBounds(40,140,430,275);
+        descripcion.setFont(new Font("Serif", Font.ITALIC, 20));
+        descripcion.setEditable(false);
+        descripcion.setOpaque(false);
+        descripcion.setVisible(true);
+        fondo.add(descripcion);
+
+        // Atras
+        atras.setBounds(20, 420, 100, 30);
+        atras.setVisible(true);
+        atras.setEnabled(false);
+        fondo.add(atras);
+        atras.addActionListener((ActionEvent e) -> {
+            determinarDescripcion(false);
+        });
+
+        // Adelante
+        adelante.setBounds(380, 420, 100, 30);
+        adelante.setVisible(true);
+        adelante.setEnabled(true);
+        fondo.add(adelante);
+        adelante.addActionListener((ActionEvent e) -> {
+            determinarDescripcion(true);
+        });
+        
+        // Atras
+        salir.setBounds(140, 420, 220, 30);
+        salir.setVisible(false);
+        fondo.add(salir);
+        salir.addActionListener((ActionEvent e) -> {
+            setVisible(false);
+            menu.setVisible(true);
+        });
+  }
+
+  private void determinarDescripcion(boolean siguiente) {
+        ArrayList<String> parrafo = new ArrayList<>();
+        parrafo.add("     Te despiertas en un sofá, te levantas y miras a tu alrededor: estaba Messi hablando con Maradona compartiendo unos mates, Boris Johnson hablando por celular, Guido Kaczka sentado en una silla admirando la vista y la Roca acariciando a un carpincho.");
+        parrafo.add("     Intentas recordar qué pasó, pero nada se te viene a la mente. Boris deja el celular en la mesa y viene a hablar con vos. En su mejor esfuerzo de hablar en Español, dice que están en su quinta privada secreta en Mendoza: están perseguidos por fuerzas nazis en su último intento de regreso al poder, y ese es su único lugar de escondite. Por suerte, los nazis ya están casi derrotados. Las fuerzas armadas vienen al rescate, pero tardaran 12 horas en llegar.");
+        parrafo.add("     Al término de la explicación le preguntas: ¿Cómo esto puede ser verdad? ¿Cómo carajo sabes español? ¿Y no era que Maradona se la dio contra el canterito? Maradona se levanta y te dice: “Demasiadas preguntas. Acá todos sabemos hablar en Español, excepto Boris que no se le da muy bien. Si eso te parece extraño, esperá a que el carpincho te gane al truco.” Te quedás helado, quieto. Maradona te grita: “¿No vas a venir a jugar? ¿Tenés miedo?” Así que te sientas en la silla y te preparas a jugar unas rondas de truco...");
+
+        for(int i=0;i<parrafo.size();i++){
+              if(descripcion.getText().equals(parrafo.get(i))){
+                    atras.setEnabled(true);
+                    adelante.setEnabled(true);
+
+                    if(siguiente && i!=parrafo.size()-1){
+                          descripcion.setText(parrafo.get(i+1));
+                          if(i==1){
+                                adelante.setEnabled(false);
+                                salir.setVisible(true);
+                          }
+                    }
+                    if(!siguiente && i!=0){
+                          descripcion.setText(parrafo.get(i-1));
+                          if(i==parrafo.size()-2)
+                                atras.setEnabled(false);
+                    }
+
+                    break;
+              }
+        }
+  }
+
+}
