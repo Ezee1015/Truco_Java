@@ -7,9 +7,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -43,8 +40,8 @@ public class AcercaDe extends JFrame {
         descripcion = new JTextPane();
         descripcion.setText("     Te despiertas en un sofá, te levantas y miras a tu alrededor: estaba Messi hablando con Maradona compartiendo unos mates, Boris Johnson hablando por celular, Guido Kaczka sentado en una silla admirando la vista y la Roca acariciando a un carpincho.");
         descripcion.setForeground(Color.WHITE);
-        descripcion.setBounds(40,140,430,275);
-        descripcion.setFont(new Font("Serif", Font.ITALIC, 20));
+        descripcion.setBounds(20,140,460,275);
+        descripcion.setFont(new Font("Serif", Font.ITALIC, 17));
         descripcion.setEditable(false);
         descripcion.setOpaque(false);
         descripcion.setVisible(true);
@@ -67,7 +64,7 @@ public class AcercaDe extends JFrame {
         adelante.addActionListener((ActionEvent e) -> {
             determinarDescripcion(true);
         });
-        
+
         // Atras
         salir.setBounds(140, 420, 220, 30);
         salir.setVisible(false);
@@ -75,6 +72,7 @@ public class AcercaDe extends JFrame {
         salir.addActionListener((ActionEvent e) -> {
             setVisible(false);
             menu.setVisible(true);
+            dispose();
         });
   }
 

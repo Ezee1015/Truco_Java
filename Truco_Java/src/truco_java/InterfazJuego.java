@@ -511,12 +511,16 @@ public class InterfazJuego extends JFrame {
         puntajeAI.setVisible(true);
         puntajeFondo.add(puntajeAI);
 
-        JButton redibujar = new JButton("info");
-        redibujar.setBounds(10, 10, 50, 50);
+        JButton redibujar = new JButton("Volver al menú"); //TODO: Poner imagen de flecha
+        redibujar.setBounds(10, 10, 100, 50);
         redibujar.setVisible(true);
         fondo.add(redibujar);
         redibujar.addActionListener((ActionEvent e) -> {
             info();
+            int dialogResult = JOptionPane.showConfirmDialog (null, "Está seguro que desea abandonar la partida? Se declarará a la PC como ganador...","Atención!",JOptionPane.YES_NO_OPTION);
+            if(dialogResult == JOptionPane.YES_OPTION){
+                ai.setPuntaje(15, this);
+            }
         });
     }
 
@@ -535,11 +539,13 @@ public class InterfazJuego extends JFrame {
             JOptionPane.showMessageDialog(null, "Termino el Juego. Gano el Jugador. Felicidades");
             menu.setVisible(true);
             setVisible(false);
+            dispose();
         }
         if(aiPunt==15){
             JOptionPane.showMessageDialog(null, "Termino el Juego. Gano la PC. Será la próxima...");
             menu.setVisible(true);
             setVisible(false);
+            dispose();
         }
     }
 
