@@ -545,12 +545,14 @@ public class InterfazJuego extends JFrame {
             JOptionPane.showMessageDialog(null, "Termino el Juego. Gano el Jugador. Felicidades");
             menu.setVisible(true);
             termino=true;
+            otraPartida();
             dispose();
         }
         if(aiPunt==15){
             JOptionPane.showMessageDialog(null, "Termino el Juego. Gano la PC. Será la próxima...");
             menu.setVisible(true);
             termino=true;
+            otraPartida();
             dispose();
         }
     }
