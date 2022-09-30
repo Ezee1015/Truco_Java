@@ -38,6 +38,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
         }
 
         public void play() {
+            if(!Truco_Java.musica.isSelected())
+                return;
+
             clip.start();
         }
 

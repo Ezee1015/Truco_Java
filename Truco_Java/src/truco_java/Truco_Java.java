@@ -1,7 +1,10 @@
 package truco_java;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -11,8 +14,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JCheckBox;
 
 public class Truco_Java extends JFrame{
+
+    static JCheckBox musica = new JCheckBox("Musica y Sonido", true);
+    static JCheckBox facil = new JCheckBox("Modo Fácil (PC no miente)", false);
+    static Music musicaFondo = new Music();
 
     public Truco_Java () throws IOException {
 
@@ -33,7 +41,7 @@ public class Truco_Java extends JFrame{
 
         // Jugar
         JButton jugar = new JButton("Jugar");
-        jugar.setBounds(100, 325, 300, 50);
+        jugar.setBounds(100, 350, 300, 40);
         jugar.setVisible(true);
         fondo.add(jugar);
         jugar.addActionListener((ActionEvent e) -> {
@@ -43,7 +51,7 @@ public class Truco_Java extends JFrame{
                 ImageIcon icono = new ImageIcon("src/truco_java/fondos/icono.png");
                 juego = new InterfazJuego(this);
                 juego.setIconImage(icono.getImage());
-                juego.setBounds(0,0,500,800);
+                juego.setBounds(0,0,510,800);
                 juego.setLocationRelativeTo(null);
                 juego.setVisible(true);
             } catch (IOException ex) {
@@ -53,7 +61,7 @@ public class Truco_Java extends JFrame{
 
         // Acerca De
         JButton acercaBoton = new JButton("Acerca del Juego");
-        acercaBoton.setBounds(100, 400, 300, 50);
+        acercaBoton.setBounds(100, 400, 140, 40);
         acercaBoton.setVisible(true);
         fondo.add(acercaBoton);
         acercaBoton.addActionListener((ActionEvent e) -> {
@@ -70,6 +78,48 @@ public class Truco_Java extends JFrame{
                 Logger.getLogger(Truco_Java.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+
+        // Salir
+        JButton salir = new JButton("SALIR");
+        salir.setBounds(260, 400, 140, 40);
+        salir.setVisible(true);
+        fondo.add(salir);
+        salir.addActionListener((ActionEvent e) -> {
+            System.exit(0);
+        });
+
+        // CheckBox selector de musica ON/OFF
+        musica.setBounds(100, 300, 130, 40);
+        musica.setOpaque(false);
+        fondo.add(musica);
+        musica.addItemListener(new ItemListener() {
+             public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange()==1){
+                    musicaFondo.setFile("src/truco_java/musica/fondo.wav");
+                    musicaFondo.play();
+                } else{
+                    try {
+                        musicaFondo.stop();
+                    } catch (IOException ex) {
+                        System.out.println("Error al detener la musica");
+                    }
+                }
+             }
+          });
+
+        // CheckBox selector de modo facil/dificil
+        facil.setBounds(230, 300, 250, 40);
+        facil.setOpaque(false);
+        fondo.add(facil);
+        //facil.addItemListener(new ItemListener() {
+        //     public void itemStateChanged(ItemEvent e) {
+        //        if(e.getStateChange()==1){
+        //            ////////
+        //        } else{
+        //            ////////
+        //        }
+        //     }
+        //  });
     }
 
     public static void main(String[] args) throws IOException {
@@ -82,11 +132,7 @@ public class Truco_Java extends JFrame{
         menu.setVisible(true);
 
 
-        Music musicaFondo = new Music();
         musicaFondo.setFile("src/truco_java/musica/fondo.wav");
         musicaFondo.play();
-/*
-
-*/
     }
 }
