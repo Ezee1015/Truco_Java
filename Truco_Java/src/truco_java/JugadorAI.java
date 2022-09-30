@@ -446,7 +446,7 @@ public class JugadorAI extends Jugador {
             if(posibilidades.get(i).equals(mano.get(x)))
               posibilidades.remove(i);
           for (int x = 0; x < cartasJugadasJugador.size(); x++)
-            if(posibilidades.get(i).equals(cartasJugadasJugador.get(x)))
+            if(posibilidades.get(i).equals(cartasJugadas.get(x)))
               posibilidades.remove(i);
         }
 
