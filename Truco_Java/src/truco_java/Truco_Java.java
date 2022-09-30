@@ -1,6 +1,5 @@
 package truco_java;
 
-import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -48,9 +47,9 @@ public class Truco_Java extends JFrame{
             setVisible(false);
             InterfazJuego juego;
             try {
-                ImageIcon icono = new ImageIcon("src/truco_java/fondos/icono.png");
                 juego = new InterfazJuego(this);
-                juego.setIconImage(icono.getImage());
+                juego.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
+                juego.setTitle("Juego Truco");
                 juego.setBounds(0,0,510,800);
                 juego.setLocationRelativeTo(null);
                 juego.setVisible(true);
@@ -123,11 +122,11 @@ public class Truco_Java extends JFrame{
     }
 
     public static void main(String[] args) throws IOException {
-        ImageIcon icono = new ImageIcon("src/ahorcadomalvinas/images/icono.png");
 
         Truco_Java menu = new Truco_Java();
-        menu.setIconImage(icono.getImage());
+        menu.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
         menu.setBounds(0,0,500,500);
+        menu.setTitle("Menu - Truco");
         menu.setLocationRelativeTo(null);
         menu.setVisible(true);
 
