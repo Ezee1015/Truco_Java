@@ -448,15 +448,18 @@ public class JugadorAI extends Jugador {
           for (int x = 0; x < cartasJugadas.size(); x++)
             if(posibilidades.get(i).equals(cartasJugadas.get(x)))
               posibilidades.remove(i);
+          for (int x = 0; x < cartasJugadasJugador.size(); x++)
+            if(posibilidades.get(i).equals(cartasJugadasJugador.get(x)))
+              posibilidades.remove(i);
         }
 
         // Si hay alguna carta de las que yo supuse que es una posibilidad y ya
         // fue tirada, abandonar. Más decir que no estoy seguro a lo que tiene
         // (por eso devulvo un 0) a que eliminar esa probabilidad y quedarme
         // con las otras
-        for (int i = 0; i < cartasJugadasJugador.size(); i++)
-          if(posibilidades.contains(cartasJugadasJugador.get(i)))
-            return 0;
+        // for (int i = 0; i < cartasJugadasJugador.size(); i++)
+        //   if(posibilidades.contains(cartasJugadasJugador.get(i)))
+        //     return 0;
 
         // Recorre las posibilidades en busqueda de 10,11,12 y convertir lo que encuentre en su carta mayor.
         // Si hay 2 o más de 10s (10, 11, 12) en el array de posibilidades, convierte las 2 o 3 que haya en la carta mayor. Ejemplo si hay 10 y 12, se convierte en un 12, si hay un 10 y 11, se convierte en un 11. Esto para que cuando calcule las posibilidades, no tome en cuenta 3 cartas del mismo tipo ( o sea reyes). Me paso que tocó en las posibilidades: 10,11,12,3. Pero no le ganaba al 3 pero si a los reyes, así que apostó con todo. Con esta modificación hubiese tenido un 50% en vez de un 75%.
