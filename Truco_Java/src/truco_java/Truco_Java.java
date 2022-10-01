@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JCheckBox;
 
 public class Truco_Java extends JFrame{
@@ -53,6 +54,8 @@ public class Truco_Java extends JFrame{
                 juego.setBounds(0,0,510,800);
                 juego.setLocationRelativeTo(null);
                 juego.setVisible(true);
+                //Muestra el mensaje que avisa para comenzar el juego
+                JOptionPane.showMessageDialog(null, "Aprete el mazo de cartas para comenzar el juego...");
             } catch (IOException ex) {
                 Logger.getLogger(Truco_Java.class.getName()).log(Level.SEVERE, null, ex);
             }
