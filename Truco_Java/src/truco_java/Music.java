@@ -14,6 +14,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
         AudioInputStream sound;
 
         public void setFile(String soundFileName) {
+            if(!Truco_Java.musica.isSelected())
+                return;
+
             try {
                 File file = new File(soundFileName);
                 sound = AudioSystem.getAudioInputStream(file);
@@ -27,6 +30,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
         // Lo mismo que el anterior pero modifica los parametros. Esto solo hace que se reproducta una vez
         public void setFile(String soundFileName, int x) {
+            if(!Truco_Java.musica.isSelected())
+                return;
+
             try {
                 File file = new File(soundFileName);
                 sound = AudioSystem.getAudioInputStream(file);
