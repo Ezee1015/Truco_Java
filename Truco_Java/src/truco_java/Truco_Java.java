@@ -50,8 +50,9 @@ public class Truco_Java extends JFrame{
             try {
                 juego = new InterfazJuego(this);
                 juego.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
+                juego.setResizable(false);
                 juego.setTitle("Juego Truco");
-                juego.setBounds(0,0,510,800);
+                juego.setBounds(0,0,505,800);
                 juego.setLocationRelativeTo(null);
                 juego.setVisible(true);
                 //Muestra el mensaje que avisa para comenzar el juego
@@ -74,6 +75,8 @@ public class Truco_Java extends JFrame{
                 acerca = new AcercaDe(this);
                 acerca.setIconImage(icono.getImage());
                 acerca.setBounds(0,0,500,500);
+                acerca.setTitle("Acerca del Juego");
+                acerca.setResizable(false);
                 acerca.setLocationRelativeTo(null);
                 acerca.setVisible(true);
             } catch (IOException ex) {
@@ -129,6 +132,7 @@ public class Truco_Java extends JFrame{
         Truco_Java menu = new Truco_Java();
         menu.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
         menu.setBounds(0,0,500,500);
+        menu.setResizable(false);
         menu.setTitle("Menu - Truco");
         menu.setLocationRelativeTo(null);
         menu.setVisible(true);
