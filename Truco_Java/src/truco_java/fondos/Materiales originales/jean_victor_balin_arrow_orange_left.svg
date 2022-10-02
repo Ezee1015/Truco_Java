@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" id="svg2" viewBox="0 0 38 36" version="1.0">
+  <defs id="defs4">
+    <linearGradient id="linearGradient1552">
+      <stop id="stop1554" stop-color="#f9cc84" offset="0"/>
+      <stop id="stop1556" stop-color="#fed27f" offset="1"/>
+    </linearGradient>
+    <radialGradient id="radialGradient1428" gradientUnits="userSpaceOnUse" cy=".4053" cx="-18.3" gradientTransform="matrix(-.13160 1.117 -1.0576 -.12462 33.357 39.585)" r="17.1">
+      <stop id="stop1427" stop-color="#f0d81f" offset="0"/>
+      <stop id="stop1429" stop-color="#f07d0a" offset="1"/>
+    </radialGradient>
+    <linearGradient id="linearGradient1427" y2="16.238" xlink:href="#linearGradient1552" gradientUnits="userSpaceOnUse" x2="30.302" gradientTransform="matrix(0 1 -1 0 63.962 .0077)" y1="47.962" x1="36.312"/>
+    <linearGradient id="linearGradient1435" y2="47.922" xlink:href="#linearGradient1552" gradientUnits="userSpaceOnUse" x2="27.857" gradientTransform="matrix(0 1 -1 0 64 -.02652)" y1="16.238" x1="32"/>
+    <linearGradient id="linearGradient1440" y2="47.922" gradientUnits="userSpaceOnUse" x2="27.857" gradientTransform="matrix(0,1,-1,0,64,0)" y1="16.238" x1="32">
+      <stop id="stop1520" stop-color="#f3ac39" stop-opacity=".62876" offset="0"/>
+      <stop id="stop1522" stop-color="#fcba94" stop-opacity=".78261" offset="1"/>
+    </linearGradient>
+  </defs>
+  <g id="layer1">
+    <g id="g1428" transform="translate(-13,-14)">
+      <path id="path2125" d="m50 22c0-1-1-1-1-1h-17c-0.049-1 0-5 0-5-0.009-0.447-0.109-0.846-0.523-1.016s-0.889-0.077-1.209 0.235l-16 16c-0.422 0.435-0.422 1.127 0 1.562l16 16c0.32 0.312 0.795 0.405 1.209 0.235s0.514-0.569 0.523-1.016v-5h17.049s1 0 1-1c0-6-0.049-14-0.049-20z" fill="#a54005"/>
+      <path id="path3636" d="m41.781 15.156c-5.903 0.002-13.643 0.061-19.562 0.063v16.781c0.001 0.649-0.508 1.186-1.157 1.219-1.093 0.053-4.057 0.008-4.624 0l15.562 15.562 15.531-15.562h-4.531c-0.673 0-1.219-0.546-1.219-1.219v-16.844z" fill="url(#radialGradient1428)" transform="matrix(0,1,-1,0,64,0)"/>
+      <path id="path1511" d="m47 41c1.031-0.906 1-17 0-18s-14.11 0.122-15 0.094c-3-0.094-1-4.094-3-3.094-3 2-12 11-12 12s9 10 12 12c2 1 0-3 3-3.094 0.935-0.029 14.031 1.188 15 0.094z" fill="url(#linearGradient1440)"/>
+      <path id="path1548" d="m29 19.973c-3 2-12 11-12 12s5.459 7.027 8.502 9.027c0-0.973-3.502-4-3.502-9 0-4 9-9 7-12.027z" fill="url(#linearGradient1435)"/>
+      <path id="path1558" d="m47.724 32.035c-0.004-4.262-0.25-8.531-0.75-9.031-0.698-0.699-6.176-0.4-10.188-0.157-2.786 0.153-2.786 0.153 0.214 1.153 10.479 3.493 8.316 16.082 7.943 17.41 1.007-0.063 1.826-0.175 2.031-0.406 0.515-0.454 0.754-4.707 0.75-8.969z" fill="url(#linearGradient1427)"/>
+    </g>
+  </g>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/publicdomain/"/>
+        <dc:publisher>
+          <cc:Agent rdf:about="http://openclipart.org/">
+            <dc:title>Openclipart</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:title>arrow_orange_left</dc:title>
+        <dc:date>2008-05-26T11:34:16</dc:date>
+        <dc:description>arrow, arrow, clip art, clipart, icon, icon, image, media, png, public domain, svg, </dc:description>
+        <dc:source>http://openclipart.org/detail/16967/arrow_orange_left-by-jean_victor_balin</dc:source>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>jean_victor_balin</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>arrow</rdf:li>
+            <rdf:li>clip art</rdf:li>
+            <rdf:li>clipart</rdf:li>
+            <rdf:li>icon</rdf:li>
+            <rdf:li>image</rdf:li>
+            <rdf:li>media</rdf:li>
+            <rdf:li>png</rdf:li>
+            <rdf:li>public domain</rdf:li>
+            <rdf:li>svg</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/publicdomain/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>
