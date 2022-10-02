@@ -16,8 +16,8 @@ import javax.swing.JTextPane;
 
 public class AcercaDe extends JFrame {
       JTextPane descripcion;
-      JButton atras = new JButton("Atras");
-      JButton adelante = new JButton("Siguiente");
+      JButton atras = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+      JButton adelante = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/adelante.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
       JButton salir = new JButton("Volver al menú");
 
 
@@ -48,7 +48,10 @@ public class AcercaDe extends JFrame {
         fondo.add(descripcion);
 
         // Atras
-        atras.setBounds(20, 420, 100, 30);
+        atras.setOpaque(false);
+        atras.setContentAreaFilled(false);
+        atras.setBorderPainted(false);
+        atras.setBounds(20, 410, 50, 50);
         atras.setVisible(true);
         atras.setEnabled(false);
         fondo.add(atras);
@@ -57,7 +60,10 @@ public class AcercaDe extends JFrame {
         });
 
         // Adelante
-        adelante.setBounds(380, 420, 100, 30);
+        adelante.setOpaque(false);
+        adelante.setContentAreaFilled(false);
+        adelante.setBorderPainted(false);
+        adelante.setBounds(430, 410, 50, 50);
         adelante.setVisible(true);
         adelante.setEnabled(true);
         fondo.add(adelante);
@@ -65,7 +71,7 @@ public class AcercaDe extends JFrame {
             determinarDescripcion(true);
         });
 
-        // Atras
+        // Salir
         salir.setBounds(140, 420, 220, 30);
         salir.setVisible(false);
         fondo.add(salir);

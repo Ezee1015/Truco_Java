@@ -85,7 +85,6 @@ public class InterfazJuego extends JFrame {
         PC1.setOpaque(false);
         PC1.setContentAreaFilled(false);
         PC1.setBorderPainted(false);
-        PC1.setBorderPainted(false);
         fondo.add(PC1);
         PC1.addActionListener((ActionEvent e) -> {
             try {
@@ -515,11 +514,28 @@ public class InterfazJuego extends JFrame {
         puntajeAI.setVisible(true);
         puntajeFondo.add(puntajeAI);
 
-        JButton redibujar = new JButton("Volver al menú"); //TODO: Poner imagen de flecha
-        redibujar.setBounds(10, 10, 100, 50);
-        redibujar.setVisible(true);
-        fondo.add(redibujar);
-        redibujar.addActionListener((ActionEvent e) -> {
+        JButton atras = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+        atras.setOpaque(false);
+        atras.setContentAreaFilled(false);
+        atras.setBorderPainted(false);
+        atras.setBounds(10, 10, 50, 50);
+        atras.setVisible(true);
+        fondo.add(atras);
+        atras.addActionListener((ActionEvent e) -> {
+            // Si todavia no comenzo la partida
+            if(repartir.isEnabled()){
+                try {
+                    otraPartida();
+                } catch (IOException ex) {
+                    Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                menu.setVisible(true);
+                termino=true;
+                dispose();
+                return;
+            }
+
+            // Si se quiere sallir en medio de la partida
             info();
             int dialogResult = JOptionPane.showConfirmDialog (null, "Está seguro que desea abandonar la partida? Se declarará a la PC como ganador...","Atención!",JOptionPane.YES_NO_OPTION);
             if(dialogResult == JOptionPane.YES_OPTION){
