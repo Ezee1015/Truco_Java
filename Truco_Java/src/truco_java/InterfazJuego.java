@@ -1236,7 +1236,7 @@ public class InterfazJuego extends JFrame {
                 public void run() {
                     if(estado.getText().equals(textoTimer)){ // Si sigue siendo el mismo texto que se puso antes y nada lo cambio (por ejemplo retrucar el envido o un truco
                         if(quieroEnv.isVisible()) // Si todavia el usuario no se decidió
-                            imprimeAIEnvido(envido, true); // Lo vuelve a imprim,ir
+                            imprimeAIEnvido(envido, true); // Lo vuelve a imprimir
                         else imprimeAIEnvido(0, true); // sino lo desaparece
                     }
                 }
