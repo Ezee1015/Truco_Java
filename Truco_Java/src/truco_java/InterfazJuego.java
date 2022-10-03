@@ -886,7 +886,7 @@ public class InterfazJuego extends JFrame {
             if (jugador.isMano() == true) {
                 System.out.println("habilitaTurno(): No jugo nadie, turno Jugador");
                 if(habilitadoARetrucar < 2) truco.setEnabled(true);
-                envido.setEnabled(true);
+                if(!envidoFinalizado) envido.setEnabled(true);
                 irAlMazo.setEnabled(true);
                 PC1.setEnabled(true);
                 PC2.setEnabled(true);
@@ -1295,7 +1295,7 @@ public class InterfazJuego extends JFrame {
                         case 0:
                             switch(ganaRonda(0)){
                                 case 0:
-                                    empateDefine=true; 
+                                    empateDefine=true;
                                     break;
                                 case 1:
                                     ganador=1;
