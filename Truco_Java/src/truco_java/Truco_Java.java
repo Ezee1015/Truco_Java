@@ -40,8 +40,8 @@ public class Truco_Java extends JFrame{
         fondo.add(logo);
 
         // Jugar
-        JButton jugar = new JButton("Jugar");
-        jugar.setBounds(100, 350, 300, 40);
+        JButton jugar = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugarBoton.png")).getScaledInstance(300, 60, Image.SCALE_SMOOTH)));
+        jugar.setBounds(100, 330, 300, 60);
         jugar.setVisible(true);
         fondo.add(jugar);
         jugar.addActionListener((ActionEvent e) -> {
@@ -63,7 +63,7 @@ public class Truco_Java extends JFrame{
         });
 
         // Acerca De
-        JButton acercaBoton = new JButton("Acerca del Juego");
+        JButton acercaBoton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/acercaBoton.png")).getScaledInstance(140, 40, Image.SCALE_SMOOTH)));
         acercaBoton.setBounds(100, 400, 140, 40);
         acercaBoton.setVisible(true);
         fondo.add(acercaBoton);
@@ -85,7 +85,7 @@ public class Truco_Java extends JFrame{
         });
 
         // Salir
-        JButton salir = new JButton("SALIR");
+        JButton salir = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/salirBoton.png")).getScaledInstance(140, 40, Image.SCALE_SMOOTH)));
         salir.setBounds(260, 400, 140, 40);
         salir.setVisible(true);
         fondo.add(salir);
@@ -94,7 +94,7 @@ public class Truco_Java extends JFrame{
         });
 
         // CheckBox selector de musica ON/OFF
-        musica.setBounds(100, 300, 130, 40);
+        musica.setBounds(100, 290, 130, 40);
         musica.setOpaque(false);
         fondo.add(musica);
         musica.addItemListener(new ItemListener() {
@@ -113,7 +113,7 @@ public class Truco_Java extends JFrame{
           });
 
         // CheckBox selector de modo facil/dificil
-        facil.setBounds(230, 300, 250, 40);
+        facil.setBounds(230, 290, 250, 40);
         facil.setOpaque(false);
         fondo.add(facil);
         //facil.addItemListener(new ItemListener() {
