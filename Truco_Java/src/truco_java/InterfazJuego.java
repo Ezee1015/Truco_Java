@@ -240,7 +240,7 @@ public class InterfazJuego extends JFrame {
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
         // Boton envido general
-        envido = new JButton("Envido");
+        envido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/envidoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
         envido.setBounds(170, 660, 155, 60);
         envido.setVisible(true);
         envido.setEnabled(false);
@@ -296,7 +296,7 @@ public class InterfazJuego extends JFrame {
         });
 
         // Boton envido especifico
-        envidoEsp = new JButton("Envido");
+        envidoEsp = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/envidoGrandeBoton.png")).getScaledInstance(240, 50, Image.SCALE_SMOOTH)));
         envidoEsp.setBounds(10, 595, 240, 50);
         envidoEsp.setVisible(false);
         envidoEsp.setOpaque(false);
@@ -313,7 +313,7 @@ public class InterfazJuego extends JFrame {
         });
 
         // Boton envido-envido
-        envidoEnvido = new JButton("Envido");
+        envidoEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/envidoBoton.png")).getScaledInstance(240, 50, Image.SCALE_SMOOTH)));
         envidoEnvido.setBounds(10, 595, 240, 50);
         envidoEnvido.setVisible(false);
         envidoEnvido.setOpaque(false);
@@ -332,7 +332,7 @@ public class InterfazJuego extends JFrame {
         });
 
         // Boton Real Envido
-        realEnvido = new JButton("Real Envido");
+        realEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/realEnvidoBoton.png")).getScaledInstance(117, 50, Image.SCALE_SMOOTH)));
         realEnvido.setBounds(252, 595, 117, 50);
         realEnvido.setVisible(false);
         realEnvido.setOpaque(false);
@@ -352,7 +352,7 @@ public class InterfazJuego extends JFrame {
         });
 
         // Boton Falta Envido
-        faltaEnvido = new JButton("Falta Envido");
+        faltaEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/faltaEnvidoBoton.png")).getScaledInstance(117, 50, Image.SCALE_SMOOTH)));
         faltaEnvido.setBounds(373, 595, 117, 50);
         faltaEnvido.setVisible(false);
         faltaEnvido.setOpaque(false);
@@ -373,7 +373,7 @@ public class InterfazJuego extends JFrame {
         });
 
         //Botones de Quiero y No quiero envido
-        quieroEnv = new JButton("Quiero");
+        quieroEnv = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/quieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
         quieroEnv.setBounds(10, 250, 110, 40);
         quieroEnv.setVisible(false);
         quieroEnv.setOpaque(false);
@@ -432,7 +432,7 @@ public class InterfazJuego extends JFrame {
             }
             });
 
-        noQuieroEnv = new JButton("No Quiero");
+        noQuieroEnv = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/noQuieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
         noQuieroEnv.setBounds(10, 300, 110, 40);
         noQuieroEnv.setVisible(false);
         noQuieroEnv.setOpaque(false);
@@ -465,7 +465,7 @@ public class InterfazJuego extends JFrame {
         });
 
         // Boton Truco
-        truco = new JButton("Truco");
+        truco = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/trucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
         truco.setBounds(10, 660, 155, 60);
         truco.setVisible(true);
         truco.setEnabled(false);
@@ -487,7 +487,7 @@ public class InterfazJuego extends JFrame {
         });
 
         //Botones de Quiero y No quiero truco
-        quieroTruco = new JButton("Quiero");
+        quieroTruco = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/quieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
         quieroTruco.setBounds(10, 250, 110, 40);
         quieroTruco.setVisible(false);
         quieroTruco.setOpaque(false);
@@ -507,7 +507,7 @@ public class InterfazJuego extends JFrame {
             });
 
 
-        noQuieroTruco = new JButton("No Quiero");
+        noQuieroTruco = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/noQuieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
         noQuieroTruco.setBounds(10, 300, 110, 40);
         noQuieroTruco.setVisible(false);
         noQuieroTruco.setOpaque(false);
@@ -776,16 +776,16 @@ public class InterfazJuego extends JFrame {
         }
     }
 
-    private void dibujarBotones() {
+    private void dibujarBotones() throws IOException {
         switch (nivelTruco) {
             case 0:
-                truco.setText("Truco");
+                truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/trucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
                 break;
             case 1:
-                truco.setText("Retruco");
+                truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/retrucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
                 break;
             case 2:
-                truco.setText("Vale Cuatro");
+                truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/valeCuatroBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
                 break;
         }
     }
@@ -808,7 +808,7 @@ public class InterfazJuego extends JFrame {
         envidoFinalizado = false;
         habilitadoARetrucar = 0;
         dibujarBotones();
-        truco.setText("Truco");
+        truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/trucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
         truco.setVisible(true);
         setFondo(0);
         ai.setEnvidoJugadorCantado(-1);
@@ -830,7 +830,7 @@ public class InterfazJuego extends JFrame {
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
         imprimeAIEnvido(0, false);
-        truco.setText("Truco");
+        truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/trucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
         truco.setEnabled(true);
 
         //Reparte
@@ -1458,7 +1458,7 @@ public class InterfazJuego extends JFrame {
         return 1;
     }
 
-    private void imprimeAITruco(int trucoMSG, boolean esLlamadoDesdeTimer){
+    private void imprimeAITruco(int trucoMSG, boolean esLlamadoDesdeTimer) throws IOException{
         setFondo(1);
         fondoEstado.setVisible(true);
 
@@ -1485,13 +1485,13 @@ public class InterfazJuego extends JFrame {
             case 1:
                 estado.setText("Truco!");
                 if(numeroPersonaje==5) estado.setText("Come on, Truco!");
-                truco.setText("Retruco");
+                truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/retrucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
                 truco.setEnabled(true);
                 break;
             case 2:
                 estado.setText("Re truco!");
                 if(numeroPersonaje==5) estado.setText("Re truco if you're brave!");
-                truco.setText("Vale cuatro");
+                truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/valeCuatroBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
                 truco.setEnabled(true);
                 break;
             case 3:
@@ -1514,9 +1514,20 @@ public class InterfazJuego extends JFrame {
                     @Override
                     public void run() {
                         if(estado.getText().equals(textoTimer)){
-                            if(quieroTruco.isVisible())
-                                imprimeAITruco(trucoMSG, true);
-                            else imprimeAITruco(0, true);
+                            if(quieroTruco.isVisible()){
+                                try {
+                                    imprimeAITruco(trucoMSG, true);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                            else {
+                                try {
+                                    imprimeAITruco(0, true);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
                         }
                     }
                 },
