@@ -18,7 +18,7 @@ public class AcercaDe extends JFrame {
       JTextPane descripcion;
       JButton atras = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
       JButton adelante = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/adelante.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
-      JButton salir = new JButton("Volver al menú");
+      JButton salir = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/volverBoton.png")).getScaledInstance(220, 50, Image.SCALE_SMOOTH)));
 
 
   public AcercaDe (Truco_Java menu) throws IOException {
@@ -72,7 +72,7 @@ public class AcercaDe extends JFrame {
         });
 
         // Salir
-        salir.setBounds(140, 420, 220, 30);
+        salir.setBounds(140, 410, 220, 50);
         salir.setVisible(false);
         fondo.add(salir);
         salir.addActionListener((ActionEvent e) -> {
