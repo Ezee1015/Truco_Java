@@ -1295,7 +1295,8 @@ public class InterfazJuego extends JFrame {
                         case 0:
                             switch(ganaRonda(0)){
                                 case 0:
-                                    empateDefine=true; break;
+                                    empateDefine=true; 
+                                    break;
                                 case 1:
                                     ganador=1;
                                     break;
