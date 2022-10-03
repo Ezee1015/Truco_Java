@@ -244,6 +244,9 @@ public class InterfazJuego extends JFrame {
         envido.setBounds(170, 660, 155, 60);
         envido.setVisible(true);
         envido.setEnabled(false);
+        envido.setOpaque(false);
+        envido.setContentAreaFilled(false);
+        envido.setBorderPainted(false);
         fondo.add(envido);
         envido.addActionListener((ActionEvent e) -> {
             if (envidoEsp.isVisible() == true) {
@@ -264,6 +267,9 @@ public class InterfazJuego extends JFrame {
         irAlMazo.setBounds(330, 660, 155, 60);
         irAlMazo.setVisible(true);
         irAlMazo.setEnabled(false);
+        irAlMazo.setOpaque(false);
+        irAlMazo.setContentAreaFilled(false);
+        irAlMazo.setBorderPainted(false);
         fondo.add(irAlMazo);
         irAlMazo.addActionListener((ActionEvent e) -> {
             JOptionPane.showMessageDialog(null, "Te has ido al mazo. Repartiendo...");
@@ -293,6 +299,9 @@ public class InterfazJuego extends JFrame {
         envidoEsp = new JButton("Envido");
         envidoEsp.setBounds(10, 595, 240, 50);
         envidoEsp.setVisible(false);
+        envidoEsp.setOpaque(false);
+        envidoEsp.setContentAreaFilled(false);
+        envidoEsp.setBorderPainted(false);
         fondo.add(envidoEsp);
         envidoEsp.addActionListener((ActionEvent e) -> {
             envidosCantados.add(1);
@@ -307,6 +316,9 @@ public class InterfazJuego extends JFrame {
         envidoEnvido = new JButton("Envido");
         envidoEnvido.setBounds(10, 595, 240, 50);
         envidoEnvido.setVisible(false);
+        envidoEnvido.setOpaque(false);
+        envidoEnvido.setContentAreaFilled(false);
+        envidoEnvido.setBorderPainted(false);
         fondo.add(envidoEnvido);
         envidoEnvido.addActionListener((ActionEvent e) -> {
             envidosCantados.add(2);
@@ -323,6 +335,9 @@ public class InterfazJuego extends JFrame {
         realEnvido = new JButton("Real Envido");
         realEnvido.setBounds(252, 595, 117, 50);
         realEnvido.setVisible(false);
+        realEnvido.setOpaque(false);
+        realEnvido.setContentAreaFilled(false);
+        realEnvido.setBorderPainted(false);
         fondo.add(realEnvido);
         realEnvido.addActionListener((ActionEvent e) -> {
             envidosCantados.add(3);
@@ -340,6 +355,9 @@ public class InterfazJuego extends JFrame {
         faltaEnvido = new JButton("Falta Envido");
         faltaEnvido.setBounds(373, 595, 117, 50);
         faltaEnvido.setVisible(false);
+        faltaEnvido.setOpaque(false);
+        faltaEnvido.setContentAreaFilled(false);
+        faltaEnvido.setBorderPainted(false);
         fondo.add(faltaEnvido);
         faltaEnvido.addActionListener((ActionEvent e) -> {
             envidosCantados.add(4);
@@ -358,6 +376,9 @@ public class InterfazJuego extends JFrame {
         quieroEnv = new JButton("Quiero");
         quieroEnv.setBounds(10, 250, 110, 40);
         quieroEnv.setVisible(false);
+        quieroEnv.setOpaque(false);
+        quieroEnv.setContentAreaFilled(false);
+        quieroEnv.setBorderPainted(false);
         fondo.add(quieroEnv);
         quieroEnv.addActionListener((ActionEvent e) -> {
             if (jugador.calcularEnvido() > ai.calcularEnvido()) { //Si gana el jugador
@@ -414,6 +435,9 @@ public class InterfazJuego extends JFrame {
         noQuieroEnv = new JButton("No Quiero");
         noQuieroEnv.setBounds(10, 300, 110, 40);
         noQuieroEnv.setVisible(false);
+        noQuieroEnv.setOpaque(false);
+        noQuieroEnv.setContentAreaFilled(false);
+        noQuieroEnv.setBorderPainted(false);
         fondo.add(noQuieroEnv);
         noQuieroEnv.addActionListener((ActionEvent e) -> {
             ai.setPuntaje(ai.getPuntaje() + calcularEnvidoPerdido(jugador.getPuntaje()), this);
@@ -445,6 +469,9 @@ public class InterfazJuego extends JFrame {
         truco.setBounds(10, 660, 155, 60);
         truco.setVisible(true);
         truco.setEnabled(false);
+        truco.setOpaque(false);
+        truco.setContentAreaFilled(false);
+        truco.setBorderPainted(false);
         fondo.add(truco);
         truco.addActionListener((ActionEvent e) -> {
             if(habilitadoARetrucar != 2){
@@ -463,6 +490,9 @@ public class InterfazJuego extends JFrame {
         quieroTruco = new JButton("Quiero");
         quieroTruco.setBounds(10, 250, 110, 40);
         quieroTruco.setVisible(false);
+        quieroTruco.setOpaque(false);
+        quieroTruco.setContentAreaFilled(false);
+        quieroTruco.setBorderPainted(false);
         fondo.add(quieroTruco);
         quieroTruco.addActionListener((ActionEvent e) -> {
             if(nivelTruco == 3)
@@ -480,6 +510,9 @@ public class InterfazJuego extends JFrame {
         noQuieroTruco = new JButton("No Quiero");
         noQuieroTruco.setBounds(10, 300, 110, 40);
         noQuieroTruco.setVisible(false);
+        noQuieroTruco.setOpaque(false);
+        noQuieroTruco.setContentAreaFilled(false);
+        noQuieroTruco.setBorderPainted(false);
         fondo.add(noQuieroTruco);
         noQuieroTruco.addActionListener((ActionEvent e) -> {
             ai.setPuntaje(ai.getPuntaje() + calcularTrucoPerdido(), this);
