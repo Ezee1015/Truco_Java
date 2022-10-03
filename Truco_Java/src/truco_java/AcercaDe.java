@@ -74,6 +74,9 @@ public class AcercaDe extends JFrame {
         // Salir
         salir.setBounds(140, 410, 220, 50);
         salir.setVisible(false);
+        salir.setOpaque(false);
+        salir.setContentAreaFilled(false);
+        salir.setBorderPainted(false);
         fondo.add(salir);
         salir.addActionListener((ActionEvent e) -> {
             setVisible(false);

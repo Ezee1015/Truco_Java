@@ -43,6 +43,9 @@ public class Truco_Java extends JFrame{
         JButton jugar = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugarBoton.png")).getScaledInstance(300, 60, Image.SCALE_SMOOTH)));
         jugar.setBounds(100, 330, 300, 60);
         jugar.setVisible(true);
+        jugar.setOpaque(false);
+        jugar.setContentAreaFilled(false);
+        jugar.setBorderPainted(false);
         fondo.add(jugar);
         jugar.addActionListener((ActionEvent e) -> {
             setVisible(false);
@@ -66,6 +69,9 @@ public class Truco_Java extends JFrame{
         JButton acercaBoton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/acercaBoton.png")).getScaledInstance(140, 40, Image.SCALE_SMOOTH)));
         acercaBoton.setBounds(100, 400, 140, 40);
         acercaBoton.setVisible(true);
+        acercaBoton.setOpaque(false);
+        acercaBoton.setContentAreaFilled(false);
+        acercaBoton.setBorderPainted(false);
         fondo.add(acercaBoton);
         acercaBoton.addActionListener((ActionEvent e) -> {
             setVisible(false);
@@ -88,6 +94,9 @@ public class Truco_Java extends JFrame{
         JButton salir = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/salirBoton.png")).getScaledInstance(140, 40, Image.SCALE_SMOOTH)));
         salir.setBounds(260, 400, 140, 40);
         salir.setVisible(true);
+        salir.setOpaque(false);
+        salir.setContentAreaFilled(false);
+        salir.setBorderPainted(false);
         fondo.add(salir);
         salir.addActionListener((ActionEvent e) -> {
             System.exit(0);
