@@ -260,7 +260,7 @@ public class InterfazJuego extends JFrame {
         });
 
         // Boton Ir al mazo
-        irAlMazo = new JButton("Ir al Mazo");
+        irAlMazo = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/irAlMazoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
         irAlMazo.setBounds(330, 660, 155, 60);
         irAlMazo.setVisible(true);
         irAlMazo.setEnabled(false);
