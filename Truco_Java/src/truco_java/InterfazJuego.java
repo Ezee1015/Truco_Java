@@ -607,7 +607,7 @@ public class InterfazJuego extends JFrame {
     }
 
     private void cargarMazo() {
-        // mazo.clear(); // Ya no es necesario por que ahora el mazo es de la clase
+        // mazo.clear(); // Ya no es necesario por que ahora el mazo es de la clasee
         mazo.add(new Carta(1, "espada"));
         mazo.add(new Carta(2, "espada"));
         mazo.add(new Carta(3, "espada"));
