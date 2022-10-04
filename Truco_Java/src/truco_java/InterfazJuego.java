@@ -22,7 +22,7 @@ import javax.swing.text.StyledDocument;
 
 public class InterfazJuego extends JFrame {
 
-    private static ArrayList<Carta> mazo = new ArrayList<>();
+    private ArrayList<Carta> mazo = new ArrayList<>();
     JLabel fondo = new JLabel();
     private Truco_Java menu;
     JLabel AIC1, AIC2, AIC3;
