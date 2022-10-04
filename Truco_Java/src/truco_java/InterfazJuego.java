@@ -660,23 +660,6 @@ public class InterfazJuego extends JFrame {
             mazo.clear();
             mazo.addAll(mazoTemp);
         }
-                // System.out.println(mazo.get(posMezcla).texto());
-            //for (int x = 0; x < mazo.size(); x++) //EXPERIMENTAL
-            //    if(chequeaMazo(mazo.get(x))!=1)
-            //        JOptionPane.showMessageDialog(null, "HAY CARTAS REPETIDAS. MAZO CORRUPTO");
-        //System.out.println(mazo.size());
-
-    //}
-
-    ////TODO: ELIMINAR FUNCIONN
-    //private int chequeaMazo(Carta c){
-        //int cont=0;
-        //for (int i = 0; i < mazo.size(); i++)
-            //if(mazo.get(i).equals(c))
-            //    cont++;
-        //if(cont!=1)
-            //System.out.println(cont);
-        //return cont;
     }
 
     private void dibujarCartas() throws IOException {
@@ -1042,10 +1025,10 @@ public class InterfazJuego extends JFrame {
 
         int desicion;
         if (envidosCantados.isEmpty())
-            desicion = ai.desidirEnvido(0);
+            desicion = ai.desidirEnvido(0, jugador);
 
         else {
-            desicion = ai.desidirEnvido(envidosCantados.get(envidosCantados.size() - 1));
+            desicion = ai.desidirEnvido(envidosCantados.get(envidosCantados.size() - 1), jugador);
 
             if (desicion == envidosCantados.get(envidosCantados.size() - 1)) { // Si la AI Acepta lo cantado
                 Music cantar = new Music();
