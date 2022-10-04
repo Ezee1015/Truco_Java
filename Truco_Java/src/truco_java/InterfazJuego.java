@@ -658,8 +658,26 @@ public class InterfazJuego extends JFrame {
                 mazoTemp.add(mazo.get(posMezcla));
                 mazo.remove(posMezcla);
             }
+            mazo.clear();
             mazo.addAll(mazoTemp);
         }
+                // System.out.println(mazo.get(posMezcla).texto());
+            for (int x = 0; x < mazo.size(); x++) //EXPERIMENTAL
+                if(chequeaMazo(mazo.get(x))!=1)
+                    JOptionPane.showMessageDialog(null, "HAY CARTAS REPETIDAS. MAZO CORRUPTO");
+        System.out.println(mazo.size());
+
+    }
+
+    //TODO: ELIMINAR FUNCIONN
+    private int chequeaMazo(Carta c){
+        int cont=0;
+        for (int i = 0; i < mazo.size(); i++)
+            if(mazo.get(i).equals(c))
+                cont++;
+        if(cont!=1)
+            System.out.println(cont);
+        return cont;
     }
 
     private void dibujarCartas() throws IOException {
