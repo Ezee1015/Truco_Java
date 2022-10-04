@@ -1345,6 +1345,15 @@ public class InterfazJuego extends JFrame {
             }
         }
 
+        // Si empatan las 3 rondas seguidas, gana el que es mano
+        if( jugador.getCartasJugadas().size() == 3 && ganaRonda(0)==0 && ganaRonda(1)==0 && ganaRonda(2)==0){
+            if(jugador.isMano())
+                return 1;
+            else
+                return 2;
+        }
+
+
         if(empateDefine==false && (ganoJugador>=2 || ganoAI>=2)){
             if(ganoJugador>ganoAI)
                 ganador=1;
@@ -1357,7 +1366,7 @@ public class InterfazJuego extends JFrame {
 
 
     private int ganaRonda(int pos){
-        int rankingJugador = jugador.getCartasJugadas().get(pos).rankingCarta(); // carrta ddel jugador
+        int rankingJugador = jugador.getCartasJugadas().get(pos).rankingCarta(); // carta del jugador
         int rankingAI = ai.getCartasJugadas().get(pos).rankingCarta(); // carta de la AI
 
         if(rankingJugador > rankingAI) // si gana jugador
