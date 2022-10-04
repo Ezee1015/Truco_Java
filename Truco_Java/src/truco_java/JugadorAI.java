@@ -168,7 +168,7 @@ public class JugadorAI extends Jugador {
       }
 
       if(estado>0 && p.getPuntaje()==14){ // Si se canta envido y el jugador le falta un punto para ganar, aceptar si o si.
-        if(estado!=3)
+        if(estado<3)
           desicion = estado+1;
         else
           desicion = estado;
