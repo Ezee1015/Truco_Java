@@ -105,7 +105,7 @@ public class JugadorAI extends Jugador {
     return aTirar;
   }
 
-  public int desidirEnvido(int estado){
+  public int desidirEnvido(int estado, Persona p){
       /*
       Estados:
         0 --> No quiero / No se cantó
@@ -167,6 +167,13 @@ public class JugadorAI extends Jugador {
           }
       }
 
+      if(estado>0 && p.getPuntaje()==14){ // Si se canta envido y el jugador le falta un punto para ganar, aceptar si o si.
+        if(estado!=3)
+          desicion = estado+1;
+        else
+          desicion = estado;
+      }
+
       if(desicion==2 && estado!=1){
         if(calcularEnvido()>27)
           return 3;
@@ -220,6 +227,13 @@ public class JugadorAI extends Jugador {
     Random random = new Random();
 
   int cantCartasTiradas = p.getCartasJugadas().size() + cartasJugadas.size();
+
+  if(estado>0 && p.getPuntaje()==14){ // Si se canta truco y el jugador le falta un punto para ganar, aceptar si o si o retrucar hasta donde se pueda.
+    if(estado!=3)
+      return estado+1;
+    else
+      return estado;
+  }
 
   switch(cantCartasTiradas){
     case 0:
