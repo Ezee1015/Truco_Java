@@ -23,25 +23,23 @@ import javax.swing.text.StyledDocument;
 public class InterfazJuego extends JFrame {
 
     private ArrayList<Carta> mazo = new ArrayList<>();
-    JLabel fondo = new JLabel();
+    private JLabel fondo = new JLabel();
     private Truco_Java menu;
-    JLabel AIC1, AIC2, AIC3;
-    JLabel AICT1, AICT2, AICT3;
-    JButton PC1, PC2, PC3;
-    JLabel PCT1, PCT2, PCT3;
-    JButton truco, envido, irAlMazo, envidoEsp, envidoEnvido, realEnvido, faltaEnvido;
-    JugadorAI ai = new JugadorAI(null, false);
-    Persona jugador = new Persona(null, true);
-    int nivelTruco = 0;
-    ArrayList<Integer> envidosCantados;
-    boolean envidoFinalizado = false;
-    JButton noQuieroEnv, quieroEnv, noQuieroTruco, quieroTruco;
-    JTextPane estado;
-    JLabel puntajeNumero;
-    JTextPane puntaje;
-    int habilitadoARetrucar = 0; // 1--> Jugador; 2--> AI
-    JLabel fondoEstado;
-    JLabel puntajeAI = new JLabel(), puntajeJugador = new JLabel();
+    private JLabel AIC1, AIC2, AIC3;
+    private JLabel AICT1, AICT2, AICT3;
+    private JButton PC1, PC2, PC3;
+    private JLabel PCT1, PCT2, PCT3;
+    private JButton truco, envido, irAlMazo, envidoEsp, envidoEnvido, realEnvido, faltaEnvido;
+    private JugadorAI ai = new JugadorAI(null, false);
+    private Persona jugador = new Persona(null, true);
+    private int nivelTruco = 0;
+    private ArrayList<Integer> envidosCantados;
+    private boolean envidoFinalizado = false;
+    private JButton noQuieroEnv, quieroEnv, noQuieroTruco, quieroTruco;
+    private JTextPane estado;
+    private int habilitadoARetrucar = 0; // 1--> Jugador; 2--> AI
+    private JLabel fondoEstado;
+    private JLabel puntajeAI = new JLabel(), puntajeJugador = new JLabel();
     private final int numeroPersonaje = new Random().nextInt(6) + 1; // Este numero representa el personaje que fue generado;
     boolean termino = false;
 
@@ -440,7 +438,7 @@ public class InterfazJuego extends JFrame {
         noQuieroEnv.setBorderPainted(false);
         fondo.add(noQuieroEnv);
         noQuieroEnv.addActionListener((ActionEvent e) -> {
-            ai.setPuntaje(ai.getPuntaje() + calcularEnvidoPerdido(jugador.getPuntaje()), this);
+            ai.setPuntaje(ai.getPuntaje() + calcularEnvidoPerdido(), this);
 
             envido.setEnabled(false);
             envidoEsp.setVisible(false);
@@ -1096,7 +1094,7 @@ public class InterfazJuego extends JFrame {
             case 0:
                 if(!envidosCantados.isEmpty()){
                     imprimeAIEnvido(-1, false);
-                    jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoPerdido(ai.getPuntaje()), this);
+                    jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoPerdido(), this);
                     envidoFinalizado=true;
                     envido.setEnabled(false);
                     envidoEsp.setVisible(false);
@@ -1176,7 +1174,7 @@ public class InterfazJuego extends JFrame {
         return total;
     }
 
-    private int calcularEnvidoPerdido(int puntajePerdedor) {
+    private int calcularEnvidoPerdido() {
         int total = 0;
 
         for (int i = 0; i < envidosCantados.size()-1; i++) {

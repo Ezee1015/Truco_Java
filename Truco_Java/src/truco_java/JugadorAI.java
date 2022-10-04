@@ -302,123 +302,123 @@ public class JugadorAI extends Jugador {
     }
 
     // SOLO LLAMAR A ESTA FUNCION CUANDO EL JUGADOR Y LA AI TIRARON SOLAMENTE 2 CARTAS
-  private int calcularGanoSegunEnvidoCantado(ArrayList<Carta> cartasJugadasJugador) { // Calcula si gano segun lo que canto de envido (que puedo deducir la carta)
-    if((cartasJugadasJugador.size()!=2 && cartasJugadas.size()>=2) || envidoJugadorCantado==-1) // Solamente juega si es la ultima ronda y si se jugó el envido
-      return 0;
+    private int calcularGanoSegunEnvidoCantado(ArrayList<Carta> cartasJugadasJugador) { // Calcula si gano segun lo que canto de envido (que puedo deducir la carta)
+      if((cartasJugadasJugador.size()!=2 && cartasJugadas.size()>=2) || envidoJugadorCantado==-1) // Solamente juega si es la ultima ronda y si se jugó el envido
+        return 0;
       /*
-      Devuelve:
+        Devuelve:
         0 --> No sé
         1 --> Le gano
         2 --> Hay posibilidades que le gane
         3 --> No le gano
-      */
+        */
       System.out.println("AAAAAAAAH. Envido que se cantó: " + envidoJugadorCantado);
       ArrayList<String> palos = new ArrayList<>(); // Variable que se usa despues en el codigo para almacenar los palos tirados
-        for(int i=0;i<2;i++)
-            palos.add(cartasJugadasJugador.get(i).getPalo());
+      for(int i=0;i<2;i++)
+        palos.add(cartasJugadasJugador.get(i).getPalo());
       ArrayList<Integer> numeros = new ArrayList<>(); // Variable que se usa despues en el codigo para almacenar los numeros tirados
-        for(int i=0;i<2;i++)
-            numeros.add(cartasJugadasJugador.get(i).getNumero());
+      for(int i=0;i<2;i++)
+        numeros.add(cartasJugadasJugador.get(i).getNumero());
 
       Carta ultimaCarta;
       if(cartasJugadas.size()==2) // Si tiro 2 cartas, toma la que tiene en la mano
-          ultimaCarta=mano.get(0);
+        ultimaCarta=mano.get(0);
       else // Si tiro las tres cartas, toma la última que tiró
-          ultimaCarta=cartasJugadas.get(2);
+        ultimaCarta=cartasJugadas.get(2);
 
 
       if(envidoJugadorCantado==0){
         System.out.println("A VER A VER A VER tiene dieses");
-          if(ultimaCarta.rankingCarta()<4) // Si la carta que tengo es menor de 10
-              return 3;
-          if(ultimaCarta.rankingCarta()>6) // Si la carta que tengo es mayor de 12
-              return 1;
-          return 2; // Si la carta que está entre 10 y 12, hay probabilidades que le gane
+        if(ultimaCarta.rankingCarta()<4) // Si la carta que tengo es menor de 10
+          return 3;
+        if(ultimaCarta.rankingCarta()>6) // Si la carta que tengo es mayor de 12
+          return 1;
+        return 2; // Si la carta que está entre 10 y 12, hay probabilidades que le gane
       }
 
 
       if(envidoJugadorCantado==1){
         if(numeros.contains(1)) // Si ya tiró esa carta
           return 0;
-          if(palos.contains("espada") || palos.contains("basto")){
-              System.out.println("A VER A VER A VER tiene ancho verdadero");
-              if(ultimaCarta.rankingCarta()==13)
-                  return 1;
-              return 3;
-          }
-
-          System.out.println("A VER A VER A VER tiene ancho falso");
-          if(ultimaCarta.rankingCarta()>7)
-                  return 1;
-          if(ultimaCarta.rankingCarta()==7)
-                  return 2;
+        if(palos.contains("espada") || palos.contains("basto")){
+          System.out.println("A VER A VER A VER tiene ancho verdadero");
+          if(ultimaCarta.rankingCarta()==13)
+            return 1;
           return 3;
+        }
+
+        System.out.println("A VER A VER A VER tiene ancho falso");
+        if(ultimaCarta.rankingCarta()>7)
+          return 1;
+        if(ultimaCarta.rankingCarta()==7)
+          return 2;
+        return 3;
       }
 
       if(envidoJugadorCantado<4) { // Si tiene un dos o un tres
-            System.out.println("A VER A VER A VER tiene un 2 o un 3");
-          if(numeros.contains(2) || numeros.contains(3)) // Si ya tiró esa carta
-            return 0;
-          if(ultimaCarta.rankingCarta()>9) // Si tengo mas de un 3
-                  return 1;
-          if(ultimaCarta.rankingCarta()>7) // Si tengo un 2 o un 3
-                  return 2;
-          return 3;
+        System.out.println("A VER A VER A VER tiene un 2 o un 3");
+        if(numeros.contains(2) || numeros.contains(3)) // Si ya tiró esa carta
+          return 0;
+        if(ultimaCarta.rankingCarta()>9) // Si tengo mas de un 3
+          return 1;
+        if(ultimaCarta.rankingCarta()>7) // Si tengo un 2 o un 3
+          return 2;
+        return 3;
       }
 
       if(envidoJugadorCantado<7){ // Si tiene un 4,5 o 6
-            System.out.println("A VER A VER A VER tiene un 4, 5 o 6");
-          if(numeros.contains(envidoJugadorCantado)) // Si ya tiró esa carta
-            return 0;
+        System.out.println("A VER A VER A VER tiene un 4, 5 o 6");
+        if(numeros.contains(envidoJugadorCantado)) // Si ya tiró esa carta
+          return 0;
 
-          if(ultimaCarta.rankingCarta() > new Carta(envidoJugadorCantado, "basto").rankingCarta()) // Si le gano al numero del envido (el palo "basto" que puse es aleatorio)
-                  return 1;
+        if(ultimaCarta.rankingCarta() > new Carta(envidoJugadorCantado, "basto").rankingCarta()) // Si le gano al numero del envido (el palo "basto" que puse es aleatorio)
+          return 1;
       }
 
       if(envidoJugadorCantado==7) { // Si tiene un siete
-          if(numeros.contains(7)) // Si ya tiró esa carta
-            return 0;
-          if(palos.contains("basto") || palos.contains("copa")){
-            System.out.println("A VER A VER A VER tiene un siete de oro o de espada");
-            if(ultimaCarta.rankingCarta()>10) // Si tengo un 7 de espada en adelante
-                    return 1;
-            return 3;
-          }
-            System.out.println("A VER A VER A VER tiene un siete falso");
-          if(ultimaCarta.rankingCarta()>3) // Si tengo mas de un 7 de copas o de basto
-                  return 1;
+        if(numeros.contains(7)) // Si ya tiró esa carta
+          return 0;
+        if(palos.contains("basto") || palos.contains("copa")){
+          System.out.println("A VER A VER A VER tiene un siete de oro o de espada");
+          if(ultimaCarta.rankingCarta()>10) // Si tengo un 7 de espada en adelante
+            return 1;
           return 3;
+        }
+        System.out.println("A VER A VER A VER tiene un siete falso");
+        if(ultimaCarta.rankingCarta()>3) // Si tengo mas de un 7 de copas o de basto
+          return 1;
+        return 3;
       }
 
       if(envidoJugadorCantado==20){
-            System.out.println("A VER A VER A VER tiene dos reyes");
-          if(numeros.get(0) >= 10 && numeros.get(0) <= 12) // Si en la primer tiro un rey...
-            if(numeros.get(1) >= 10 && numeros.get(1) <= 12) // Y en la Segunda tiro otro rey...
-                if(palos.get(0).equals(palos.get(1))) // Y si son del mismo palo
-                    return 0; // Significa que ya los tiro, por lo tanto no sé
-          if(ultimaCarta.rankingCarta()<4) // Si la carta que tengo es menor de 10
-              return 3;
-          if(ultimaCarta.rankingCarta()>6) // Si la carta que tengo es mayor de 12
-              return 1;
-          return 2; // Si la carta que está entre 10 y 12, hay probabilidades que le gane
+        System.out.println("A VER A VER A VER tiene dos reyes");
+        if(numeros.get(0) >= 10 && numeros.get(0) <= 12) // Si en la primer tiro un rey...
+          if(numeros.get(1) >= 10 && numeros.get(1) <= 12) // Y en la Segunda tiro otro rey...
+            if(palos.get(0).equals(palos.get(1))) // Y si son del mismo palo
+              return 0; // Significa que ya los tiro, por lo tanto no sé
+        if(ultimaCarta.rankingCarta()<4) // Si la carta que tengo es menor de 10
+          return 3;
+        if(ultimaCarta.rankingCarta()>6) // Si la carta que tengo es mayor de 12
+          return 1;
+        return 2; // Si la carta que está entre 10 y 12, hay probabilidades que le gane
       }
 
-//       if(envidoJugadorCantado<23){
-//           if(numeros.contains(1) && numeros.contains(2))
-//                 if(palos.get(0).equals(palos.get(1))) // Y si son del mismo palo
-//                     return 0;
+      //       if(envidoJugadorCantado<23){
+      //           if(numeros.contains(1) && numeros.contains(2))
+      //                 if(palos.get(0).equals(palos.get(1))) // Y si son del mismo palo
+      //                     return 0;
 
-//           // Si ya tiro el ancho de espada o de basto, le queda un dos del otro palo
-//           if((palos.contains("espada") || palos.contains("basto")) && numeros.contains(1))
-//               if(ultimaCarta.rankingCarta()>=8)
-//                   return 1;
+      //           // Si ya tiro el ancho de espada o de basto, le queda un dos del otro palo
+      //           if((palos.contains("espada") || palos.contains("basto")) && numeros.contains(1))
+      //               if(ultimaCarta.rankingCarta()>=8)
+      //                   return 1;
 
-//           if(ultimaCarta.rankingCarta()<7) // Si la carta que tengo es menor de ancho falso
-//               return 3;
-//           if(ultimaCarta.rankingCarta()>7) // Si la carta que tengo es mayor de ancho falso
-//               return 1;
-//           return 2; // Si la carta es un ancho falso
-//       }
+      //           if(ultimaCarta.rankingCarta()<7) // Si la carta que tengo es menor de ancho falso
+      //               return 3;
+      //           if(ultimaCarta.rankingCarta()>7) // Si la carta que tengo es mayor de ancho falso
+      //               return 1;
+      //           return 2; // Si la carta es un ancho falso
+      //       }
 
       // Para cuando es más de 20
       if(envidoJugadorCantado>20){
@@ -467,15 +467,15 @@ public class JugadorAI extends Jugador {
         //     11,12    -->12
         //     11, 10   --> 11
         for(int i=0; i<posibilidades.size()-1; i++){
-          if(posibilidades.get(i).getPalo() == posibilidades.get(i+1).getPalo()) // Si las cartas son del mismo palo
-             if(posibilidades.get(i).getNumero() >= 10 && posibilidades.get(i).getNumero() <= 12 ) // Si la carta 1 está entre 10,11,12
-               if(posibilidades.get(i+1).getNumero() >= 10 && posibilidades.get(i+1).getNumero() <= 12 ){ // Si la carta 2 está entre 10,11,12
-                 if(posibilidades.get(i).rankingCarta() > posibilidades.get(i+1).rankingCarta())
-                   posibilidades.remove(i+1);
-                 else
-                   posibilidades.remove(i);
-                 i--;
-               }
+          if(posibilidades.get(i).getPalo().equals(posibilidades.get(i+1).getPalo())) // Si las cartas son del mismo palo
+            if(posibilidades.get(i).getNumero() >= 10 && posibilidades.get(i).getNumero() <= 12 ) // Si la carta 1 está entre 10,11,12
+              if(posibilidades.get(i+1).getNumero() >= 10 && posibilidades.get(i+1).getNumero() <= 12 ){ // Si la carta 2 está entre 10,11,12
+                if(posibilidades.get(i).rankingCarta() > posibilidades.get(i+1).rankingCarta())
+                  posibilidades.remove(i+1);
+                else
+                  posibilidades.remove(i);
+                i--;
+              }
         }
 
         //Busca a cuantas cartas les gano de las probabilidades

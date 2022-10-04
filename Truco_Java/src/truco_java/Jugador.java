@@ -6,8 +6,8 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 public class Jugador {
-  protected ArrayList<Carta> mano = new ArrayList<Carta>();
-  protected ArrayList<Carta> cartasJugadas = new ArrayList<Carta>();
+  protected ArrayList<Carta> mano = new ArrayList<>();
+  protected ArrayList<Carta> cartasJugadas = new ArrayList<>();
   protected int puntaje=0;
   protected boolean esMano;
 
