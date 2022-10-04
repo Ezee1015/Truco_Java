@@ -472,6 +472,7 @@ public class InterfazJuego extends JFrame {
         truco.setBorderPainted(false);
         fondo.add(truco);
         truco.addActionListener((ActionEvent e) -> {
+            envidoFinalizado = true;
             if(habilitadoARetrucar != 2){
                 nivelTruco++;
                 habilitadoARetrucar = 2;
@@ -1149,7 +1150,7 @@ public class InterfazJuego extends JFrame {
                     total += 3;
                     break;
                 case 4:
-                    total += 15 - puntajePerdedor;
+                    total = 15 - puntajePerdedor;
             }
         }
 
@@ -1508,6 +1509,7 @@ public class InterfazJuego extends JFrame {
                 break;
         }
 
+        envidoFinalizado = true;
         final String textoTimer = estado.getText();
 
         new java.util.Timer().schedule(
