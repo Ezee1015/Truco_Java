@@ -106,20 +106,18 @@ public class Truco_Java extends JFrame{
         musica.setBounds(100, 290, 130, 40);
         musica.setOpaque(false);
         fondo.add(musica);
-        musica.addItemListener(new ItemListener() {
-             public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()==1){
-                    musicaFondo.setFile("src/truco_java/musica/fondo.wav");
-                    musicaFondo.play();
-                } else{
-                    try {
-                        musicaFondo.stop();
-                    } catch (IOException ex) {
-                        System.out.println("Error al detener la musica");
-                    }
+        musica.addItemListener((ItemEvent e) -> {
+            if(e.getStateChange()==1){
+                musicaFondo.setFile("src/truco_java/musica/fondo.wav");
+                musicaFondo.play();
+            } else{
+                try {
+                    musicaFondo.stop();
+                } catch (IOException ex) {
+                    System.out.println("Error al detener la musica");
                 }
-             }
-          });
+            }
+        });
 
         // CheckBox selector de modo facil/dificil
         facil.setBounds(230, 290, 250, 40);
