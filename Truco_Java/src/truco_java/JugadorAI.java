@@ -35,7 +35,7 @@ public class JugadorAI extends Jugador {
                 if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() < mano.get(i).rankingCarta())
                     return tirarCartaPos(i);
           }
-          return tirarPeorCarta();
+          return tirarMejorCarta();
         }
 
 
