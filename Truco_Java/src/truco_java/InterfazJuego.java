@@ -311,7 +311,7 @@ public class InterfazJuego extends JFrame {
         });
 
         // Boton envido-envido
-        envidoEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/envidoBoton.png")).getScaledInstance(240, 50, Image.SCALE_SMOOTH)));
+        envidoEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/envidoGrandeBoton.png")).getScaledInstance(240, 50, Image.SCALE_SMOOTH)));
         envidoEnvido.setBounds(10, 595, 240, 50);
         envidoEnvido.setVisible(false);
         envidoEnvido.setOpaque(false);
