@@ -1033,8 +1033,8 @@ public class InterfazJuego extends JFrame {
 
             if (desicion == envidosCantados.get(envidosCantados.size() - 1)) { // Si la AI Acepta lo cantado
                 Music cantar = new Music();
-                if(numeroPersonaje==5) cantar.setFile("src/truco_java/cantos/envido/55.wav", 1);
-                else cantar.setFile("src/truco_java/cantos/envido/5.wav", 1);
+                System.out.println("llama a " + numeroPersonaje + "5" + ".wav");
+                cantar.setFile("src/truco_java/cantos/envido/" + numeroPersonaje + "5.wav", 1);
                 cantar.play();
 
                 if (jugador.calcularEnvido() > ai.calcularEnvido()) { //Si gana el jugador
@@ -1192,10 +1192,9 @@ public class InterfazJuego extends JFrame {
         System.out.println("imprime un envido de " + envido);
 
         if(!esLlamadoDesdeTimer && envido!=0) {
-            System.out.println("llama a " + "src/truco_java/cantos/envido/5" + envido + ".wav");
             Music cantar = new Music();
-            if(numeroPersonaje==5) cantar.setFile("src/truco_java/cantos/envido/5" + envido + ".wav", 1);
-            else cantar.setFile("src/truco_java/cantos/envido/" + envido + ".wav", 1);
+            System.out.println("llama a " + numeroPersonaje + envido + ".wav");
+            cantar.setFile("src/truco_java/cantos/envido/" + numeroPersonaje + envido + ".wav", 1);
             cantar.play();
         }
 
@@ -1476,10 +1475,9 @@ public class InterfazJuego extends JFrame {
         System.out.println("llama a imprimir AITruco un " + trucoMSG);
 
         if(!esLlamadoDesdeTimer && trucoMSG!=0) {
-            System.out.println("src/truco_java/cantos/truco/" +  numeroPersonaje + trucoMSG + ".wav");
             Music cantar = new Music();
-            if(numeroPersonaje==5) cantar.setFile("src/truco_java/cantos/truco/5"+ trucoMSG + ".wav", 1);
-            else cantar.setFile("src/truco_java/cantos/truco/" + trucoMSG + ".wav", 1);
+            System.out.println("llama a " + numeroPersonaje + trucoMSG + ".wav");
+            cantar.setFile("src/truco_java/cantos/truco/" + numeroPersonaje + trucoMSG + ".wav", 1);
             cantar.play();
         }
 
