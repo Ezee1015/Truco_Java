@@ -1201,7 +1201,7 @@ public class InterfazJuego extends JFrame {
 
         switch(envido){
             case -1:
-                texto = "Em... No quiero!";
+                texto = "No quiero!";
                 if(numeroPersonaje==5) texto = "No tea? so No quiero!";
                 break;
             case 0:
@@ -1210,19 +1210,19 @@ public class InterfazJuego extends JFrame {
                 setFondo(0);
                 return;
             case 1:
-                texto = "Envido! Carajo";
+                texto = "Envido!";
                 if(numeroPersonaje==5) texto = "Why not? Envido!";
                 break;
             case 2:
-                texto = "Aca te va otro: Envido!";
+                texto = "Envido!";
                 if(numeroPersonaje==5) texto = "What about another Envido?!";
                 break;
             case 3:
-                texto = "Seguro? Real Envido!";
+                texto = "Real Envido!";
                 if(numeroPersonaje==5) texto = "I say Real Envido!";
                 break;
             case 4:
-                texto = "Y Falta Envido?";
+                texto = "Falta Envido!";
                 if(numeroPersonaje==5) texto = "Falta Envido my mate!";
                 break;
         }
