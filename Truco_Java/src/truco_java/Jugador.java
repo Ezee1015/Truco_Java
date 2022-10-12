@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.io.IOException;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import javax.swing.JOptionPane;
 
 public class Jugador {
   protected ArrayList<Carta> mano = new ArrayList<>();
@@ -25,7 +26,7 @@ public class Jugador {
       try {
         interfaz.dibujarPuntaje();
       } catch (IOException ex) {
-        Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+        JOptionPane.showMessageDialog(null, "Ha sucedido un error en el dibujado del puntaje: " + ex.getMessage());
       }
     }
 

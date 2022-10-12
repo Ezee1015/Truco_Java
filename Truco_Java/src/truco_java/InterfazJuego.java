@@ -88,7 +88,7 @@ public class InterfazJuego extends JFrame {
             try {
                 tirarCarta(0);
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de tirar la primer carta: " + ex.getMessage());
             }
             envido.setEnabled(false);
             envidoEsp.setVisible(false);
@@ -98,7 +98,7 @@ public class InterfazJuego extends JFrame {
             try {
                 habilitaTurno();
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
             }
             setFondo(0);
         });
@@ -117,7 +117,7 @@ public class InterfazJuego extends JFrame {
             try {
                 tirarCarta(1);
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de tirar la segunda carta: " + ex.getMessage());
             }
             envido.setEnabled(false);
             envidoEsp.setVisible(false);
@@ -127,7 +127,7 @@ public class InterfazJuego extends JFrame {
             try {
                 habilitaTurno();
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
             }
         });
 
@@ -145,7 +145,7 @@ public class InterfazJuego extends JFrame {
             try {
                 tirarCarta(2);
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de tirar la tercer carta: " + ex.getMessage());
             }
             envido.setEnabled(false);
             envidoEsp.setVisible(false);
@@ -155,7 +155,7 @@ public class InterfazJuego extends JFrame {
             try {
                 habilitaTurno();
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
             }
         });
 
@@ -172,12 +172,12 @@ public class InterfazJuego extends JFrame {
             try {
                 otraPartida();
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de comenzar otra partida: " + ex.getMessage());
             }
             try {
                 habilitaTurno();
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
             }
         });
 
@@ -279,17 +279,17 @@ public class InterfazJuego extends JFrame {
             try {
                 dibujarPuntaje();
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de dibujar el puntaje: " + ex.getMessage());
             }
             try {
                 otraPartida();
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de comenzar otra partida: " + ex.getMessage());
             }
             try {
             habilitaTurno();
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
             }
         });
 
@@ -306,7 +306,7 @@ public class InterfazJuego extends JFrame {
             try {
                 AICantaEnvido();
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de la PC: " + ex.getMessage());
             }
         });
 
@@ -325,7 +325,7 @@ public class InterfazJuego extends JFrame {
             try {
                 AICantaEnvido();
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de la PC: " + ex.getMessage());
             }
         });
 
@@ -345,7 +345,7 @@ public class InterfazJuego extends JFrame {
             try {
                 AICantaEnvido();
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de la PC: " + ex.getMessage());
             }
         });
 
@@ -366,7 +366,7 @@ public class InterfazJuego extends JFrame {
             try {
                 AICantaEnvido();
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de la PC: " + ex.getMessage());
             }
         });
 
@@ -402,7 +402,7 @@ public class InterfazJuego extends JFrame {
                 try {
                     dibujarPuntaje();
                 } catch (IOException ex) {
-                    Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el dibujar el puntaje: " + ex.getMessage());
                 }
             }
             quieroEnv.setVisible(false);
@@ -418,7 +418,7 @@ public class InterfazJuego extends JFrame {
             try {
             dibujarPuntaje();
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el dibujar el puntaje: " + ex.getMessage());
             }
             setFondo(0);
 
@@ -426,7 +426,7 @@ public class InterfazJuego extends JFrame {
                 // Continua con el juego
                 habilitaTurno();
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
             }
             });
 
@@ -451,14 +451,14 @@ public class InterfazJuego extends JFrame {
             try {
                 dibujarPuntaje();
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de dibujar los puntajes: " + ex.getMessage());
             }
 
             try {
                 // Continua con el juego
                 habilitaTurno();
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
             }
         });
 
@@ -479,7 +479,7 @@ public class InterfazJuego extends JFrame {
                 try {
                     AICantaTruco(true);
                 } catch (IOException ex) {
-                    Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el truco de la pc: " + ex.getMessage());
                 }
             }
             // setFondo(0);
@@ -501,7 +501,7 @@ public class InterfazJuego extends JFrame {
             try {
                 habilitaTurno();
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
             }
             });
 
@@ -520,12 +520,12 @@ public class InterfazJuego extends JFrame {
             try {
                 otraPartida();
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de comenzar otra partida: " + ex.getMessage());
             }
             try {
                 habilitaTurno();
             } catch (IOException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
             }
             setFondo(0);
         });
@@ -559,7 +559,7 @@ public class InterfazJuego extends JFrame {
                 try {
                     otraPartida();
                 } catch (IOException ex) {
-                    Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de comenzar otra partida: " + ex.getMessage());
                 }
                 menu.setVisible(true);
                 termino=true;
@@ -1528,14 +1528,14 @@ public class InterfazJuego extends JFrame {
                                 try {
                                     imprimeAITruco(trucoMSG, true);
                                 } catch (IOException ex) {
-                                    Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de escribir el mensaje de la PC en el truco: " + ex.getMessage());
                                 }
                             }
                             else {
                                 try {
                                     imprimeAITruco(0, true);
                                 } catch (IOException ex) {
-                                    Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de escribir el mensaje de la PC en el truco: " + ex.getMessage());
                                 }
                             }
                         }
