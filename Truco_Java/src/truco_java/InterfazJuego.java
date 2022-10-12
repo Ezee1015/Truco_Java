@@ -494,6 +494,10 @@ public class InterfazJuego extends JFrame {
         quieroTruco.setBorderPainted(false);
         fondo.add(quieroTruco);
         quieroTruco.addActionListener((ActionEvent e) -> {
+            PC1.setEnabled(true);
+            PC2.setEnabled(true);
+            PC3.setEnabled(true);
+
             if(nivelTruco == 3)
                 truco.setEnabled(false);
             quieroTruco.setVisible(false);
@@ -1420,6 +1424,10 @@ public class InterfazJuego extends JFrame {
             } else return 0;
         }
 
+        PC1.setEnabled(false);
+        PC2.setEnabled(false);
+        PC3.setEnabled(false);
+
         if(desicion == nivelTruco && responder){ // Si acepta el truco
             imprimeAITruco(4, false);
             habilitadoARetrucar=2;
@@ -1432,13 +1440,18 @@ public class InterfazJuego extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            // Habilita las cartas
+            PC1.setEnabled(true);
+            PC2.setEnabled(true);
+            PC3.setEnabled(true);
+
             habilitaTurno();
             return 0;
         }
 
         if(!responder && desicion<(nivelTruco+1)) // Si no estoy respondiendo y quiero menos de la oferta actual (lo cual no se puede), no hacer nada
             return 0;
-        if(responder && desicion<(nivelTruco+1)){ // Si no estoy respondiendo y quiero menos de la oferta actual (lo cual no se puede), no hacer nada
+        if(responder && desicion<(nivelTruco+1)){ // Si estoy respondiendo y quiero menos de la oferta actual (lo cual no se puede), no hacer nada
             imprimeAITruco(-1, false);
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
