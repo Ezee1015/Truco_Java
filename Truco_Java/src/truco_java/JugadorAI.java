@@ -12,6 +12,7 @@ package truco_java;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import javax.swing.JOptionPane;
 
 public class JugadorAI extends Jugador {
     private int envidoJugadorCantado = -1;
@@ -507,9 +508,8 @@ public class JugadorAI extends Jugador {
         try {
           probabiliGanar = ((double)cantCartasQueLeGano / (double)posibilidades.size()) * 100.0;
         } catch (Exception e) {
-          System.out.println("error en el calculo de la posibilidad de envido, razón: " + e.getMessage());
-          System.out.println("POR ESTO: " + cantCartasQueLeGano + " / " + posibilidades.size()); // ELIMINAR DESPUES
-          return 0;
+            JOptionPane.showMessageDialog(null, "Ha sucedido un error en la Inteligencia de la PC: " + e.getMessage());
+            return 0;
         }
         System.out.println("PROBABILIDAAAAAAD -->" + probabiliGanar);
         if (probabiliGanar>80)

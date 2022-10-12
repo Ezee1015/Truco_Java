@@ -7,6 +7,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.JOptionPane;
 
     //Permite la utilizacion de musica en hardcore
     public class Music {
@@ -24,7 +25,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
                 clip.open(sound);
                 clip.loop(50);
             } catch (IOException | LineUnavailableException | UnsupportedAudioFileException l) {
-                System.out.println("Error con la musica");
+                JOptionPane.showMessageDialog(null, "Error con el música: " + l.getMessage());
             }
         }
 
@@ -39,7 +40,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
                 clip = AudioSystem.getClip();
                 clip.open(sound);
             } catch (IOException | LineUnavailableException | UnsupportedAudioFileException l) {
-                System.out.println("Error con la musica");
+                JOptionPane.showMessageDialog(null, "Error con el sonido: " + l.getMessage());
             }
         }
 

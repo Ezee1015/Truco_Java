@@ -3,7 +3,6 @@ package truco_java;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -61,7 +60,7 @@ public class Truco_Java extends JFrame{
                 //Muestra el mensaje que avisa para comenzar el juego
                 JOptionPane.showMessageDialog(null, "Aprete el mazo de cartas para comenzar el juego...");
             } catch (IOException ex) {
-                Logger.getLogger(Truco_Java.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar el juego: " + ex.getMessage());
             }
         });
 
@@ -86,7 +85,7 @@ public class Truco_Java extends JFrame{
                 acerca.setLocationRelativeTo(null);
                 acerca.setVisible(true);
             } catch (IOException ex) {
-                Logger.getLogger(Truco_Java.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar la información acerca del juego: " + ex.getMessage());
             }
         });
 
@@ -114,7 +113,7 @@ public class Truco_Java extends JFrame{
                 try {
                     musicaFondo.stop();
                 } catch (IOException ex) {
-                    System.out.println("Error al detener la musica");
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al detener la música: " + ex.getMessage());
                 }
             }
         });
@@ -135,15 +134,20 @@ public class Truco_Java extends JFrame{
     }
 
     public static void main(String[] args) throws IOException {
-
-        Truco_Java menu = new Truco_Java();
-        menu.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
-        menu.setBounds(0,0,500,500);
-        menu.setResizable(false);
-        menu.setTitle("Menu - Truco");
-        menu.setLocationRelativeTo(null);
-        menu.setVisible(true);
-
+        Truco_Java menu;
+       
+        try {
+            menu = new Truco_Java();
+            menu.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
+            menu.setBounds(0,0,500,500);
+            menu.setResizable(false);
+            menu.setTitle("Menu - Truco");
+            menu.setLocationRelativeTo(null);
+            menu.setVisible(true);
+        } catch (IOException e){
+            JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar el menu: " + e.getMessage());
+            return;
+        }
 
         musicaFondo.setFile("src/truco_java/musica/fondo.wav");
         musicaFondo.play();
