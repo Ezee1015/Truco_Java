@@ -267,14 +267,14 @@ public class JugadorAI extends Jugador {
         case 3:
           return 0;
       }
-      // Si esta en la ultima mano y solo falta tirar...
-      if(p.getCartasJugadas().size()-1 == cartasJugadas.size()){ //ELIMINADO:  && p.getCartasJugadas().size() == 3
+      // Si esta en la ultima mano y solo falta tirar la AI...
+      if(p.getCartasJugadas().size()-1 == cartasJugadas.size()){
           if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta()) // Si le gano, canto
               return estado+random.nextInt(4-estado);
           // Si le empata, pero gano la primera
           else if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() == mano.get(0).rankingCarta())
               return estado+random.nextInt(4-estado);
-          else if(random.nextInt(4)==3 && estado!=3) // Si pierdo: Random, retruca si no estoy en vale 4
+          else if(random.nextInt(3)==1 && estado!=3 && p.getCartasJugadas().get(2).rankingCarta()<8) // Si pierdo: Random, retruca si no estoy en vale 4 y la carta que tiro es menor que un ancho falso
               return estado+random.nextInt(3-estado)+1;
       } else if(cartasJugadas.size() == 3 && cartasJugadas.get(2).rankingCarta()>9) { // Si queda una buena carta
         if(estado == 3)
