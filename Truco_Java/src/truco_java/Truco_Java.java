@@ -1,12 +1,11 @@
 package truco_java;
 
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -122,20 +121,18 @@ public class Truco_Java extends JFrame{
         facil.setBounds(230, 290, 250, 40);
         facil.setOpaque(false);
         fondo.add(facil);
-        //facil.addItemListener(new ItemListener() {
-        //     public void itemStateChanged(ItemEvent e) {
-        //        if(e.getStateChange()==1){
-        //            ////////
-        //        } else{
-        //            ////////
-        //        }
-        //     }
-        //  });
+
+        // Cŕeditos
+        JLabel creditos = new JLabel("Creado por Leonardo D.S. - 2022 - Licencia GPL v3.0");
+        creditos.setBounds(95, 439, 490, 30);
+        creditos.setFont(new Font("Serif", Font.ITALIC, 13));
+        creditos.setVisible(true);
+        fondo.add(creditos);
     }
 
     public static void main(String[] args) throws IOException {
         Truco_Java menu;
-       
+
         try {
             menu = new Truco_Java();
             menu.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
