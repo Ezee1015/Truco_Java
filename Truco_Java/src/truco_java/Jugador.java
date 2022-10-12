@@ -42,11 +42,11 @@ public class Jugador {
 
     public void ordenarMano(){
       ArrayList<Carta> temp = new ArrayList<>();
-      int posMenor=0;
 
-      for(int x=1;x<mano.size();x++){
+      for(int x=0;x<mano.size()+temp.size();x++){
+        int posMenor=0;
         for(int i=1;i<mano.size();i++){
-          if(mano.get(i).rankingCarta()>mano.get(posMenor).rankingCarta()){
+          if(mano.get(i).rankingCarta()<mano.get(posMenor).rankingCarta()){
             posMenor=i;
           }
         }
