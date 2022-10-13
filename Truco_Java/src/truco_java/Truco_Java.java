@@ -124,8 +124,7 @@ public class Truco_Java extends JFrame{
 
         // Cŕeditos
         JLabel creditos = new JLabel("Creado por Leonardo D.S. - 2022 - Licencia GPL v3.0");
-        creditos.setBounds(95, 439, 490, 30);
-        creditos.setFont(new Font("Serif", Font.ITALIC, 13));
+        creditos.setBounds(100, 437, 390, 35);
         creditos.setVisible(true);
         fondo.add(creditos);
     }
