@@ -1,5 +1,6 @@
 package truco_java;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -124,7 +125,8 @@ public class Truco_Java extends JFrame{
 
         // Cŕeditos
         JLabel creditos = new JLabel("Creado por Leonardo D.S. - 2022 - Licencia GPL v3.0");
-        creditos.setBounds(100, 437, 390, 35);
+        creditos.setBounds(10, 440, 390, 35);
+        creditos.setForeground(Color.WHITE);
         creditos.setVisible(true);
         fondo.add(creditos);
     }
