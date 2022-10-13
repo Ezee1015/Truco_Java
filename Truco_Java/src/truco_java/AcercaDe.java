@@ -41,7 +41,7 @@ public class AcercaDe extends JFrame {
         descripcion.setText("     Te despiertas en un sofá, te levantas y miras a tu alrededor: estaba Messi hablando con Maradona compartiendo unos mates, Boris Johnson hablando por celular, Guido Kaczka sentado en una silla admirando la vista y la Roca acariciando a un carpincho.");
         descripcion.setForeground(Color.WHITE);
         descripcion.setBounds(20,140,460,275);
-        descripcion.setFont(new Font("Serif", Font.ITALIC, 17));
+        descripcion.setFont(new Font("Serif", Font.BOLD, 17));
         descripcion.setEditable(false);
         descripcion.setOpaque(false);
         descripcion.setVisible(true);
