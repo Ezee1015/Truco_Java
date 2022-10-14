@@ -17,9 +17,11 @@ import javax.swing.JCheckBox;
 
 public class Truco_Java extends JFrame{
 
-    static JCheckBox musica = new JCheckBox("Musica y Sonido", true);
-    static JCheckBox facil = new JCheckBox("Modo Fácil (PC no miente)", false);
-    static Music musicaFondo = new Music();
+    public JCheckBox musica = new JCheckBox("Musica y Sonido", true);
+    public JCheckBox facil = new JCheckBox("Modo Fácil (PC no miente)", false);
+    public static Music musicaFondo = new Music();
+    public int ganadasJugador=0, ganadasAI=0;
+    public JOptionPane puntajeAI, puntajeJugador;
 
     public Truco_Java () throws IOException {
 
@@ -123,12 +125,33 @@ public class Truco_Java extends JFrame{
         facil.setOpaque(false);
         fondo.add(facil);
 
-        // Cŕeditos
+        // Créditos
         JLabel creditos = new JLabel("Creado por Leonardo D.S. - 2022 - Licencia GPL v3.0");
         creditos.setBounds(10, 440, 390, 35);
         creditos.setForeground(Color.WHITE);
         creditos.setVisible(true);
         fondo.add(creditos);
+        // Fondo puntaje
+        JLabel puntajeFondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg0.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+        puntajeFondo.setBounds(10, 325, 75, 100);
+        puntajeFondo.setVisible(true);
+        fondo.add(puntajeFondo);
+
+        // Puntaje Jugador
+        puntajeJugador = new JOptionPane(Integer.toString(ganadasJugador));
+        puntajeJugador.setFont(new Font("Arial", Font.BOLD, 20));
+        puntajeJugador.setBounds(5, 30, 50, 20);
+        puntajeJugador.setVisible(true);
+        puntajeJugador.setBackground(Color.BLUE);
+        puntajeFondo.add(puntajeJugador);
+
+        // Puntaje Ai
+        puntajeAI = new JOptionPane(Integer.toString(ganadasAI));
+        puntajeAI.setFont(new Font("Arial", Font.BOLD, 20));
+        puntajeAI.setBounds(45, 30, 50, 20);
+        puntajeAI.setBackground(Color.RED);
+        puntajeAI.setVisible(true);
+        puntajeFondo.add(puntajeAI);
     }
 
     public static void main(String[] args) throws IOException {
