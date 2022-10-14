@@ -247,7 +247,7 @@ public class JugadorAI extends Jugador {
       if(estado == 0)            // Si no se canto nada..
         return 0;                // .. No cantar.
       else {                     // Pero si me cantaron..
-        if(cantBuenasCartas()>=1 && cantMedianasCartas()>=1) // .. Solo aceptar si tengo más de una buena carta y una media
+        if(cantBuenasCartas()>=1) // .. Solo aceptar si tengo más de una buena carta y una media
           return estado;
       }
       break;
@@ -296,16 +296,17 @@ public class JugadorAI extends Jugador {
         return estado+random.nextInt(3-estado);
       }
       // Si empaté la anterior...
-        if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == cartasJugadas.get(cartasJugadas.size()-1).rankingCarta()){
-          if(cantBuenasCartas()>=1){
-            if(estado==3)
-              return 3;
-            return estado+random.nextInt(3-estado);
-          }
-          if(cantMedianasCartas()>=1 && random.nextInt(2)==1)
-            return estado;
+      if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == cartasJugadas.get(cartasJugadas.size()-1).rankingCarta()){
+        if(cantBuenasCartas()>=1){
+          if(estado==3)
+            return 3;
+          return estado+random.nextInt(3-estado);
         }
-      if(cantMedianasCartas()>1 && estado<=2 && random.nextInt(3)==2) // Si tengo más de una carta mediana, y el estado es menos de retruco, de manera random aceptar
+        if(cantMedianasCartas()>=1 && random.nextInt(2)==1)
+          return estado;
+      }
+      // Si tengo más de una carta mediana, y el estado es menos de retruco, de manera random aceptar
+      if(cantMedianasCartas()>1 && estado<=2 && random.nextInt(3)==2)
         return estado;
       break;
   }
