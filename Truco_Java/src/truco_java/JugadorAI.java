@@ -468,11 +468,17 @@ public class JugadorAI extends Jugador {
               posibilidades.remove(i);
         }
 
-        // si las dos cartas que tiró están dentro de las probabilidades,
+        // si las dos cartas que tiró conforman el nivel de envido que tiene
         // significa que las cartas que tiró fueron del envido, por lo tanto
-        // devuelve un 0
-          if(cartasJugadasJugador.size() == 2 && posibilidades.contains(cartasJugadasJugador.get(0)) && posibilidades.contains(cartasJugadasJugador.get(1)))
-            return 0;
+        // devuelve un 0, o sea, que no sabe
+          if(cartasJugadasJugador.size() == 2){
+            Persona temp = new Persona(null,false);
+            temp.setMano(cartasJugadasJugador);
+            if(temp.calcularEnvido() == envidoJugadorCantado){
+              System.out.println("aslkdjfhaskdjfhalskdjfhalskdjfhaskldjfhwqiueorwqioeyrqwoieuryoqwieuyrqwoifhasjkdfh");
+              return 0;
+            }
+          }
 
         // Recorre las posibilidades en busqueda de 10,11,12 y convertir lo que encuentre en su carta mayor.
         // Si hay 2 o más de 10s (10, 11, 12) en el array de posibilidades, convierte las 2 o 3 que haya en la carta mayor. Ejemplo si hay 10 y 12, se convierte en un 12, si hay un 10 y 11, se convierte en un 11. Esto para que cuando calcule las posibilidades, no tome en cuenta 3 cartas del mismo tipo ( o sea reyes). Me paso que tocó en las posibilidades: 10,11,12,3. Pero no le ganaba al 3 pero si a los reyes, así que apostó con todo. Con esta modificación hubiese tenido un 50% en vez de un 75%.
