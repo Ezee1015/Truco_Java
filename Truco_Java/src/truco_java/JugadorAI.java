@@ -474,10 +474,8 @@ public class JugadorAI extends Jugador {
           if(cartasJugadasJugador.size() == 2){
             Persona temp = new Persona(null,false);
             temp.setMano(cartasJugadasJugador);
-            if(temp.calcularEnvido() == envidoJugadorCantado){
-              System.out.println("aslkdjfhaskdjfhalskdjfhalskdjfhaskldjfhwqiueorwqioeyrqwoieuryoqwieuyrqwoifhasjkdfh");
+            if(temp.calcularEnvido() == envidoJugadorCantado)
               return 0;
-            }
           }
 
         // Recorre las posibilidades en busqueda de 10,11,12 y convertir lo que encuentre en su carta mayor.
