@@ -27,6 +27,7 @@ public class Truco_Java extends JFrame{
     public int ganadasJugador=0, ganadasAI=0;
     public JTextPane puntajeAI, puntajeJugador;
     public JLabel puntajeFondo;
+    private boolean facilChecked = false;
 
     public Truco_Java () throws IOException {
 
@@ -129,6 +130,17 @@ public class Truco_Java extends JFrame{
         facil.setBounds(230, 290, 250, 40);
         facil.setOpaque(false);
         fondo.add(facil);
+        facil.addItemListener((ItemEvent e) -> {
+            if(e.getStateChange()==1 && !facilChecked){
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Al estar en modo facil, no se sumará puntaje! Este está diseñado exclusivamente para practicar. ¿Aún así desea jugar en modo facil?","Aclaración",JOptionPane.YES_NO_OPTION);
+                if(dialogResult == JOptionPane.NO_OPTION)
+                    facil.setSelected(false);
+                else {
+                    facilChecked=true;
+                    facil.setSelected(true);
+                }
+            }
+        });
 
         // Créditos
         JLabel creditos = new JLabel("Creado por Leonardo D.S. - 2022 - Licencia GPL v3.0");

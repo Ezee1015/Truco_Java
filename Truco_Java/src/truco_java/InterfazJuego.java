@@ -591,9 +591,11 @@ public class InterfazJuego extends JFrame {
             menu.setVisible(true);
             termino=true;
             otraPartida();
-            menu.ganadasJugador++;
-            menu.puntajeJugador.setText(Integer.toString(menu.ganadasJugador));
-            menu.puntajeFondo.setVisible(true);
+            if(!menu.facil.isSelected()) {
+                menu.ganadasJugador++;
+                menu.puntajeJugador.setText(Integer.toString(menu.ganadasJugador));
+                menu.puntajeFondo.setVisible(true);
+            }
             dispose();
         }
         if(aiPunt==15){
@@ -601,9 +603,11 @@ public class InterfazJuego extends JFrame {
             menu.setVisible(true);
             termino=true;
             otraPartida();
-            menu.ganadasAI++;
-            menu.puntajeAI.setText(Integer.toString(menu.ganadasAI));
-            menu.puntajeFondo.setVisible(true);
+            if(!menu.facil.isSelected()) {
+                menu.ganadasAI++;
+                menu.puntajeAI.setText(Integer.toString(menu.ganadasAI));
+                menu.puntajeFondo.setVisible(true);
+            }
             dispose();
         }
     }
