@@ -558,15 +558,8 @@ public class InterfazJuego extends JFrame {
         atras.addActionListener((ActionEvent e) -> {
             // Si todavia no comenzo la partida
             if(repartir.isEnabled()){
-                try {
-                    otraPartida();
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de comenzar otra partida: " + ex.getMessage());
-                }
                 menu.setVisible(true);
                 termino=true;
-                menu.ganadasAI++;
-                menu.puntajeAI.setText(Integer.toString(menu.ganadasAI));
                 dispose();
                 return;
             }
@@ -600,6 +593,7 @@ public class InterfazJuego extends JFrame {
             otraPartida();
             menu.ganadasJugador++;
             menu.puntajeJugador.setText(Integer.toString(menu.ganadasJugador));
+            menu.puntajeFondo.setVisible(true);
             dispose();
         }
         if(aiPunt==15){
@@ -609,6 +603,7 @@ public class InterfazJuego extends JFrame {
             otraPartida();
             menu.ganadasAI++;
             menu.puntajeAI.setText(Integer.toString(menu.ganadasAI));
+            menu.puntajeFondo.setVisible(true);
             dispose();
         }
     }
