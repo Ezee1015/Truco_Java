@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JScrollPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextPane;
@@ -40,12 +41,20 @@ public class AcercaDe extends JFrame {
         descripcion = new JTextPane();
         descripcion.setText("     Te despiertas en un sofá, te levantas y miras a tu alrededor: estaba Messi hablando con Maradona compartiendo unos mates, Boris Johnson hablando por celular, Guido Kaczka sentado en una silla admirando la vista y la Roca acariciando a un carpincho.");
         descripcion.setForeground(Color.WHITE);
-        descripcion.setBounds(20,140,460,275);
-        descripcion.setFont(new Font("Serif", Font.BOLD, 17));
+        descripcion.setBounds(20,130,450,275);
+        descripcion.setFont(new Font("Serif", Font.BOLD, 18));
         descripcion.setEditable(false);
         descripcion.setOpaque(false);
         descripcion.setVisible(true);
-        fondo.add(descripcion);
+        JScrollPane scroll = new JScrollPane(descripcion);
+        scroll.setVisible(true);
+        scroll.setOpaque(false);
+        scroll.getViewport().setOpaque(false);
+        scroll.setForeground(Color.WHITE);
+        scroll.setBorder(null);
+        scroll.setViewportBorder(null);
+        scroll.setBounds(20,130,450,275);
+        fondo.add(scroll);
 
         // Atras
         atras.setOpaque(false);
