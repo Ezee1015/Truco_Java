@@ -1194,6 +1194,7 @@ public class InterfazJuego extends JFrame {
     private void imprimeAIEnvido(int envido, boolean esLlamadoDesdeTimer){
         String texto = " ";
         fondoEstado.setVisible(true);
+        estado.setFont(new Font("Serif", Font.ITALIC, 30));
         estado.setVisible(true);
 
         System.out.println("imprime un envido de " + envido);
@@ -1221,7 +1222,10 @@ public class InterfazJuego extends JFrame {
                 break;
             case 2:
                 texto = "Envido!";
-                if(numeroPersonaje==5) texto = "What about another Envido?!";
+                if(numeroPersonaje==5) {
+                    texto = "What about another Envido?!";
+                    estado.setFont(new Font("Serif", Font.ITALIC, 25));
+                }
                 break;
             case 3:
                 texto = "Real Envido!";
