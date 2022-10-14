@@ -1033,10 +1033,10 @@ public class InterfazJuego extends JFrame {
 
         int desicion;
         if (envidosCantados.isEmpty())
-            desicion = ai.desidirEnvido(0, jugador);
+            desicion = ai.desidirEnvido(0, jugador, menu);
 
         else {
-            desicion = ai.desidirEnvido(envidosCantados.get(envidosCantados.size() - 1), jugador);
+            desicion = ai.desidirEnvido(envidosCantados.get(envidosCantados.size() - 1), jugador, menu);
 
             if (desicion == envidosCantados.get(envidosCantados.size() - 1)) { // Si la AI Acepta lo cantado
                 Music cantar = new Music();
@@ -1413,7 +1413,7 @@ public class InterfazJuego extends JFrame {
             }
         }
 
-        int desicion = ai.desidirTruco(nivelTruco, jugador);
+        int desicion = ai.desidirTruco(nivelTruco, jugador, menu);
 
         if(desicion == nivelTruco && nivelTruco==0) // Si no se canto nada y no quiere truco
             return 0;

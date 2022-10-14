@@ -106,7 +106,7 @@ public class JugadorAI extends Jugador {
     return aTirar;
   }
 
-  public int desidirEnvido(int estado, Persona p){
+  public int desidirEnvido(int estado, Persona p, Truco_Java menu){
       /*
       Estados:
         0 --> No quiero / No se cantó
@@ -116,11 +116,12 @@ public class JugadorAI extends Jugador {
         4 --> Falta Envido
       *** Si devuelve el mismo numero que se le paso a la funcion, se le interpreta como un quiero
       */
+
       int desicion=0, obligado=estado;
       Random random = new Random();
 
       if(calcularEnvido()<=23){               // Menos de 23 de envido, nada
-        if(random.nextInt(8) == 7)            //El 7 es un numero de ejemplo para la probabilidad de 1/8
+        if(random.nextInt(8) == 7 && !menu.facil.isSelected())            //El 7 es un numero de ejemplo para la probabilidad de 1/8
             desicion = estado + 1;
         return desicion;
       }
@@ -187,10 +188,10 @@ public class JugadorAI extends Jugador {
       if(desicion<estado && desicion!=0) // Si retruca en menor nivel del que está la apuesta, no quiere
           return 0;
 
-      if(desicion==0 && estado>=3 && calcularEnvido()>26 && random.nextInt(2)==0) //Agrega una opcion para arriesgar
+      if(desicion==0 && estado>=3 && calcularEnvido()>26 && random.nextInt(2)==0 && !menu.facil.isSelected()) //Agrega una opcion para arriesgar
         return estado;
 
-      if(desicion==0 && estado==0 && esMano==false && random.nextInt(4) == 3)
+      if(desicion==0 && estado==0 && esMano==false && random.nextInt(4) == 3 && !menu.facil.isSelected())
         return 1;
 
       return desicion;
@@ -216,7 +217,7 @@ public class JugadorAI extends Jugador {
     return cant;
   }
 
-  public int desidirTruco (int estado, Persona p) {
+  public int desidirTruco (int estado, Persona p, Truco_Java menu) {
       /*
       Estados:
         0 --> No quiero / No se cantó
@@ -225,6 +226,10 @@ public class JugadorAI extends Jugador {
         3 --> Vale 4
       *** Si devuelve el mismo numero que se le paso a la funcion, se le interpreta como un quiero
       */
+
+  if(menu.facil.isSelected())
+    return desidirTrucoFacil(estado, p);
+
     Random random = new Random();
 
   int cantCartasTiradas = p.getCartasJugadas().size() + cartasJugadas.size();
@@ -299,6 +304,75 @@ public class JugadorAI extends Jugador {
           }
           if(cantMedianasCartas()>=1 && random.nextInt(2)==1)
             return estado;
+        }
+      if(cantMedianasCartas()>1 && estado<=2 && random.nextInt(3)==2) // Si tengo más de una carta mediana, y el estado es menos de retruco, de manera random aceptar
+        return estado;
+      break;
+  }
+
+    return 0;
+  }
+
+  public int desidirTrucoFacil (int estado, Persona p) {
+      /*
+      Estados:
+        0 --> No quiero / No se cantó
+        1 --> Truco
+        2 --> Retruco
+        3 --> Vale 4
+      *** Si devuelve el mismo numero que se le paso a la funcion, se le interpreta como un quiero
+      */
+
+    Random random = new Random();
+
+  int cantCartasTiradas = p.getCartasJugadas().size() + cartasJugadas.size();
+
+  if(estado>0 && p.getPuntaje()==14){ // Si se canta truco y el jugador le falta un punto para ganar, aceptar si o si o retrucar hasta donde se pueda.
+    if(estado!=3)
+      return estado+1;
+    else
+      return estado;
+  }
+
+  switch(cantCartasTiradas){
+    case 0:
+    case 1: // Primera mano
+      if(estado == 0)            // Si no se canto nada..
+        return 0;                // .. No cantar.
+      else {                     // Pero si me cantaron..
+        if(cantBuenasCartas()>=1 && cantMedianasCartas()>=1) // .. Solo aceptar si tengo más de una buena carta y una media
+          return estado;
+      }
+      break;
+    case 4:
+    case 5: // Tercera Mano
+      // Si esta en la ultima mano y solo falta tirar la AI...
+      if(p.getCartasJugadas().size()-1 == cartasJugadas.size()){
+          if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta()) // Si le gano, canto
+              return estado+random.nextInt(4-estado);
+          // Si le empata, pero gano la primera
+          else if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() == mano.get(0).rankingCarta())
+              return estado+random.nextInt(4-estado);
+      } else if(cartasJugadas.size() == 3 && cartasJugadas.get(2).rankingCarta()>9) { // Si queda una buena carta
+        if(estado == 3)
+          return 3;
+        return estado+random.nextInt(3-estado);      // Apostar todo
+      }
+      break;
+    case 2:
+    case 3: // Segunda mano
+      if(cantBuenasCartas()>1){  // Si tengo mas de una buena carta apostar todo
+        if(estado==3)
+          return 3;
+        return estado+random.nextInt(3-estado);
+      }
+      // Si empaté la anterior...
+        if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == cartasJugadas.get(cartasJugadas.size()-1).rankingCarta()){
+          if(cantBuenasCartas()>=1){
+            if(estado==3)
+              return 3;
+            return estado+random.nextInt(3-estado);
+          }
         }
       if(cantMedianasCartas()>1 && estado<=2 && random.nextInt(3)==2) // Si tengo más de una carta mediana, y el estado es menos de retruco, de manera random aceptar
         return estado;
