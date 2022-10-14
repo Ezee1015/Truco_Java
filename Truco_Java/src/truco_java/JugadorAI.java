@@ -327,13 +327,6 @@ public class JugadorAI extends Jugador {
 
   int cantCartasTiradas = p.getCartasJugadas().size() + cartasJugadas.size();
 
-  if(estado>0 && p.getPuntaje()==14){ // Si se canta truco y el jugador le falta un punto para ganar, aceptar si o si o retrucar hasta donde se pueda.
-    if(estado!=3)
-      return estado+1;
-    else
-      return estado;
-  }
-
   switch(cantCartasTiradas){
     case 0:
     case 1: // Primera mano
@@ -374,12 +367,10 @@ public class JugadorAI extends Jugador {
             return estado+random.nextInt(3-estado);
           }
         }
-      if(cantMedianasCartas()>1 && estado<=2 && random.nextInt(3)==2) // Si tengo más de una carta mediana, y el estado es menos de retruco, de manera random aceptar
-        return estado;
       break;
   }
 
-    return 0;
+  return 0;
   }
 
     public int getEnvidoJugadorCantado() {
