@@ -14,14 +14,19 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JCheckBox;
+import javax.swing.JTextPane;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 public class Truco_Java extends JFrame{
 
-    public JCheckBox musica = new JCheckBox("Musica y Sonido", true);
+    public static JCheckBox musica = new JCheckBox("Musica y Sonido", true);
     public JCheckBox facil = new JCheckBox("Modo Fácil (PC no miente)", false);
     public static Music musicaFondo = new Music();
     public int ganadasJugador=0, ganadasAI=0;
-    public JOptionPane puntajeAI, puntajeJugador;
+    public JTextPane puntajeAI, puntajeJugador;
+    public JLabel puntajeFondo;
 
     public Truco_Java () throws IOException {
 
@@ -128,30 +133,46 @@ public class Truco_Java extends JFrame{
         // Créditos
         JLabel creditos = new JLabel("Creado por Leonardo D.S. - 2022 - Licencia GPL v3.0");
         creditos.setBounds(10, 440, 390, 35);
+        creditos.setFont(new Font("Arial", Font.BOLD, 14));
         creditos.setForeground(Color.WHITE);
         creditos.setVisible(true);
         fondo.add(creditos);
+        
         // Fondo puntaje
-        JLabel puntajeFondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg0.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+        puntajeFondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg0.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
         puntajeFondo.setBounds(10, 325, 75, 100);
-        puntajeFondo.setVisible(true);
+        puntajeFondo.setVisible(false);
         fondo.add(puntajeFondo);
 
         // Puntaje Jugador
-        puntajeJugador = new JOptionPane(Integer.toString(ganadasJugador));
+        puntajeJugador = new JTextPane();
+        puntajeJugador.setText(Integer.toString(ganadasJugador));
         puntajeJugador.setFont(new Font("Arial", Font.BOLD, 20));
-        puntajeJugador.setBounds(5, 30, 50, 20);
+        puntajeJugador.setBounds(5, 50, 25, 30);
         puntajeJugador.setVisible(true);
-        puntajeJugador.setBackground(Color.BLUE);
+        puntajeJugador.setEditable(false);
+        puntajeJugador.setOpaque(false);
         puntajeFondo.add(puntajeJugador);
+        //Centra el texto
+        StyledDocument doc = puntajeJugador.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
         // Puntaje Ai
-        puntajeAI = new JOptionPane(Integer.toString(ganadasAI));
+        puntajeAI = new JTextPane();
+        puntajeAI.setText(Integer.toString(ganadasAI));
         puntajeAI.setFont(new Font("Arial", Font.BOLD, 20));
-        puntajeAI.setBounds(45, 30, 50, 20);
-        puntajeAI.setBackground(Color.RED);
+        puntajeAI.setBounds(42, 50, 25, 30);
+        puntajeAI.setEditable(false);
+        puntajeAI.setOpaque(false);
         puntajeAI.setVisible(true);
         puntajeFondo.add(puntajeAI);
+        //Centra el texto
+        StyledDocument doc2 = puntajeAI.getStyledDocument();
+        SimpleAttributeSet center2 = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center2, StyleConstants.ALIGN_CENTER);
+        doc2.setParagraphAttributes(0, doc2.getLength(), center2, false);
     }
 
     public static void main(String[] args) throws IOException {
