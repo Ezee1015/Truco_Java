@@ -24,7 +24,7 @@ public class JugadorAI extends Jugador {
 
   public Carta jugarTurno(Persona p, InterfazJuego mesa) throws IOException{
     System.out.println("llama a tirar carta");
-      if(p.cartasJugadas.isEmpty()) // si es la primera vez que tiro
+      if(p.cartasJugadas.isEmpty() && p.getCartasJugadas().isEmpty()) // si es la primera vez que tiro
           return tirarCartaRandom();
 
       if(p.getCartasJugadas().size()-1 == cartasJugadas.size()) { // Si el jugado ya tiro y me toca a mi, intento ganar
@@ -247,10 +247,11 @@ public class JugadorAI extends Jugador {
       if(estado == 0)            // Si no se canto nada..
         return 0;                // .. No cantar.
       else {                     // Pero si me cantaron..
-        if(cantBuenasCartas()>=1) {// .. Solo aceptar si tengo más de una buena carta y una media
-          if(cantMedianasCartas()>=1)
+        if(cantBuenasCartas()>=1) {// .. Si tengo más de una buena carta
+          if(cantMedianasCartas()>=1) // Si también tengo una mediana, retruca
             return estado+1;
-          return estado;
+          if(random.nextInt(2)==1) // Si solamente tengo una carta buena, una en dos de aceptar
+            return estado;
         }
       }
       break;
