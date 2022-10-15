@@ -247,8 +247,11 @@ public class JugadorAI extends Jugador {
       if(estado == 0)            // Si no se canto nada..
         return 0;                // .. No cantar.
       else {                     // Pero si me cantaron..
-        if(cantBuenasCartas()>=1) // .. Solo aceptar si tengo más de una buena carta y una media
+        if(cantBuenasCartas()>=1) {// .. Solo aceptar si tengo más de una buena carta y una media
+          if(cantMedianasCartas()>=1)
+            return estado+1;
           return estado;
+        }
       }
       break;
     case 4:
