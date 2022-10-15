@@ -29,14 +29,15 @@ public class JugadorAI extends Jugador {
 
       if(p.getCartasJugadas().size()-1 == cartasJugadas.size()) { // Si el jugado ya tiro y me toca a mi
           for(int i=0;i<mano.size();i++) { // Recorre desde la peor a la mejor carta
-                // Si hay una carta que empata la que ya tiro, y soy ganador de la primera mano. Tirarla
-                if(p.getCartasJugadas().size()>=2 && p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == mano.get(i).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() == mano.get(0).rankingCarta() )
+                // Si hay una carta que empata la que ya tiro, y soy ganador/empate la primera mano. Tirarla
+                if(p.getCartasJugadas().size()>=2 && p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == mano.get(i).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() <= mano.get(0).rankingCarta() )
                     return tirarCartaPos(i);
                 // Buscar la carta de menor rango que le gane
                 if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() < mano.get(i).rankingCarta())
                     return tirarCartaPos(i);
           }
-          return tirarMejorCarta();
+          // Si no le gano con ninguna de las carta que tenía, tirar la peor
+          return tirarPeorCarta();
         }
 
 
