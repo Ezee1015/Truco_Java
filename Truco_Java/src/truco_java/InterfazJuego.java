@@ -39,6 +39,8 @@ public class InterfazJuego extends JFrame {
     private JLabel fondoEstado;
     private JLabel puntajeAI = new JLabel(), puntajeJugador = new JLabel();
     private final int numeroPersonaje = new Random().nextInt(6) + 1; // Este numero representa el personaje que fue generado;
+    private final Music cantar = new Music();
+
     boolean termino = false;
 
     public InterfazJuego(Truco_Java menu) throws IOException {
@@ -1200,7 +1202,6 @@ public class InterfazJuego extends JFrame {
         System.out.println("imprime un envido de " + envido);
 
         if(!esLlamadoDesdeTimer && envido!=0) {
-            Music cantar = new Music();
             System.out.println("llama a " + numeroPersonaje + envido + ".wav");
             cantar.setFile("src/truco_java/cantos/envido/" + numeroPersonaje + envido + ".wav", 1);
             cantar.play();
@@ -1495,7 +1496,6 @@ public class InterfazJuego extends JFrame {
         System.out.println("llama a imprimir AITruco un " + trucoMSG);
 
         if(!esLlamadoDesdeTimer && trucoMSG!=0) {
-            Music cantar = new Music();
             System.out.println("llama a " + numeroPersonaje + trucoMSG + ".wav");
             cantar.setFile("src/truco_java/cantos/truco/" + numeroPersonaje + trucoMSG + ".wav", 1);
             cantar.play();
