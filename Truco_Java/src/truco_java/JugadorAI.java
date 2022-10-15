@@ -257,34 +257,34 @@ public class JugadorAI extends Jugador {
       break;
     case 4:
     case 5: // Tercera Mano
-      // Calcula según el envido del jugador qué carta le queda
+            // Calcula según el envido del jugador qué carta le queda
       int jugarEnv = calcularGanoSegunEnvidoCantado(p.getCartasJugadas());
       System.out.println("ATENCIÓN!! ES LA TERCER RONDA Y PREDICE UN --> " + jugarEnv);
       switch(jugarEnv){
         case 0: break;
         case 1:
-          if(estado==3)
-            return 3;
-          return estado+1;
+                if(estado==3)
+                  return 3;
+                return estado+1;
         case 2:
-          if(random.nextInt(3)==1){
-            if(estado==3)
-              return 3;
-            return estado+1;
-          }
-          break;
+                if(random.nextInt(3)==1){
+                  if(estado==3)
+                    return 3;
+                  return estado+1;
+                }
+                break;
         case 3:
-          return 0;
+                return 0;
       }
       // Si esta en la ultima mano y solo falta tirar la AI...
       if(p.getCartasJugadas().size()-1 == cartasJugadas.size()){
-          if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta()) // Si le gano, canto
-              return estado+random.nextInt(4-estado);
-          // Si le empata, pero gano la primera
-          else if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() == mano.get(0).rankingCarta())
-              return estado+random.nextInt(4-estado);
-          else if(random.nextInt(3)==1 && estado!=3 && p.getCartasJugadas().get(2).rankingCarta()<8) // Si pierdo: Random, retruca si no estoy en vale 4 y la carta que tiro es menor que un ancho falso
-              return estado+random.nextInt(3-estado)+1;
+        if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta()) // Si le gano, canto
+          return estado+random.nextInt(4-estado);
+        // Si le empata, pero gano la primera
+        else if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() == mano.get(0).rankingCarta())
+          return estado+random.nextInt(4-estado);
+        else if(random.nextInt(3)==1 && estado!=3 && p.getCartasJugadas().get(2).rankingCarta()<8) // Si pierdo: Random, retruca si no estoy en vale 4 y la carta que tiro es menor que un ancho falso
+          return estado+random.nextInt(3-estado)+1;
       } else if(cartasJugadas.size() == 3 && cartasJugadas.get(2).rankingCarta()>9) { // Si queda una buena carta
         if(estado == 3)
           return 3;
@@ -294,7 +294,7 @@ public class JugadorAI extends Jugador {
       break;
     case 2:
     case 3: // Segunda mano
-      if(cantBuenasCartas()>1){  // Si tengo mas de una buena carta apostar todo
+      if(cantBuenasCartas()>=1){  // Si tengo mas de una buena carta apostar todo
         if(estado==3)
           return 3;
         return estado+random.nextInt(3-estado);
@@ -308,6 +308,20 @@ public class JugadorAI extends Jugador {
         }
         if(cantMedianasCartas()>=1 && random.nextInt(2)==1)
           return estado;
+      }
+      // Si ya tiré pero es el turno del jugador, y en la mano no me queda una buena carta, porque ya la tiré
+      if(p.getCartasJugadas().size()+1==cartasJugadas.size()){
+        if(cartasJugadas.get(cartasJugadas.size()-1).rankingCarta()>7) {
+          if(estado==3)
+            return 3;
+          return estado+random.nextInt(3-estado);
+        }
+        // Si la que tiré no era una carta buena sino una carta mediana
+        if(cartasJugadas.get(cartasJugadas.size()-1).rankingCarta()>5) {
+          if(estado==3)
+            return 3;
+          return estado+random.nextInt(3-estado);
+        }
       }
       // Si tengo más de una carta mediana, y el estado es menos de retruco, de manera random aceptar
       if(cantMedianasCartas()>1 && estado<=2 && random.nextInt(3)==2)
