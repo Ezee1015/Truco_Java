@@ -24,7 +24,7 @@ public class JugadorAI extends Jugador {
 
   public Carta jugarTurno(Persona p, InterfazJuego mesa) throws IOException{
     System.out.println("llama a tirar carta");
-      if(p.cartasJugadas.isEmpty() && p.getCartasJugadas().isEmpty()) // si es la primera vez que tiro
+      if(p.cartasJugadas.isEmpty() && p.getCartasJugadas().isEmpty()) // si es la primera vez que tiro y el jugador no tiró
           return tirarCartaRandom();
 
       if(p.getCartasJugadas().size()-1 == cartasJugadas.size()) { // Si el jugado ya tiro y me toca a mi, intento ganar
