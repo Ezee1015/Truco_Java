@@ -28,35 +28,35 @@ public class JugadorAI extends Jugador {
           return tirarCartaRandom();
 
       if(p.getCartasJugadas().size()-1 == cartasJugadas.size()) { // Si el jugado ya tiro y me toca a mi
-          for(int i=0;i<mano.size();i++) { // Recorre desde la peor a la mejor carta
-                // Si hay una carta que empata la que ya tiro, y soy ganador/empate la primera mano. Tirarla
-                if(p.getCartasJugadas().size()>=2 && p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == mano.get(i).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() <= mano.get(0).rankingCarta() )
-                    return tirarCartaPos(i);
-                // Buscar la carta de menor rango que le gane
-                if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() < mano.get(i).rankingCarta())
-                    return tirarCartaPos(i);
-          }
-          // Si no le gano con ninguna de las carta que tenía, tirar la peor
-          return tirarPeorCarta();
+        for(int i=0;i<mano.size();i++) { // Recorre desde la peor a la mejor carta
+                                         // Si hay una carta que empata la que ya tiro, y soy ganador/empate la primera mano. Tirarla
+          if(p.getCartasJugadas().size()>=2 && p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == mano.get(i).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() <= mano.get(0).rankingCarta() )
+            return tirarCartaPos(i);
+          // Buscar la carta de menor rango que le gane
+          if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() < mano.get(i).rankingCarta())
+            return tirarCartaPos(i);
         }
+        // Si no le gano con ninguna de las carta que tenía, tirar la peor
+        return tirarPeorCarta();
+      }
 
 
       if(cartasJugadas.size()>=1){
-          if(p.getCartasJugadas().get(0).rankingCarta() == cartasJugadas.get(0).rankingCarta())
-              return tirarMejorCarta();
-          if(p.getCartasJugadas().get(0).rankingCarta() > cartasJugadas.get(0).rankingCarta()){
-            for(int i=mano.size()-1;i>=0;i--) { // Recorre desde la peor a la mejor carta
-                // Si hay una carta que empata la que ya tiro, y soy ganador de la primera mano. Tirarla
-                if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == mano.get(i).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() == mano.get(0).rankingCarta() )
-                    return tirarCartaPos(i);
-                // Buscar la carta de menor rango que le gane
-                if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() < mano.get(i).rankingCarta())
-                    return tirarCartaPos(i);
-            }
-              return tirarMejorCarta();
+        if(p.getCartasJugadas().get(0).rankingCarta() == cartasJugadas.get(0).rankingCarta())
+          return tirarMejorCarta();
+        if(p.getCartasJugadas().get(0).rankingCarta() > cartasJugadas.get(0).rankingCarta()){
+          for(int i=0;i<mano.size();i++) { // Recorre desde la peor a la mejor carta
+            // Si hay una carta que empata la que ya tiro, y soy ganador/empate la primera mano. Tirarla
+            if(p.getCartasJugadas().size()>=2 && p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == mano.get(i).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() <= mano.get(0).rankingCarta() )
+              return tirarCartaPos(i);
+            // Buscar la carta de menor rango que le gane
+            if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() < mano.get(i).rankingCarta())
+              return tirarCartaPos(i);
           }
-          if(p.getCartasJugadas().get(0).rankingCarta() < cartasJugadas.get(0).rankingCarta())
-              return tirarPeorCarta();
+          return tirarMejorCarta();
+        }
+        if(p.getCartasJugadas().get(0).rankingCarta() < cartasJugadas.get(0).rankingCarta())
+          return tirarPeorCarta();
       }
 
       return tirarMejorCarta(); // Tira la ultima carta que queda
