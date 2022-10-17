@@ -293,14 +293,31 @@ public class JugadorAI extends Jugador {
         return estado+random.nextInt(3-estado);      // Apostar todo
       } else if(random.nextInt(4)==2)
         return estado;
+      // Si esta en la ultima mano y solo falta tirar la Persona...
+      if(getCartasJugadas().size()-1 == p.getCartasJugadas().size()){
+        if(getCartasJugadas().get(2).rankingCarta() > 6){ // Si es buena, canto
+            if(estado == 3)
+              return 3;
+            return estado+random.nextInt(3-estado);      // Apostar todo
+        }
+        if(getCartasJugadas().get(2).rankingCarta() > 1 && getCartasJugadas().get(2).rankingCarta() < 6 && random.nextInt(3)==1)
+            return estado+random.nextInt(3-estado);      // Apostar todo
+      }
       break;
     case 2:
     case 3: // Segunda mano
-      if(cantBuenasCartas()>=1){  // Si tengo mas de una buena carta apostar todo
+      if(cantBuenasCartas()==1 && cantMedianasCartas()==1)  // Si tengo mas una buena carta y una media
+        return estado+random.nextInt(3-estado);
+      
+      if(cantBuenasCartas()>1){  // Si tengo mas de una buena carta apostar todo
         if(estado==3)
           return 3;
         return estado+random.nextInt(3-estado);
       }
+      
+      if(cantBuenasCartas()==1 && estado!=0)  // Si tengo una buena carta, aceptar
+        return estado;
+      
       // Si empaté la anterior...
       if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == cartasJugadas.get(cartasJugadas.size()-1).rankingCarta()){
         if(cantBuenasCartas()>=1){
