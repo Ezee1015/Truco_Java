@@ -481,7 +481,6 @@ public class InterfazJuego extends JFrame {
                     JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el truco de la pc: " + ex.getMessage());
                 }
             }
-            // setFondo(0);
         });
 
         //Botones de Quiero y No quiero truco
@@ -614,7 +613,6 @@ public class InterfazJuego extends JFrame {
     }
 
     private void cargarMazo() {
-        // mazo.clear(); // Ya no es necesario por que ahora el mazo es de la clasee
         mazo.add(new Carta(1, "espada"));
         mazo.add(new Carta(2, "espada"));
         mazo.add(new Carta(3, "espada"));
@@ -662,7 +660,7 @@ public class InterfazJuego extends JFrame {
             Random random = new Random();
             ArrayList<Carta> mazoTemp = new ArrayList<>();
             for (int x = 0; x < mazo.size() + mazoTemp.size(); x++) {
-                int posMezcla = random.nextInt(mazo.size()); // Puede dar numeros negativos !!!!!
+                int posMezcla = random.nextInt(mazo.size());
                 mazoTemp.add(mazo.get(posMezcla));
                 mazo.remove(posMezcla);
             }
@@ -893,7 +891,6 @@ public class InterfazJuego extends JFrame {
 
         if (jugador.getCartasJugadas().isEmpty() && ai.getCartasJugadas().isEmpty()) { // No jugo nadie
             if (jugador.isMano() == true) {
-                System.out.println("habilitaTurno(): No jugo nadie, turno Jugador");
                 if(habilitadoARetrucar < 2) truco.setEnabled(true);
                 if(!envidoFinalizado) envido.setEnabled(true);
                 irAlMazo.setEnabled(true);
@@ -902,7 +899,6 @@ public class InterfazJuego extends JFrame {
                 PC3.setEnabled(true);
                 info();
             } else {
-                System.out.println("habilitaTurno(): No jugo nadie, turno AI");
                 truco.setEnabled(false);
                 envido.setEnabled(false);
                 irAlMazo.setEnabled(false);
@@ -918,7 +914,6 @@ public class InterfazJuego extends JFrame {
                 habilitaTurno();
             }
         } else if (jugador.getCartasJugadas().isEmpty() && !ai.getCartasJugadas().isEmpty()) { // Ya Jugó la AI. Turno Jugador
-            System.out.println("habilitaTurno(): Ya jugó la AI, turno Jugador");
             if(habilitadoARetrucar < 2) truco.setEnabled(true);
             if(!envidoFinalizado) envido.setEnabled(true);
             irAlMazo.setEnabled(true);
@@ -927,7 +922,6 @@ public class InterfazJuego extends JFrame {
             PC3.setEnabled(true);
             info();
         } else if (!jugador.getCartasJugadas().isEmpty() && ai.getCartasJugadas().isEmpty()) { // Ya Jugó el Jugador. Turno AI
-            System.out.println("habilitaTurno(): Ya jugó el Jugador, turno AI");
                 truco.setEnabled(false);
                 envido.setEnabled(false);
                 irAlMazo.setEnabled(false);
@@ -948,7 +942,6 @@ public class InterfazJuego extends JFrame {
                 envido.setEnabled(false); // Deshabilita el envido en la segunda ronda
 
                 if (rankingJugador > rankingAI) { // Si gano jugador en la anterior ronda
-                    System.out.println("habilitaTurno(): Nadie jugó, turno Jugador");
                     if(habilitadoARetrucar < 2) truco.setEnabled(true); // Si le corresponde retrucar
                     // Si la ultima carta que le queda al oponente es un 4, no se puede cantar truco
                     if(ai.getCartasJugadas().size() == 3) if(ai.getCartasJugadas().get(2).rankingCarta()==0) truco.setEnabled(false);
@@ -958,7 +951,6 @@ public class InterfazJuego extends JFrame {
                     PC3.setEnabled(true);
                     info();
                 } else if (rankingAI > rankingJugador) { // si gano AI en la anterior ronda
-                    System.out.println("habilitaTurno(): Nadie jugó, turno AI");
                     truco.setEnabled(false);
                     envido.setEnabled(false);
                     irAlMazo.setEnabled(false);
@@ -973,7 +965,6 @@ public class InterfazJuego extends JFrame {
                     habilitaTurno();
                 } else if(rankingJugador == rankingAI){ // Si empatan
                     if(jugador.isMano()){ // Es mano el jugador
-                        System.out.println("habilitaTurno(): Empataron, turno Jugador");
                         if(habilitadoARetrucar < 2) truco.setEnabled(true);
                         // Si la ultima carta que le queda al oponente es un 4, no se puede cantar truco
                         if(ai.getCartasJugadas().size() == 3) if(ai.getCartasJugadas().get(2).rankingCarta()==0) truco.setEnabled(false);
@@ -983,7 +974,6 @@ public class InterfazJuego extends JFrame {
                         PC3.setEnabled(true);
                         info();
                     } else { // Es mano la AI
-                        System.out.println("habilitaTurno(): Empataron, turno AI");
                         truco.setEnabled(false);
                         envido.setEnabled(false);
                         irAlMazo.setEnabled(false);
@@ -999,7 +989,6 @@ public class InterfazJuego extends JFrame {
                     }
                 }
             } else if (jugador.getCartasJugadas().size() == ai.getCartasJugadas().size() - 1) { // Si ya la AI tiró en esa ronda
-                System.out.println("habilitaTurno(): Ya jugó AI, turno Jugador");
                 if(habilitadoARetrucar < 2) truco.setEnabled(true);
                 // Si la ultima carta que le queda al oponente es un 4, no se puede cantar truco
                 if(ai.getCartasJugadas().size() == 3) if(ai.getCartasJugadas().get(2).rankingCarta()==0) truco.setEnabled(false);
@@ -1009,7 +998,6 @@ public class InterfazJuego extends JFrame {
                 PC3.setEnabled(true);
                 info();
             } else if (jugador.getCartasJugadas().size() - 1 == ai.getCartasJugadas().size()) { // Si ya el jugador tiró en esa ronda
-                System.out.println("habilitaTurno(): Ya jugó Jugador, turno AI");
                 truco.setEnabled(false);
                 envido.setEnabled(false);
                 irAlMazo.setEnabled(false);
@@ -1030,8 +1018,6 @@ public class InterfazJuego extends JFrame {
         if (envidoFinalizado == true)
             return 0;
 
-        System.out.println("llama a AICantaEnvido");
-
         int desicion;
         if (envidosCantados.isEmpty())
             desicion = ai.desidirEnvido(0, jugador, menu);
@@ -1041,7 +1027,6 @@ public class InterfazJuego extends JFrame {
 
             if (desicion == envidosCantados.get(envidosCantados.size() - 1)) { // Si la AI Acepta lo cantado
                 Music cantar = new Music();
-                System.out.println("llama a " + numeroPersonaje + "5" + ".wav");
                 cantar.setFile("src/truco_java/cantos/envido/" + numeroPersonaje + "5.wav", 1);
                 cantar.play();
 
@@ -1180,8 +1165,6 @@ public class InterfazJuego extends JFrame {
                 case 3:
                     total += 3;
                     break;
-                case 4:
-                    System.out.println("error, no debería de haber entrado acá. No se puede ganar un falta envido diciendole no quiero");
             }
         }
 
@@ -1198,10 +1181,7 @@ public class InterfazJuego extends JFrame {
         estado.setFont(new Font("Serif", Font.ITALIC, 30));
         estado.setVisible(true);
 
-        System.out.println("imprime un envido de " + envido);
-
         if(!esLlamadoDesdeTimer && envido!=0) {
-            System.out.println("llama a " + numeroPersonaje + envido + ".wav");
             cantar.setFile("src/truco_java/cantos/envido/" + numeroPersonaje + envido + ".wav", 1);
             cantar.play();
         }
@@ -1471,7 +1451,6 @@ public class InterfazJuego extends JFrame {
 
         // Si retruca, imprime el mensaje y le pasa el mando a jugador a aceptar o aumentar la apuesta
         habilitadoARetrucar=1;
-        System.out.println("actualmente el estado del truco es " + nivelTruco + " y la desicion es " + desicion);
         if(desicion>nivelTruco)
             nivelTruco++;
         imprimeAITruco(nivelTruco, false);
@@ -1492,10 +1471,7 @@ public class InterfazJuego extends JFrame {
         setFondo(1);
         fondoEstado.setVisible(true);
 
-        System.out.println("llama a imprimir AITruco un " + trucoMSG);
-
         if(!esLlamadoDesdeTimer && trucoMSG!=0) {
-            System.out.println("llama a " + numeroPersonaje + trucoMSG + ".wav");
             cantar.setFile("src/truco_java/cantos/truco/" + numeroPersonaje + trucoMSG + ".wav", 1);
             cantar.play();
         }
@@ -1604,7 +1580,7 @@ public class InterfazJuego extends JFrame {
         String imagen = "src/truco_java/fondos/bg" + numeroPersonaje + estadoPersChar + ".png";
         fondo.setIcon(new ImageIcon(imagen));
     }
-
+/*
     private void info () {
         System.out.println("***********************************************");
         System.out.println("Cartas AI: " + ai.getMano().size());
@@ -1619,4 +1595,5 @@ public class InterfazJuego extends JFrame {
         System.out.println("Habilitado a retrucar: " + habilitadoARetrucar);
         System.out.println("***********************************************");
     }
+*/
 }
