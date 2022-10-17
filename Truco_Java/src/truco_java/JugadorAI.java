@@ -306,8 +306,11 @@ public class JugadorAI extends Jugador {
       break;
     case 2:
     case 3: // Segunda mano
-      if(cantBuenasCartas()==1 && cantMedianasCartas()==1)  // Si tengo mas una buena carta y una media
+      if(cantBuenasCartas()==1 && cantMedianasCartas()==1){  // Si tengo mas una buena carta y una media
+        if(estado==3)
+          return 3;
         return estado+random.nextInt(3-estado);
+      }
       
       if(cantBuenasCartas()>1){  // Si tengo mas de una buena carta apostar todo
         if(estado==3)
