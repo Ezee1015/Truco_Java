@@ -565,7 +565,6 @@ public class InterfazJuego extends JFrame {
             }
 
             // Si se quiere sallir en medio de la partida
-            info();
             int dialogResult = JOptionPane.showConfirmDialog (null, "Está seguro que desea abandonar la partida? Se declarará a la PC como ganador...","Atención!",JOptionPane.YES_NO_OPTION);
             if(dialogResult == JOptionPane.YES_OPTION){
                 ai.setPuntaje(15, this);
@@ -897,7 +896,6 @@ public class InterfazJuego extends JFrame {
                 PC1.setEnabled(true);
                 PC2.setEnabled(true);
                 PC3.setEnabled(true);
-                info();
             } else {
                 truco.setEnabled(false);
                 envido.setEnabled(false);
@@ -910,7 +908,6 @@ public class InterfazJuego extends JFrame {
                 else return;
                 ai.jugarTurno(jugador, this);
                 dibujarCartas();
-                info();
                 habilitaTurno();
             }
         } else if (jugador.getCartasJugadas().isEmpty() && !ai.getCartasJugadas().isEmpty()) { // Ya Jugó la AI. Turno Jugador
@@ -920,7 +917,6 @@ public class InterfazJuego extends JFrame {
             PC1.setEnabled(true);
             PC2.setEnabled(true);
             PC3.setEnabled(true);
-            info();
         } else if (!jugador.getCartasJugadas().isEmpty() && ai.getCartasJugadas().isEmpty()) { // Ya Jugó el Jugador. Turno AI
                 truco.setEnabled(false);
                 envido.setEnabled(false);
@@ -933,7 +929,6 @@ public class InterfazJuego extends JFrame {
                 else return;
                 ai.jugarTurno(jugador, this);
                 dibujarCartas();
-                info();
                 habilitaTurno();
         } else if (!jugador.getCartasJugadas().isEmpty() && !ai.getCartasJugadas().isEmpty()) { // Rondas 2 y 3
             if (jugador.getCartasJugadas().size() == ai.getCartasJugadas().size()) { // Si es una ronda en la que nadie jugó
@@ -949,7 +944,6 @@ public class InterfazJuego extends JFrame {
                     PC1.setEnabled(true);
                     PC2.setEnabled(true);
                     PC3.setEnabled(true);
-                    info();
                 } else if (rankingAI > rankingJugador) { // si gano AI en la anterior ronda
                     truco.setEnabled(false);
                     envido.setEnabled(false);
@@ -961,7 +955,6 @@ public class InterfazJuego extends JFrame {
                     else return;
                     ai.jugarTurno(jugador, this);
                     dibujarCartas();
-                    info();
                     habilitaTurno();
                 } else if(rankingJugador == rankingAI){ // Si empatan
                     if(jugador.isMano()){ // Es mano el jugador
@@ -972,7 +965,6 @@ public class InterfazJuego extends JFrame {
                         PC1.setEnabled(true);
                         PC2.setEnabled(true);
                         PC3.setEnabled(true);
-                        info();
                     } else { // Es mano la AI
                         truco.setEnabled(false);
                         envido.setEnabled(false);
@@ -984,7 +976,6 @@ public class InterfazJuego extends JFrame {
                         else return;
                         ai.jugarTurno(jugador, this);
                         dibujarCartas();
-                        info();
                         habilitaTurno();
                     }
                 }
@@ -996,7 +987,6 @@ public class InterfazJuego extends JFrame {
                 PC1.setEnabled(true);
                 PC2.setEnabled(true);
                 PC3.setEnabled(true);
-                info();
             } else if (jugador.getCartasJugadas().size() - 1 == ai.getCartasJugadas().size()) { // Si ya el jugador tiró en esa ronda
                 truco.setEnabled(false);
                 envido.setEnabled(false);
@@ -1008,7 +998,6 @@ public class InterfazJuego extends JFrame {
                 else return;
                 ai.jugarTurno(jugador, this);
                 dibujarCartas();
-                info();
                 habilitaTurno();
             }
         }
