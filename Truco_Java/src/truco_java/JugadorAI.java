@@ -23,7 +23,6 @@ public class JugadorAI extends Jugador {
 
 
   public Carta jugarTurno(Persona p, InterfazJuego mesa) throws IOException{
-    System.out.println("llama a tirar carta");
       if(p.cartasJugadas.isEmpty() && p.getCartasJugadas().isEmpty()) // si es la primera vez que tiro y el jugador no tiró
           return tirarCartaRandom();
 
@@ -122,7 +121,7 @@ public class JugadorAI extends Jugador {
       Random random = new Random();
 
       if(calcularEnvido()<=23){               // Menos de 23 de envido, nada
-        if(random.nextInt(8) == 7 && !menu.facil.isSelected())            //El 7 es un numero de ejemplo para la probabilidad de 1/8
+        if(random.nextInt(8) == 7 && !menu.facil.isSelected()) //El 7 es un numero de ejemplo para la probabilidad de 1/8
             desicion = estado + 1;
         return desicion;
       }
@@ -170,7 +169,8 @@ public class JugadorAI extends Jugador {
           }
       }
 
-      if(estado>0 && p.getPuntaje()==14){ // Si se canta envido y el jugador le falta un punto para ganar, aceptar si o si.
+      // Si se canta envido y el jugador le falta un punto para ganar, aceptar si o si.
+      if(estado>0 && p.getPuntaje()==14){ 
         if(estado<3)
           desicion = estado+1;
         else
@@ -186,7 +186,8 @@ public class JugadorAI extends Jugador {
         }
       }
 
-      if(desicion<estado && desicion!=0) // Si retruca en menor nivel del que está la apuesta, no quiere
+      // Si retruca en menor nivel del que está la apuesta, no quiere
+      if(desicion<estado && desicion!=0) 
           return 0;
 
       if(desicion==0 && estado>=3 && calcularEnvido()>26 && random.nextInt(2)==0 && !menu.facil.isSelected()) //Agrega una opcion para arriesgar
@@ -231,11 +232,12 @@ public class JugadorAI extends Jugador {
   if(menu.facil.isSelected())
     return desidirTrucoFacil(estado, p);
 
-    Random random = new Random();
+  Random random = new Random();
 
   int cantCartasTiradas = p.getCartasJugadas().size() + cartasJugadas.size();
 
-  if(estado>0 && p.getPuntaje()==14){ // Si se canta truco y el jugador le falta un punto para ganar, aceptar si o si o retrucar hasta donde se pueda.
+  // Si se canta truco y el jugador le falta un punto para ganar, aceptar si o si o retrucar hasta donde se pueda.
+  if(estado>0 && p.getPuntaje()==14){ 
     if(estado!=3)
       return estado+1;
     else
@@ -260,7 +262,6 @@ public class JugadorAI extends Jugador {
     case 5: // Tercera Mano
             // Calcula según el envido del jugador qué carta le queda
       int jugarEnv = calcularGanoSegunEnvidoCantado(p.getCartasJugadas());
-      System.out.println("ATENCIÓN!! ES LA TERCER RONDA Y PREDICE UN --> " + jugarEnv);
       switch(jugarEnv){
         case 0: break;
         case 1:
@@ -412,7 +413,6 @@ public class JugadorAI extends Jugador {
         2 --> Hay posibilidades que le gane
         3 --> No le gano
         */
-      System.out.println("AAAAAAAAH. Envido que se cantó: " + envidoJugadorCantado);
       ArrayList<String> palos = new ArrayList<>(); // Variable que se usa despues en el codigo para almacenar los palos tirados
       for(int i=0;i<2;i++)
         palos.add(cartasJugadasJugador.get(i).getPalo());
@@ -428,7 +428,6 @@ public class JugadorAI extends Jugador {
 
 
       if(envidoJugadorCantado==0){
-        System.out.println("A VER A VER A VER tiene dieses");
         if(ultimaCarta.rankingCarta()<4) // Si la carta que tengo es menor de 10
           return 3;
         if(ultimaCarta.rankingCarta()>6) // Si la carta que tengo es mayor de 12
@@ -441,13 +440,11 @@ public class JugadorAI extends Jugador {
         if(numeros.contains(1)) // Si ya tiró esa carta
           return 0;
         if(palos.contains("espada") || palos.contains("basto")){
-          System.out.println("A VER A VER A VER tiene ancho verdadero");
           if(ultimaCarta.rankingCarta()==13)
             return 1;
           return 3;
         }
 
-        System.out.println("A VER A VER A VER tiene ancho falso");
         if(ultimaCarta.rankingCarta()>7)
           return 1;
         if(ultimaCarta.rankingCarta()==7)
@@ -456,7 +453,6 @@ public class JugadorAI extends Jugador {
       }
 
       if(envidoJugadorCantado<4) { // Si tiene un dos o un tres
-        System.out.println("A VER A VER A VER tiene un 2 o un 3");
         if(numeros.contains(2) || numeros.contains(3)) // Si ya tiró esa carta
           return 0;
         if(ultimaCarta.rankingCarta()>9) // Si tengo mas de un 3
@@ -467,7 +463,6 @@ public class JugadorAI extends Jugador {
       }
 
       if(envidoJugadorCantado<7){ // Si tiene un 4,5 o 6
-        System.out.println("A VER A VER A VER tiene un 4, 5 o 6");
         if(numeros.contains(envidoJugadorCantado)) // Si ya tiró esa carta
           return 0;
 
@@ -479,19 +474,16 @@ public class JugadorAI extends Jugador {
         if(numeros.contains(7)) // Si ya tiró esa carta
           return 0;
         if(palos.contains("basto") || palos.contains("copa")){
-          System.out.println("A VER A VER A VER tiene un siete de oro o de espada");
           if(ultimaCarta.rankingCarta()>10) // Si tengo un 7 de espada en adelante
             return 1;
           return 3;
         }
-        System.out.println("A VER A VER A VER tiene un siete falso");
         if(ultimaCarta.rankingCarta()>3) // Si tengo mas de un 7 de copas o de basto
           return 1;
         return 3;
       }
 
       if(envidoJugadorCantado==20){
-        System.out.println("A VER A VER A VER tiene dos reyes");
         if(numeros.get(0) >= 10 && numeros.get(0) <= 12) // Si en la primer tiro un rey...
           if(numeros.get(1) >= 10 && numeros.get(1) <= 12) // Y en la Segunda tiro otro rey...
             if(palos.get(0).equals(palos.get(1))) // Y si son del mismo palo
@@ -530,7 +522,6 @@ public class JugadorAI extends Jugador {
             numPosibili = envidoJugadorCantado - numeros.get(i) - 20;
           else // Si es un 10,11,12 lo cuenta como envido 0
             numPosibili = envidoJugadorCantado - 20;
-          System.out.println("numero de posibilidad: " + numPosibili);
           if(numPosibili==0){ //Si le queda un rey
             posibilidades.add(new Carta(10, palos.get(i)));
             posibilidades.add(new Carta(11, palos.get(i)));
@@ -586,12 +577,6 @@ public class JugadorAI extends Jugador {
           if(ultimaCarta.rankingCarta() > posibilidades.get(i).rankingCarta())
             cantCartasQueLeGano++;
 
-        ///// Eeeeeee
-        System.out.println("QUIZAAAAAAAAAAAAAAAAAAAAS TENGA...");
-        for (int i = 0; i < posibilidades.size(); i++) {
-          System.out.println(posibilidades.get(i).texto());
-        }
-
         // Hace un calculo para ver si conviene o no jugar
         double probabiliGanar;
         try {
@@ -600,7 +585,6 @@ public class JugadorAI extends Jugador {
             JOptionPane.showMessageDialog(null, "Ha sucedido un error en la Inteligencia de la PC: " + e.getMessage());
             return 0;
         }
-        System.out.println("PROBABILIDAAAAAAD -->" + probabiliGanar);
         if (probabiliGanar>80)
           return 1;
         if (probabiliGanar>40)
