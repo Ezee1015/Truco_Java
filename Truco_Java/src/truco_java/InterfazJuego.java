@@ -56,7 +56,6 @@ public class InterfazJuego extends JFrame {
         fondo.setVisible(true);
         add(fondo);
 
-        // Mezclar el fondo y el personaje y hacer diferetes fondos. Luego se eligen aleatorios.
         // AI Carta 1
         AIC1 = new JLabel();
         AIC1.setBounds(100, 70, 75, 100);
