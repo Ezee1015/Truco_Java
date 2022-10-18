@@ -1015,7 +1015,6 @@ public class InterfazJuego extends JFrame {
             desicion = ai.desidirEnvido(envidosCantados.get(envidosCantados.size() - 1), jugador, menu);
 
             if (desicion == envidosCantados.get(envidosCantados.size() - 1)) { // Si la AI Acepta lo cantado
-                Music cantar = new Music();
                 cantar.setFile("src/truco_java/cantos/envido/" + numeroPersonaje + "5.wav", 1);
                 cantar.play();
 
