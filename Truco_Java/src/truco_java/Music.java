@@ -1,7 +1,5 @@
 package truco_java;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Timer;
@@ -15,6 +13,8 @@ import javax.swing.JOptionPane;
 public class Music {
     Clip clip;
     AudioInputStream sound;
+    Timer reproductorMPV;
+    boolean sonidoARM;
 
     public void setFile(String soundFileName) {
         if(!Truco_Java.musica.isSelected())
@@ -26,8 +26,12 @@ public class Music {
             clip = AudioSystem.getClip();
             clip.open(sound);
             clip.loop(50);
+            sonidoARM = false;
         } catch (IOException | LineUnavailableException | UnsupportedAudioFileException l) {
             JOptionPane.showMessageDialog(null, "Error con el música: " + l.getMessage());
+        } catch (IllegalArgumentException ex) { // Si se tiene mpv, reproducir por eso
+            sonidoARM = true;
+            timerLoop(soundFileName, 1);
         }
     }
 
@@ -41,31 +45,49 @@ public class Music {
             sound = AudioSystem.getAudioInputStream(file);
             clip = AudioSystem.getClip();
             clip.open(sound);
+            sonidoARM = false;
         } catch (IOException | LineUnavailableException | UnsupportedAudioFileException l) {
             JOptionPane.showMessageDialog(null, "Error con el sonido: " + l.getMessage());
         } catch (IllegalArgumentException ex){ // Si se tiene mpv, reproducir por eso
-            try {
-                Runtime.getRuntime().exec("mpv --audio-display=no " + soundFileName); 
-            } catch (IOException ioe) {
-                JOptionPane.showMessageDialog(null, "Error con el sonido: " + ex.getMessage());
-            }
+            sonidoARM = true;
+            timerLoop(soundFileName, 0);
         }
     }
 
     public void play() {
         if(!Truco_Java.musica.isSelected())
             return;
-
+        
         clip.start();
     }
 
     public void stop() throws IOException {
+        if(sonidoARM) {
+            reproductorMPV.cancel();
+            return;
+        }
         sound.close();
         clip.close();
         clip.stop();
     }
     
-    private void timerLoop (String soundFileName){
-
+    private void timerLoop (String soundFileName, int repetir){
+        reproductorMPV = new java.util.Timer();
+                
+        reproductorMPV.schedule(
+            new java.util.TimerTask() {
+                @Override
+                public void run() {
+                    try { 
+                        Runtime.getRuntime().exec("mpv --audio-display=no '" + soundFileName + "'");
+                        if(repetir==1)
+                            timerLoop(soundFileName, repetir);
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(null, "Error con el sonido: " + ex.getMessage());
+                    }
+                }
+            },
+            1
+            );
     }
 }
