@@ -1,7 +1,10 @@
 package truco_java;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Timer;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -40,6 +43,12 @@ public class Music {
             clip.open(sound);
         } catch (IOException | LineUnavailableException | UnsupportedAudioFileException l) {
             JOptionPane.showMessageDialog(null, "Error con el sonido: " + l.getMessage());
+        } catch (IllegalArgumentException ex){ // Si se tiene mpv, reproducir por eso
+            try {
+                Runtime.getRuntime().exec("mpv --audio-display=no " + soundFileName); 
+            } catch (IOException ioe) {
+                JOptionPane.showMessageDialog(null, "Error con el sonido: " + ex.getMessage());
+            }
         }
     }
 
@@ -54,5 +63,9 @@ public class Music {
         sound.close();
         clip.close();
         clip.stop();
+    }
+    
+    private void timerLoop (String soundFileName){
+
     }
 }
