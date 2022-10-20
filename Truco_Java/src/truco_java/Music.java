@@ -80,33 +80,25 @@ public class Music {
         reproductorMPV = new java.util.Timer();
 
         reproductorMPV.schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                            System.out.println("mpv --audio-display=no '" + soundFileName + "'");
-                            //test command in linux
-                            runCommand("mpv","--audio-display=no", soundFileName);
-                            // Runtime.getRuntime().exec("mpv --audio-display=no '" + soundFileName + "'");
-                        if(repetir==1)
-                            timerLoop(soundFileName, repetir);
+            new java.util.TimerTask() {
+                @Override
+                public void run() {
+                        System.out.println("mpv --audio-display=no '" + soundFileName + "'");
+                        //test command in linux
+                        runCommand("mpv","--audio-display=no", soundFileName);
+                        // Runtime.getRuntime().exec("mpv --audio-display=no '" + soundFileName + "'");
+                    if(repetir==1)
+                        timerLoop(soundFileName, repetir);
                 }
-                },
-                1
-                );
+            },
+            1
+        );
 }
 public void runCommand(String... command) {
     ProcessBuilder processBuilder = new ProcessBuilder().command(command);
 
     try {
         Process process = processBuilder.start();
-
-        //read the output
-        InputStreamReader inputStreamReader = new InputStreamReader(process.getInputStream());
-        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        String output = null;
-        while ((output = bufferedReader.readLine()) != null) {
-            System.out.println(output);
-        }
 
         //wait for the process to complete
         // process.waitFor();
@@ -116,7 +108,6 @@ public void runCommand(String... command) {
         }
 
         //close the resources
-        bufferedReader.close();
         process.destroy();
 
     } catch (IOException e) {
