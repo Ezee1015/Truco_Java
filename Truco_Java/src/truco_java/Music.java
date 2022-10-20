@@ -86,8 +86,8 @@ public class Music {
                         try {
                             System.out.println("mpv --audio-display=no '" + soundFileName + "'");
                             //test command in linux
-                            runCommand("mpv --audio-display=no '" + soundFileName + "'");
-                        Runtime.getRuntime().exec("mpv --audio-display=no '" + soundFileName + "'");
+                            runCommand("mpv","--audio-display=no", soundFileName);
+                            // Runtime.getRuntime().exec("mpv --audio-display=no '" + soundFileName + "'");
                         if(repetir==1)
                             timerLoop(soundFileName, repetir);
                     } catch (IOException ex) {
