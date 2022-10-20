@@ -144,12 +144,12 @@ public class Truco_Java extends JFrame{
 
         // Créditos
         JLabel creditos = new JLabel("Creado por Leonardo D.S. - 2022 - Licencia GPL v3.0");
-        creditos.setBounds(10, 440, 390, 35);
+        creditos.setBounds(10, 440, 490, 35);
         creditos.setFont(new Font("Arial", Font.BOLD, 14));
         creditos.setForeground(Color.WHITE);
         creditos.setVisible(true);
         fondo.add(creditos);
-        
+
         // Fondo puntaje
         puntajeFondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg0.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
         puntajeFondo.setBounds(10, 325, 75, 100);
