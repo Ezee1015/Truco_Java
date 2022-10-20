@@ -29,7 +29,7 @@ public class Music {
             sonidoARM = false;
         } catch (IOException | LineUnavailableException | UnsupportedAudioFileException l) {
             JOptionPane.showMessageDialog(null, "Error con el música: " + l.getMessage());
-        } catch (IllegalArgumentException ex) { // Si se tiene mpv, reproducir por eso
+        } catch (UnsatisfiedLinkError | IllegalArgumentException ex) { // Si se tiene mpv, reproducir por eso
             sonidoARM = true;
             timerLoop(soundFileName, 1);
         }
@@ -57,7 +57,10 @@ public class Music {
     public void play() {
         if(!Truco_Java.musica.isSelected())
             return;
-        
+
+        if(sonidoARM)
+            return;
+
         clip.start();
     }
 
@@ -70,15 +73,19 @@ public class Music {
         clip.close();
         clip.stop();
     }
-    
+
     private void timerLoop (String soundFileName, int repetir){
         reproductorMPV = new java.util.Timer();
-                
+
         reproductorMPV.schedule(
-            new java.util.TimerTask() {
-                @Override
-                public void run() {
-                    try { 
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        try {
+                            System.out.println("mpv --audio-display=no '" + soundFileName + "'");
+                            //test command in linux
+                            runCommand("pwd");
+                            runCommand("ifconfig", "-a");
                         Runtime.getRuntime().exec("mpv --audio-display=no '" + soundFileName + "'");
                         if(repetir==1)
                             timerLoop(soundFileName, repetir);
@@ -86,8 +93,34 @@ public class Music {
                         JOptionPane.showMessageDialog(null, "Error con el sonido: " + ex.getMessage());
                     }
                 }
-            },
-            1
-            );
+                },
+                1
+                );
+}
+public void runCommand(String... command) {
+    ProcessBuilder processBuilder = new ProcessBuilder().command(command);
+
+    try {
+        Process process = processBuilder.start();
+
+        //read the output
+        InputStreamReader inputStreamReader = new InputStreamReader(process.getInputStream());
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        String output = null;
+        while ((output = bufferedReader.readLine()) != null) {
+            System.out.println(output);
+        }
+
+        //wait for the process to complete
+        process.waitFor();
+
+        //close the resources
+        bufferedReader.close();
+        process.destroy();
+
+    } catch (IOException | InterruptedException e) {
+        e.printStackTrace();
     }
+}
+
 }
