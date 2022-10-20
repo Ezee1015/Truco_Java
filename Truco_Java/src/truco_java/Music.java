@@ -87,6 +87,8 @@ public class Music {
                         //test command in linux
                         runCommand("mpv","--audio-display=no", soundFileName);
                         // Runtime.getRuntime().exec("mpv --audio-display=no '" + soundFileName + "'");
+                    if(killTimer)
+                        return;
                     if(repetir==1)
                         timerLoop(soundFileName, repetir);
                 }
@@ -94,6 +96,7 @@ public class Music {
             1
         );
 }
+boolean killTimer=false;
 public void runCommand(String... command) {
     ProcessBuilder processBuilder = new ProcessBuilder().command(command);
 
@@ -103,13 +106,11 @@ public void runCommand(String... command) {
         //wait for the process to complete
         // process.waitFor();
         while(process.isAlive()){
-            if(!Truco_Java.musica.isSelected())
+            if(!Truco_Java.musica.isSelected()){
+                killTimer=true
                 process.destroy();
+            }
         }
-
-        //close the resources
-        process.destroy();
-
     } catch (IOException e) {
         e.printStackTrace();
     }
