@@ -83,16 +83,12 @@ public class Music {
                 new java.util.TimerTask() {
                     @Override
                     public void run() {
-                        try {
                             System.out.println("mpv --audio-display=no '" + soundFileName + "'");
                             //test command in linux
                             runCommand("mpv","--audio-display=no", soundFileName);
                             // Runtime.getRuntime().exec("mpv --audio-display=no '" + soundFileName + "'");
                         if(repetir==1)
                             timerLoop(soundFileName, repetir);
-                    } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(null, "Error con el sonido: " + ex.getMessage());
-                    }
                 }
                 },
                 1
@@ -113,13 +109,17 @@ public void runCommand(String... command) {
         }
 
         //wait for the process to complete
-        process.waitFor();
+        // process.waitFor();
+        while(process.isAlive()){
+            if(!Truco_Java.musica.isSelected())
+                process.destroy();
+        }
 
         //close the resources
         bufferedReader.close();
         process.destroy();
 
-    } catch (IOException | InterruptedException e) {
+    } catch (IOException e) {
         e.printStackTrace();
     }
 }
