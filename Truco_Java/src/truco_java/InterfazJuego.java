@@ -128,6 +128,7 @@ public class InterfazJuego extends JFrame {
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
             }
+            setFondo(0);
         });
 
         // Persona Carta 3
@@ -156,6 +157,7 @@ public class InterfazJuego extends JFrame {
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
             }
+            setFondo(0);
         });
 
         JButton repartir = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cartasMazo.png")).getScaledInstance(80, 80, Image.SCALE_SMOOTH)));
@@ -505,7 +507,8 @@ public class InterfazJuego extends JFrame {
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
             }
-            });
+            setFondo(0);
+        });
 
 
         noQuieroTruco = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/noQuieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
