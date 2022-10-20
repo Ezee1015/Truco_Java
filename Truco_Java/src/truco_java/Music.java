@@ -107,7 +107,7 @@ public void runCommand(String... command) {
         // process.waitFor();
         while(process.isAlive()){
             if(!Truco_Java.musica.isSelected()){
-                killTimer=true
+                killTimer=true;
                 process.destroy();
             }
         }
