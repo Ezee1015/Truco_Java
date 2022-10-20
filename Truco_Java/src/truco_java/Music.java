@@ -83,7 +83,6 @@ public class Music {
             new java.util.TimerTask() {
                 @Override
                 public void run() {
-                        System.out.println("mpv --audio-display=no '" + soundFileName + "'");
                         //test command in linux
                         runCommand("mpv","--audio-display=no", soundFileName);
                         // Runtime.getRuntime().exec("mpv --audio-display=no '" + soundFileName + "'");
