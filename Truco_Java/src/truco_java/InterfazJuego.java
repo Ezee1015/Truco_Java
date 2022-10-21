@@ -288,7 +288,6 @@ public class InterfazJuego extends JFrame {
             int puntos=0;
             if(!envidoFinalizado && ai.getCartasJugadas().isEmpty())
                 puntos++;
-            System.out.println("puntos envido: " + puntos + " y truco: " +calcularTrucoGanado() );
             ai.setPuntaje(ai.getPuntaje()+puntos+calcularTrucoGanado(), this);
             try {
                 dibujarPuntaje();
@@ -844,7 +843,7 @@ public class InterfazJuego extends JFrame {
     }
 
     private void otraPartida() throws IOException {
-        if(!termino) {
+        if(!termino && menu.musica.isSelected()) {
             efectos.setFile("src/truco_java/musica/otraPartida.wav", 1);
             efectos.play();
             try {
