@@ -844,12 +844,14 @@ public class InterfazJuego extends JFrame {
     }
 
     private void otraPartida() throws IOException {
-        efectos.setFile("src/truco_java/musica/otraPartida.wav", 1);
-        efectos.play();
-         try {
-            Thread.sleep(1200);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+        if(!termino) {
+            efectos.setFile("src/truco_java/musica/otraPartida.wav", 1);
+            efectos.play();
+            try {
+               Thread.sleep(1200);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         // Reinicia variables
         nivelTruco = 0;
