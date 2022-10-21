@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -40,6 +42,7 @@ public class InterfazJuego extends JFrame {
     private JLabel puntajeAI = new JLabel(), puntajeJugador = new JLabel();
     private final int numeroPersonaje = new Random().nextInt(6) + 1; // Este numero representa el personaje que fue generado;
     private final Music cantar = new Music();
+    private static Music efectos = new Music();
 
     boolean termino = false;
 
@@ -84,6 +87,8 @@ public class InterfazJuego extends JFrame {
         PC1.setBorderPainted(false);
         fondo.add(PC1);
         PC1.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/tirarCarta.wav", 1);
+            efectos.play();
             try {
                 tirarCarta(0);
             } catch (IOException ex) {
@@ -113,6 +118,8 @@ public class InterfazJuego extends JFrame {
         PC2.setBorderPainted(false);
         fondo.add(PC2);
         PC2.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/tirarCarta.wav", 1);
+            efectos.play();
             try {
                 tirarCarta(1);
             } catch (IOException ex) {
@@ -142,6 +149,8 @@ public class InterfazJuego extends JFrame {
         PC3.setBorderPainted(false);
         fondo.add(PC3);
         PC3.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/tirarCarta.wav", 1);
+            efectos.play();
             try {
                 tirarCarta(2);
             } catch (IOException ex) {
@@ -248,6 +257,8 @@ public class InterfazJuego extends JFrame {
         envido.setBorderPainted(false);
         fondo.add(envido);
         envido.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/boton.wav", 1);
+            efectos.play();
             if (envidoEsp.isVisible() == true) {
                 envidoEsp.setVisible(false);
                 envidoEnvido.setVisible(false);
@@ -271,6 +282,8 @@ public class InterfazJuego extends JFrame {
         irAlMazo.setBorderPainted(false);
         fondo.add(irAlMazo);
         irAlMazo.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/boton.wav", 1);
+            efectos.play();
             JOptionPane.showMessageDialog(null, "Te has ido al mazo. Repartiendo...");
             int puntos=0;
             if(!envidoFinalizado && ai.getCartasJugadas().isEmpty())
@@ -303,6 +316,8 @@ public class InterfazJuego extends JFrame {
         envidoEsp.setBorderPainted(false);
         fondo.add(envidoEsp);
         envidoEsp.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/boton.wav", 1);
+            efectos.play();
             envidosCantados.add(1);
             try {
                 AICantaEnvido();
@@ -320,6 +335,8 @@ public class InterfazJuego extends JFrame {
         envidoEnvido.setBorderPainted(false);
         fondo.add(envidoEnvido);
         envidoEnvido.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/boton.wav", 1);
+            efectos.play();
             envidosCantados.add(2);
             envidoEsp.setVisible(false);
             envidoEnvido.setVisible(false);
@@ -339,6 +356,8 @@ public class InterfazJuego extends JFrame {
         realEnvido.setBorderPainted(false);
         fondo.add(realEnvido);
         realEnvido.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/boton.wav", 1);
+            efectos.play();
             envidosCantados.add(3);
             envidoEsp.setVisible(false);
             envidoEnvido.setVisible(false);
@@ -359,6 +378,8 @@ public class InterfazJuego extends JFrame {
         faltaEnvido.setBorderPainted(false);
         fondo.add(faltaEnvido);
         faltaEnvido.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/boton.wav", 1);
+            efectos.play();
             envidosCantados.add(4);
             envidoEsp.setVisible(false);
             envidoEnvido.setVisible(false);
@@ -380,6 +401,8 @@ public class InterfazJuego extends JFrame {
         quieroEnv.setBorderPainted(false);
         fondo.add(quieroEnv);
         quieroEnv.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/boton.wav", 1);
+            efectos.play();
             if (jugador.calcularEnvido() > ai.calcularEnvido()) { //Si gana el jugador
                 ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
                 JOptionPane.showMessageDialog(null, "Has ganado. La PC tenía " + ai.calcularEnvido() + " de envido.");
@@ -439,6 +462,8 @@ public class InterfazJuego extends JFrame {
         noQuieroEnv.setBorderPainted(false);
         fondo.add(noQuieroEnv);
         noQuieroEnv.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/boton.wav", 1);
+            efectos.play();
             ai.setPuntaje(ai.getPuntaje() + calcularEnvidoPerdido(), this);
 
             envido.setEnabled(false);
@@ -473,6 +498,8 @@ public class InterfazJuego extends JFrame {
         truco.setBorderPainted(false);
         fondo.add(truco);
         truco.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/boton.wav", 1);
+            efectos.play();
             envidoFinalizado = true;
             if(habilitadoARetrucar != 2){
                 nivelTruco++;
@@ -494,6 +521,8 @@ public class InterfazJuego extends JFrame {
         quieroTruco.setBorderPainted(false);
         fondo.add(quieroTruco);
         quieroTruco.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/boton.wav", 1);
+            efectos.play();
             PC1.setEnabled(true);
             PC2.setEnabled(true);
             PC3.setEnabled(true);
@@ -519,6 +548,8 @@ public class InterfazJuego extends JFrame {
         noQuieroTruco.setBorderPainted(false);
         fondo.add(noQuieroTruco);
         noQuieroTruco.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/boton.wav", 1);
+            efectos.play();
             ai.setPuntaje(ai.getPuntaje() + calcularTrucoPerdido(), this);
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
@@ -559,6 +590,8 @@ public class InterfazJuego extends JFrame {
         atras.setVisible(true);
         fondo.add(atras);
         atras.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
             // Si todavia no comenzo la partida
             if(repartir.isEnabled()){
                 menu.setVisible(true);
@@ -811,6 +844,13 @@ public class InterfazJuego extends JFrame {
     }
 
     private void otraPartida() throws IOException {
+        efectos.setFile("src/truco_java/musica/otraPartida.wav", 1);
+        efectos.play();
+         try {
+            Thread.sleep(1200);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+        }
         // Reinicia variables
         nivelTruco = 0;
         envidosCantados = new ArrayList<>();
