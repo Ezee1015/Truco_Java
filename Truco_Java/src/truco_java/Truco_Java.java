@@ -28,6 +28,7 @@ public class Truco_Java extends JFrame{
     public JTextPane puntajeAI, puntajeJugador;
     public JLabel puntajeFondo;
     private boolean facilChecked = false;
+    private static Music efectos = new Music();
 
     public Truco_Java () throws IOException {
 
@@ -55,6 +56,8 @@ public class Truco_Java extends JFrame{
         jugar.setBorderPainted(false);
         fondo.add(jugar);
         jugar.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
             setVisible(false);
             InterfazJuego juego;
             try {
@@ -81,6 +84,8 @@ public class Truco_Java extends JFrame{
         acercaBoton.setBorderPainted(false);
         fondo.add(acercaBoton);
         acercaBoton.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
             setVisible(false);
             AcercaDe acerca;
             ImageIcon icono = new ImageIcon("src/truco_java/fondos/icono.png");
@@ -106,6 +111,8 @@ public class Truco_Java extends JFrame{
         salir.setBorderPainted(false);
         fondo.add(salir);
         salir.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
             System.exit(0);
         });
 
@@ -114,6 +121,8 @@ public class Truco_Java extends JFrame{
         musica.setOpaque(false);
         fondo.add(musica);
         musica.addItemListener((ItemEvent e) -> {
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
             if(e.getStateChange()==1){
                 musicaFondo.setFile("src/truco_java/musica/fondo.wav");
                 musicaFondo.play();
@@ -131,6 +140,8 @@ public class Truco_Java extends JFrame{
         facil.setOpaque(false);
         fondo.add(facil);
         facil.addItemListener((ItemEvent e) -> {
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
             if(e.getStateChange()==1 && !facilChecked){
                 int dialogResult = JOptionPane.showConfirmDialog(null, "Al estar en modo facil, no se sumará puntaje! Este está diseñado exclusivamente para practicar. ¿Aún así desea jugar en modo facil?","Aclaración",JOptionPane.YES_NO_OPTION);
                 if(dialogResult == JOptionPane.NO_OPTION)

@@ -16,10 +16,11 @@ import javax.swing.JLabel;
 import javax.swing.JTextPane;
 
 public class AcercaDe extends JFrame {
-      JTextPane descripcion;
-      JButton atras = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
-      JButton adelante = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/adelante.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
-      JButton salir = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/volverBoton.png")).getScaledInstance(220, 50, Image.SCALE_SMOOTH)));
+    JTextPane descripcion;
+    JButton atras = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+    JButton adelante = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/adelante.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+    JButton salir = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/volverBoton.png")).getScaledInstance(220, 50, Image.SCALE_SMOOTH)));
+    private static Music efectos = new Music();
 
 
   public AcercaDe (Truco_Java menu) throws IOException {
@@ -65,6 +66,8 @@ public class AcercaDe extends JFrame {
         atras.setEnabled(false);
         fondo.add(atras);
         atras.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
             determinarDescripcion(false);
         });
 
@@ -77,6 +80,8 @@ public class AcercaDe extends JFrame {
         adelante.setEnabled(true);
         fondo.add(adelante);
         adelante.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
             determinarDescripcion(true);
         });
 
@@ -88,6 +93,8 @@ public class AcercaDe extends JFrame {
         salir.setBorderPainted(false);
         fondo.add(salir);
         salir.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
             setVisible(false);
             menu.setVisible(true);
             dispose();
