@@ -148,9 +148,9 @@ public class Truco_Java extends JFrame{
         facil.setOpaque(false);
         fondo.add(facil);
         facil.addItemListener((ItemEvent e) -> {
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
             if(e.getStateChange()==1 && !facilChecked){
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
                 int dialogResult = JOptionPane.showConfirmDialog(null, "Al estar en modo facil, no se sumará puntaje! Este está diseñado exclusivamente para practicar. ¿Aún así desea jugar en modo facil?","Aclaración",JOptionPane.YES_NO_OPTION);
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                 efectos.play();
