@@ -1,9 +1,7 @@
 package truco_java;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Timer;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -13,10 +11,11 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JOptionPane;
 
 public class Music {
-    Clip clip;
-    AudioInputStream sound;
-    Timer reproductorMPV;
-    boolean sonidoARM;
+    private Clip clip;
+    private AudioInputStream sound;
+    private Timer reproductorMPV;
+    private boolean sonidoARM;
+    private static Music efectos = new Music();
 
     public void setFile(String soundFileName) {
         if(!Truco_Java.musica.isSelected())
@@ -31,6 +30,8 @@ public class Music {
             sonidoARM = false;
         } catch (IOException | LineUnavailableException | UnsupportedAudioFileException l) {
             JOptionPane.showMessageDialog(null, "Error con el música: " + l.getMessage());
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
         } catch (UnsatisfiedLinkError | IllegalArgumentException ex) { // Si se tiene mpv, reproducir por eso
             sonidoARM = true;
             timerLoop(soundFileName, 1);
@@ -50,6 +51,8 @@ public class Music {
             sonidoARM = false;
         } catch (IOException | LineUnavailableException | UnsupportedAudioFileException l) {
             JOptionPane.showMessageDialog(null, "Error con el sonido: " + l.getMessage());
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
         } catch (IllegalArgumentException ex){ // Si se tiene mpv, reproducir por eso
             sonidoARM = true;
             timerLoop(soundFileName, 0);

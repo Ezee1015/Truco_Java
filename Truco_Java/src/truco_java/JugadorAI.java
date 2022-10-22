@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 
 public class JugadorAI extends Jugador {
     private int envidoJugadorCantado = -1;
+    private static Music efectos = new Music();
 
     public JugadorAI(ArrayList<Carta> mano, boolean esMano) {
         super(mano, esMano);
@@ -170,7 +171,7 @@ public class JugadorAI extends Jugador {
       }
 
       // Si se canta envido y el jugador le falta un punto para ganar, aceptar si o si.
-      if(estado>0 && p.getPuntaje()==14){ 
+      if(estado>0 && p.getPuntaje()==14){
         if(estado<3)
           desicion = estado+1;
         else
@@ -187,7 +188,7 @@ public class JugadorAI extends Jugador {
       }
 
       // Si retruca en menor nivel del que está la apuesta, no quiere
-      if(desicion<estado && desicion!=0) 
+      if(desicion<estado && desicion!=0)
           return 0;
 
       if(desicion==0 && estado>=3 && calcularEnvido()>26 && random.nextInt(2)==0 && !menu.facil.isSelected()) //Agrega una opcion para arriesgar
@@ -237,7 +238,7 @@ public class JugadorAI extends Jugador {
   int cantCartasTiradas = p.getCartasJugadas().size() + cartasJugadas.size();
 
   // Si se canta truco y el jugador le falta un punto para ganar, aceptar si o si o retrucar hasta donde se pueda.
-  if(estado>0 && p.getPuntaje()==14){ 
+  if(estado>0 && p.getPuntaje()==14){
     if(estado!=3)
       return estado+1;
     else
@@ -311,16 +312,16 @@ public class JugadorAI extends Jugador {
           return 3;
         return estado+random.nextInt(3-estado);
       }
-      
+
       if(cantBuenasCartas()>1){  // Si tengo mas de una buena carta apostar todo
         if(estado==3)
           return 3;
         return estado+random.nextInt(3-estado);
       }
-      
+
       if(cantBuenasCartas()==1 && estado!=0)  // Si tengo una buena carta, aceptar
         return estado;
-      
+
       // Si empaté la anterior...
       if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == cartasJugadas.get(cartasJugadas.size()-1).rankingCarta()){
         if(cantBuenasCartas()>=1){
@@ -603,6 +604,8 @@ public class JugadorAI extends Jugador {
           probabiliGanar = ((double)cantCartasQueLeGano / (double)posibilidades.size()) * 100.0;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Ha sucedido un error en la Inteligencia de la PC: " + e.getMessage());
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
             return 0;
         }
         if (probabiliGanar>80)

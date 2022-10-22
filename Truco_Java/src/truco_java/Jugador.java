@@ -9,6 +9,7 @@ public class Jugador {
   protected ArrayList<Carta> cartasJugadas = new ArrayList<>();
   protected int puntaje=0;
   protected boolean esMano;
+  private static Music efectos = new Music();
 
     public Jugador(ArrayList<Carta> mano, boolean esMano) {
         this.mano = mano;
@@ -25,6 +26,8 @@ public class Jugador {
         interfaz.dibujarPuntaje();
       } catch (IOException ex) {
         JOptionPane.showMessageDialog(null, "Ha sucedido un error en el dibujado del puntaje: " + ex.getMessage());
+        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+        efectos.play();
       }
     }
 

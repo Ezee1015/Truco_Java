@@ -70,8 +70,12 @@ public class Truco_Java extends JFrame{
                 juego.setVisible(true);
                 //Muestra el mensaje que avisa para comenzar el juego
                 JOptionPane.showMessageDialog(null, "Aprete el mazo de cartas para comenzar el juego...");
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar el juego: " + ex.getMessage());
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
             }
         });
 
@@ -99,6 +103,8 @@ public class Truco_Java extends JFrame{
                 acerca.setVisible(true);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar la información acerca del juego: " + ex.getMessage());
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
             }
         });
 
@@ -131,6 +137,8 @@ public class Truco_Java extends JFrame{
                     musicaFondo.stop();
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, "Ha sucedido un error al detener la música: " + ex.getMessage());
+                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    efectos.play();
                 }
             }
         });
@@ -144,6 +152,8 @@ public class Truco_Java extends JFrame{
             efectos.play();
             if(e.getStateChange()==1 && !facilChecked){
                 int dialogResult = JOptionPane.showConfirmDialog(null, "Al estar en modo facil, no se sumará puntaje! Este está diseñado exclusivamente para practicar. ¿Aún así desea jugar en modo facil?","Aclaración",JOptionPane.YES_NO_OPTION);
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
                 if(dialogResult == JOptionPane.NO_OPTION)
                     facil.setSelected(false);
                 else {
@@ -211,6 +221,8 @@ public class Truco_Java extends JFrame{
             menu.setVisible(true);
         } catch (IOException e){
             JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar el menu: " + e.getMessage());
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
             return;
         }
 
