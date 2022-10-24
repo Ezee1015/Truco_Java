@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 
 public class JugadorAI extends Jugador {
     private int envidoJugadorCantado = -1;
-    private static Music efectos = new Music();
+    private static final Music efectos = new Music();
 
     public JugadorAI(ArrayList<Carta> mano, boolean esMano) {
         super(mano, esMano);

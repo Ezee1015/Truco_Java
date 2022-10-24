@@ -28,7 +28,7 @@ public class Truco_Java extends JFrame{
     public JTextPane puntajeAI, puntajeJugador;
     public JLabel puntajeFondo;
     private boolean facilChecked = false;
-    private static Music efectos = new Music();
+    private static final Music efectos = new Music();
 
     public Truco_Java () throws IOException {
 

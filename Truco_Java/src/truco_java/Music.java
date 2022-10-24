@@ -15,7 +15,7 @@ public class Music {
     private AudioInputStream sound;
     private Timer reproductorMPV;
     private boolean sonidoARM;
-    private static Music efectos = new Music();
+    private static final Music efectos = new Music();
 
     public void setFile(String soundFileName) {
         if(!Truco_Java.musica.isSelected())

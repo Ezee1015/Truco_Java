@@ -9,7 +9,7 @@ public class Jugador {
   protected ArrayList<Carta> cartasJugadas = new ArrayList<>();
   protected int puntaje=0;
   protected boolean esMano;
-  private static Music efectos = new Music();
+  private static final Music efectos = new Music();
 
     public Jugador(ArrayList<Carta> mano, boolean esMano) {
         this.mano = mano;
