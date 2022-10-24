@@ -42,7 +42,7 @@ public class InterfazJuego extends JFrame {
     private JLabel puntajeAI = new JLabel(), puntajeJugador = new JLabel();
     private final int numeroPersonaje = new Random().nextInt(6) + 1; // Este numero representa el personaje que fue generado;
     private final Music cantar = new Music();
-    private static Music efectos = new Music();
+    private static final Music efectos = new Music();
 
     boolean termino = false;
 
