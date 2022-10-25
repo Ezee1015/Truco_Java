@@ -8,7 +8,7 @@ Esta aplicación es un [juego de *truco argentino*](https://es.wikipedia.org/wik
 [En este link de Wikipedia](https://es.wikipedia.org/wiki/Truco_argentino) hay una interesante guía sobre la historia del truco.
 
 ## Dependencias
-La única dependencia del juego es una versión de Java reciente (Ejemplo: Java 17) y un servidor gráfico (generalmente incluido en los sistemas por defecto).
+La única dependencia del juego es una versión de Java reciente (Ejemplo: Java 17) y un servidor gráfico (generalmente incluido en los sistemas por defecto). Opcional: mpv (en caso que no funcione el sonido a traves del reproductor de java).
 
 ## ¿Cómo puedo jugar al juego (la aplicación)?
 Puedes descargar un binario según su sistema operativo (desde este link)[].
@@ -24,6 +24,9 @@ Falta insertar el script
 2. Personalmente no juego con flor.
 
 Por lo que por ambas razones anteriores, disidí no incluirlo.
+
+## No funciona el audio y no funciona correctamente el juego :-(
+Si no funciona el audio a través de la solución multimedia que incluye Java por defecto, se puede optar por instalar mpv para hacer funcionar el audio por esa alternativa. En caso que el juego no puede reproducir audio por ninguna de esas vías, se corrompe, por lo tanto, para poder hacer que el juego funcione correctamente, se puede desactivar el sonido desde el menú principal. Con esto el juego no reproducirá ningún sonido, y por ende no se romperá.
 
 ## Agregadecimientos
 Gracias a [ReadLoud](https://readloud.net/)  y a [TTSFree](https://ttsfree.com/) por permitir que este juego tuviera sonido de voces cuando la computadora canta truco, envido, etc..
