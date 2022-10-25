@@ -1619,7 +1619,7 @@ public class InterfazJuego extends JFrame {
                 estado.setText("Quiero!");
                 if(numeroPersonaje==5) estado.setText("Easy peasy. Quiero!");
                 truco.setEnabled(false);
-                setFondo(0);
+                // setFondo(0);
                 break;
         }
 
