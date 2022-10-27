@@ -18,6 +18,16 @@ Puedes descargar un binario según su sistema operativo [desde este link](https:
 ```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/instalarTermux.sh)"
 ```
+
+## Screenshots
+![Menu](screenshots/menu.png)
+![Acerca De](screenshots/acercaDe.png)
+![Foto juego 1](screenshots/juego1.png)
+![Foto juego 2](screenshots/juego2.png)
+![Foto juego 3](screenshots/juego3.png)
+![Foto juego 4](screenshots/juego4.png)
+![Foto juego 5](screenshots/juego5.png)
+![Foto juego 6](screenshots/juego6.png)
   
 
 ## ¿Por qué este juego no tiene flor?
