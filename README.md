@@ -20,15 +20,16 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ezee1015/Truco_Java/main
 ```
 
 ## Screenshots
-![Menu](screenshots/menu.png)
-![Acerca De](screenshots/acercaDe.png)
-![Foto juego 1](screenshots/juego1.png)
-![Foto juego 2](screenshots/juego2.png)
-![Foto juego 3](screenshots/juego3.png)
-![Foto juego 4](screenshots/juego4.png)
-![Foto juego 5](screenshots/juego5.png)
-![Foto juego 6](screenshots/juego6.png)
-  
+<div style=" display:flex; flex-direction: row">
+  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/menu.png" alt="Menu" style="width: 380px;;">
+  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/acercaDe.png" alt="Menu" style="width: 380px;">
+  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/juego1.png" alt="Menu" style="width: 380px;">
+  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/juego2.png" alt="Menu" style="width: 380px;">
+  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/juego3.png" alt="Menu" style="width: 380px;">
+  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/juego4.png" alt="Menu" style="width: 380px;">
+  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/juego5.png" alt="Menu" style="width: 380px;">
+  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/juego6.png" alt="Menu" style="width: 380px;">
+<div>
 
 ## ¿Por qué este juego no tiene flor?
 1. Por un motivo de simplificación del código del juego.
