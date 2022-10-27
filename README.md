@@ -8,7 +8,7 @@ Esta aplicación es un [juego de *truco argentino*](https://es.wikipedia.org/wik
 [En este link de Wikipedia](https://es.wikipedia.org/wiki/Truco_argentino) hay una interesante guía sobre la historia del truco.
 
 ## Dependencias
-La única dependencia del juego es una versión de Java reciente (Ejemplo: Java 17) y un servidor gráfico (generalmente incluido en los sistemas por defecto). Opcional: mpv (en caso que no funcione el sonido a traves del reproductor de java).
+La única dependencia del juego es una versión de Java reciente y un servidor gráfico (generalmente incluido en los sistemas por defecto). Opcional: mpv (en caso que no funcione el sonido a traves del reproductor de java).
 
 ## ¿Cómo puedo jugar al juego (la aplicación)?
 Puedes descargar un binario según su sistema operativo (desde este link)[].
