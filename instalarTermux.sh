@@ -1,13 +1,13 @@
 apt update && apt upgrade
 apt install xorg-server tigervnc mpv git openjdk-17 ant
+
+cd ~/
 git clone https://github.com/Ezee1015/Truco_Java
-cd Truco_Java
-cp -r Truco_Java ~/Truco_Java
 echo "alias truco='~/truco.sh && exit'" >> ~/.bashrc
 echo "alias truco='~/truco.sh && exit'" >> ~/.zshrc
 
 echo '#!/bin/bash' > ~/truco.sh
-echo 'cd ~/Truco_Java' >> ~/truco.sh
+echo 'cd ~/Truco_Java/Truco_Java' >> ~/truco.sh
 echo 'echo "¿Quiére comprobar si hay una nueva version (y descargarla)? Presione s"' >> ~/truco.sh
 echo 'read resp' >> ~/truco.sh
 echo 'if [ "$resp" == "s" ]; then' >> ~/truco.sh
