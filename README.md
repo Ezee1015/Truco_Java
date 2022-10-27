@@ -14,9 +14,9 @@ La única dependencia del juego es una versión de Java reciente (Ejemplo: Java 
 Puedes descargar un binario según su sistema operativo (desde este link)[].
 * Si es Windows, puede descargar el instalador "Truco_Java_Windows.zip". Deberá descomprimir el archivo descargado y ejecutar el archivo INSTALL.bat. Esto instalará el juego en la carpeta del usuario, y creará un link en el escritorio. A partir de ahí, ejecutando el enlace, podrá disfrutar del juego.
 * Sino para cualquier sistema, puede descargar la versión portable "Truco_Java_MultiOS.zip". Esta versión es multisistema, por lo tanto se ejecutara sin problemas en Windows, Linux, etc. Una vez descargado y extraído este archivo comprimido, se puede ejecutar el archivo .jar para iniciar el juego. A partir de ahí, podrá disfrutar del juego de manera portable.
-* Si usas un celular Android compatible con Termux, puedes usar el siguiente script para jugar desde el celular. NOTA: Deberá tener instalado el servidor gráfico X, mpv, java, etc. y clonado el repositorio en la carpeta home
+* Si usas un celular Android compatible con Termux, puedes usar el siguiente script para jugar desde el celular con dicha aplicacióng. Para descargar y ejecutar el script, ejecute la linea de abajo (deberá tener instalado curl). Luego de ejecutar el script se debe de  instalar un visualizador de vnc en el celular (NO en Termux), como por ejemplo AVNC. Así, dentro del visualizador se debe de agregar la siguiente conexion: 127.0.0.1:5901 para poder jugar al truco. La configuración de la interacción con el escritorio remoto (conexión vnc) puede ser configurada desde los ajustes del visualizador de vnc.
 ```
-Falta insertar el script
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/instalarTermux.sh)"
 ```
 
 ## ¿Por qué este juego no tiene flor?
