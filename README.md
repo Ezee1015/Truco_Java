@@ -2,7 +2,11 @@
 ![Logo](Truco_Java/src/truco_java/fondos/logo.png)
 
 ## ¿Qué es?
-Esta aplicación es un [juego de *truco argentino*](https://es.wikipedia.org/wiki/Truco_argentino) hecho en *java* (mediante [ant](https://en.wikipedia.org/wiki/Apache_Ant) y [NetBeans](https://es.wikipedia.org/wiki/NetBeans)). Esta versión no contiene la opción de cantar 'flor'.
+Esta aplicación es un [juego de *truco argentino*](https://es.wikipedia.org/wiki/Truco_argentino) hecho en *java* (mediante [ant](https://en.wikipedia.org/wiki/Apache_Ant) y [NetBeans](https://es.wikipedia.org/wiki/NetBeans)). En este juego jugarás con una inteligencia que tiene dos modos:
+* Normal: En donde la "Inteligencia" (algoritmo) puede mentir, y jugar de manera más astuta/inteligente. 
+* Fácil: Ideado para principiante que comienzan en el truco. Las partidas que se ganen o pierdan, no seran contadas en el puntaje de partidas ganadas.
+
+Ah, por cierto, esta versión [no contiene la opción de cantar 'flor'](https://github.com/Ezee1015/Truco_Java#por-qu%C3%A9-este-juego-no-tiene-flor).
 
 ## ¿Cómo se juega el Truco argentino?
 [En este link de Wikipedia](https://es.wikipedia.org/wiki/Truco_argentino) hay una interesante guía sobre la historia del truco.
