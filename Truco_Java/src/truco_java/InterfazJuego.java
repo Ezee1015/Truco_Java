@@ -40,7 +40,8 @@ public class InterfazJuego extends JFrame {
     private int habilitadoARetrucar = 0; // 1--> Jugador; 2--> AI
     private JLabel fondoEstado;
     private JLabel puntajeAI = new JLabel(), puntajeJugador = new JLabel();
-    private final int numeroPersonaje = new Random().nextInt(6) + 1; // Este numero representa el personaje que fue generado;
+    private final int numeroPersonaje = new Random().nextInt(6) + 1; // Representa el personaje que fue generado;
+    private String nombrePersonaje ="la PC";
     private final Music cantar = new Music();
     private static final Music efectos = new Music();
 
@@ -52,6 +53,14 @@ public class InterfazJuego extends JFrame {
 
         setLayout(null);
         setDefaultCloseOperation(3);
+        switch(numeroPersonaje){
+            case 1: nombrePersonaje="El Carpincho"; break;
+            case 2: nombrePersonaje="La Roca"; break;
+            case 3: nombrePersonaje="Messi"; break;
+            case 4: nombrePersonaje="El Diego"; break;
+            case 5: nombrePersonaje="Boris"; break;
+            case 6: nombrePersonaje="Guido"; break;
+        }
 
         // Fondo
         setFondo(0);
@@ -345,7 +354,7 @@ public class InterfazJuego extends JFrame {
             try {
                 AICantaEnvido();
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de la PC: " + ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de " + nombrePersonaje + ": " + ex.getMessage());
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                 efectos.play();
             }
@@ -368,7 +377,7 @@ public class InterfazJuego extends JFrame {
             try {
                 AICantaEnvido();
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de la PC: " + ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de " + nombrePersonaje + ": " + ex.getMessage());
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                 efectos.play();
             }
@@ -392,7 +401,7 @@ public class InterfazJuego extends JFrame {
             try {
                 AICantaEnvido();
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de la PC: " + ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de " + nombrePersonaje + ": " + ex.getMessage());
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                 efectos.play();
             }
@@ -417,7 +426,7 @@ public class InterfazJuego extends JFrame {
             try {
                 AICantaEnvido();
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de la PC: " + ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de " + nombrePersonaje + ": " + ex.getMessage());
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                 efectos.play();
             }
@@ -436,14 +445,14 @@ public class InterfazJuego extends JFrame {
             efectos.play();
             if (jugador.calcularEnvido() > ai.calcularEnvido()) { //Si gana el jugador
                 ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
-                JOptionPane.showMessageDialog(null, "Has ganado. La PC tenía " + ai.calcularEnvido() + " de envido.");
+                JOptionPane.showMessageDialog(null, "Has ganado. " + nombrePersonaje + " tenía " + ai.calcularEnvido() + " de envido.");
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                 efectos.play();
                 jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()), this);
             }
             if (jugador.calcularEnvido() < ai.calcularEnvido()) { // Si gana la AI
                 ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
-                JOptionPane.showMessageDialog(null, "Has perdido. La PC tenía " + ai.calcularEnvido() + " de envido.");
+                JOptionPane.showMessageDialog(null, "Has perdido. " + nombrePersonaje + " tenía " + ai.calcularEnvido() + " de envido.");
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                 efectos.play();
                 ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()), this);
@@ -457,7 +466,7 @@ public class InterfazJuego extends JFrame {
                     jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()), this);
                 } else { // .. y la AI es mano
                     ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
-                    JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has perdido, la PC es mano");
+                    JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has perdido, " + nombrePersonaje + " es mano");
                     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                     efectos.play();
                     ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()), this);
@@ -556,7 +565,7 @@ public class InterfazJuego extends JFrame {
                 try {
                     AICantaTruco(true);
                 } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el truco de la pc: " + ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el truco de " + nombrePersonaje + ": " + ex.getMessage());
                     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                     efectos.play();
                 }
@@ -658,7 +667,7 @@ public class InterfazJuego extends JFrame {
             }
 
             // Si se quiere sallir en medio de la partida
-            int dialogResult = JOptionPane.showConfirmDialog (null, "Está seguro que desea abandonar la partida? Se declarará a la PC como ganador...","Atención!",JOptionPane.YES_NO_OPTION);
+            int dialogResult = JOptionPane.showConfirmDialog (null, "Está seguro que desea abandonar la partida? Se declarará a " + nombrePersonaje + " como ganador...","Atención!",JOptionPane.YES_NO_OPTION);
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
             if(dialogResult == JOptionPane.YES_OPTION){
@@ -681,7 +690,7 @@ public class InterfazJuego extends JFrame {
         puntajeAI.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + aiPunt + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
 
         if(jugadorPunt==15){
-            JOptionPane.showMessageDialog(null, "Termino el Juego. Gano el Jugador. Felicidades");
+            JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó el Jugador. Felicidades");
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
             menu.setVisible(true);
@@ -695,7 +704,7 @@ public class InterfazJuego extends JFrame {
             dispose();
         }
         if(aiPunt==15){
-            JOptionPane.showMessageDialog(null, "Termino el Juego. Gano la PC. Será la próxima...");
+            JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó " + nombrePersonaje + ". Será la próxima...");
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
             menu.setVisible(true);
@@ -980,7 +989,7 @@ public class InterfazJuego extends JFrame {
         if(termino)
             return;
         if(compruebaSiTerminoPartida()==1) {
-            JOptionPane.showMessageDialog(null, "Termino Partida. Gano el Jugador.");
+            JOptionPane.showMessageDialog(null, "Termino Partida. Ganó el Jugador.");
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
             // Suma puntos al ganador
@@ -990,7 +999,7 @@ public class InterfazJuego extends JFrame {
             return;
         }
         if(compruebaSiTerminoPartida()==2) {
-            JOptionPane.showMessageDialog(null, "Termino Partida. Gano la PC.");
+            JOptionPane.showMessageDialog(null, "Termino Partida. Ganó " + nombrePersonaje + ".");
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
             // Suma puntos al ganador
@@ -1132,14 +1141,14 @@ public class InterfazJuego extends JFrame {
 
                 if (jugador.calcularEnvido() > ai.calcularEnvido()) { //Si gana el jugador
                     ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
-                    JOptionPane.showMessageDialog(null, "Has ganado. La PC tenía " + ai.calcularEnvido() + " de envido.");
+                    JOptionPane.showMessageDialog(null, "Has ganado. " + nombrePersonaje + " tenía " + ai.calcularEnvido() + " de envido.");
                     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                     efectos.play();
                     jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()), this);
                 }
                 if (jugador.calcularEnvido() < ai.calcularEnvido()) { // Si gana la AI
                     ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
-                    JOptionPane.showMessageDialog(null, "Has perdido. La PC tenía " + ai.calcularEnvido() + " de envido.");
+                    JOptionPane.showMessageDialog(null, "Has perdido. " + nombrePersonaje + " tenía " + ai.calcularEnvido() + " de envido.");
                     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                     efectos.play();
                     ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()), this);
@@ -1153,7 +1162,7 @@ public class InterfazJuego extends JFrame {
                         jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()), this);
                     } else { // .. y la AI es mano
                         ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
-                        JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has perdido, la PC es mano");
+                        JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has perdido, " + nombrePersonaje + " es mano");
                         efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                         efectos.play();
                         ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()), this);
@@ -1512,7 +1521,7 @@ public class InterfazJuego extends JFrame {
                 quieroTruco.setVisible(false);
                 noQuieroTruco.setVisible(false);
                 jugador.setPuntaje(jugador.getPuntaje() + calcularTrucoPerdido(), this);
-                JOptionPane.showMessageDialog(null, "La PC ha rechazado el Truco. Repartiendo...");
+                JOptionPane.showMessageDialog(null, "" + nombrePersonaje + " ha rechazado el Truco. Repartiendo...");
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                 efectos.play();
                 otraPartida();
@@ -1553,7 +1562,7 @@ public class InterfazJuego extends JFrame {
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
             jugador.setPuntaje(jugador.getPuntaje() + calcularTrucoPerdido(), this);
-            JOptionPane.showMessageDialog(null, "La PC ha rechazado el Truco. Repartiendo...");
+            JOptionPane.showMessageDialog(null, "" + nombrePersonaje + " ha rechazado el Truco. Repartiendo...");
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
             otraPartida();
@@ -1635,7 +1644,7 @@ public class InterfazJuego extends JFrame {
                                 try {
                                     imprimeAITruco(trucoMSG, true);
                                 } catch (IOException ex) {
-                                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de escribir el mensaje de la PC en el truco: " + ex.getMessage());
+                                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de escribir el mensaje de " + nombrePersonaje + " en el truco: " + ex.getMessage());
                                     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                                     efectos.play();
                                 }
@@ -1644,7 +1653,7 @@ public class InterfazJuego extends JFrame {
                                 try {
                                     imprimeAITruco(0, true);
                                 } catch (IOException ex) {
-                                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de escribir el mensaje de la PC en el truco: " + ex.getMessage());
+                                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de escribir el mensaje de " + nombrePersonaje + " en el truco: " + ex.getMessage());
                                     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                                     efectos.play();
                                 }
