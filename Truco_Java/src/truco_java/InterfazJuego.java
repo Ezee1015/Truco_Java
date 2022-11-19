@@ -1515,12 +1515,11 @@ public class InterfazJuego extends JFrame {
         PC3.setEnabled(false);
 
         if(desicion == nivelTruco && responder){ // Si acepta el truco
-            imprimeAITruco(4, false);
             habilitadoARetrucar=2;
             truco.setEnabled(false);
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
-            // Al aceptar truco se deshabilita el truco
+            // Al aceptar truco se deshabilita el envido
             envido.setEnabled(false);
             envidoEsp.setVisible(false);
             envidoEnvido.setVisible(false);
@@ -1530,6 +1529,7 @@ public class InterfazJuego extends JFrame {
             PC1.setEnabled(true);
             PC2.setEnabled(true);
             PC3.setEnabled(true);
+            imprimeAITruco(4, false);
 
             habilitaTurno();
             return 0;
@@ -1537,7 +1537,7 @@ public class InterfazJuego extends JFrame {
 
         if(!responder && desicion<(nivelTruco+1)) // Si no estoy respondiendo y quiero menos de la oferta actual (lo cual no se puede), no hacer nada
             return 0;
-        if(responder && desicion<(nivelTruco+1)){ // Si estoy respondiendo y quiero menos de la oferta actual (lo cual no se puede), no hacer nada
+        if(responder && desicion<(nivelTruco+1)){ // Si estoy respondiendo y quiero menos de la oferta actual (lo cual no se puede), imprime no quiero
             imprimeAITruco(-1, false);
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
@@ -1550,10 +1550,10 @@ public class InterfazJuego extends JFrame {
             return 1;
         }
 
-        // Si retruca, imprime el mensaje y le pasa el mando a jugador a aceptar o aumentar la apuesta
+        // Si retruca, imprime el mensaje y le pasa el mando al jugador a aceptar o aumentar la apuesta
         habilitadoARetrucar=1;
-        if(desicion>nivelTruco)
-            nivelTruco++;
+        // if(desicion>nivelTruco)
+        nivelTruco++;
         imprimeAITruco(nivelTruco, false);
         quieroTruco.setVisible(true);
         noQuieroTruco.setVisible(true);
