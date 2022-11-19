@@ -63,11 +63,7 @@ public class JugadorAI extends Jugador {
   }
 
   public Carta tirarCartaRandom(){
-    int pos = new Random().nextInt(mano.size());
-    Carta aTirar = mano.get(pos);
-    mano.remove(pos);
-    cartasJugadas.add(aTirar);
-    return aTirar;
+    return tirarCartaPos(new Random().nextInt(mano.size()));
   }
 
   public Carta tirarCartaPos (int pos){
@@ -86,10 +82,7 @@ public class JugadorAI extends Jugador {
         mejor = i;
     }
 
-    Carta aTirar = mano.get(mejor);
-    mano.remove(mejor);
-    cartasJugadas.add(aTirar);
-    return aTirar;
+    return tirarCartaPos(mejor);
   }
 
   public Carta tirarPeorCarta (){
@@ -101,10 +94,7 @@ public class JugadorAI extends Jugador {
         peor = i;
     }
 
-    Carta aTirar = mano.get(peor);
-    mano.remove(peor);
-    cartasJugadas.add(aTirar);
-    return aTirar;
+    return tirarCartaPos(peor);
   }
 
   public int desidirEnvido(int estado, Persona p, Truco_Java menu){
