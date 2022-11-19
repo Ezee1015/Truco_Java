@@ -110,13 +110,6 @@ public class InterfazJuego extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
-            try {
-                habilitaTurno();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
-            }
             setFondo(0);
         });
 
@@ -145,13 +138,6 @@ public class InterfazJuego extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
-            try {
-                habilitaTurno();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
-            }
             setFondo(0);
         });
 
@@ -180,13 +166,6 @@ public class InterfazJuego extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
-            try {
-                habilitaTurno();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
-            }
             setFondo(0);
         });
 
@@ -910,9 +889,9 @@ public class InterfazJuego extends JFrame {
         PC2.setEnabled(false);
         PC3.setEnabled(false);
 
-        jugador.agregarCartaJugada(pos);
+        moverCartaPersona(pos, jugador.getCartasJugadas().size());
 
-        dibujarCartas();
+        jugador.agregarCartaJugada(pos);
     }
 
     private void otraPartida() throws IOException {
@@ -1705,20 +1684,115 @@ public class InterfazJuego extends JFrame {
         String imagen = "src/truco_java/fondos/bg" + numeroPersonaje + estadoPersChar + ".png";
         fondo.setIcon(new ImageIcon(imagen));
     }
-/*
-    private void info () {
-        System.out.println("***********************************************");
-        System.out.println("Cartas AI: " + ai.getMano().size());
-        for(int i=0;i<ai.getMano().size();i++)
-            System.out.println("     mano " + (i+1) + ": " + ai.getMano().get(i).texto());
-        System.out.println("Cartas Tiradas AI: " + ai.getCartasJugadas().size());
-        for(int i=0;i<ai.getCartasJugadas().size();i++)
-            System.out.println("     Tirada " + (i+1) + ": " + ai.getCartasJugadas().get(i).texto());
-        System.out.println("Cartas Jugador: " + jugador.getMano().size());
-        System.out.println("Cartas Tiradas Jugador: " + jugador.getCartasJugadas().size());
-        System.out.println("Nivel de truco: " + nivelTruco);
-        System.out.println("Habilitado a retrucar: " + habilitadoARetrucar);
-        System.out.println("***********************************************");
+
+    JButton movPersona = new JButton();
+    private void moverCartaPersona(int origen, int destino) throws IOException{
+        final int origenX, destinoX;
+        final String archivo;
+
+        //Según qué carta sea, la oculta y pone una temporal en reemplazo
+        switch(origen){
+            case 0:
+                PC1.setVisible(false);
+                archivo = jugador.getMano().get(0).linkCarta();
+                origenX=10;
+                break;
+            case 1:
+                PC2.setVisible(false);
+                archivo = jugador.getMano().get(1).linkCarta();
+                origenX=170;
+                break;
+            case 2:
+                PC2.setVisible(false);
+                archivo = jugador.getMano().get(2).linkCarta();
+                origenX=330;
+                break;
+            default:
+                origenX=0;
+                archivo="";
+                break;
+        }
+        switch(destino){
+            case 0:
+                destinoX=130;
+                break;
+            case 1:
+                destinoX=210;
+                break;
+            case 2:
+                destinoX=290;
+                break;
+            default:
+                destinoX=0;
+                break;
+        }
+
+        movPersona.setBounds(origenX, 400, 155, 200);
+        movPersona.setVisible(true);
+        movPersona.setEnabled(false);
+        movPersona.setOpaque(false);
+        movPersona.setContentAreaFilled(false);
+        movPersona.setBorderPainted(false);
+        fondo.add(movPersona);
+
+        int porcentajeMov=40;
+        final int movX=(destinoX-origenX)/porcentajeMov, movY=(310-400)/porcentajeMov;
+        final int sizeX = (movPersona.getWidth()-70)/porcentajeMov;
+        final int sizeY = (movPersona.getHeight()-80)/porcentajeMov;
+
+        Thread thread = new Thread(){
+            public void run(){
+                timerPersona(movX, movY, origenX, 400, destinoX, 310, sizeX, sizeY, archivo);
+            }
+        };
+        thread.start();
     }
-*/
+
+  public void timerPersona (int movX, int movY, int origenX, int origenY, int destinoX, int destinoY, int ancho, int alto, String archivo) {
+    new java.util.Timer().schedule(
+        new java.util.TimerTask() {
+          @Override
+          public void run() {
+              movPersona.setBounds(origenX+movX,origenY+movY, movPersona.getWidth()-ancho, movPersona.getHeight()-alto);
+              try {
+              movPersona.setIcon(new ImageIcon(ImageIO.read(new File(archivo)).getScaledInstance(movPersona.getWidth()-ancho, movPersona.getHeight()-alto, Image.SCALE_SMOOTH)));
+              } catch (IOException e) {
+              }
+          }
+        },
+        1
+        );
+
+      try {
+          TimeUnit.MILLISECONDS.sleep(5);
+      } catch (Exception e) {
+      }
+
+      movPersona.repaint();
+
+      if(origenX-destinoX>5 || origenX-destinoX<-5){
+          timerPersona(movX,movY, origenX+movX, origenY+movY, destinoX, destinoY, ancho, alto, archivo);
+          return;
+      }
+
+      // Permite jugar
+      try {
+          habilitaTurno();
+      } catch (IOException ex) {
+          JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
+          efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+          efectos.play();
+      }
+
+      try {
+          dibujarCartas();
+      } catch (IOException ex) {
+          JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de dibujar las cartas: " + ex.getMessage());
+          efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+          efectos.play();
+      }
+
+      movPersona.setVisible(false);
+      fondo.remove(movPersona);
+  }
 }
