@@ -1730,7 +1730,6 @@ public class InterfazJuego extends JFrame {
 
         movPersona.setBounds(origenX, 400, 155, 200);
         movPersona.setVisible(true);
-        movPersona.setEnabled(false);
         movPersona.setOpaque(false);
         movPersona.setContentAreaFilled(false);
         movPersona.setBorderPainted(false);
@@ -1777,6 +1776,9 @@ public class InterfazJuego extends JFrame {
       }
 
       // Permite jugar
+      movPersona.setVisible(false);
+      fondo.remove(movPersona);
+
       try {
           habilitaTurno();
       } catch (IOException ex) {
@@ -1792,8 +1794,5 @@ public class InterfazJuego extends JFrame {
           efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
           efectos.play();
       }
-
-      movPersona.setVisible(false);
-      fondo.remove(movPersona);
   }
 }
