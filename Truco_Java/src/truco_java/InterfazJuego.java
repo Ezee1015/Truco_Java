@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.DefaultButtonModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -45,8 +46,9 @@ public class InterfazJuego extends JFrame {
     private String nombrePersonaje ="la PC";
     private final Music cantar = new Music();
     private static final Music efectos = new Music();
-
-    boolean termino = false;
+    private JButton movCarta = new JButton();
+    private boolean PC1Enabled=false, PC2Enabled=false, PC3Enabled=false;
+    private boolean termino = false;
 
     public InterfazJuego(Truco_Java menu) throws IOException {
         this.menu = menu;
@@ -62,6 +64,11 @@ public class InterfazJuego extends JFrame {
             case 5: nombrePersonaje="Boris"; break;
             case 6: nombrePersonaje="Guido"; break;
         }
+
+        // Inicializa la carta de movimiento
+        movCarta.setOpaque(false);
+        movCarta.setContentAreaFilled(false);
+        movCarta.setBorderPainted(false);
 
         // Fondo
         setFondo(0);
@@ -91,12 +98,14 @@ public class InterfazJuego extends JFrame {
         PC1 = new JButton();
         PC1.setBounds(10, 400, 155, 200);
         PC1.setVisible(true);
-        PC1.setEnabled(false);
+        PC1Enabled=false;
         PC1.setOpaque(false);
         PC1.setContentAreaFilled(false);
         PC1.setBorderPainted(false);
         fondo.add(PC1);
         PC1.addActionListener((ActionEvent e) -> {
+            if(!PC1Enabled)
+                return;
             efectos.setFile("src/truco_java/musica/tirarCarta.wav", 1);
             efectos.play();
             try {
@@ -118,13 +127,15 @@ public class InterfazJuego extends JFrame {
         PC2 = new JButton();
         PC2.setBounds(170, 400, 155, 200);
         PC2.setVisible(true);
-        PC2.setEnabled(false);
+        PC2Enabled=false;
         PC2.setBorderPainted(false);
         PC2.setOpaque(false);
         PC2.setContentAreaFilled(false);
         PC2.setBorderPainted(false);
         fondo.add(PC2);
         PC2.addActionListener((ActionEvent e) -> {
+            if(!PC2Enabled)
+                return;
             efectos.setFile("src/truco_java/musica/tirarCarta.wav", 1);
             efectos.play();
             try {
@@ -146,13 +157,15 @@ public class InterfazJuego extends JFrame {
         PC3 = new JButton();
         PC3.setBounds(330, 400, 155, 200);
         PC3.setVisible(true);
-        PC3.setEnabled(false);
+        PC3Enabled=false;
         PC3.setBorderPainted(false);
         PC3.setOpaque(false);
         PC3.setContentAreaFilled(false);
         PC3.setBorderPainted(false);
         fondo.add(PC3);
         PC3.addActionListener((ActionEvent e) -> {
+            if(!PC3Enabled)
+                return;
             efectos.setFile("src/truco_java/musica/tirarCarta.wav", 1);
             efectos.play();
             try {
@@ -466,9 +479,9 @@ public class InterfazJuego extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
-            PC1.setEnabled(true);
-            PC2.setEnabled(true);
-            PC3.setEnabled(true);
+            PC1Enabled=true;
+            PC2Enabled=true;
+            PC3Enabled=true;
             try {
                 dibujarPuntaje();
             } catch (IOException ex) {
@@ -563,9 +576,9 @@ public class InterfazJuego extends JFrame {
         quieroTruco.addActionListener((ActionEvent e) -> {
             efectos.setFile("src/truco_java/musica/boton.wav", 1);
             efectos.play();
-            PC1.setEnabled(true);
-            PC2.setEnabled(true);
-            PC3.setEnabled(true);
+            PC1Enabled=true;
+            PC2Enabled=true;
+            PC3Enabled=true;
 
             if(nivelTruco == 3)
                 truco.setEnabled(false);
@@ -886,9 +899,9 @@ public class InterfazJuego extends JFrame {
 
     private void tirarCarta(int pos) throws IOException {
         // Intenta solucionar un bug de diferentes llamados que pueden perjudicar a la mano
-        PC1.setEnabled(false);
-        PC2.setEnabled(false);
-        PC3.setEnabled(false);
+        PC1Enabled=false;
+        PC2Enabled=false;
+        PC3Enabled=false;
 
         moverCartaPersona(pos, jugador.getCartasJugadas().size());
 
@@ -994,43 +1007,41 @@ public class InterfazJuego extends JFrame {
                 if(habilitadoARetrucar < 2) truco.setEnabled(true);
                 if(!envidoFinalizado) envido.setEnabled(true);
                 irAlMazo.setEnabled(true);
-                PC1.setEnabled(true);
-                PC2.setEnabled(true);
-                PC3.setEnabled(true);
+                PC1Enabled=true;
+                PC2Enabled=true;
+                PC3Enabled=true;
             } else {
                 truco.setEnabled(false);
                 envido.setEnabled(false);
                 irAlMazo.setEnabled(false);
-                PC1.setEnabled(false);
-                PC2.setEnabled(false);
-                PC3.setEnabled(false);
+                PC1Enabled=false;
+                PC2Enabled=false;
+                PC3Enabled=false;
                 // No hace falta que se cante envido, porque ya lo verifica dentro de AICantaTruco
                 if (AICantaTruco(false)==0);
                 else return;
                 ai.jugarTurno(jugador, this);
-                dibujarCartas();
-                habilitaTurno();
+                moverCartaAI(ai.getMano().size(), ai.getCartasJugadas().size()-1);
             }
         } else if (jugador.getCartasJugadas().isEmpty() && !ai.getCartasJugadas().isEmpty()) { // Ya Jugó la AI. Turno Jugador
             if(habilitadoARetrucar < 2) truco.setEnabled(true);
             if(!envidoFinalizado) envido.setEnabled(true);
             irAlMazo.setEnabled(true);
-            PC1.setEnabled(true);
-            PC2.setEnabled(true);
-            PC3.setEnabled(true);
+            PC1Enabled=true;
+            PC2Enabled=true;
+            PC3Enabled=true;
         } else if (!jugador.getCartasJugadas().isEmpty() && ai.getCartasJugadas().isEmpty()) { // Ya Jugó el Jugador. Turno AI
                 truco.setEnabled(false);
                 envido.setEnabled(false);
                 irAlMazo.setEnabled(false);
-                PC1.setEnabled(false);
-                PC2.setEnabled(false);
-                PC3.setEnabled(false);
+                PC1Enabled=false;
+                PC2Enabled=false;
+                PC3Enabled=false;
                 // No hace falta que se cante envido, porque ya lo verifica dentro de AICantaTruco
                 if (AICantaTruco(false)==0);
                 else return;
                 ai.jugarTurno(jugador, this);
-                dibujarCartas();
-                habilitaTurno();
+                moverCartaAI(ai.getMano().size(), ai.getCartasJugadas().size()-1);
         } else if (!jugador.getCartasJugadas().isEmpty() && !ai.getCartasJugadas().isEmpty()) { // Rondas 2 y 3
             if (jugador.getCartasJugadas().size() == ai.getCartasJugadas().size()) { // Si es una ronda en la que nadie jugó
                 int rankingJugador = jugador.getCartasJugadas().get(jugador.getCartasJugadas().size()-1).rankingCarta();
@@ -1042,42 +1053,40 @@ public class InterfazJuego extends JFrame {
                     // Si la ultima carta que le queda al oponente es un 4, no se puede cantar truco
                     if(ai.getCartasJugadas().size() == 3) if(ai.getCartasJugadas().get(2).rankingCarta()==0) truco.setEnabled(false);
                     irAlMazo.setEnabled(true);
-                    PC1.setEnabled(true);
-                    PC2.setEnabled(true);
-                    PC3.setEnabled(true);
+                    PC1Enabled=true;
+                    PC2Enabled=true;
+                    PC3Enabled=true;
                 } else if (rankingAI > rankingJugador) { // si gano AI en la anterior ronda
                     truco.setEnabled(false);
                     envido.setEnabled(false);
                     irAlMazo.setEnabled(false);
-                    PC1.setEnabled(false);
-                    PC2.setEnabled(false);
-                    PC3.setEnabled(false);
+                    PC1Enabled=false;
+                    PC2Enabled=false;
+                    PC3Enabled=false;
                     if (AICantaTruco(false)==0);
                     else return;
                     ai.jugarTurno(jugador, this);
-                    dibujarCartas();
-                    habilitaTurno();
+                    moverCartaAI(ai.getMano().size(), ai.getCartasJugadas().size()-1);
                 } else if(rankingJugador == rankingAI){ // Si empatan
                     if(jugador.isMano()){ // Es mano el jugador
                         if(habilitadoARetrucar < 2) truco.setEnabled(true);
                         // Si la ultima carta que le queda al oponente es un 4, no se puede cantar truco
                         if(ai.getCartasJugadas().size() == 3) if(ai.getCartasJugadas().get(2).rankingCarta()==0) truco.setEnabled(false);
                         irAlMazo.setEnabled(true);
-                        PC1.setEnabled(true);
-                        PC2.setEnabled(true);
-                        PC3.setEnabled(true);
+                        PC1Enabled=true;
+                        PC2Enabled=true;
+                        PC3Enabled=true;
                     } else { // Es mano la AI
                         truco.setEnabled(false);
                         envido.setEnabled(false);
                         irAlMazo.setEnabled(false);
-                        PC1.setEnabled(false);
-                        PC2.setEnabled(false);
-                        PC3.setEnabled(false);
+                        PC1Enabled=false;
+                        PC2Enabled=false;
+                        PC3Enabled=false;
                         if (AICantaTruco(false)==0);
                         else return;
                         ai.jugarTurno(jugador, this);
-                        dibujarCartas();
-                        habilitaTurno();
+                        moverCartaAI(ai.getMano().size(), ai.getCartasJugadas().size()-1);
                     }
                 }
             } else if (jugador.getCartasJugadas().size() == ai.getCartasJugadas().size() - 1) { // Si ya la AI tiró en esa ronda
@@ -1085,21 +1094,20 @@ public class InterfazJuego extends JFrame {
                 // Si la ultima carta que le queda al oponente es un 4, no se puede cantar truco
                 if(ai.getCartasJugadas().size() == 3) if(ai.getCartasJugadas().get(2).rankingCarta()==0) truco.setEnabled(false);
                 irAlMazo.setEnabled(true);
-                PC1.setEnabled(true);
-                PC2.setEnabled(true);
-                PC3.setEnabled(true);
+                PC1Enabled=true;
+                PC2Enabled=true;
+                PC3Enabled=true;
             } else if (jugador.getCartasJugadas().size() - 1 == ai.getCartasJugadas().size()) { // Si ya el jugador tiró en esa ronda
                 truco.setEnabled(false);
                 envido.setEnabled(false);
                 irAlMazo.setEnabled(false);
-                PC1.setEnabled(false);
-                PC2.setEnabled(false);
-                PC3.setEnabled(false);
+                PC1Enabled=false;
+                PC2Enabled=false;
+                PC3Enabled=false;
                 if (AICantaTruco(false)==0);
                 else return;
                 ai.jugarTurno(jugador, this);
-                dibujarCartas();
-                habilitaTurno();
+                moverCartaAI(ai.getMano().size(), ai.getCartasJugadas().size()-1);
             }
         }
     }
@@ -1155,9 +1163,9 @@ public class InterfazJuego extends JFrame {
                 envidoEnvido.setVisible(false);
                 realEnvido.setVisible(false);
                 faltaEnvido.setVisible(false);
-                PC1.setEnabled(true);
-                PC2.setEnabled(true);
-                PC3.setEnabled(true);
+                PC1Enabled=true;
+                PC2Enabled=true;
+                PC3Enabled=true;
                 if(envidoFinalizado==true) habilitaTurno();
                 dibujarPuntaje();
                 return 1;
@@ -1218,9 +1226,9 @@ public class InterfazJuego extends JFrame {
         noQuieroEnv.setVisible(true);
 
         // No puede tirar cartas mientras este en envido
-        PC1.setEnabled(false);
-        PC2.setEnabled(false);
-        PC3.setEnabled(false);
+        PC1Enabled=false;
+        PC2Enabled=false;
+        PC3Enabled=false;
 
         return 1;
     }
@@ -1510,9 +1518,9 @@ public class InterfazJuego extends JFrame {
             } else return 0;
         }
 
-        PC1.setEnabled(false);
-        PC2.setEnabled(false);
-        PC3.setEnabled(false);
+        PC1Enabled=false;
+        PC2Enabled=false;
+        PC3Enabled=false;
 
         if(desicion == nivelTruco && responder){ // Si acepta el truco
             habilitadoARetrucar=2;
@@ -1526,9 +1534,9 @@ public class InterfazJuego extends JFrame {
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
             // Habilita las cartas
-            PC1.setEnabled(true);
-            PC2.setEnabled(true);
-            PC3.setEnabled(true);
+            PC1Enabled=true;
+            PC2Enabled=true;
+            PC3Enabled=true;
             imprimeAITruco(4, false);
 
             habilitaTurno();
@@ -1686,7 +1694,62 @@ public class InterfazJuego extends JFrame {
         fondo.setIcon(new ImageIcon(imagen));
     }
 
-    JButton movPersona = new JButton();
+    private void moverCartaAI(int origen, int destino) throws IOException{
+        final int origenX, destinoX;
+        final String archivo = ai.getCartasJugadas().get(ai.getCartasJugadas().size()-1).linkCarta();
+
+        //Según qué carta sea, la oculta y pone una temporal en reemplazo
+        // PostData: tengo que agarrar la ultima carta jugada para obtener su imagen
+        //  porque antes de llamar a moverCartaAI, tiro la carta desde la clase jugador
+        switch(origen){
+            case 0:
+                AIC1.setVisible(false);
+                origenX=100;
+                break;
+            case 1:
+                AIC2.setVisible(false);
+                origenX=200;
+                break;
+            case 2:
+                AIC3.setVisible(false);
+                origenX=300;
+                break;
+            default:
+                origenX=0;
+                break;
+        }
+        switch(destino){
+            case 0:
+                destinoX=130;
+                break;
+            case 1:
+                destinoX=200;
+                break;
+            case 2:
+                destinoX=300;
+                break;
+            default:
+                destinoX=0;
+                break;
+        }
+
+        movCarta.setBounds(origenX, 70, 155, 200);
+        movCarta.setVisible(true);
+        fondo.add(movCarta);
+
+        int porcentajeMov=40;
+        final int movX=(destinoX-origenX)/porcentajeMov, movY=(210-70)/porcentajeMov;
+        final int sizeX = (movCarta.getWidth()-70)/porcentajeMov;
+        final int sizeY = (movCarta.getHeight()-80)/porcentajeMov;
+
+        Thread thread = new Thread(){
+            public void run(){
+                timerMovCarta(movX, movY, origenX, 70, destinoX, 210, sizeX, sizeY, archivo);
+            }
+        };
+        thread.start();
+    }
+
     private void moverCartaPersona(int origen, int destino) throws IOException{
         final int origenX, destinoX;
         final String archivo;
@@ -1728,69 +1791,63 @@ public class InterfazJuego extends JFrame {
                 break;
         }
 
-        movPersona.setBounds(origenX, 400, 155, 200);
-        movPersona.setVisible(true);
-        movPersona.setOpaque(false);
-        movPersona.setContentAreaFilled(false);
-        movPersona.setBorderPainted(false);
-        fondo.add(movPersona);
+        movCarta.setBounds(origenX, 400, 155, 200);
+        movCarta.setVisible(true);
+        fondo.add(movCarta);
 
         int porcentajeMov=40;
         final int movX=(destinoX-origenX)/porcentajeMov, movY=(310-400)/porcentajeMov;
-        final int sizeX = (movPersona.getWidth()-70)/porcentajeMov;
-        final int sizeY = (movPersona.getHeight()-80)/porcentajeMov;
+        final int sizeX = (movCarta.getWidth()-70)/porcentajeMov;
+        final int sizeY = (movCarta.getHeight()-80)/porcentajeMov;
 
         Thread thread = new Thread(){
             public void run(){
-                timerPersona(movX, movY, origenX, 400, destinoX, 310, sizeX, sizeY, archivo);
+                timerMovCarta(movX, movY, origenX, 400, destinoX, 310, sizeX, sizeY, archivo);
             }
         };
         thread.start();
     }
 
-  public void timerPersona (int movX, int movY, int origenX, int origenY, int destinoX, int destinoY, int ancho, int alto, String archivo) {
-    new java.util.Timer().schedule(
-        new java.util.TimerTask() {
-          @Override
-          public void run() {
-              movPersona.setBounds(origenX+movX,origenY+movY, movPersona.getWidth()-ancho, movPersona.getHeight()-alto);
-              try {
-              movPersona.setIcon(new ImageIcon(ImageIO.read(new File(archivo)).getScaledInstance(movPersona.getWidth()-ancho, movPersona.getHeight()-alto, Image.SCALE_SMOOTH)));
-              } catch (IOException e) {
+  public void timerMovCarta (int movX, int movY, int origenX, int origenY, int destinoX, int destinoY, int ancho, int alto, String archivo) {
+      new java.util.Timer().schedule(
+            new java.util.TimerTask() {
+              @Override
+              public void run() {
+                  movCarta.setBounds(origenX+movX,origenY+movY, movCarta.getWidth()-ancho, movCarta.getHeight()-alto);
+                  try {
+                  movCarta.setIcon(new ImageIcon(ImageIO.read(new File(archivo)).getScaledInstance(movCarta.getWidth()-ancho, movCarta.getHeight()-alto, Image.SCALE_SMOOTH)));
+                  } catch (IOException e) {
+                  }
               }
-          }
-        },
-        1
-        );
+            },
+            1
+            );
 
       try {
           TimeUnit.MILLISECONDS.sleep(5);
       } catch (Exception e) {
       }
 
-      movPersona.repaint();
-
+      movCarta.repaint();
       if(origenX-destinoX>5 || origenX-destinoX<-5){
-          timerPersona(movX,movY, origenX+movX, origenY+movY, destinoX, destinoY, ancho, alto, archivo);
+          timerMovCarta(movX,movY, origenX+movX, origenY+movY, destinoX, destinoY, ancho, alto, archivo);
           return;
       }
 
       // Permite jugar
-      movPersona.setVisible(false);
-      fondo.remove(movPersona);
-
-      try {
-          habilitaTurno();
-      } catch (IOException ex) {
-          JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-          efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-          efectos.play();
-      }
-
+      movCarta.setVisible(false);
+      fondo.remove(movCarta);
       try {
           dibujarCartas();
       } catch (IOException ex) {
           JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de dibujar las cartas: " + ex.getMessage());
+          efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+          efectos.play();
+      }
+      try {
+          habilitaTurno();
+      } catch (IOException ex) {
+          JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
           efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
           efectos.play();
       }
