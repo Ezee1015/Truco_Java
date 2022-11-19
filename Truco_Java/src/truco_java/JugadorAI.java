@@ -252,8 +252,11 @@ public class JugadorAI extends Jugador {
         return 0;                // .. No cantar.
       else {                     // Pero si me cantaron..
         if(cantBuenasCartas()>=1) {// .. Si tengo más de una buena carta
-          if(cantMedianasCartas()>=1) // Si también tengo una mediana, retruca
+          if(cantMedianasCartas()>=1){ // Si también tengo una mediana, retruca
+            if(estado==3)
+              return 3;
             return estado+1;
+          }
           if(random.nextInt(2)==1) // Si solamente tengo una carta buena, una en dos de aceptar
             return estado;
         }
