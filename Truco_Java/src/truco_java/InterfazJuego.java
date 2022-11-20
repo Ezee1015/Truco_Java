@@ -1725,7 +1725,7 @@ public class InterfazJuego extends JFrame {
                 break;
             case 2:
                 AIC3.setVisible(false);
-                origenX=280;
+                origenX=300;
                 break;
             default:
                 origenX=0;
@@ -1739,7 +1739,7 @@ public class InterfazJuego extends JFrame {
                 destinoX=220;
                 break;
             case 2:
-                destinoX=320;
+                destinoX=300;
                 break;
             default:
                 destinoX=0;
