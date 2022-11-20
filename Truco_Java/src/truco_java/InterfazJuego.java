@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.DefaultButtonModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -108,6 +107,11 @@ public class InterfazJuego extends JFrame {
                 return;
             efectos.setFile("src/truco_java/musica/tirarCarta.wav", 1);
             efectos.play();
+            envido.setEnabled(false);
+            envidoEsp.setVisible(false);
+            envidoEnvido.setVisible(false);
+            realEnvido.setVisible(false);
+            faltaEnvido.setVisible(false);
             try {
                 tirarCarta(0);
             } catch (IOException ex) {
@@ -115,11 +119,6 @@ public class InterfazJuego extends JFrame {
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                 efectos.play();
             }
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
-            envidoEnvido.setVisible(false);
-            realEnvido.setVisible(false);
-            faltaEnvido.setVisible(false);
             setFondo(0);
         });
 
@@ -138,6 +137,11 @@ public class InterfazJuego extends JFrame {
                 return;
             efectos.setFile("src/truco_java/musica/tirarCarta.wav", 1);
             efectos.play();
+            envido.setEnabled(false);
+            envidoEsp.setVisible(false);
+            envidoEnvido.setVisible(false);
+            realEnvido.setVisible(false);
+            faltaEnvido.setVisible(false);
             try {
                 tirarCarta(1);
             } catch (IOException ex) {
@@ -145,11 +149,6 @@ public class InterfazJuego extends JFrame {
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                 efectos.play();
             }
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
-            envidoEnvido.setVisible(false);
-            realEnvido.setVisible(false);
-            faltaEnvido.setVisible(false);
             setFondo(0);
         });
 
@@ -168,6 +167,11 @@ public class InterfazJuego extends JFrame {
                 return;
             efectos.setFile("src/truco_java/musica/tirarCarta.wav", 1);
             efectos.play();
+            envido.setEnabled(false);
+            envidoEsp.setVisible(false);
+            envidoEnvido.setVisible(false);
+            realEnvido.setVisible(false);
+            faltaEnvido.setVisible(false);
             try {
                 tirarCarta(2);
             } catch (IOException ex) {
@@ -175,11 +179,6 @@ public class InterfazJuego extends JFrame {
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                 efectos.play();
             }
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
-            envidoEnvido.setVisible(false);
-            realEnvido.setVisible(false);
-            faltaEnvido.setVisible(false);
             setFondo(0);
         });
 
@@ -903,21 +902,35 @@ public class InterfazJuego extends JFrame {
         PC2Enabled=false;
         PC3Enabled=false;
 
-        moverCartaPersona(pos, jugador.getCartasJugadas().size());
+        if(!menu.movCartas.isSelected()) moverCartaPersona(pos, jugador.getCartasJugadas().size());
 
         jugador.agregarCartaJugada(pos);
+
+        if(menu.movCartas.isSelected()){ //Si no se quiere movimiento de cartas
+            try {
+                dibujarCartas();
+                System.out.println("medio: " + envido.isEnabled());
+                habilitaTurno();
+                System.out.println("despues: " + envido.isEnabled());
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error: " + ex.getMessage());
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
+            }
+        }
     }
 
     private void otraPartida() throws IOException {
-        if(!termino && menu.musica.isSelected()) {
+        if(!termino && menu.musica.isSelected() && !menu.movCartas.isSelected()) {
             efectos.setFile("src/truco_java/musica/otraPartida.wav", 1);
             efectos.play();
             try {
-               Thread.sleep(1200);
+                Thread.sleep(1200);
             } catch (InterruptedException ex) {
                 Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+
         // Reinicia variables
         nivelTruco = 0;
         envidosCantados = new ArrayList<>();
@@ -982,7 +995,7 @@ public class InterfazJuego extends JFrame {
         if(termino)
             return;
         if(compruebaSiTerminoPartida()==1) {
-            JOptionPane.showMessageDialog(null, "Termino Partida. Ganó el Jugador.");
+            JOptionPane.showMessageDialog(null, "Termino la Partida. Ganó el Jugador.");
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
             // Suma puntos al ganador
@@ -992,7 +1005,7 @@ public class InterfazJuego extends JFrame {
             return;
         }
         if(compruebaSiTerminoPartida()==2) {
-            JOptionPane.showMessageDialog(null, "Termino Partida. Ganó " + nombrePersonaje + ".");
+            JOptionPane.showMessageDialog(null, "Termino la Partida. Ganó " + nombrePersonaje + ".");
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
             // Suma puntos al ganador
@@ -1733,6 +1746,18 @@ public class InterfazJuego extends JFrame {
                 break;
         }
 
+        if(menu.movCartas.isSelected()){ //Si no se quiere movimiento de cartas
+            try {
+                dibujarCartas();
+                habilitaTurno();
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error: " + ex.getMessage());
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
+            }
+            return;
+        }
+
         movCarta.setBounds(origenX, 70, 155, 200);
         movCarta.setVisible(true);
         fondo.add(movCarta);
@@ -1824,7 +1849,7 @@ public class InterfazJuego extends JFrame {
             );
 
       try {
-          TimeUnit.MILLISECONDS.sleep(5);
+          TimeUnit.MILLISECONDS.sleep(6);
       } catch (Exception e) {
       }
 
@@ -1833,6 +1858,12 @@ public class InterfazJuego extends JFrame {
           timerMovCarta(movX,movY, origenX+movX, origenY+movY, destinoX, destinoY, ancho, alto, archivo);
           return;
       }
+
+      try {
+          TimeUnit.MILLISECONDS.sleep(20);
+      } catch (Exception e) {
+      }
+
 
       // Permite jugar
       movCarta.setVisible(false);
