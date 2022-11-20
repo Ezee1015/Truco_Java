@@ -1226,6 +1226,8 @@ public class InterfazJuego extends JFrame {
                 envido.setEnabled(false);
                 envidoEsp.setVisible(false);
                 envidoEnvido.setVisible(false);
+                realEnvido.setVisible(false);
+                faltaEnvido.setVisible(false);
                 break;
         }
         // Agrega el envido que eligio la AI a la lista y lo imprime
