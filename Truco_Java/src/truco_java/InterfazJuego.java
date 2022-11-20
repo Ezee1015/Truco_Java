@@ -1792,7 +1792,7 @@ public class InterfazJuego extends JFrame {
                 origenX=170;
                 break;
             case 2:
-                PC2.setVisible(false);
+                PC3.setVisible(false);
                 archivo = jugador.getMano().get(2).linkCarta();
                 origenX=330;
                 break;
