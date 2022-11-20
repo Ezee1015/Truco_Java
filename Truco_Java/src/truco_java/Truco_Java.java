@@ -23,6 +23,7 @@ public class Truco_Java extends JFrame{
 
     public static JCheckBox musica = new JCheckBox("Musica y Sonido", true);
     public JCheckBox facil = new JCheckBox("Modo Fácil (PC no miente)", false);
+    public JCheckBox movCartas = new JCheckBox("Modo Rápido", false);
     public static Music musicaFondo = new Music();
     public int ganadasJugador=0, ganadasAI=0;
     public JTextPane puntajeAI, puntajeJugador;
@@ -123,7 +124,7 @@ public class Truco_Java extends JFrame{
         });
 
         // CheckBox selector de musica ON/OFF
-        musica.setBounds(100, 290, 130, 40);
+        musica.setBounds(100, 300, 130, 20);
         musica.setOpaque(false);
         fondo.add(musica);
         musica.addItemListener((ItemEvent e) -> {
@@ -162,6 +163,11 @@ public class Truco_Java extends JFrame{
                 }
             }
         });
+
+        // CheckBox de modo rápido
+        movCartas.setBounds(100, 270, 250, 40);
+        movCartas.setOpaque(false);
+        fondo.add(movCartas);
 
         // Créditos
         JLabel creditos = new JLabel("Creado por Leonardo D.S. - 2022 - Licencia GPL v3.0");
