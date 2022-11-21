@@ -659,7 +659,7 @@ public class InterfazJuego extends JFrame {
             }
 
             // Si se quiere sallir en medio de la partida
-            int dialogResult = JOptionPane.showConfirmDialog (null, "Está seguro que desea abandonar la partida? Se declarará a " + nombrePersonaje + " como ganador...","Atención!",JOptionPane.YES_NO_OPTION);
+            int dialogResult = JOptionPane.showConfirmDialog (null, "Está seguro que desea abandonar la partida?\nSe declarará a " + nombrePersonaje + " como ganador...","Atención!",JOptionPane.YES_NO_OPTION);
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
             if(dialogResult == JOptionPane.YES_OPTION){
