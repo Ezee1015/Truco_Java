@@ -442,14 +442,14 @@ public class InterfazJuego extends JFrame {
                 efectos.play();
                 jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()), this);
             }
-            if (jugador.calcularEnvido() < ai.calcularEnvido()) { // Si gana la AI
+            else if (jugador.calcularEnvido() < ai.calcularEnvido()) { // Si gana la AI
                 ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
                 JOptionPane.showMessageDialog(null, "Has perdido. " + nombrePersonaje + " tenía " + ai.calcularEnvido() + " de envido.");
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                 efectos.play();
                 ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()), this);
             }
-            if (jugador.calcularEnvido() == ai.calcularEnvido()) { // Si empatan...
+            else if (jugador.calcularEnvido() == ai.calcularEnvido()) { // Si empatan...
                 if (jugador.isMano() == true) { // .. y el jugador es mano
                     ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
                     JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has ganado por mano");
@@ -796,43 +796,59 @@ public class InterfazJuego extends JFrame {
                 break;
         }
 
-        switch (jugador.getMano().size()) {
-            case 0:
-                PC1.setVisible(false);
-                PC1.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-                PC2.setVisible(false);
-                PC1.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-                PC3.setVisible(false);
-                PC1.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-                break;
-            case 1:
-                PC1.setVisible(true);
-                PC1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(0).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-                PC2.setVisible(false);
-                PC2.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-                PC3.setVisible(false);
-                PC3.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-                break;
-            case 2:
-                PC1.setVisible(true);
-                PC1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(0).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-                PC2.setVisible(true);
-                PC2.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(1).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-                PC3.setVisible(false);
-                PC3.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-                break;
-            case 3:
-                PC1.setVisible(true);
-                PC1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(0).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-                //PC1.setIcon(new ImageIcon(p.getMano().get(0).linkCarta()));
-                PC2.setVisible(true);
-                PC2.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(1).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-                //PC2.setIcon(new ImageIcon(p.getMano().get(1).linkCarta()));
-                PC3.setVisible(true);
-                PC3.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(2).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-                //PC3.setIcon(new ImageIcon(p.getMano().get(2).linkCarta()));
-                break;
+        ArrayList<JButton> manos = new ArrayList<>();
+        manos.add(PC1);
+        manos.add(PC2);
+        manos.add(PC3);
+
+        for(int i=0;i<jugador.getMano().size();i++){
+            if(jugador.getPosMano()[i]==-1){
+               manos.get(i).setVisible(false);
+               manos.get(i).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+            } else {
+               manos.get(i).setVisible(true);
+               manos.get(i).setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(jugador.getPosMano()[i]).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+            }
+
         }
+
+        //switch (jugador.getMano().size()) {
+        //    case 0:
+        //        PC1.setVisible(false);
+        //        PC1.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+        //        PC2.setVisible(false);
+        //        PC1.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+        //        PC3.setVisible(false);
+        //        PC1.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+        //        break;
+        //    case 1:
+        //        PC1.setVisible(true);
+        //        PC1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(0).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+        //        PC2.setVisible(false);
+        //        PC2.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+        //        PC3.setVisible(false);
+        //        PC3.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+        //        break;
+        //    case 2:
+        //        PC1.setVisible(true);
+        //        PC1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(0).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+        //        PC2.setVisible(true);
+        //        PC2.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(1).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+        //        PC3.setVisible(false);
+        //        PC3.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+        //        break;
+        //    case 3:
+        //        PC1.setVisible(true);
+        //        PC1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(0).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+        //        //PC1.setIcon(new ImageIcon(p.getMano().get(0).linkCarta()));
+        //        PC2.setVisible(true);
+        //        PC2.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(1).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+        //        //PC2.setIcon(new ImageIcon(p.getMano().get(1).linkCarta()));
+        //        PC3.setVisible(true);
+        //        PC3.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(2).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+        //        //PC3.setIcon(new ImageIcon(p.getMano().get(2).linkCarta()));
+        //        break;
+        //}
 
         // Cartas ya tiradas
         switch (ai.getCartasJugadas().size()) {
@@ -902,16 +918,22 @@ public class InterfazJuego extends JFrame {
         PC2Enabled=false;
         PC3Enabled=false;
 
-        if(!menu.movCartas.isSelected()) moverCartaPersona(pos, jugador.getCartasJugadas().size());
+        if(!menu.movCartas.isSelected()) moverCartaPersona(pos, jugador.getMano().get(jugador.getPosMano()[pos]).linkCarta(), jugador.getCartasJugadas().size());
 
-        jugador.agregarCartaJugada(pos);
+        //Tira la carta
+        jugador.agregarCartaJugada(jugador.getPosMano()[pos]);
+
+        // Indica que carta no se debbe dibujar
+        int temp[] = jugador.getPosMano();
+        temp[pos] = -1;
+        for(int i=pos+1;i<temp.length;i++)
+            temp[i]-=1;
+        jugador.setPosMano(temp);
 
         if(menu.movCartas.isSelected()){ //Si no se quiere movimiento de cartas
             try {
                 dibujarCartas();
-                System.out.println("medio: " + envido.isEnabled());
                 habilitaTurno();
-                System.out.println("despues: " + envido.isEnabled());
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error: " + ex.getMessage());
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
@@ -971,6 +993,11 @@ public class InterfazJuego extends JFrame {
         mano2.add(mazo.get(1));
         mano2.add(mazo.get(3));
         mano2.add(mazo.get(5));
+        int temp[] = new int[3];
+        temp[0] = 0;
+        temp[1] = 1;
+        temp[2] = 2;
+        jugador.setPosMano(temp);
 
         if (ai.isMano() == true) {
             ai.setMano(mano1);
@@ -1147,14 +1174,14 @@ public class InterfazJuego extends JFrame {
                     efectos.play();
                     jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()), this);
                 }
-                if (jugador.calcularEnvido() < ai.calcularEnvido()) { // Si gana la AI
+                else if (jugador.calcularEnvido() < ai.calcularEnvido()) { // Si gana la AI
                     ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
                     JOptionPane.showMessageDialog(null, "Has perdido. " + nombrePersonaje + " tenía " + ai.calcularEnvido() + " de envido.");
                     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                     efectos.play();
                     ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()), this);
                 }
-                if (jugador.calcularEnvido() == ai.calcularEnvido()) { // Si empatan...
+                else if (jugador.calcularEnvido() == ai.calcularEnvido()) { // Si empatan...
                     if (jugador.isMano() == true) { // .. y el jugador es mano
                         ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
                         JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has ganado por mano");
@@ -1777,30 +1804,25 @@ public class InterfazJuego extends JFrame {
         thread.start();
     }
 
-    private void moverCartaPersona(int origen, int destino) throws IOException{
+    private void moverCartaPersona(int origen, String archivo, int destino) throws IOException{
         final int origenX, destinoX;
-        final String archivo;
 
         //Según qué carta sea, la oculta y pone una temporal en reemplazo
         switch(origen){
             case 0:
                 PC1.setVisible(false);
-                archivo = jugador.getMano().get(0).linkCarta();
                 origenX=10;
                 break;
             case 1:
                 PC2.setVisible(false);
-                archivo = jugador.getMano().get(1).linkCarta();
                 origenX=170;
                 break;
             case 2:
                 PC3.setVisible(false);
-                archivo = jugador.getMano().get(2).linkCarta();
                 origenX=330;
                 break;
             default:
                 origenX=0;
-                archivo="";
                 break;
         }
         switch(destino){
