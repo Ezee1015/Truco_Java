@@ -294,8 +294,11 @@ public class JugadorAI extends Jugador {
               return 3;
             return estado+random.nextInt(3-estado);      // Apostar todo
         }
-        if(getCartasJugadas().get(2).rankingCarta() > 1 && getCartasJugadas().get(2).rankingCarta() < 6 && random.nextInt(3)==1)
-            return estado+random.nextInt(3-estado);      // Apostar todo
+        if(getCartasJugadas().get(2).rankingCarta() > 1 && getCartasJugadas().get(2).rankingCarta() < 6 && random.nextInt(3)==1){ // Apuesto todo
+            if(estado == 3)
+              return 3;
+            return estado+random.nextInt(3-estado);
+        }
       }
       break;
     case 2:
