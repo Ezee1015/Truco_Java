@@ -6,30 +6,25 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 
 public class CambioContraseña extends JFrame {
     JButton atras = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
     private static final Music efectos = new Music();
 
-  public CambioContraseña () throws IOException {
+  public CambioContraseña (Truco_Java menu) throws IOException {
         setLayout(null);
         setDefaultCloseOperation(3);
-        Usuario.cargarUsuarios();
+        menu.setVisible(false);
 
         // Fondo
         JLabel fondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondo_acerca.png")).getScaledInstance(500, 500, Image.SCALE_SMOOTH)));
@@ -54,41 +49,16 @@ public class CambioContraseña extends JFrame {
         atras.addActionListener((ActionEvent e) -> {
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
+            menu.setVisible(true);
             setVisible(false);
             dispose();
         });
-
-        // Contraseña 1
-        JLabel contraseñaText = new JLabel("Contraseña:");
-        contraseñaText.setBounds(220, 140, 100, 10);
-        contraseñaText.setFont(new Font("Arial", Font.BOLD, 14));
-        contraseñaText.setForeground(Color.WHITE);
-        contraseñaText.setVisible(true);
-        fondo.add(contraseñaText);
-        JPasswordField contraseña = new JPasswordField();
-        contraseña.setBounds(50,150,400,30);
-        fondo.add(contraseña);
-
-        // Contraseña 2 
-        JLabel contraseñaText2 = new JLabel("Reitere:");
-        contraseñaText2.setBounds(210, 200, 100, 10);
-        contraseñaText2.setFont(new Font("Arial", Font.BOLD, 14));
-        contraseñaText2.setForeground(Color.WHITE);
-        contraseñaText2.setVisible(true);
-        fondo.add(contraseñaText2);
-        JPasswordField contraseña2 = new JPasswordField();
-        contraseña2.setBounds(50,210,400,30);
-        fondo.add(contraseña2);
         
-        // Boton de registrarse
-        JButton registrarse = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cambiarBoton.png")).getScaledInstance(150, 50, Image.SCALE_SMOOTH)));
-        registrarse.setBounds(175, 250, 150, 50);
-        registrarse.setVisible(true);
-        registrarse.setOpaque(false);
-        registrarse.setContentAreaFilled(false);
-        registrarse.setBorderPainted(false);
-        fondo.add(registrarse);
-        registrarse.addActionListener((ActionEvent e) -> {
+        JPasswordField contraseña = new JPasswordField();
+        JPasswordField contraseña2 = new JPasswordField();
+        Action iniciarAccion = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
             if(!Arrays. equals(contraseña.getPassword(),contraseña2.getPassword())){
                     JOptionPane.showMessageDialog(null, "Las Contraseñas Ingresadas no son iguales.");
                     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
@@ -98,7 +68,44 @@ public class CambioContraseña extends JFrame {
             Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).setContraseña(new String(contraseña2.getPassword()));
             Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).encriptaPuntaje();
             Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).guardarCambios(false);
+            menu.setVisible(true);
             dispose();
+            }
+        };
+
+        // Contraseña 1
+        JLabel contraseñaText = new JLabel("Contraseña:");
+        contraseñaText.setBounds(210, 140, 100, 10);
+        contraseñaText.setFont(new Font("Arial", Font.BOLD, 14));
+        contraseñaText.setForeground(Color.WHITE);
+        contraseñaText.setVisible(true);
+        fondo.add(contraseñaText);
+        contraseña.setBounds(50,155,400,30);
+        contraseña.addActionListener((ActionEvent e) -> {
+            contraseña2.requestFocus();
+        });
+        fondo.add(contraseña);
+
+        // Contraseña 2 
+        JLabel contraseñaText2 = new JLabel("Reitere:");
+        contraseñaText2.setBounds(220, 200, 100, 10);
+        contraseñaText2.setFont(new Font("Arial", Font.BOLD, 14));
+        contraseñaText2.setForeground(Color.WHITE);
+        contraseñaText2.setVisible(true);
+        fondo.add(contraseñaText2);
+        contraseña2.setBounds(50,215,400,30);
+        contraseña2.addActionListener(iniciarAccion);
+        fondo.add(contraseña2);
+        
+        // Boton de registrarse
+        JButton registrarse = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cambiarBoton.png")).getScaledInstance(150, 50, Image.SCALE_SMOOTH)));
+        registrarse.setBounds(175, 255, 150, 50);
+        registrarse.setVisible(true);
+        registrarse.setOpaque(false);
+        registrarse.setContentAreaFilled(false);
+        registrarse.setBorderPainted(false);
+        fondo.add(registrarse);
+        registrarse.addActionListener((ActionEvent e) -> {
         });
   }
 }

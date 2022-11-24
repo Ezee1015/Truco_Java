@@ -128,8 +128,9 @@ public class Truco_Java extends JFrame{
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
             CambioContraseña contraseña;
+            
             try {
-                contraseña = new CambioContraseña();
+                contraseña = new CambioContraseña(this);
                 contraseña.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
                 contraseña.setBounds(0,0,500,350);
                 contraseña.setTitle("Acerca del Juego");
@@ -157,7 +158,7 @@ public class Truco_Java extends JFrame{
             efectos.play();
             if(posUsuario!=-1){
                 try {
-                    sesionAccion(false,0);
+                    sesionAccion(false,0, false);
                 } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Error al cerrar la cuenta: " + ex.getMessage());
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
@@ -176,7 +177,7 @@ public class Truco_Java extends JFrame{
             
             Sesion sesion;
             try {
-                sesion = new Sesion();
+                sesion = new Sesion(this);
                 sesion.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
                 sesion.setBounds(0,0,500,350);
                 sesion.setTitle("Acerca del Juego");
@@ -207,9 +208,10 @@ public class Truco_Java extends JFrame{
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                 efectos.play();
                 if(dialogResult == JOptionPane.YES_OPTION){
-                    Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).guardarCambios(true);
+                    listaUsuarios.get(posUsuario).guardarCambios(true);
+                    listaUsuarios.remove(posUsuario);
                     try {
-                        sesionAccion(false,0);
+                        sesionAccion(false,0, true);
                     } catch (IOException ex) {
                         Logger.getLogger(Truco_Java.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -220,7 +222,7 @@ public class Truco_Java extends JFrame{
             Usuario.cargarUsuarios();            
             Registrarse sesion;
             try {
-                sesion = new Registrarse();
+                sesion = new Registrarse(this);
                 sesion.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
                 sesion.setBounds(0,0,500,350);
                 sesion.setTitle("Acerca del Juego");
@@ -341,9 +343,9 @@ public class Truco_Java extends JFrame{
 
         // Mensaje de bienvenida al usuario
         bienvenido = new JTextPane();
-        bienvenido.setFont(new Font("Arial", Font.BOLD, 20));
-        bienvenido.setBounds(100, 10, 300, 35);
-        bienvenido.setForeground(Color.WHITE);
+        bienvenido.setFont(new Font("Arial", Font.BOLD, 25));
+        bienvenido.setBounds(70, 5, 360, 35);
+        bienvenido.setForeground(Color.YELLOW);
         bienvenido.setEditable(false);
         bienvenido.setOpaque(false);
         bienvenido.setVisible(true);
@@ -377,13 +379,15 @@ public class Truco_Java extends JFrame{
         musicaFondo.play();
     }
 
-    public static void sesionAccion (boolean sesionIniciada, int posiUsuario) throws IOException{
+    public static void sesionAccion (boolean sesionIniciada, int posiUsuario, boolean eliminado) throws IOException{
         if(!sesionIniciada){
             registrarBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/registrarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
             sesionBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/iniciarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
             bienvenido.setText(null);
-            listaUsuarios.get(posUsuario).encriptaPuntaje();
-            Truco_Java.listaUsuarios.get(posUsuario).guardarCambios(false);
+            if(!eliminado){
+                listaUsuarios.get(posUsuario).encriptaPuntaje();
+                Truco_Java.listaUsuarios.get(posUsuario).guardarCambios(false);
+            }
             ganadasAI=0;
             ganadasJugador=0;
             puntajeAI.setText(String.valueOf(ganadasAI));
@@ -396,7 +400,7 @@ public class Truco_Java extends JFrame{
         posUsuario=posiUsuario;
         registrarBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/eliminarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
         sesionBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cerrarSesionBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
-        bienvenido.setText("Bienvenido, " + listaUsuarios.get(posUsuario).getNombre());
+        bienvenido.setText("¡Bienvenido " + listaUsuarios.get(posUsuario).getNombre() + "!");
         if(listaUsuarios.get(posUsuario).getPuntajeAI()>0 || listaUsuarios.get(posUsuario).getPuntajeJugador()>0)
             puntajeFondo.setVisible(true);
         contraseñaBoton.setVisible(true);

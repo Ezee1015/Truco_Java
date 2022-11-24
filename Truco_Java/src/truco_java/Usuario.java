@@ -3,25 +3,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.security.Key;
-import java.util.Base64;
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Base64;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JOptionPane;
 
 public class Usuario {
@@ -83,26 +72,30 @@ public class Usuario {
         String aGuardar="";
         
         try {
+            boolean seGuardo=false;
             obj = new Scanner(doc);
             obj.useDelimiter(";sig;");
 
-            if(!obj.hasNext() && !eliminar){//Si el archivo esta vacio, lo crea con el nuevo usuario
-                aGuardar+=nombre+";sig;"+encriptado;
-            }
             while (obj.hasNext()){
                 String nombreTemp = obj.next();
                 String encriptadoTemp = obj.next();
                 if(nombreTemp.equals(nombre)){
-                    if(!eliminar){
+                    if(!eliminar)
                         aGuardar+=nombre+";sig;"+encriptado;
-                    }
+                    seGuardo=true;
+                    if(eliminar) aGuardar=aGuardar.substring(0, aGuardar.length() - 5);
                 } else {
                     aGuardar+=nombreTemp+";sig;"+encriptadoTemp;
                 }
                 if(obj.hasNext()) aGuardar+=";sig;";
             }
+            
+            if(!seGuardo && !eliminar){ // Si no se guardo, lo guarda
+                if(doc.length()!=0) aGuardar+=";sig;";
+                aGuardar+=nombre+";sig;"+encriptado;
+            }
+                
         } catch (FileNotFoundException | NoSuchElementException ex) {
-            System.out.println(Truco_Java.listaUsuarios.size() + " " + ex.getMessage());
         }
         
         try {
