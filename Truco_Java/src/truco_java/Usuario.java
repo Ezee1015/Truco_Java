@@ -77,14 +77,34 @@ public class Usuario {
         }
     }
     
-    public static void escribirUsuarios(){
+    public void guardarCambios(boolean eliminar){
+        File doc = new File("puntajes.txt");
+        Scanner obj;
+        String aGuardar="";
+        
+        try {
+            obj = new Scanner(doc);
+            obj.useDelimiter(";sig;");
+
+            while (obj.hasNext()){
+                String nombreTemp = obj.next();
+                String encriptadoTemp = obj.next();
+                if(nombreTemp.equals(nombre)){
+                    if(!eliminar){
+                        aGuardar+=nombre+";sig;"+encriptado;
+                    }
+                } else {
+                    aGuardar+=nombreTemp+";sig;"+encriptadoTemp;
+                }
+                if(obj.hasNext()) aGuardar+=";sig;";
+            }
+        } catch (FileNotFoundException | NoSuchElementException ex) {
+            System.out.println(Truco_Java.listaUsuarios.size() + " " + ex.getMessage());
+        }
+        
         try {
             FileWriter myWriter = new FileWriter("puntajes.txt");
-            for(int i=0;i<Truco_Java.listaUsuarios.size();i++){
-                Usuario temp = Truco_Java.listaUsuarios.get(i);
-                if(i!=0) myWriter.write(";sig;");
-                myWriter.write(temp.getNombre()+";sig;"+temp.getEncriptado());
-            }
+            myWriter.write(aGuardar);
             myWriter.close();
         } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "No se pudo escribir los usuarios: " + ex.getMessage());
@@ -117,7 +137,7 @@ public class Usuario {
         try{
              lector = new Scanner(new Encriptacion().desencriptar(encriptado, contraseña));
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
-            JOptionPane.showMessageDialog(null, "Error en la contraseña: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Contraseña incorrecta.");
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
             return false;

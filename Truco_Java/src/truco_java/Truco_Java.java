@@ -34,8 +34,7 @@ public class Truco_Java extends JFrame{
     private boolean facilChecked = false;
     private static final Music efectos = new Music();
     public static ArrayList<Usuario> listaUsuarios = new ArrayList();
-    private static JButton sesionBoton;
-    private static JButton registrarBoton;
+    private static JButton sesionBoton, registrarBoton, contraseñaBoton;
     private static JTextPane bienvenido;
     public static int posUsuario=-1;
 
@@ -117,6 +116,34 @@ public class Truco_Java extends JFrame{
             }
         });
 
+        // Cambiar Contraseña Usuario
+        contraseñaBoton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/contraseñaBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
+        contraseñaBoton.setBounds(410, 280, 75, 40);
+        contraseñaBoton.setVisible(false);
+        contraseñaBoton.setOpaque(false);
+        contraseñaBoton.setContentAreaFilled(false);
+        contraseñaBoton.setBorderPainted(false);
+        fondo.add(contraseñaBoton);
+        contraseñaBoton.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
+            CambioContraseña contraseña;
+            try {
+                contraseña = new CambioContraseña();
+                contraseña.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
+                contraseña.setBounds(0,0,500,350);
+                contraseña.setTitle("Acerca del Juego");
+                contraseña.setResizable(false);
+                contraseña.setLocationRelativeTo(null);
+                contraseña.setUndecorated(true);
+                contraseña.setVisible(true);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar la información acerca del juego: " + ex.getMessage());
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
+            }
+        });
+
         // Inicio de Sesion / Salir
         sesionBoton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/iniciarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
         sesionBoton.setBounds(410, 340, 75, 40);
@@ -126,6 +153,8 @@ public class Truco_Java extends JFrame{
         sesionBoton.setBorderPainted(false);
         fondo.add(sesionBoton);
         sesionBoton.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
             if(posUsuario!=-1){
                 try {
                     sesionAccion(false,0);
@@ -136,8 +165,6 @@ public class Truco_Java extends JFrame{
                 }
                 return;
             }
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
             Sesion sesion;
             try {
                 sesion = new Sesion();
@@ -166,6 +193,20 @@ public class Truco_Java extends JFrame{
         registrarBoton.addActionListener((ActionEvent e) -> {
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
+            if(posUsuario!=-1){
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Está a punto de eliminar su usuario ¿Desea continuar con la operación?","Aclaración",JOptionPane.YES_NO_OPTION);
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
+                if(dialogResult == JOptionPane.YES_OPTION){
+                    Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).guardarCambios(true);
+                    try {
+                        sesionAccion(false,0);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Truco_Java.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                return;
+            }
             Registrarse sesion;
             try {
                 sesion = new Registrarse();
@@ -327,24 +368,26 @@ public class Truco_Java extends JFrame{
 
     public static void sesionAccion (boolean sesionIniciada, int posiUsuario) throws IOException{
         if(!sesionIniciada){
-            registrarBoton.setVisible(true);
+            registrarBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/registrarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
             sesionBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/iniciarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
             bienvenido.setText(null);
             listaUsuarios.get(posUsuario).encriptaPuntaje();
-            Usuario.escribirUsuarios();
+            Truco_Java.listaUsuarios.get(posUsuario).guardarCambios(false);
             ganadasAI=0;
             ganadasJugador=0;
             puntajeAI.setText(String.valueOf(ganadasAI));
             puntajeJugador.setText(String.valueOf(ganadasJugador));
             puntajeFondo.setVisible(false);
+            contraseñaBoton.setVisible(false);
             posUsuario=-1;
             return;
         }
         posUsuario=posiUsuario;
-        registrarBoton.setVisible(false);
+        registrarBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/eliminarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
         sesionBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cerrarSesionBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
         bienvenido.setText("Bienvenido, " + listaUsuarios.get(posUsuario).getNombre());
         if(listaUsuarios.get(posUsuario).getPuntajeAI()>0 || listaUsuarios.get(posUsuario).getPuntajeJugador()>0)
             puntajeFondo.setVisible(true);
+        contraseñaBoton.setVisible(true);
     }
 }

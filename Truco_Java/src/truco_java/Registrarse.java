@@ -88,9 +88,7 @@ public class Registrarse extends JFrame {
         registrarse.setBorderPainted(false);
         fondo.add(registrarse);
         registrarse.addActionListener((ActionEvent e) -> {
-            System.out.println("acaaaa" + Truco_Java.listaUsuarios.size());
             for(int i=0;i<Truco_Java.listaUsuarios.size();i++){
-                System.out.println(Truco_Java.listaUsuarios.get(i).getNombre() + " no es igual a " + usuario.getText());
                 if(Truco_Java.listaUsuarios.get(i).getNombre().equals(usuario.getText())){
                     JOptionPane.showMessageDialog(null, "El nombre de usuario ya existe. Intente con otro");
                     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
@@ -110,7 +108,7 @@ public class Registrarse extends JFrame {
             if(!nuevo.iniciarSesion(new String(contraseña.getPassword())))
                 return;
             Truco_Java.listaUsuarios.add(nuevo);
-            Usuario.escribirUsuarios();
+            Truco_Java.listaUsuarios.get(Truco_Java.listaUsuarios.size()-1).guardarCambios(false);
             try {
                 Truco_Java.sesionAccion(true, Truco_Java.listaUsuarios.size()-1);
             } catch (IOException ex) {
