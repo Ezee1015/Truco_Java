@@ -28,9 +28,10 @@ public class Registrarse extends JFrame {
     JButton atras = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
     private static final Music efectos = new Music();
 
-  public Registrarse () throws IOException {
+  public Registrarse (Truco_Java menu) throws IOException {
         setLayout(null);
         setDefaultCloseOperation(3);
+        menu.setVisible(false);
 
         // Fondo
         JLabel fondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondo_acerca.png")).getScaledInstance(500, 500, Image.SCALE_SMOOTH)));
@@ -55,6 +56,7 @@ public class Registrarse extends JFrame {
         atras.addActionListener((ActionEvent e) -> {
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
+            menu.setVisible(true);
             setVisible(false);
             dispose();
         });
@@ -67,10 +69,14 @@ public class Registrarse extends JFrame {
         usuariosText.setVisible(true);
         fondo.add(usuariosText);
         JTextField usuario = new JTextField();
-        usuario.setBounds(50,150,400,30);
+        usuario.setBounds(50,155,400,30);
         fondo.add(usuario);
         
-        JPasswordField contraseña = new JPasswordField();;
+        JPasswordField contraseña = new JPasswordField();
+        usuario.addActionListener((ActionEvent e) -> {
+            contraseña.requestFocus();
+        });
+        
         Action registrarAccion = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -95,7 +101,7 @@ public class Registrarse extends JFrame {
                     return;
                 Truco_Java.listaUsuarios.add(nuevo);
                 try {
-                    Truco_Java.sesionAccion(true, Truco_Java.listaUsuarios.size()-1);
+                    Truco_Java.sesionAccion(true, Truco_Java.listaUsuarios.size()-1, false);
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, "Error en el inicio de sesion tras la registración.");
                     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
@@ -103,6 +109,7 @@ public class Registrarse extends JFrame {
                     return;
                 }
                 Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).guardarCambios(false);
+                menu.setVisible(true);
                 setVisible(false);
                 dispose();
             }
@@ -115,13 +122,13 @@ public class Registrarse extends JFrame {
         contraseñaText.setForeground(Color.WHITE);
         contraseñaText.setVisible(true);
         fondo.add(contraseñaText);
-        contraseña.setBounds(50,210,400,30);
+        contraseña.setBounds(50,215,400,30);
         contraseña.addActionListener(registrarAccion);
         fondo.add(contraseña);
         
         // Boton de registrarse
         JButton registrarse = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/registrarseBoton.png")).getScaledInstance(150, 50, Image.SCALE_SMOOTH)));
-        registrarse.setBounds(175, 250, 150, 50);
+        registrarse.setBounds(175, 255, 150, 50);
         registrarse.setVisible(true);
         registrarse.setOpaque(false);
         registrarse.setContentAreaFilled(false);

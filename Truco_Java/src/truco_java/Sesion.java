@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,11 +28,12 @@ public class Sesion extends JFrame {
     private DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>();
     private JComboBox comboBoxUsu = new JComboBox(model);
 
-  public Sesion () throws IOException {
+  public Sesion (Truco_Java menu) throws IOException {
         setLayout(null);
         setDefaultCloseOperation(3);
 
         actualizarLista();
+        menu.setVisible(false);
         
         // Fondo
         JLabel fondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondo_acerca.png")).getScaledInstance(500, 500, Image.SCALE_SMOOTH)));
@@ -56,6 +59,7 @@ public class Sesion extends JFrame {
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
             setVisible(false);
+            menu.setVisible(true);
             dispose();
         });
 
@@ -66,9 +70,31 @@ public class Sesion extends JFrame {
         usuariosText.setForeground(Color.WHITE);
         usuariosText.setVisible(true);
         fondo.add(usuariosText);
-        comboBoxUsu.setBounds(50,150,400,50);
+        comboBoxUsu.setBounds(50,155,400,30);
         fondo.add(comboBoxUsu);
 
+        JPasswordField contraseña = new JPasswordField();
+        Action iniciarAccion = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for(int i=0;i<Truco_Java.listaUsuarios.size();i++){
+                    if(Truco_Java.listaUsuarios.get(i).getNombre().equals(comboBoxUsu.getSelectedItem())){
+                        if(!Truco_Java.listaUsuarios.get(i).iniciarSesion(new String(contraseña.getPassword())))
+                            return;
+                        try {
+                            Truco_Java.sesionAccion(true, i, false);
+                        } catch (IOException ex) {
+                            JOptionPane.showMessageDialog(null, "Error en el inicio de sesion.");
+                            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                            efectos.play();
+                        }
+                        dispose();
+                        menu.setVisible(true);
+                    }                    
+                }
+            }
+        };
+        
         // Contraseña
         JLabel contraseñaText = new JLabel("Contraseña:");
         contraseñaText.setBounds(210, 200, 100, 10);
@@ -76,34 +102,19 @@ public class Sesion extends JFrame {
         contraseñaText.setForeground(Color.WHITE);
         contraseñaText.setVisible(true);
         fondo.add(contraseñaText);
-        JPasswordField contraseña = new JPasswordField();
-        contraseña.setBounds(50,210,400,30);
+        contraseña.setBounds(50,215,400,30);
+        contraseña.addActionListener(iniciarAccion);
         fondo.add(contraseña);
         
         // Boton de ingresar
         JButton ingresar = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/iniciarseBoton.png")).getScaledInstance(150, 50, Image.SCALE_SMOOTH)));
-        ingresar.setBounds(175, 250, 150, 50);
+        ingresar.setBounds(175, 255, 150, 50);
         ingresar.setVisible(true);
         ingresar.setOpaque(false);
         ingresar.setContentAreaFilled(false);
         ingresar.setBorderPainted(false);
         fondo.add(ingresar);
-        ingresar.addActionListener((ActionEvent e) -> {
-            for(int i=0;i<Truco_Java.listaUsuarios.size();i++){
-                if(Truco_Java.listaUsuarios.get(i).getNombre().equals(comboBoxUsu.getSelectedItem())){
-                    if(!Truco_Java.listaUsuarios.get(i).iniciarSesion(new String(contraseña.getPassword())))
-                        return;
-                    dispose();
-                    try {
-                        Truco_Java.sesionAccion(true, i);
-                    } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(null, "Error en el inicio de sesion.");
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
-                    }
-                }                    
-            }
-        });
+        ingresar.addActionListener(iniciarAccion);
   }
 
     public void actualizarLista() {
