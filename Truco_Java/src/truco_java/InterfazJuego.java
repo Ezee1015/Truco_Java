@@ -681,6 +681,7 @@ public class InterfazJuego extends JFrame {
         puntajeJugador.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + jugadorPunt + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
         puntajeAI.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + aiPunt + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
 
+                
         if(jugadorPunt==15){
             JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó el Jugador. Felicidades");
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
@@ -689,13 +690,21 @@ public class InterfazJuego extends JFrame {
             termino=true;
             otraPartida();
             if(!menu.facil.isSelected()) {
-                menu.ganadasJugador++;
-                menu.puntajeJugador.setText(Integer.toString(menu.ganadasJugador));
-                menu.puntajeFondo.setVisible(true);
+                Truco_Java.ganadasJugador++;
+                Truco_Java.puntajeJugador.setText(Integer.toString(Truco_Java.ganadasJugador));
+                Truco_Java.puntajeFondo.setVisible(true);
             }
+            
+            // Actualiza los partidos según la sesión
+            if(Truco_Java.posUsuario!=-1){
+                Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).encriptaPuntaje();
+                Usuario.escribirUsuarios();
+            }
+            
             dispose();
         }
         if(aiPunt==15){
+            
             JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó " + nombrePersonaje + ". Será la próxima...");
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
@@ -703,10 +712,17 @@ public class InterfazJuego extends JFrame {
             termino=true;
             otraPartida();
             if(!menu.facil.isSelected()) {
-                menu.ganadasAI++;
-                menu.puntajeAI.setText(Integer.toString(menu.ganadasAI));
-                menu.puntajeFondo.setVisible(true);
+                Truco_Java.ganadasAI++;
+                Truco_Java.puntajeAI.setText(Integer.toString(Truco_Java.ganadasAI));
+                Truco_Java.puntajeFondo.setVisible(true);
             }
+            
+            // Actualiza los partidos según la sesión
+            if(Truco_Java.posUsuario!=-1){
+                Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).encriptaPuntaje();
+                Usuario.escribirUsuarios();
+            }
+            
             dispose();
         }
     }

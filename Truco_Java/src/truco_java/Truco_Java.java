@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,11 +28,16 @@ public class Truco_Java extends JFrame{
     public JCheckBox facil = new JCheckBox("Modo Fácil (PC no miente)", false);
     public JCheckBox movCartas = new JCheckBox("Modo Rápido", false);
     public static Music musicaFondo = new Music();
-    public int ganadasJugador=0, ganadasAI=0;
-    public JTextPane puntajeAI, puntajeJugador;
-    public JLabel puntajeFondo;
+    public static int ganadasJugador=0, ganadasAI=0;
+    public static JTextPane puntajeAI, puntajeJugador;
+    public static JLabel puntajeFondo;
     private boolean facilChecked = false;
     private static final Music efectos = new Music();
+    public static ArrayList<Usuario> listaUsuarios = new ArrayList();
+    private static JButton sesionBoton;
+    private static JButton registrarBoton;
+    private static JTextPane bienvenido;
+    public static int posUsuario=-1;
 
     public Truco_Java () throws IOException {
 
@@ -102,6 +110,72 @@ public class Truco_Java extends JFrame{
                 acerca.setResizable(false);
                 acerca.setLocationRelativeTo(null);
                 acerca.setVisible(true);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar la información acerca del juego: " + ex.getMessage());
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
+            }
+        });
+
+        // Inicio de Sesion / Salir
+        sesionBoton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/iniciarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
+        sesionBoton.setBounds(410, 340, 75, 40);
+        sesionBoton.setVisible(true);
+        sesionBoton.setOpaque(false);
+        sesionBoton.setContentAreaFilled(false);
+        sesionBoton.setBorderPainted(false);
+        fondo.add(sesionBoton);
+        sesionBoton.addActionListener((ActionEvent e) -> {
+            if(posUsuario!=-1){
+                try {
+                    sesionAccion(false,0);
+                } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Error al cerrar la cuenta: " + ex.getMessage());
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
+                }
+                return;
+            }
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
+            Sesion sesion;
+            try {
+                sesion = new Sesion();
+                sesion.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
+                sesion.setBounds(0,0,500,350);
+                sesion.setTitle("Acerca del Juego");
+                sesion.setResizable(false);
+                sesion.setLocationRelativeTo(null);
+                sesion.setUndecorated(true);
+                sesion.setVisible(true);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar la información acerca del juego: " + ex.getMessage());
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
+            }
+        });
+
+        // Registrarse
+        registrarBoton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/registrarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
+        registrarBoton.setBounds(410, 400, 75, 40);
+        registrarBoton.setVisible(true);
+        registrarBoton.setOpaque(false);
+        registrarBoton.setContentAreaFilled(false);
+        registrarBoton.setBorderPainted(false);
+        fondo.add(registrarBoton);
+        registrarBoton.addActionListener((ActionEvent e) -> {
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
+            Registrarse sesion;
+            try {
+                sesion = new Registrarse();
+                sesion.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
+                sesion.setBounds(0,0,500,350);
+                sesion.setTitle("Acerca del Juego");
+                sesion.setResizable(false);
+                sesion.setLocationRelativeTo(null);
+                sesion.setUndecorated(true);
+                sesion.setVisible(true);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar la información acerca del juego: " + ex.getMessage());
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
@@ -212,6 +286,21 @@ public class Truco_Java extends JFrame{
         SimpleAttributeSet center2 = new SimpleAttributeSet();
         StyleConstants.setAlignment(center2, StyleConstants.ALIGN_CENTER);
         doc2.setParagraphAttributes(0, doc2.getLength(), center2, false);
+
+        // Mensaje de bienvenida al usuario
+        bienvenido = new JTextPane();
+        bienvenido.setFont(new Font("Arial", Font.BOLD, 20));
+        bienvenido.setBounds(100, 10, 300, 35);
+        bienvenido.setForeground(Color.WHITE);
+        bienvenido.setEditable(false);
+        bienvenido.setOpaque(false);
+        bienvenido.setVisible(true);
+        fondo.add(bienvenido);
+        //Centra el texto
+        StyledDocument doc3 = bienvenido.getStyledDocument();
+        SimpleAttributeSet center3 = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center3, StyleConstants.ALIGN_CENTER);
+        doc3.setParagraphAttributes(0, doc3.getLength(), center3, false);
     }
 
     public static void main(String[] args) throws IOException {
@@ -234,5 +323,28 @@ public class Truco_Java extends JFrame{
 
         musicaFondo.setFile("src/truco_java/musica/fondo.wav");
         musicaFondo.play();
+    }
+
+    public static void sesionAccion (boolean sesionIniciada, int posiUsuario) throws IOException{
+        if(!sesionIniciada){
+            registrarBoton.setVisible(true);
+            sesionBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/iniciarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
+            bienvenido.setText(null);
+            listaUsuarios.get(posUsuario).encriptaPuntaje();
+            Usuario.escribirUsuarios();
+            ganadasAI=0;
+            ganadasJugador=0;
+            puntajeAI.setText(String.valueOf(ganadasAI));
+            puntajeJugador.setText(String.valueOf(ganadasJugador));
+            puntajeFondo.setVisible(false);
+            posUsuario=-1;
+            return;
+        }
+        posUsuario=posiUsuario;
+        registrarBoton.setVisible(false);
+        sesionBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cerrarSesionBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
+        bienvenido.setText("Bienvenido, " + listaUsuarios.get(posUsuario).getNombre());
+        if(listaUsuarios.get(posUsuario).getPuntajeAI()>0 || listaUsuarios.get(posUsuario).getPuntajeJugador()>0)
+            puntajeFondo.setVisible(true);
     }
 }
