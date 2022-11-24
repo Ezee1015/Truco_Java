@@ -53,7 +53,7 @@ public class CambioContraseña extends JFrame {
             setVisible(false);
             dispose();
         });
-        
+
         JPasswordField contraseña = new JPasswordField();
         JPasswordField contraseña2 = new JPasswordField();
         Action iniciarAccion = new AbstractAction() {
@@ -86,9 +86,9 @@ public class CambioContraseña extends JFrame {
         });
         fondo.add(contraseña);
 
-        // Contraseña 2 
+        // Contraseña 2
         JLabel contraseñaText2 = new JLabel("Reitere:");
-        contraseñaText2.setBounds(220, 200, 100, 10);
+        contraseñaText2.setBounds(225, 200, 100, 10);
         contraseñaText2.setFont(new Font("Arial", Font.BOLD, 14));
         contraseñaText2.setForeground(Color.WHITE);
         contraseñaText2.setVisible(true);
@@ -96,7 +96,7 @@ public class CambioContraseña extends JFrame {
         contraseña2.setBounds(50,215,400,30);
         contraseña2.addActionListener(iniciarAccion);
         fondo.add(contraseña2);
-        
+
         // Boton de registrarse
         JButton registrarse = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cambiarBoton.png")).getScaledInstance(150, 50, Image.SCALE_SMOOTH)));
         registrarse.setBounds(175, 255, 150, 50);
