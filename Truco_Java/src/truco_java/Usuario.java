@@ -86,6 +86,9 @@ public class Usuario {
             obj = new Scanner(doc);
             obj.useDelimiter(";sig;");
 
+            if(!obj.hasNext() && !eliminar){//Si el archivo esta vacio, lo crea con el nuevo usuario
+                aGuardar+=nombre+";sig;"+encriptado;
+            }
             while (obj.hasNext()){
                 String nombreTemp = obj.next();
                 String encriptadoTemp = obj.next();
@@ -127,7 +130,6 @@ public class Usuario {
                 Truco_Java.listaUsuarios.add(new Usuario(obj.next(),obj.next()));
             
         } catch (FileNotFoundException | NoSuchElementException ex) {
-            System.out.println(Truco_Java.listaUsuarios.size() + " " + ex.getMessage());
         }
     }
     

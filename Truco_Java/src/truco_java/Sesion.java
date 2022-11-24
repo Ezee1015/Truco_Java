@@ -107,7 +107,6 @@ public class Sesion extends JFrame {
   }
 
     public void actualizarLista() {
-        Usuario.cargarUsuarios();
         if(model.getSize()!=0)
             model.removeAllElements();
 

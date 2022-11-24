@@ -165,6 +165,15 @@ public class Truco_Java extends JFrame{
                 }
                 return;
             }
+            
+            Usuario.cargarUsuarios();
+            if(Truco_Java.listaUsuarios.isEmpty()){
+                JOptionPane.showMessageDialog(null, "No existen usuarios registrados.");
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
+                return;
+            }
+            
             Sesion sesion;
             try {
                 sesion = new Sesion();
@@ -207,6 +216,8 @@ public class Truco_Java extends JFrame{
                 }
                 return;
             }
+            
+            Usuario.cargarUsuarios();            
             Registrarse sesion;
             try {
                 sesion = new Registrarse();
