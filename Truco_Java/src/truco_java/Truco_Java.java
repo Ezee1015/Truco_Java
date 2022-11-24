@@ -25,7 +25,7 @@ import javax.swing.text.StyledDocument;
 public class Truco_Java extends JFrame{
 
     public static JCheckBox musica = new JCheckBox("Musica y Sonido", true);
-    public JCheckBox facil = new JCheckBox("Modo Fácil (PC no miente)", false);
+    public JCheckBox facil = new JCheckBox("Modo Fácil", false);
     public JCheckBox movCartas = new JCheckBox("Modo Rápido", false);
     public static Music musicaFondo = new Music();
     public static int ganadasJugador=0, ganadasAI=0;
@@ -128,7 +128,7 @@ public class Truco_Java extends JFrame{
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
             CambioContraseña contraseña;
-            
+
             try {
                 contraseña = new CambioContraseña(this);
                 contraseña.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
@@ -166,7 +166,7 @@ public class Truco_Java extends JFrame{
                 }
                 return;
             }
-            
+
             Usuario.cargarUsuarios();
             if(Truco_Java.listaUsuarios.isEmpty()){
                 JOptionPane.showMessageDialog(null, "No existen usuarios registrados.");
@@ -174,7 +174,7 @@ public class Truco_Java extends JFrame{
                 efectos.play();
                 return;
             }
-            
+
             Sesion sesion;
             try {
                 sesion = new Sesion(this);
@@ -218,8 +218,8 @@ public class Truco_Java extends JFrame{
                 }
                 return;
             }
-            
-            Usuario.cargarUsuarios();            
+
+            Usuario.cargarUsuarios();
             Registrarse sesion;
             try {
                 sesion = new Registrarse(this);
@@ -252,7 +252,7 @@ public class Truco_Java extends JFrame{
         });
 
         // CheckBox selector de musica ON/OFF
-        musica.setBounds(100, 300, 130, 20);
+        musica.setBounds(100, 300, 140, 20);
         musica.setOpaque(false);
         fondo.add(musica);
         musica.addItemListener((ItemEvent e) -> {
@@ -273,7 +273,7 @@ public class Truco_Java extends JFrame{
         });
 
         // CheckBox selector de modo facil/dificil
-        facil.setBounds(230, 290, 250, 40);
+        facil.setBounds(280, 290, 250, 40);
         facil.setOpaque(false);
         fondo.add(facil);
         facil.addItemListener((ItemEvent e) -> {
