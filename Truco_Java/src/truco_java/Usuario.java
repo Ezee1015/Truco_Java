@@ -66,7 +66,7 @@ public class Usuario {
         }
     }
 
-    public void guardarCambios(boolean eliminar){
+    public void guardarCambios(boolean eliminar, int intentos){
         File doc = new File("puntajes.txt");
         Scanner obj;
         String aGuardar="";
@@ -104,6 +104,11 @@ public class Usuario {
             myWriter.write(aGuardar);
             myWriter.close();
         } catch (IOException ex) {
+            if(intentos<30){
+                try { Thread.sleep(500); } catch (Exception e) {}
+                guardarCambios(eliminar, intentos+1);
+                return;
+            }
             JOptionPane.showMessageDialog(null, "No se pudo escribir los usuarios: " + ex.getMessage());
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();

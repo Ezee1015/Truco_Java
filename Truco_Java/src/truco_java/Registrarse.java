@@ -71,12 +71,12 @@ public class Registrarse extends JFrame {
         JTextField usuario = new JTextField();
         usuario.setBounds(50,155,400,30);
         fondo.add(usuario);
-        
+
         JPasswordField contraseña = new JPasswordField();
         usuario.addActionListener((ActionEvent e) -> {
             contraseña.requestFocus();
         });
-        
+
         Action registrarAccion = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -86,7 +86,7 @@ public class Registrarse extends JFrame {
                         efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                         efectos.play();
                         return;
-                    }                    
+                    }
                 }
                 Usuario nuevo;
                 try {
@@ -108,7 +108,7 @@ public class Registrarse extends JFrame {
                     efectos.play();
                     return;
                 }
-                Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).guardarCambios(false);
+                Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).guardarCambios(false, 0);
                 menu.setVisible(true);
                 setVisible(false);
                 dispose();
@@ -125,7 +125,7 @@ public class Registrarse extends JFrame {
         contraseña.setBounds(50,215,400,30);
         contraseña.addActionListener(registrarAccion);
         fondo.add(contraseña);
-        
+
         // Boton de registrarse
         JButton registrarse = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/registrarseBoton.png")).getScaledInstance(150, 50, Image.SCALE_SMOOTH)));
         registrarse.setBounds(175, 255, 150, 50);
