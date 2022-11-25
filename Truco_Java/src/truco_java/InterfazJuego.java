@@ -691,7 +691,7 @@ public class InterfazJuego extends JFrame {
             // Actualiza los partidos según la sesión
             if(Truco_Java.posUsuario!=-1){
                 Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).encriptaPuntaje();
-                Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).guardarCambios(false);
+                Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).guardarCambios(false, 0);
             }
 
             dispose();
@@ -713,7 +713,7 @@ public class InterfazJuego extends JFrame {
             // Actualiza los partidos según la sesión
             if(Truco_Java.posUsuario!=-1){
                 Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).encriptaPuntaje();
-                Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).guardarCambios(false);
+                Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).guardarCambios(false, 0);
             }
 
             dispose();

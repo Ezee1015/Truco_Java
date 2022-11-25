@@ -34,7 +34,7 @@ public class Sesion extends JFrame {
 
         actualizarLista();
         menu.setVisible(false);
-        
+
         // Fondo
         JLabel fondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondo_acerca.png")).getScaledInstance(500, 500, Image.SCALE_SMOOTH)));
         fondo.setBounds(0, 0, 500, 500);
@@ -90,11 +90,11 @@ public class Sesion extends JFrame {
                         }
                         dispose();
                         menu.setVisible(true);
-                    }                    
+                    }
                 }
             }
         };
-        
+
         // Contraseña
         JLabel contraseñaText = new JLabel("Contraseña:");
         contraseñaText.setBounds(210, 200, 100, 10);
@@ -105,7 +105,7 @@ public class Sesion extends JFrame {
         contraseña.setBounds(50,215,400,30);
         contraseña.addActionListener(iniciarAccion);
         fondo.add(contraseña);
-        
+
         // Boton de ingresar
         JButton ingresar = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/iniciarseBoton.png")).getScaledInstance(150, 50, Image.SCALE_SMOOTH)));
         ingresar.setBounds(175, 255, 150, 50);
