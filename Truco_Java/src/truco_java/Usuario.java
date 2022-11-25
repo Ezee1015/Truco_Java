@@ -96,9 +96,6 @@ public class Usuario {
             }
             obj.close();
         } catch (FileNotFoundException | NoSuchElementException ex) {
-                JOptionPane.showMessageDialog(null, "No se pudo leer los usuarios. Intente más tarde\nError: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
                 return;
         }
 
@@ -128,9 +125,6 @@ public class Usuario {
 
             obj.close();
         } catch (FileNotFoundException | NoSuchElementException ex) {
-            JOptionPane.showMessageDialog(null, "No se pudo leer los usuarios. Intente más tarde\nError: " + ex.getMessage());
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
             return;
         }
     }
