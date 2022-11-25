@@ -463,13 +463,6 @@ public class InterfazJuego extends JFrame {
                     efectos.play();
                     ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()), this);
                 }
-                try {
-                    dibujarPuntaje();
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el dibujar el puntaje: " + ex.getMessage());
-                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    efectos.play();
-                }
             }
             quieroEnv.setVisible(false);
             noQuieroEnv.setVisible(false);
@@ -681,7 +674,7 @@ public class InterfazJuego extends JFrame {
         puntajeJugador.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + jugadorPunt + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
         puntajeAI.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + aiPunt + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
 
-                
+
         if(jugadorPunt==15){
             JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó el Jugador. Felicidades");
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
@@ -694,17 +687,17 @@ public class InterfazJuego extends JFrame {
                 Truco_Java.puntajeJugador.setText(Integer.toString(Truco_Java.ganadasJugador));
                 Truco_Java.puntajeFondo.setVisible(true);
             }
-            
+
             // Actualiza los partidos según la sesión
             if(Truco_Java.posUsuario!=-1){
                 Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).encriptaPuntaje();
                 Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).guardarCambios(false);
             }
-            
+
             dispose();
         }
         if(aiPunt==15){
-            
+
             JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó " + nombrePersonaje + ". Será la próxima...");
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
@@ -716,13 +709,13 @@ public class InterfazJuego extends JFrame {
                 Truco_Java.puntajeAI.setText(Integer.toString(Truco_Java.ganadasAI));
                 Truco_Java.puntajeFondo.setVisible(true);
             }
-            
+
             // Actualiza los partidos según la sesión
             if(Truco_Java.posUsuario!=-1){
                 Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).encriptaPuntaje();
                 Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).guardarCambios(false);
             }
-            
+
             dispose();
         }
     }
@@ -1803,7 +1796,7 @@ public class InterfazJuego extends JFrame {
             return;
         }
 
-        movCarta.setBounds(origenX, 70, 155, 200);
+        movCarta.setBounds(origenX, 70, 75, 100);
         movCarta.setVisible(true);
         fondo.add(movCarta);
 
