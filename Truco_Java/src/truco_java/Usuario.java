@@ -96,7 +96,7 @@ public class Usuario {
             }
             obj.close();
         } catch (FileNotFoundException | NoSuchElementException ex) {
-                return;
+            aGuardar=nombre+";sig;"+encriptado;
         }
 
         try {
@@ -125,7 +125,6 @@ public class Usuario {
 
             obj.close();
         } catch (FileNotFoundException | NoSuchElementException ex) {
-            return;
         }
     }
 
