@@ -74,7 +74,8 @@ public class Sesion extends JFrame {
         usuariosText.setForeground(Color.WHITE);
         usuariosText.setVisible(true);
         fondo.add(usuariosText);
-        comboBoxUsu.setBounds(50,155,400,30);
+        // comboBoxUsu.setBounds(50,155,400,30);
+        comboBoxUsu.setBounds(50,155,415,30);
         comboBoxUsu.setFont(new Font("Arial", Font.BOLD, 16));
         comboBoxUsu.setForeground(Color.white);
         // Hace el comboBox transparente
