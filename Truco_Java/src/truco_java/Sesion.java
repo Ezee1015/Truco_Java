@@ -85,6 +85,7 @@ public class Sesion extends JFrame {
                           int index, boolean isSelected, boolean cellHasFocus) {
                     JComponent result = (JComponent)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                     result.setOpaque(false);
+                    setHorizontalAlignment(JLabel.CENTER);
                     return result;
               }});
         fondo.add(comboBoxUsu);
