@@ -68,7 +68,7 @@ public class CambioContraseña extends JFrame {
             }
             Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).setContraseña(new String(contraseña2.getPassword()));
             Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).encriptaPuntaje();
-            Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).guardarCambios(false);
+            Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).guardarCambios(false, 0);
             menu.setVisible(true);
             dispose();
             }
