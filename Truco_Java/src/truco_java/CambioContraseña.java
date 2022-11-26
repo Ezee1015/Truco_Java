@@ -76,7 +76,7 @@ public class CambioContraseña extends JFrame {
 
         // Contraseña 1
         JLabel contraseñaText = new JLabel("Contraseña:");
-        contraseñaText.setBounds(192, 135, 120, 15);
+        contraseñaText.setBounds(192, 135, 220, 15);
         contraseñaText.setFont(new Font("Arial", Font.BOLD, 19));
         contraseñaText.setForeground(Color.WHITE);
         contraseñaText.setVisible(true);
@@ -99,7 +99,7 @@ public class CambioContraseña extends JFrame {
 
         // Contraseña 2
         JLabel contraseñaText2 = new JLabel("Reitere:");
-        contraseñaText2.setBounds(213, 195, 120, 15);
+        contraseñaText2.setBounds(213, 195, 220, 15);
         contraseñaText2.setFont(new Font("Arial", Font.BOLD, 19));
         contraseñaText2.setForeground(Color.WHITE);
         contraseñaText2.setVisible(true);
