@@ -208,7 +208,7 @@ public class Truco_Java extends JFrame{
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                 efectos.play();
                 if(dialogResult == JOptionPane.YES_OPTION){
-                    listaUsuarios.get(posUsuario).guardarCambios(true);
+                    listaUsuarios.get(posUsuario).guardarCambios(true, 0);
                     listaUsuarios.remove(posUsuario);
                     try {
                         sesionAccion(false,0, true);
@@ -386,7 +386,7 @@ public class Truco_Java extends JFrame{
             bienvenido.setText(null);
             if(!eliminado){
                 listaUsuarios.get(posUsuario).encriptaPuntaje();
-                Truco_Java.listaUsuarios.get(posUsuario).guardarCambios(false);
+                Truco_Java.listaUsuarios.get(posUsuario).guardarCambios(false, 0);
             }
             ganadasAI=0;
             ganadasJugador=0;

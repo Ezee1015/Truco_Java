@@ -117,7 +117,7 @@ public class Registrarse extends JFrame {
                     efectos.play();
                     return;
                 }
-                Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).guardarCambios(false);
+                Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).guardarCambios(false, 0);
                 menu.setVisible(true);
                 setVisible(false);
                 dispose();
