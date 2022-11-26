@@ -62,7 +62,7 @@ public class Registrarse extends JFrame {
 
         // Usuario
         JLabel usuariosText = new JLabel("Usuario:");
-        usuariosText.setBounds(210, 135, 120, 15);
+        usuariosText.setBounds(210, 135, 220, 15);
         usuariosText.setFont(new Font("Arial", Font.BOLD, 19));
         usuariosText.setForeground(Color.WHITE);
         usuariosText.setVisible(true);
@@ -126,7 +126,7 @@ public class Registrarse extends JFrame {
 
         // Contraseña
         JLabel contraseñaText = new JLabel("Contraseña:");
-        contraseñaText.setBounds(192, 195, 120, 15);
+        contraseñaText.setBounds(192, 195, 220, 15);
         contraseñaText.setFont(new Font("Arial", Font.BOLD, 19));
         contraseñaText.setForeground(Color.WHITE);
         contraseñaText.setVisible(true);
