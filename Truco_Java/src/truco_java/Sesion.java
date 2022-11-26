@@ -17,10 +17,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
-import javax.swing.JTextPane;
+import javax.swing.JTextField;
 
 public class Sesion extends JFrame {
-    JTextPane descripcion;
     JButton atras = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
     JButton adelante = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/adelante.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
     JButton salir = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/volverBoton.png")).getScaledInstance(220, 50, Image.SCALE_SMOOTH)));
@@ -34,7 +33,7 @@ public class Sesion extends JFrame {
 
         actualizarLista();
         menu.setVisible(false);
-        
+
         // Fondo
         JLabel fondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondo_acerca.png")).getScaledInstance(500, 500, Image.SCALE_SMOOTH)));
         fondo.setBounds(0, 0, 500, 500);
@@ -43,7 +42,7 @@ public class Sesion extends JFrame {
 
         // Logo
         JLabel logo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/logo.png")).getScaledInstance(300, 100, Image.SCALE_SMOOTH)));
-        logo.setBounds(100, 20, 300, 100);
+        logo.setBounds(90, 10, 300, 100);
         logo.setVisible(true);
         fondo.add(logo);
 
@@ -65,13 +64,19 @@ public class Sesion extends JFrame {
 
         // Usuario
         JLabel usuariosText = new JLabel("Usuario:");
-        usuariosText.setBounds(220, 140, 100, 10);
-        usuariosText.setFont(new Font("Arial", Font.BOLD, 14));
+        usuariosText.setBounds(210, 135, 120, 15);
+        usuariosText.setFont(new Font("Arial", Font.BOLD, 19));
         usuariosText.setForeground(Color.WHITE);
         usuariosText.setVisible(true);
         fondo.add(usuariosText);
         comboBoxUsu.setBounds(50,155,400,30);
+        comboBoxUsu.setOpaque(false);
         fondo.add(comboBoxUsu);
+        // Fondo para mejorar la apariencia
+        JLabel fondoUsuario = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondoCheckBox.png")).getScaledInstance(400, 30, Image.SCALE_SMOOTH)));
+        fondoUsuario.setBounds(50, 155, 400, 30);
+        fondoUsuario.setVisible(true);
+        fondo.add(fondoUsuario);
 
         JPasswordField contraseña = new JPasswordField();
         Action iniciarAccion = new AbstractAction() {
@@ -90,22 +95,32 @@ public class Sesion extends JFrame {
                         }
                         dispose();
                         menu.setVisible(true);
-                    }                    
+                    }
                 }
             }
         };
-        
+
         // Contraseña
         JLabel contraseñaText = new JLabel("Contraseña:");
-        contraseñaText.setBounds(210, 200, 100, 10);
-        contraseñaText.setFont(new Font("Arial", Font.BOLD, 14));
+        contraseñaText.setBounds(192, 195, 120, 15);
+        contraseñaText.setFont(new Font("Arial", Font.BOLD, 19));
         contraseñaText.setForeground(Color.WHITE);
         contraseñaText.setVisible(true);
         fondo.add(contraseñaText);
         contraseña.setBounds(50,215,400,30);
+        contraseña.setOpaque(false);
+        contraseña.setBorder(null);
+        contraseña.setHorizontalAlignment(JTextField.CENTER);
+        contraseña.setForeground(Color.white);
+        contraseña.setFont(new Font("Arial", Font.BOLD, 16));
         contraseña.addActionListener(iniciarAccion);
         fondo.add(contraseña);
-        
+        // Fondo para mejorar la apariencia
+        JLabel fondoContraseña = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondoCheckBox.png")).getScaledInstance(400, 30, Image.SCALE_SMOOTH)));
+        fondoContraseña.setBounds(50, 215, 400, 30);
+        fondoContraseña.setVisible(true);
+        fondo.add(fondoContraseña);
+
         // Boton de ingresar
         JButton ingresar = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/iniciarseBoton.png")).getScaledInstance(150, 50, Image.SCALE_SMOOTH)));
         ingresar.setBounds(175, 255, 150, 50);

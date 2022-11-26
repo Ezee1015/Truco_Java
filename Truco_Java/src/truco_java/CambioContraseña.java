@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 public class CambioContraseña extends JFrame {
     JButton atras = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
@@ -34,7 +35,7 @@ public class CambioContraseña extends JFrame {
 
         // Logo
         JLabel logo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/logo.png")).getScaledInstance(300, 100, Image.SCALE_SMOOTH)));
-        logo.setBounds(100, 20, 300, 100);
+        logo.setBounds(90, 10, 300, 100);
         logo.setVisible(true);
         fondo.add(logo);
 
@@ -75,27 +76,47 @@ public class CambioContraseña extends JFrame {
 
         // Contraseña 1
         JLabel contraseñaText = new JLabel("Contraseña:");
-        contraseñaText.setBounds(210, 140, 100, 10);
-        contraseñaText.setFont(new Font("Arial", Font.BOLD, 14));
+        contraseñaText.setBounds(192, 135, 120, 15);
+        contraseñaText.setFont(new Font("Arial", Font.BOLD, 19));
         contraseñaText.setForeground(Color.WHITE);
         contraseñaText.setVisible(true);
         fondo.add(contraseñaText);
         contraseña.setBounds(50,155,400,30);
+        contraseña.setOpaque(false);
+        contraseña.setBorder(null);
+        contraseña.setHorizontalAlignment(JTextField.CENTER);
+        contraseña.setForeground(Color.white);
+        contraseña.setFont(new Font("Arial", Font.BOLD, 16));
         contraseña.addActionListener((ActionEvent e) -> {
             contraseña2.requestFocus();
         });
         fondo.add(contraseña);
+        // Fondo para mejorar la apariencia
+        JLabel fondoContraseña = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondoCheckBox.png")).getScaledInstance(400, 30, Image.SCALE_SMOOTH)));
+        fondoContraseña.setBounds(50,155,400,30);
+        fondoContraseña.setVisible(true);
+        fondo.add(fondoContraseña);
 
         // Contraseña 2
         JLabel contraseñaText2 = new JLabel("Reitere:");
-        contraseñaText2.setBounds(225, 200, 100, 10);
-        contraseñaText2.setFont(new Font("Arial", Font.BOLD, 14));
+        contraseñaText2.setBounds(213, 195, 120, 15);
+        contraseñaText2.setFont(new Font("Arial", Font.BOLD, 19));
         contraseñaText2.setForeground(Color.WHITE);
         contraseñaText2.setVisible(true);
         fondo.add(contraseñaText2);
         contraseña2.setBounds(50,215,400,30);
+        contraseña2.setOpaque(false);
+        contraseña2.setBorder(null);
+        contraseña2.setHorizontalAlignment(JTextField.CENTER);
+        contraseña2.setForeground(Color.white);
+        contraseña2.setFont(new Font("Arial", Font.BOLD, 16));
         contraseña2.addActionListener(iniciarAccion);
         fondo.add(contraseña2);
+        // Fondo para mejorar la apariencia
+        JLabel fondoContraseña2 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondoCheckBox.png")).getScaledInstance(400, 30, Image.SCALE_SMOOTH)));
+        fondoContraseña2.setBounds(50,215,400,30);
+        fondoContraseña2.setVisible(true);
+        fondo.add(fondoContraseña2);
 
         // Boton de registrarse
         JButton registrarse = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cambiarBoton.png")).getScaledInstance(150, 50, Image.SCALE_SMOOTH)));

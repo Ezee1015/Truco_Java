@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -41,7 +40,7 @@ public class Registrarse extends JFrame {
 
         // Logo
         JLabel logo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/logo.png")).getScaledInstance(300, 100, Image.SCALE_SMOOTH)));
-        logo.setBounds(100, 20, 300, 100);
+        logo.setBounds(90, 10, 300, 100);
         logo.setVisible(true);
         fondo.add(logo);
 
@@ -63,20 +62,30 @@ public class Registrarse extends JFrame {
 
         // Usuario
         JLabel usuariosText = new JLabel("Usuario:");
-        usuariosText.setBounds(220, 140, 100, 10);
-        usuariosText.setFont(new Font("Arial", Font.BOLD, 14));
+        usuariosText.setBounds(210, 135, 120, 15);
+        usuariosText.setFont(new Font("Arial", Font.BOLD, 19));
         usuariosText.setForeground(Color.WHITE);
         usuariosText.setVisible(true);
         fondo.add(usuariosText);
         JTextField usuario = new JTextField();
         usuario.setBounds(50,155,400,30);
+        usuario.setOpaque(false);
+        usuario.setBorder(null);
+        usuario.setHorizontalAlignment(JTextField.CENTER);
+        usuario.setForeground(Color.white);
+        usuario.setFont(new Font("Arial", Font.BOLD, 16));
         fondo.add(usuario);
-        
+        // Fondo para mejorar la apariencia
+        JLabel fondoUsuario = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondoCheckBox.png")).getScaledInstance(400, 30, Image.SCALE_SMOOTH)));
+        fondoUsuario.setBounds(50,155,400,30);
+        fondoUsuario.setVisible(true);
+        fondo.add(fondoUsuario);
+
         JPasswordField contraseña = new JPasswordField();
         usuario.addActionListener((ActionEvent e) -> {
             contraseña.requestFocus();
         });
-        
+
         Action registrarAccion = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -86,7 +95,7 @@ public class Registrarse extends JFrame {
                         efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                         efectos.play();
                         return;
-                    }                    
+                    }
                 }
                 Usuario nuevo;
                 try {
@@ -117,15 +126,25 @@ public class Registrarse extends JFrame {
 
         // Contraseña
         JLabel contraseñaText = new JLabel("Contraseña:");
-        contraseñaText.setBounds(210, 200, 100, 10);
-        contraseñaText.setFont(new Font("Arial", Font.BOLD, 14));
+        contraseñaText.setBounds(192, 195, 120, 15);
+        contraseñaText.setFont(new Font("Arial", Font.BOLD, 19));
         contraseñaText.setForeground(Color.WHITE);
         contraseñaText.setVisible(true);
         fondo.add(contraseñaText);
         contraseña.setBounds(50,215,400,30);
+        contraseña.setOpaque(false);
+        contraseña.setBorder(null);
+        contraseña.setHorizontalAlignment(JTextField.CENTER);
+        contraseña.setForeground(Color.white);
+        contraseña.setFont(new Font("Arial", Font.BOLD, 16));
         contraseña.addActionListener(registrarAccion);
         fondo.add(contraseña);
-        
+        // Fondo para mejorar la apariencia
+        JLabel fondoContraseña = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondoCheckBox.png")).getScaledInstance(400, 30, Image.SCALE_SMOOTH)));
+        fondoContraseña.setBounds(50, 215, 400, 30);
+        fondoContraseña.setVisible(true);
+        fondo.add(fondoContraseña);
+
         // Boton de registrarse
         JButton registrarse = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/registrarseBoton.png")).getScaledInstance(150, 50, Image.SCALE_SMOOTH)));
         registrarse.setBounds(175, 255, 150, 50);
