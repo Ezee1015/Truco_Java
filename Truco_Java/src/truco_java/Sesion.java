@@ -1,6 +1,7 @@
 package truco_java;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -9,12 +10,16 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -70,7 +75,18 @@ public class Sesion extends JFrame {
         usuariosText.setVisible(true);
         fondo.add(usuariosText);
         comboBoxUsu.setBounds(50,155,400,30);
+        comboBoxUsu.setFont(new Font("Arial", Font.BOLD, 16));
+        comboBoxUsu.setForeground(Color.white);
+        // Hace el comboBox transparente
         comboBoxUsu.setOpaque(false);
+        comboBoxUsu.setRenderer(new DefaultListCellRenderer(){
+              @Override
+              public Component getListCellRendererComponent(JList list, Object value,
+                          int index, boolean isSelected, boolean cellHasFocus) {
+                    JComponent result = (JComponent)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                    result.setOpaque(false);
+                    return result;
+              }});
         fondo.add(comboBoxUsu);
         // Fondo para mejorar la apariencia
         JLabel fondoUsuario = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondoCheckBox.png")).getScaledInstance(400, 30, Image.SCALE_SMOOTH)));
