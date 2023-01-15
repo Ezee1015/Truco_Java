@@ -8,7 +8,8 @@ echo "alias truco='~/truco.sh && exit'" >> ~/.zshrc
 
 echo '#!/bin/bash' > ~/truco.sh
 echo 'cd ~/Truco_Java/Truco_Java' >> ~/truco.sh
-echo 'echo "¿Quiére comprobar si hay una nueva version (y descargarla)? Presione s"' >> ~/truco.sh
+echo 'echo "¿Quiére comprobar si hay una nueva version (y descargarla)?"'
+echo 'echo "Presione -s- y luego -Enter- para actualizar o solo -Enter- para continuar"' >> ~/truco.sh
 echo 'read resp' >> ~/truco.sh
 echo 'if [ "$resp" == "s" ]; then' >> ~/truco.sh
 echo '  git pull' >> ~/truco.sh
