@@ -35,7 +35,8 @@ public class Truco_Java extends JFrame{
     private static final Music efectos = new Music();
     public static ArrayList<Usuario> listaUsuarios = new ArrayList();
     private static JButton sesionBoton, registrarBoton, contraseñaBoton;
-    private static JTextPane bienvenido;
+    private static JLabel bienvenido;
+    private static JTextPane bienvenidoMSG;
     public static int posUsuario=-1;
 
     public Truco_Java () throws IOException {
@@ -342,16 +343,21 @@ public class Truco_Java extends JFrame{
         doc2.setParagraphAttributes(0, doc2.getLength(), center2, false);
 
         // Mensaje de bienvenida al usuario
-        bienvenido = new JTextPane();
-        bienvenido.setFont(new Font("Arial", Font.BOLD, 25));
+        bienvenido = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cartelBienvenida.png")).getScaledInstance(360, 35, Image.SCALE_SMOOTH)));
+        bienvenido.setFont(new Font("Arial", Font.BOLD, 22));
         bienvenido.setBounds(70, 5, 360, 35);
-        bienvenido.setForeground(Color.YELLOW);
-        bienvenido.setEditable(false);
-        bienvenido.setOpaque(false);
-        bienvenido.setVisible(true);
+        bienvenido.setVisible(false);
         fondo.add(bienvenido);
+        bienvenidoMSG = new JTextPane();
+        bienvenidoMSG.setBounds(0, 3, 360, 35);
+        bienvenidoMSG.setFont(new Font("Arial", Font.BOLD, 22));
+        bienvenidoMSG.setEditable(false);
+        bienvenidoMSG.setForeground(Color.decode("#af6300"));
+        bienvenidoMSG.setOpaque(false);
+        bienvenidoMSG.setVisible(true);
+        bienvenido.add(bienvenidoMSG);
         //Centra el texto
-        StyledDocument doc3 = bienvenido.getStyledDocument();
+        StyledDocument doc3 = bienvenidoMSG.getStyledDocument();
         SimpleAttributeSet center3 = new SimpleAttributeSet();
         StyleConstants.setAlignment(center3, StyleConstants.ALIGN_CENTER);
         doc3.setParagraphAttributes(0, doc3.getLength(), center3, false);
@@ -383,7 +389,8 @@ public class Truco_Java extends JFrame{
         if(!sesionIniciada){
             registrarBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/registrarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
             sesionBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/iniciarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
-            bienvenido.setText(null);
+            bienvenidoMSG.setText(null);
+            bienvenido.setVisible(false);
             if(!eliminado){
                 listaUsuarios.get(posUsuario).encriptaPuntaje();
                 Truco_Java.listaUsuarios.get(posUsuario).guardarCambios(false, 0);
@@ -400,7 +407,12 @@ public class Truco_Java extends JFrame{
         posUsuario=posiUsuario;
         registrarBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/eliminarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
         sesionBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cerrarSesionBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
-        bienvenido.setText("¡Bienvenido " + listaUsuarios.get(posUsuario).getNombre() + "!");
+        bienvenidoMSG.setText("¡Bienvenido " + listaUsuarios.get(posUsuario).getNombre() + "!");
+        if(listaUsuarios.get(posUsuario).getNombre().length() > 18)
+            bienvenidoMSG.setText(listaUsuarios.get(posUsuario).getNombre());
+        if(listaUsuarios.get(posUsuario).getNombre().length() > 29)
+            bienvenidoMSG.setText("¡Bienvenido!");
+        bienvenido.setVisible(true);
         if(listaUsuarios.get(posUsuario).getPuntajeAI()>0 || listaUsuarios.get(posUsuario).getPuntajeJugador()>0)
             puntajeFondo.setVisible(true);
         else
