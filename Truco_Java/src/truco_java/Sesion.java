@@ -26,8 +26,6 @@ import javax.swing.JTextField;
 
 public class Sesion extends JFrame {
     JButton atras = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
-    JButton adelante = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/adelante.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
-    JButton salir = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/volverBoton.png")).getScaledInstance(220, 50, Image.SCALE_SMOOTH)));
     private static final Music efectos = new Music();
     private DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>();
     private JComboBox comboBoxUsu = new JComboBox(model);
