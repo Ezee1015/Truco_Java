@@ -403,6 +403,8 @@ public class Truco_Java extends JFrame{
         bienvenido.setText("¡Bienvenido " + listaUsuarios.get(posUsuario).getNombre() + "!");
         if(listaUsuarios.get(posUsuario).getPuntajeAI()>0 || listaUsuarios.get(posUsuario).getPuntajeJugador()>0)
             puntajeFondo.setVisible(true);
+        else
+            puntajeFondo.setVisible(false);
         contraseñaBoton.setVisible(true);
     }
 }
