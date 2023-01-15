@@ -352,7 +352,7 @@ public class Truco_Java extends JFrame{
         bienvenidoMSG.setBounds(0, 3, 360, 35);
         bienvenidoMSG.setFont(new Font("Arial", Font.BOLD, 22));
         bienvenidoMSG.setEditable(false);
-        bienvenidoMSG.setForeground(Color.decode("#af6300"));
+        bienvenidoMSG.setForeground(Color.decode("#7b3e00"));
         bienvenidoMSG.setOpaque(false);
         bienvenidoMSG.setVisible(true);
         bienvenido.add(bienvenidoMSG);
