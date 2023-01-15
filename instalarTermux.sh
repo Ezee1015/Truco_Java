@@ -1,3 +1,5 @@
+#!/bin/bash
+
 apt update && apt upgrade
 apt install xorg-server tigervnc mpv git openjdk-17 ant
 
@@ -8,7 +10,7 @@ echo "alias truco='~/truco.sh && exit'" >> ~/.zshrc
 
 echo '#!/bin/bash' > ~/truco.sh
 echo 'cd ~/Truco_Java/Truco_Java' >> ~/truco.sh
-echo 'echo "¿Quiére comprobar si hay una nueva version (y descargarla)?"'
+echo 'echo "¿Quiére comprobar si hay una nueva version (y descargarla)?"' >> ~/truco.sh
 echo 'echo "Presione -s- y luego -Enter- para actualizar o solo -Enter- para continuar"' >> ~/truco.sh
 echo 'read resp' >> ~/truco.sh
 echo 'if [ "$resp" == "s" ]; then' >> ~/truco.sh
