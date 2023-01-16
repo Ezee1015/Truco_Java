@@ -155,9 +155,9 @@ public class Truco_Java extends JFrame{
         sesionBoton.setBorderPainted(false);
         fondo.add(sesionBoton);
         sesionBoton.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
             if(posUsuario!=-1){
+                efectos.setFile("src/truco_java/musica/pop.wav", 1);
+                efectos.play();
                 try {
                     sesionAccion(false,0, false);
                 } catch (IOException ex) {
@@ -167,6 +167,8 @@ public class Truco_Java extends JFrame{
                 }
                 return;
             }
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
 
             Usuario.cargarUsuarios();
             if(Truco_Java.listaUsuarios.isEmpty()){
@@ -391,8 +393,6 @@ public class Truco_Java extends JFrame{
             sesionBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/iniciarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
             bienvenidoMSG.setText(null);
             bienvenido.setVisible(false);
-            efectos.setFile("src/truco_java/musica/pop.wav", 1);
-            efectos.play();
             bienvenido.setText(null);
             if(!eliminado){
                 listaUsuarios.get(posUsuario).encriptaPuntaje();
