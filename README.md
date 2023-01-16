@@ -49,3 +49,4 @@ Muchas gracias por haberse interesado en este juego. No se pretende ni se tiene 
 
 ## Agregadecimientos
 Gracias a [ReadLoud](https://readloud.net/)  y a [TTSFree](https://ttsfree.com/) por permitir que este juego tuviera sonido de voces cuando la computadora canta truco, envido, etc..
+También agradecer a [Pixabay](pixabay.com) poir los efectos de sonido.
