@@ -75,7 +75,8 @@ public class Sesion extends JFrame {
         // comboBoxUsu.setBounds(50,155,400,30);
         comboBoxUsu.setBounds(50,155,415,30);
         comboBoxUsu.setFont(new Font("Arial", Font.BOLD, 16));
-        comboBoxUsu.setForeground(Color.white);
+        comboBoxUsu.setForeground(Color.black);
+        comboBoxUsu.setBackground(Color.orange);
         // Hace el comboBox transparente
         comboBoxUsu.setOpaque(false);
         comboBoxUsu.setRenderer(new DefaultListCellRenderer(){
