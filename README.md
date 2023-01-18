@@ -2,7 +2,7 @@
 ![Logo](Truco_Java/src/truco_java/fondos/logo.png)
 
 ## ¿Qué es?
-Esta aplicación es un [juego de *truco argentino*](https://es.wikipedia.org/wiki/Truco_argentino) hecho en *java* (mediante [ant](https://en.wikipedia.org/wiki/Apache_Ant),(Neovim)[http://neovim.io/] y [NetBeans](https://es.wikipedia.org/wiki/NetBeans)). En este juego jugarás con una inteligencia que tiene dos modos:
+Esta aplicación es un [juego de *truco argentino*](https://es.wikipedia.org/wiki/Truco_argentino) hecho en *java* (mediante [ant](https://en.wikipedia.org/wiki/Apache_Ant),[Neovim](http://neovim.io/) y [NetBeans](https://es.wikipedia.org/wiki/NetBeans)). En este juego jugarás con una inteligencia que tiene dos modos:
 * Normal: En donde la "Inteligencia" (algoritmo) puede mentir, y jugar de manera más astuta/inteligente.
 * Fácil: Ideado para principiante que comienzan en el truco. Las partidas que se ganen o pierdan, no seran contadas en el puntaje de partidas ganadas.
 
