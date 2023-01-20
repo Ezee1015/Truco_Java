@@ -1,25 +1,23 @@
 package truco_java;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Servidor extends Conexion{
-
     public Servidor() throws IOException{
         super("servidor");
+        cs = ss.accept();
+        System.out.println("Cliente en línea");
     }
 
     public String recibirMensaje() throws IOException{
+        if(ss==null)
+            reconectar();
+
         try {
-            System.out.println("Esperando la conexión...");
-
-            cs = ss.accept();
-            System.out.println("Cliente en línea");
-
             salidaCliente = new DataOutputStream(cs.getOutputStream());
             // salidaCliente.writeUTF("Petición recibida y aceptada");
 
@@ -27,13 +25,20 @@ public class Servidor extends Conexion{
             BufferedReader entrada = new BufferedReader(new InputStreamReader(cs.getInputStream()));
             String mensaje="";
 
-            while((mensajeServidor = entrada.readLine()) != null) {
-                mensaje=mensajeServidor;
+            while(!entrada.ready());
+            while(entrada.ready()){
+                mensaje+=(char) entrada.read();
+                if(mensaje.charAt(mensaje.length()-1)=='ç'){
+                    break;
+                }
             }
+            // while(((mensajeServidor = entrada.readLine()) != null && mensajeServidor!="") ) {
+            //     mensaje=mensajeServidor;
+            //     System.out.println("AJKDHFALKJSDHFALKJSHDFLJAKSDHFLKJASHDLFKJAHSLDKFHALKSDHFLKAHDLKFJHSADLKFHALSDJKFHASLKDHFKLSAHDF");
+            // }
 
             System.out.println("Fin de la conexión + " + mensaje);
 
-            ss.close();
             return mensaje;
         } catch (Exception e) {
             if(e.getMessage().equalsIgnoreCase("Socket is closed")){
@@ -46,13 +51,10 @@ public class Servidor extends Conexion{
     }
 
     public void enviaMensaje(String mensaje) throws IOException{
-        // Envia la peticion
         try {
             salidaServidor = new DataOutputStream(cs.getOutputStream());
             System.out.println(mensaje);
             salidaServidor.writeUTF(mensaje);
-            cs.close();
-
         } catch (Exception e) {
             if(e.getMessage().equalsIgnoreCase("Socket is closed")){
                 reconectar();

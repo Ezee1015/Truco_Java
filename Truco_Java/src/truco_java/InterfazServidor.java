@@ -1373,6 +1373,14 @@ public class InterfazServidor extends JFrame {
   // MENSAJE DEL CLIENTE
 
     public void recibirMensaje (String mensaje) {
+        if(mensaje==""){
+            try {
+                recibirMensaje(server.recibirMensaje());
+            } catch (Exception e) {
+                System.out.println("Error de conexion suponga asjdfhaklsdjfhalkjsdhfalksjdhflkashdflkajhsdflkjahsdflkajhsdklfjh");
+            }
+            return;
+        }
         Scanner scanf = new Scanner(mensaje);
         String categoria = scanf.next();
         String cat = "";
@@ -1410,8 +1418,15 @@ public class InterfazServidor extends JFrame {
             case "update":
                 System.out.println("Llego la actualizacion");
                 cantCartasOponente=Integer.parseInt(scanf.next());
-                ArrayList<Carta> tempMano = new ArrayList<>();
 
+                ArrayList<Carta> tempJugadasOponente = new ArrayList<>();
+                for(int i=0;i<3-cantCartasOponente;i++){
+                    String tempPalo=scanf.next();
+                    tempJugadasOponente.add(new Carta(Integer.parseInt(scanf.next()), tempPalo));
+                }
+                oponente.setCartasJugadas(tempJugadasOponente);
+
+                ArrayList<Carta> tempMano = new ArrayList<>();
                 for(int i=0;i<3;i++){
                     String tempPalo=scanf.next();
                     tempMano.add(new Carta(Integer.parseInt(scanf.next()), tempPalo));
@@ -1423,7 +1438,7 @@ public class InterfazServidor extends JFrame {
                     tempPosMano[i]=Integer.parseInt(scanf.next());
                 jugador.setPosMano(tempPosMano);
                 try {
-                dibujarCartas();
+                    dibujarCartas();
                 } catch (Exception e) {
                     System.out.println("error en el dibujado de cartas. no es encontro imagenes");
                 }
@@ -1453,6 +1468,13 @@ public class InterfazServidor extends JFrame {
 
                     irAlMazo.setEnabled(true);
                 } else{ // Turno Oponente
+                    if(cantCartasOponente!=3){
+                        try {
+                            moverCartaAI(cantCartasOponente, 3-cantCartasOponente);
+                        } catch (Exception e) {
+                            System.out.println("No se pudo hacer la animacion de la carta");
+                        }
+                    }
                     PC1Enabled=false;
                     PC2Enabled=false;
                     PC3Enabled=false;
@@ -1463,26 +1485,18 @@ public class InterfazServidor extends JFrame {
                     //Espera al cliente
                     Thread thread = new Thread(){
                         public void run(){
-                            System.out.println("Esperando a que el cliente se conecte");
+                            System.out.println("SE ABRIO EL SERVER DESDE EL THREAD");
                             try{
                                 recibirMensaje(server.recibirMensaje());
                             } catch(IOException er){
                                 System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
                             }
-                            System.out.println("Recibe el mensaje");
                         }
                     };
                     thread.start();
                 }
                 oponente.setPuntaje(Integer.parseInt(scanf.next()), this);
                 jugador.setPuntaje(Integer.parseInt(scanf.next()), this);
-                break;
-            case "tiraCarta":
-                try {
-                    moverCartaAI(cantCartasOponente, 3-cantCartasOponente);
-                } catch (Exception e) {
-                    System.out.println("No se pudo hacer la animacion de la carta");
-                }
                 break;
             default:
                 System.out.println("No se detecto la categoria del mensaje: " + cat);

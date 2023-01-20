@@ -944,7 +944,7 @@ public class InterfazCliente extends JFrame {
         jugador.agregarCartaJugada(jugador.getPosMano()[pos]);
 
         // La envía al servidor la actualización
-        client.actualizarInfo(jugador.mano.size(), oponente.getMano(), oponente.getPosMano(), nivelTruco, envidoFinalizado, habilitadoARetrucar, false, jugador.getPuntaje(), oponente.getPuntaje());
+        // client.actualizarInfo(jugador.mano.size(), oponente.getMano(), oponente.getPosMano(), nivelTruco, envidoFinalizado, habilitadoARetrucar, false, jugador.getPuntaje(), oponente.getPuntaje());
 
         // Indica que carta no se debe dibujar
         int temp[] = jugador.getPosMano();
@@ -1028,12 +1028,13 @@ public class InterfazCliente extends JFrame {
             oponente.setEsMano(false);
             jugador.setEsMano(true);
             System.out.println("Manda mensaje");
-            client.actualizarInfo(jugador.mano.size(), oponente.getMano(), oponente.getPosMano(), nivelTruco, envidoFinalizado, habilitadoARetrucar, false, jugador.getPuntaje(), oponente.getPuntaje());
+            sincronizar(false);
         } else {
             oponente.setMano(mano2);
             jugador.setMano(mano1);
             oponente.setEsMano(true);
             jugador.setEsMano(false);
+            sincronizar(true);
         }
 
         // Aca no tiene que ir un habilitaTurno() porque sino tira dos veces  la AI
@@ -1083,7 +1084,7 @@ public class InterfazCliente extends JFrame {
                 PC2Enabled=false;
                 PC3Enabled=false;
                 // No hace falta que se cante envido, porque ya lo verifica dentro de AICantaTruco
-                client.actualizarInfo(jugador.mano.size(), oponente.getMano(), oponente.getPosMano(), nivelTruco, envidoFinalizado, habilitadoARetrucar, true, jugador.getPuntaje(), oponente.getPuntaje());
+                sincronizar(true);
                 recibirMensaje(client.recibirMensaje());
                 moverCartaAI(oponente.getMano().size(), oponente.getCartasJugadas().size()-1);
             }
@@ -1095,16 +1096,16 @@ public class InterfazCliente extends JFrame {
             PC2Enabled=true;
             PC3Enabled=true;
         } else if (!jugador.getCartasJugadas().isEmpty() && oponente.getCartasJugadas().isEmpty()) { // Ya Jugó el Jugador. Turno AI
-                truco.setEnabled(false);
-                envido.setEnabled(false);
-                irAlMazo.setEnabled(false);
-                PC1Enabled=false;
-                PC2Enabled=false;
-                PC3Enabled=false;
-                // No hace falta que se cante envido, porque ya lo verifica dentro de AICantaTruco
-                client.actualizarInfo(jugador.mano.size(), oponente.getMano(), oponente.getPosMano(), nivelTruco, envidoFinalizado, habilitadoARetrucar, true, jugador.getPuntaje(), oponente.getPuntaje());
-                recibirMensaje(client.recibirMensaje());
-                moverCartaAI(oponente.getMano().size(), oponente.getCartasJugadas().size()-1);
+            truco.setEnabled(false);
+            envido.setEnabled(false);
+            irAlMazo.setEnabled(false);
+            PC1Enabled=false;
+            PC2Enabled=false;
+            PC3Enabled=false;
+            // No hace falta que se cante envido, porque ya lo verifica dentro de AICantaTruco
+            sincronizar(true);
+            recibirMensaje(client.recibirMensaje());
+            moverCartaAI(oponente.getMano().size(), oponente.getCartasJugadas().size()-1);
         } else if (!jugador.getCartasJugadas().isEmpty() && !oponente.getCartasJugadas().isEmpty()) { // Rondas 2 y 3
             if (jugador.getCartasJugadas().size() == oponente.getCartasJugadas().size()) { // Si es una ronda en la que nadie jugó
                 int rankingJugador = jugador.getCartasJugadas().get(jugador.getCartasJugadas().size()-1).rankingCarta();
@@ -1126,7 +1127,7 @@ public class InterfazCliente extends JFrame {
                     PC1Enabled=false;
                     PC2Enabled=false;
                     PC3Enabled=false;
-                    client.actualizarInfo(jugador.mano.size(), oponente.getMano(), oponente.getPosMano(), nivelTruco, envidoFinalizado, habilitadoARetrucar, true, jugador.getPuntaje(), oponente.getPuntaje());
+                    sincronizar(true);
                     recibirMensaje(client.recibirMensaje());
                     moverCartaAI(oponente.getMano().size(), oponente.getCartasJugadas().size()-1);
                 } else if(rankingJugador == rankingAI){ // Si empatan
@@ -1145,7 +1146,7 @@ public class InterfazCliente extends JFrame {
                         PC1Enabled=false;
                         PC2Enabled=false;
                         PC3Enabled=false;
-                    client.actualizarInfo(jugador.mano.size(), oponente.getMano(), oponente.getPosMano(), nivelTruco, envidoFinalizado, habilitadoARetrucar, true, jugador.getPuntaje(), oponente.getPuntaje());
+                        sincronizar(true);
                     recibirMensaje(client.recibirMensaje());
                         moverCartaAI(oponente.getMano().size(), oponente.getCartasJugadas().size()-1);
                     }
@@ -1165,7 +1166,7 @@ public class InterfazCliente extends JFrame {
                 PC1Enabled=false;
                 PC2Enabled=false;
                 PC3Enabled=false;
-                client.actualizarInfo(jugador.mano.size(), oponente.getMano(), oponente.getPosMano(), nivelTruco, envidoFinalizado, habilitadoARetrucar, true, jugador.getPuntaje(), oponente.getPuntaje());
+                sincronizar(true);
                 recibirMensaje(client.recibirMensaje());
                 moverCartaAI(oponente.getMano().size(), oponente.getCartasJugadas().size()-1);
             }
@@ -1798,6 +1799,7 @@ public class InterfazCliente extends JFrame {
           habilitaTurno();
       } catch (IOException ex) {
           JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
+          System.out.println("ACAAAAAAA 1");
           efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
           efectos.play();
       }
@@ -1917,6 +1919,7 @@ public class InterfazCliente extends JFrame {
                         habilitaTurno();
                     } catch (IOException ex) {
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
+          System.out.println("ACAAAAAAA 2");
                         efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                         efectos.play();
                     }
@@ -1930,5 +1933,19 @@ public class InterfazCliente extends JFrame {
 
         }
         scanf.close();
+    }
+
+    private void sincronizar(boolean turnoOponente){
+        try {
+            client.actualizarInfo(jugador.mano.size(), jugador.getMano(), oponente.getMano(), oponente.getPosMano(), nivelTruco, envidoFinalizado, habilitadoARetrucar, turnoOponente, jugador.getPuntaje(), oponente.getPuntaje());
+        } catch (Exception e) {
+            for(int i=0;i<30;i++){
+                try {
+                    Thread.sleep(500);
+                    client.actualizarInfo(jugador.mano.size(), jugador.getMano(), oponente.getMano(), oponente.getPosMano(), nivelTruco, envidoFinalizado, habilitadoARetrucar, turnoOponente, jugador.getPuntaje(), oponente.getPuntaje());
+                    break;
+                } catch (Exception er) {}
+            }
+        }
     }
 }
