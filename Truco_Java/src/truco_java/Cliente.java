@@ -11,51 +11,71 @@ public class Cliente extends Conexion {
         super("cliente");
     }
 
-    public void conectarYEnviar(/*Datos*/){
+    public String enviaEnvido(ArrayList<Integer> envidosCantados) throws IOException{
+        // Envia la peticion
+        enviaMensaje(String.valueOf(envidosCantados.get(envidosCantados.size()-1)));
+        return recibirMensaje();
+    }
+
+    public void enviaMensaje(String mensaje) throws IOException{
+        // Envia la peticion
         try {
             salidaServidor = new DataOutputStream(cs.getOutputStream());
-            for (int i = 0; i < 2; i++) {
-                salidaServidor.writeUTF("Este es el mensaje número " + (i+1) + "\n");
-            }
+            System.out.println(mensaje);
+            salidaServidor.writeUTF(mensaje);
             cs.close();
 
         } catch (Exception e) {
+            if(e.getMessage().equalsIgnoreCase("Socket is closed")){
+                reconectar();
+                enviaMensaje(mensaje);
+                return;
+            }
             System.out.println(e.getMessage());
         }
     }
 
-    public String enviaEnvido(ArrayList<Integer> envidosCantados){
-        // Envia la peticion
+    public String recibirMensaje() throws IOException{
         try {
-            salidaServidor = new DataOutputStream(cs.getOutputStream());
-            for (int i = 0; i < 2; i++) {
-                salidaServidor.writeUTF("envido " + envidosCantados.get(envidosCantados.size()-1));
-            }
-            cs.close();
+            cs = ss.accept();
 
+            salidaCliente = new DataOutputStream(cs.getOutputStream());
+
+            BufferedReader entrada = new BufferedReader(new InputStreamReader(cs.getInputStream()));
+            String mensaje="";
+
+            while((mensajeServidor = entrada.readLine()) != null) {
+                mensaje=mensajeServidor;
+            }
+            ss.close();
+
+            System.out.println("Mensaje recibbido en CLIENTE: " + mensaje);
+            return mensaje;
         } catch (Exception e) {
+            if(e.getMessage().equalsIgnoreCase("Socket is closed") || ss == null){
+                reconectar();
+                return recibirMensaje();
+            }
             System.out.println(e.getMessage());
         }
-        // Escucha la respuesta
-        try {
-            return new Servidor().recibirMensaje();
-        } catch (Exception e) {
-            System.out.println("error" + e.getMessage());
-            return 0;
-        }
+        return "";
     }
 
-    public void enviaMensaje(String mensaje){
+    public void actualizarInfo(int cantCartasJugador, ArrayList<Carta> manoOponente, int[] posManoOponente,  int nivelTruco, boolean envidoFinalizado, int habilitadoARetrucar, boolean turnoOponente, int puntajeJugador, int puntajeOponente) throws IOException{
         // Envia la peticion
-        try {
-            salidaServidor = new DataOutputStream(cs.getOutputStream());
-            for (int i = 0; i < 2; i++) {
-                salidaServidor.writeUTF(mensaje);
-            }
-            cs.close();
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        String mensaje = "update " + String.valueOf(cantCartasJugador)+" ";
+        for(int i=0;i<3;i++){
+            mensaje+=manoOponente.get(i).getPalo()+" ";
+            mensaje+=manoOponente.get(i).getNumero()+" ";
         }
+        for(int i=0;i<3;i++)
+            mensaje+=posManoOponente[i]+" ";
+        mensaje+=String.valueOf(nivelTruco)+" "+String.valueOf(envidoFinalizado)+" "+String.valueOf(habilitadoARetrucar)+" "+turnoOponente + " " + puntajeJugador + " " + puntajeOponente;
+
+        enviaMensaje(mensaje);
+    }
+
+    public void tirarCarta() throws IOException{
+        enviaMensaje("tiraCarta");
     }
 }
