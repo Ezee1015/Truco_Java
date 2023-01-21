@@ -1505,22 +1505,7 @@ public class InterfazServidor extends JFrame {
                         envido.setEnabled(false);
 
                     irAlMazo.setEnabled(true);
-
-                    if(!animarOponente){
-                        try {
-                            dibujarCartas();
-                        } catch (Exception e) {
-                            System.out.println("error al dibujar las cartas");
-                        }
-                    }
                 } else{ // Turno Oponente
-                    try {
-                        dibujarCartas();
-                    } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error: " + ex.getMessage());
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
-                    }
                     PC1Enabled=false;
                     PC2Enabled=false;
                     PC3Enabled=false;
@@ -1541,6 +1526,14 @@ public class InterfazServidor extends JFrame {
                     };
                     thread.start();
                 }
+
+                    if(!animarOponente){
+                        try {
+                            dibujarCartas();
+                        } catch (Exception e) {
+                            System.out.println("error al dibujar las cartas");
+                        }
+                    }
                 oponente.setPuntaje(Integer.parseInt(scanf.next()), this);
                 jugador.setPuntaje(Integer.parseInt(scanf.next()), this);
                 break;
