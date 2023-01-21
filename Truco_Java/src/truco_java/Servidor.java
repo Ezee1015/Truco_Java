@@ -14,18 +14,18 @@ public class Servidor extends Conexion{
     }
 
     public String recibirMensaje() throws IOException{
-        if(ss==null)
-            reconectar();
+        // if(ss==null)
+        //     reconectar();
 
         try {
-            salidaServidor = new DataOutputStream(cs.getOutputStream());
+            // salidaServidor = new DataOutputStream(cs.getOutputStream());
             // salidaCliente.writeUTF("Petición recibida y aceptada");
 
             System.out.println("atrapado aca");
             BufferedReader entrada = new BufferedReader(new InputStreamReader(cs.getInputStream()));
             String mensaje="";
 
-            System.out.println("Comiennza la escucha");
+            System.out.println("Comienza la escucha");
             while(!entrada.ready());
             System.out.println("Conexion");
             while(entrada.ready()){

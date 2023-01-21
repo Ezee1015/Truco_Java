@@ -788,7 +788,6 @@ public class InterfazServidor extends JFrame {
 
         //Tira la carta
         jugador.agregarCartaJugada(jugador.getPosMano()[pos]);
-        server.tirarCarta(pos);
 
         // Indica que carta no se debbe dibujar
         int temp[] = jugador.getPosMano();
@@ -806,6 +805,19 @@ public class InterfazServidor extends JFrame {
                 efectos.play();
             }
         }
+
+        // Espera la respuesta de HabilitaTurno o TirarCartaa del cliente
+        Thread thread = new Thread(){
+            public void run(){
+                System.out.println("SE ABRIO EL SERVER DESDE EL THREAD");
+                try{
+                    recibirMensaje(server.recibirMensaje());
+                } catch(IOException er){
+                    System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                }
+            }
+        };
+        thread.start();
     }
 
     private void otraPartida() throws IOException {
@@ -1268,7 +1280,7 @@ public class InterfazServidor extends JFrame {
 
         Thread thread = new Thread(){
             public void run(){
-                timerMovCarta(movX, movY, origenX, 70, destinoX, 210, sizeX, sizeY, archivo);
+                timerMovCarta(movX, movY, origenX, 70, destinoX, 210, sizeX, sizeY, archivo, -1);
             }
         };
         thread.start();
@@ -1321,13 +1333,13 @@ public class InterfazServidor extends JFrame {
 
         Thread thread = new Thread(){
             public void run(){
-                timerMovCarta(movX, movY, origenX, 400, destinoX, 310, sizeX, sizeY, archivo);
+                timerMovCarta(movX, movY, origenX, 400, destinoX, 310, sizeX, sizeY, archivo, origen);
             }
         };
         thread.start();
     }
 
-  public void timerMovCarta (int movX, int movY, int origenX, int origenY, int destinoX, int destinoY, int ancho, int alto, String archivo) {
+  public void timerMovCarta (int movX, int movY, int origenX, int origenY, int destinoX, int destinoY, int ancho, int alto, String archivo, int pos) {
       new java.util.Timer().schedule(
             new java.util.TimerTask() {
               @Override
@@ -1349,7 +1361,7 @@ public class InterfazServidor extends JFrame {
 
       movCarta.repaint();
       if(origenX-destinoX>5 || origenX-destinoX<-5){
-          timerMovCarta(movX,movY, origenX+movX, origenY+movY, destinoX, destinoY, ancho, alto, archivo);
+          timerMovCarta(movX,movY, origenX+movX, origenY+movY, destinoX, destinoY, ancho, alto, archivo, pos);
           return;
       }
 
@@ -1363,6 +1375,7 @@ public class InterfazServidor extends JFrame {
       movCarta.setVisible(false);
       fondo.remove(movCarta);
       try {
+          if(pos!=-1) server.tirarCarta(pos);
           dibujarCartas();
       } catch (IOException ex) {
           JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de dibujar las cartas: " + ex.getMessage());
