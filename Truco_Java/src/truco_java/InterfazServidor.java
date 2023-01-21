@@ -1439,17 +1439,27 @@ public class InterfazServidor extends JFrame {
                 break;
             case "update":
                 System.out.println("Llego la actualizacion");
-                cantCartasOponente=Integer.parseInt(scanf.next());
+                int nuevaCantCartasOponente=Integer.parseInt(scanf.next());
+                System.out.println("Nuevo: " + nuevaCantCartasOponente + "; Viejo: " + cantCartasOponente);
+                boolean animarOponente=false;
+                if(nuevaCantCartasOponente<cantCartasOponente)
+                    animarOponente = true;
+                cantCartasOponente=nuevaCantCartasOponente;
 
                 ArrayList<Carta> tempJugadasOponente = new ArrayList<>();
-                for(int i=0;i<3-cantCartasOponente;i++)
+                for(int i=0;i<3-cantCartasOponente;i++){
                     tempJugadasOponente.add(new Carta(Integer.parseInt(scanf.next()), scanf.next()));
+                    System.out.println("JugadasOponente " + i + ": " + tempJugadasOponente.get(i).texto());
+                }
                 oponente.setCartasJugadas(tempJugadasOponente);
 
                 ArrayList<Carta> tempMano = new ArrayList<>();
                 int sizeMano = Integer.parseInt(scanf.next());
-                for(int i=0;i<sizeMano;i++)
+                System.out.println("Cantidad de Cartas en mano: " + sizeMano);
+                for(int i=0;i<sizeMano;i++){
                     tempMano.add(new Carta(Integer.parseInt(scanf.next()), scanf.next()));
+                    System.out.println("Mano " + i + ": " + tempMano.get(i).texto());
+                }
                 jugador.setMano(tempMano);
 
                 int[] tempPosMano = new int[3];
@@ -1457,18 +1467,25 @@ public class InterfazServidor extends JFrame {
                     tempPosMano[i]=Integer.parseInt(scanf.next());
                 jugador.setPosMano(tempPosMano);
 
+                ArrayList<Carta> tempJugadas = new ArrayList<>();
+                for(int i=0;i<3-sizeMano;i++)
+                    tempJugadas.add(new Carta(Integer.parseInt(scanf.next()), scanf.next()));
+                jugador.setCartasJugadas(tempJugadas);
+
                 nivelTruco=Integer.parseInt(scanf.next());
                 envidoFinalizado=Boolean.parseBoolean(scanf.next());
                 habilitadoARetrucar=Integer.parseInt(scanf.next());
 
-                if(Boolean.parseBoolean(scanf.next())){// Es el turno del jugador
-                    if(cantCartasOponente!=3){
-                        try {
-                            moverCartaAI(cantCartasOponente, 2-cantCartasOponente);
-                        } catch (Exception e) {
-                            System.out.println("No se pudo hacer la animacion de la carta: " + e.getMessage());
-                        }
+                if(animarOponente){
+
+                    try {
+                        moverCartaAI(nuevaCantCartasOponente, 2-nuevaCantCartasOponente);
+                    } catch (Exception e) {
+                        System.out.println("No se pudo hacer la animacion de la carta: " + e.getMessage());
                     }
+                }
+
+                if(Boolean.parseBoolean(scanf.next())){// Es el turno del jugador
                     PC1Enabled=true;
                     PC2Enabled=true;
                     PC3Enabled=true;
@@ -1488,6 +1505,14 @@ public class InterfazServidor extends JFrame {
                         envido.setEnabled(false);
 
                     irAlMazo.setEnabled(true);
+
+                    if(!animarOponente){
+                        try {
+                            dibujarCartas();
+                        } catch (Exception e) {
+                            System.out.println("error al dibujar las cartas");
+                        }
+                    }
                 } else{ // Turno Oponente
                     try {
                         dibujarCartas();

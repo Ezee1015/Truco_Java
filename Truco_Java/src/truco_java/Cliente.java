@@ -54,7 +54,7 @@ public class Cliente extends Conexion {
         try {
             salidaServidor = new DataOutputStream(cs.getOutputStream());
             System.out.println(mensaje + " ç");
-            salidaServidor.writeUTF(mensaje);
+            salidaServidor.writeUTF(mensaje + " ç");
         } catch (Exception e) {
             if(e.getMessage().equalsIgnoreCase("Socket is closed")){
                 reconectar();
@@ -71,13 +71,14 @@ public class Cliente extends Conexion {
         return recibirMensaje();
     }
 
-    public void actualizarInfo(int cantCartasJugador, ArrayList<Carta> cartasJugadasJugador,ArrayList<Carta> manoOponente, int[] posManoOponente,  int nivelTruco, boolean envidoFinalizado, int habilitadoARetrucar, boolean turnoOponente, int puntajeJugador, int puntajeOponente) throws IOException{
+    public void actualizarInfo(int cantCartasJugador, ArrayList<Carta> cartasJugadasJugador,ArrayList<Carta> manoOponente, int[] posManoOponente, ArrayList<Carta> jugadasOponente, int nivelTruco, boolean envidoFinalizado, int habilitadoARetrucar, boolean turnoOponente, int puntajeJugador, int puntajeOponente) throws IOException{
         // Envia la peticion
         String mensaje = "update " + String.valueOf(cantCartasJugador)+" ";
         for(int i=0;i<3-cantCartasJugador;i++){
             mensaje+=cartasJugadasJugador.get(i).getNumero()+" ";
             mensaje+=cartasJugadasJugador.get(i).getPalo()+" ";
         }
+
         mensaje+=manoOponente.size()+" ";
         for(int i=0;i<manoOponente.size();i++){
             mensaje+=manoOponente.get(i).getNumero()+" ";
@@ -85,6 +86,11 @@ public class Cliente extends Conexion {
         }
         for(int i=0;i<3;i++)
             mensaje+=posManoOponente[i]+" ";
+        for(int i=0;i<jugadasOponente.size();i++){
+            mensaje+=jugadasOponente.get(i).getNumero()+" ";
+            mensaje+=jugadasOponente.get(i).getPalo()+" ";
+        }
+
         mensaje+=String.valueOf(nivelTruco)+" "+String.valueOf(envidoFinalizado)+" "+String.valueOf(habilitadoARetrucar)+" "+turnoOponente + " " + puntajeJugador + " " + puntajeOponente;
 
         enviaMensaje(mensaje);

@@ -1037,11 +1037,9 @@ public class InterfazCliente extends JFrame {
             jugador.setMano(mano1);
             oponente.setEsMano(true);
             jugador.setEsMano(false);
-            sincronizar(true);
         }
 
         // Aca no tiene que ir un habilitaTurno() porque sino tira dos veces  la AI
-        // Muestra puntaje
         dibujarPuntaje();
         dibujarCartas();
 
@@ -1103,6 +1101,7 @@ public class InterfazCliente extends JFrame {
             PC1Enabled=true;
             PC2Enabled=true;
             PC3Enabled=true;
+            sincronizar(false);
         } else if (!jugador.getCartasJugadas().isEmpty() && oponente.getCartasJugadas().isEmpty()) { // Ya Jugó el Jugador. Turno AI
             System.out.println("Entrada 4");
             truco.setEnabled(false);
@@ -1129,6 +1128,7 @@ public class InterfazCliente extends JFrame {
                     PC1Enabled=true;
                     PC2Enabled=true;
                     PC3Enabled=true;
+                    sincronizar(false);
                 } else if (rankingAI > rankingJugador) { // si gano AI en la anterior ronda
                     System.out.println("Entrada 6");
                     truco.setEnabled(false);
@@ -1137,13 +1137,6 @@ public class InterfazCliente extends JFrame {
                     PC1Enabled=false;
                     PC2Enabled=false;
                     PC3Enabled=false;
-                    sincronizar(true);
-                    sincronizar(true);
-                    sincronizar(true);
-                    sincronizar(true);
-                    sincronizar(true);
-                    sincronizar(true);
-                    sincronizar(true);
                     sincronizar(true);
                     recibirMensaje(client.recibirMensaje());
                 } else if(rankingJugador == rankingAI){ // Si empatan
@@ -1156,6 +1149,7 @@ public class InterfazCliente extends JFrame {
                         PC1Enabled=true;
                         PC2Enabled=true;
                         PC3Enabled=true;
+                        sincronizar(false);
                     } else { // Es mano la AI
                         System.out.println("Entrada 8");
                         truco.setEnabled(false);
@@ -1177,6 +1171,7 @@ public class InterfazCliente extends JFrame {
                 PC1Enabled=true;
                 PC2Enabled=true;
                 PC3Enabled=true;
+                sincronizar(false);
             } else if (jugador.getCartasJugadas().size() - 1 == oponente.getCartasJugadas().size()) { // Si ya el jugador tiró en esa ronda
                 System.out.println("Entrada 10");
                 truco.setEnabled(false);
@@ -1966,6 +1961,7 @@ public class InterfazCliente extends JFrame {
 
         switch(categoria){
             case "CTira":
+                System.out.println("Entra en CTIra");
                 int pos = Integer.parseInt(scanf.next());
                 oponente.agregarCartaJugada(oponente.getPosMano()[pos]);
                 // Indica que carta no se debe dibujar
@@ -1992,13 +1988,13 @@ public class InterfazCliente extends JFrame {
 
     private void sincronizar(boolean turnoOponente){
         try {
-            client.actualizarInfo(jugador.mano.size(), jugador.getCartasJugadas(), oponente.getMano(), oponente.getPosMano(), nivelTruco, envidoFinalizado, habilitadoARetrucar, turnoOponente, jugador.getPuntaje(), oponente.getPuntaje());
+            client.actualizarInfo(jugador.mano.size(), jugador.getCartasJugadas(), oponente.getMano(), oponente.getPosMano(), oponente.getCartasJugadas(),nivelTruco, envidoFinalizado, habilitadoARetrucar, turnoOponente, jugador.getPuntaje(), oponente.getPuntaje());
         } catch (IOException e) {
             for(int i=0;i<30;i++){
                 try {
                     Thread.sleep(500);
                     System.out.println("Envia mensaje de actualizacion de vuelta: " + e.getMessage());
-                    client.actualizarInfo(jugador.mano.size(), jugador.getMano(), oponente.getMano(), oponente.getPosMano(), nivelTruco, envidoFinalizado, habilitadoARetrucar, turnoOponente, jugador.getPuntaje(), oponente.getPuntaje());
+                    client.actualizarInfo(jugador.mano.size(), jugador.getMano(), oponente.getMano(), oponente.getPosMano(), oponente.getCartasJugadas(), nivelTruco, envidoFinalizado, habilitadoARetrucar, turnoOponente, jugador.getPuntaje(), oponente.getPuntaje());
                     break;
                 } catch (Exception er) {}
             }
