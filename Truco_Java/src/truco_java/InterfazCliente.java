@@ -1138,6 +1138,13 @@ public class InterfazCliente extends JFrame {
                     PC2Enabled=false;
                     PC3Enabled=false;
                     sincronizar(true);
+                    sincronizar(true);
+                    sincronizar(true);
+                    sincronizar(true);
+                    sincronizar(true);
+                    sincronizar(true);
+                    sincronizar(true);
+                    sincronizar(true);
                     recibirMensaje(client.recibirMensaje());
                 } else if(rankingJugador == rankingAI){ // Si empatan
                     if(jugador.isMano()){ // Es mano el jugador
@@ -1986,11 +1993,11 @@ public class InterfazCliente extends JFrame {
     private void sincronizar(boolean turnoOponente){
         try {
             client.actualizarInfo(jugador.mano.size(), jugador.getCartasJugadas(), oponente.getMano(), oponente.getPosMano(), nivelTruco, envidoFinalizado, habilitadoARetrucar, turnoOponente, jugador.getPuntaje(), oponente.getPuntaje());
-        } catch (Exception e) {
+        } catch (IOException e) {
             for(int i=0;i<30;i++){
                 try {
                     Thread.sleep(500);
-                    System.out.println("Envia mensaje de actualizacion de vuelta");
+                    System.out.println("Envia mensaje de actualizacion de vuelta: " + e.getMessage());
                     client.actualizarInfo(jugador.mano.size(), jugador.getMano(), oponente.getMano(), oponente.getPosMano(), nivelTruco, envidoFinalizado, habilitadoARetrucar, turnoOponente, jugador.getPuntaje(), oponente.getPuntaje());
                     break;
                 } catch (Exception er) {}

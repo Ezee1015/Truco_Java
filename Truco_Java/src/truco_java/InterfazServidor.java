@@ -807,17 +807,17 @@ public class InterfazServidor extends JFrame {
         }
 
         // Espera la respuesta de HabilitaTurno o TirarCartaa del cliente
-        Thread thread = new Thread(){
-            public void run(){
-                System.out.println("SE ABRIO EL SERVER DESDE EL THREAD");
-                try{
-                    recibirMensaje(server.recibirMensaje());
-                } catch(IOException er){
-                    System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
-                }
-            }
-        };
-        thread.start();
+        // Thread thread = new Thread(){
+        //     public void run(){
+        //         System.out.println("SE ABRIO EL SERVER DESDE EL THREAD");
+        //         try{
+        //             recibirMensaje(server.recibirMensaje());
+        //         } catch(IOException er){
+        //             System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+        //         }
+        //     }
+        // };
+        // thread.start();
     }
 
     private void otraPartida() throws IOException {
@@ -1375,8 +1375,15 @@ public class InterfazServidor extends JFrame {
       movCarta.setVisible(false);
       fondo.remove(movCarta);
       try {
-          if(pos!=-1) server.tirarCarta(pos);
           dibujarCartas();
+          if(pos!=-1) {
+              server.tirarCarta(pos);
+                try{
+                    recibirMensaje(server.recibirMensaje());
+                } catch(IOException er){
+                    System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                }
+          }
       } catch (IOException ex) {
           JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de dibujar las cartas: " + ex.getMessage());
           efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
@@ -1440,11 +1447,10 @@ public class InterfazServidor extends JFrame {
                 oponente.setCartasJugadas(tempJugadasOponente);
 
                 ArrayList<Carta> tempMano = new ArrayList<>();
-                for(int i=0;i<3;i++)
+                int sizeMano = Integer.parseInt(scanf.next());
+                for(int i=0;i<sizeMano;i++)
                     tempMano.add(new Carta(Integer.parseInt(scanf.next()), scanf.next()));
                 jugador.setMano(tempMano);
-                for(int i=0;i<jugador.getMano().size();i++)
-                    System.out.println("Carta " + i + ": " + jugador.getMano().get(i).getNumero() + " " + jugador.getMano().get(i).getPalo());
 
                 int[] tempPosMano = new int[3];
                 for(int i=0;i<3;i++)

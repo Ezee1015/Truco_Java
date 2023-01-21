@@ -22,8 +22,9 @@ public class Cliente extends Conexion {
             BufferedReader entrada = new BufferedReader(new InputStreamReader(cs.getInputStream()));
             String mensaje="";
 
-            System.out.println("atrapado aca " + cs.isConnected());
+            System.out.println("Comienza la escucha");
             while(!entrada.ready());
+            System.out.println("Conexion");
             while(entrada.ready()){
                 mensaje+=(char) entrada.read();
                 if(mensaje.charAt(mensaje.length()-1)=='ç'){
@@ -77,7 +78,8 @@ public class Cliente extends Conexion {
             mensaje+=cartasJugadasJugador.get(i).getNumero()+" ";
             mensaje+=cartasJugadasJugador.get(i).getPalo()+" ";
         }
-        for(int i=0;i<3;i++){
+        mensaje+=manoOponente.size()+" ";
+        for(int i=0;i<manoOponente.size();i++){
             mensaje+=manoOponente.get(i).getNumero()+" ";
             mensaje+=manoOponente.get(i).getPalo()+" ";
         }
