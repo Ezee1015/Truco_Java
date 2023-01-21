@@ -18,14 +18,16 @@ public class Servidor extends Conexion{
             reconectar();
 
         try {
-            salidaCliente = new DataOutputStream(cs.getOutputStream());
+            salidaServidor = new DataOutputStream(cs.getOutputStream());
             // salidaCliente.writeUTF("Petición recibida y aceptada");
 
             System.out.println("atrapado aca");
             BufferedReader entrada = new BufferedReader(new InputStreamReader(cs.getInputStream()));
             String mensaje="";
 
+            System.out.println("Comiennza la escucha");
             while(!entrada.ready());
+            System.out.println("Conexion");
             while(entrada.ready()){
                 mensaje+=(char) entrada.read();
                 if(mensaje.charAt(mensaje.length()-1)=='ç'){
@@ -51,9 +53,10 @@ public class Servidor extends Conexion{
     }
 
     public void enviaMensaje(String mensaje) throws IOException{
+        // Envia la peticion
         try {
             salidaServidor = new DataOutputStream(cs.getOutputStream());
-            System.out.println(mensaje);
+            System.out.println(mensaje + " ç");
             salidaServidor.writeUTF(mensaje);
         } catch (Exception e) {
             if(e.getMessage().equalsIgnoreCase("Socket is closed")){
@@ -71,4 +74,7 @@ public class Servidor extends Conexion{
         return recibirMensaje();
     }
 
+    public void tirarCarta(int posCarta) throws IOException{
+        enviaMensaje("CTira " + String.valueOf(posCarta));
+    }
 }

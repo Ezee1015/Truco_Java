@@ -667,7 +667,7 @@ public class InterfazServidor extends JFrame {
         manos.add(PC2);
         manos.add(PC3);
 
-        for(int i=0;i<jugador.getMano().size();i++){
+    for(int i=0;i<jugador.getMano().size();i++){
             if(jugador.getPosMano()[i]==-1){
                manos.get(i).setVisible(false);
                manos.get(i).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
@@ -788,6 +788,7 @@ public class InterfazServidor extends JFrame {
 
         //Tira la carta
         jugador.agregarCartaJugada(jugador.getPosMano()[pos]);
+        server.tirarCarta(pos);
 
         // Indica que carta no se debbe dibujar
         int temp[] = jugador.getPosMano();
@@ -1388,6 +1389,7 @@ public class InterfazServidor extends JFrame {
         for(int i=2;i<categoria.length();i++){
             cat+=categoria.charAt(i);
         }
+        // cat = String.copyValueOf()
         System.out.println(categoria);
         System.out.println(cat);
 
@@ -1420,34 +1422,34 @@ public class InterfazServidor extends JFrame {
                 cantCartasOponente=Integer.parseInt(scanf.next());
 
                 ArrayList<Carta> tempJugadasOponente = new ArrayList<>();
-                for(int i=0;i<3-cantCartasOponente;i++){
-                    String tempPalo=scanf.next();
-                    tempJugadasOponente.add(new Carta(Integer.parseInt(scanf.next()), tempPalo));
-                }
+                for(int i=0;i<3-cantCartasOponente;i++)
+                    tempJugadasOponente.add(new Carta(Integer.parseInt(scanf.next()), scanf.next()));
                 oponente.setCartasJugadas(tempJugadasOponente);
 
                 ArrayList<Carta> tempMano = new ArrayList<>();
-                for(int i=0;i<3;i++){
-                    String tempPalo=scanf.next();
-                    tempMano.add(new Carta(Integer.parseInt(scanf.next()), tempPalo));
-                    jugador.setMano(tempMano);
-                }
+                for(int i=0;i<3;i++)
+                    tempMano.add(new Carta(Integer.parseInt(scanf.next()), scanf.next()));
+                jugador.setMano(tempMano);
+                for(int i=0;i<jugador.getMano().size();i++)
+                    System.out.println("Carta " + i + ": " + jugador.getMano().get(i).getNumero() + " " + jugador.getMano().get(i).getPalo());
 
                 int[] tempPosMano = new int[3];
                 for(int i=0;i<3;i++)
                     tempPosMano[i]=Integer.parseInt(scanf.next());
                 jugador.setPosMano(tempPosMano);
-                try {
-                    dibujarCartas();
-                } catch (Exception e) {
-                    System.out.println("error en el dibujado de cartas. no es encontro imagenes");
-                }
 
                 nivelTruco=Integer.parseInt(scanf.next());
                 envidoFinalizado=Boolean.parseBoolean(scanf.next());
                 habilitadoARetrucar=Integer.parseInt(scanf.next());
 
                 if(Boolean.parseBoolean(scanf.next())){// Es el turno del jugador
+                    if(cantCartasOponente!=3){
+                        try {
+                            moverCartaAI(cantCartasOponente, 2-cantCartasOponente);
+                        } catch (Exception e) {
+                            System.out.println("No se pudo hacer la animacion de la carta: " + e.getMessage());
+                        }
+                    }
                     PC1Enabled=true;
                     PC2Enabled=true;
                     PC3Enabled=true;
@@ -1468,12 +1470,12 @@ public class InterfazServidor extends JFrame {
 
                     irAlMazo.setEnabled(true);
                 } else{ // Turno Oponente
-                    if(cantCartasOponente!=3){
-                        try {
-                            moverCartaAI(cantCartasOponente, 3-cantCartasOponente);
-                        } catch (Exception e) {
-                            System.out.println("No se pudo hacer la animacion de la carta");
-                        }
+                    try {
+                        dibujarCartas();
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error: " + ex.getMessage());
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
                     }
                     PC1Enabled=false;
                     PC2Enabled=false;

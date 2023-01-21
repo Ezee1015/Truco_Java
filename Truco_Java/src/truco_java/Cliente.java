@@ -12,16 +12,17 @@ public class Cliente extends Conexion {
     }
 
     public String recibirMensaje() throws IOException{
-        if(ss==null)
-            reconectar();
+        // if(ss==null)
+            // reconectar();
 
         try {
-
-            salidaCliente = new DataOutputStream(cs.getOutputStream());
+            // salidaServidor = new DataOutputStream(cs.getOutputStream());
+            // salidaCliente.writeUTF("Petición recibida y aceptada");
 
             BufferedReader entrada = new BufferedReader(new InputStreamReader(cs.getInputStream()));
-            String mensaje=" ";
+            String mensaje="";
 
+            System.out.println("atrapado aca " + cs.isConnected());
             while(!entrada.ready());
             while(entrada.ready()){
                 mensaje+=(char) entrada.read();
@@ -29,16 +30,16 @@ public class Cliente extends Conexion {
                     break;
                 }
             }
-
             // while(((mensajeServidor = entrada.readLine()) != null && mensajeServidor!="") ) {
             //     mensaje=mensajeServidor;
             //     System.out.println("AJKDHFALKJSDHFALKJSHDFLJAKSDHFLKJASHDLFKJAHSLDKFHALKSDHFLKAHDLKFJHSADLKFHALSDJKFHASLKDHFKLSAHDF");
             // }
 
-            System.out.println("Mensaje recibbido en CLIENTE: " + mensaje);
+            System.out.println("Fin de la conexión + " + mensaje);
+
             return mensaje;
         } catch (Exception e) {
-            if(e.getMessage().equalsIgnoreCase("Socket is closed") || ss == null){
+            if(e.getMessage().equalsIgnoreCase("Socket is closed")){
                 reconectar();
                 return recibirMensaje();
             }
@@ -51,7 +52,7 @@ public class Cliente extends Conexion {
         // Envia la peticion
         try {
             salidaServidor = new DataOutputStream(cs.getOutputStream());
-            System.out.println(mensaje);
+            System.out.println(mensaje + " ç");
             salidaServidor.writeUTF(mensaje);
         } catch (Exception e) {
             if(e.getMessage().equalsIgnoreCase("Socket is closed")){
@@ -73,12 +74,12 @@ public class Cliente extends Conexion {
         // Envia la peticion
         String mensaje = "update " + String.valueOf(cantCartasJugador)+" ";
         for(int i=0;i<3-cantCartasJugador;i++){
-            mensaje+=cartasJugadasJugador.get(i).getPalo()+" ";
             mensaje+=cartasJugadasJugador.get(i).getNumero()+" ";
+            mensaje+=cartasJugadasJugador.get(i).getPalo()+" ";
         }
         for(int i=0;i<3;i++){
-            mensaje+=manoOponente.get(i).getPalo()+" ";
             mensaje+=manoOponente.get(i).getNumero()+" ";
+            mensaje+=manoOponente.get(i).getPalo()+" ";
         }
         for(int i=0;i<3;i++)
             mensaje+=posManoOponente[i]+" ";
