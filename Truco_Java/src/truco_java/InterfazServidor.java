@@ -325,17 +325,30 @@ public class InterfazServidor extends JFrame {
         envidoEsp.setBorderPainted(false);
         fondo.add(envidoEsp);
         envidoEsp.addActionListener((ActionEvent e) -> {
-            if(espera)
-                return;
             efectos.setFile("src/truco_java/musica/boton.wav", 1);
             efectos.play();
             envidosCantados.add(1);
-            try{
-                recibirMensaje(server.enviaEnvido(envidosCantados));
-            } catch(IOException er){
-                System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
-            }
-            envidosCantados.clear();
+            truco.setEnabled(false);
+            quieroEnv.setVisible(false);
+            noQuieroEnv.setVisible(false);
+            irAlMazo.setEnabled(false);
+            envido.setEnabled(false);
+            envidoEsp.setVisible(false);
+            envidoEnvido.setVisible(false);
+            realEnvido.setVisible(false);
+            faltaEnvido.setVisible(false);
+            Thread thread = new Thread(){
+                public void run(){
+                    try{
+                        System.out.println("ENTRA EN ENVIAR Y RECIBIR");
+                        recibirMensaje(server.enviaEnvido(envidosCantados));
+                    } catch(IOException er){
+                        System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                    }
+                }
+            };
+            thread.start();
+            imprimeAIEnvido(0,false);
         });
 
         // Boton envido-envido
@@ -347,17 +360,29 @@ public class InterfazServidor extends JFrame {
         envidoEnvido.setBorderPainted(false);
         fondo.add(envidoEnvido);
         envidoEnvido.addActionListener((ActionEvent e) -> {
-            if(espera)
-                return;
             efectos.setFile("src/truco_java/musica/boton.wav", 1);
             efectos.play();
             envidosCantados.add(2);
-            try{
-                recibirMensaje(server.enviaEnvido(envidosCantados));
-            } catch(IOException er){
-                System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
-            }
-            envidosCantados.clear();
+            truco.setEnabled(false);
+            quieroEnv.setVisible(false);
+            noQuieroEnv.setVisible(false);
+            irAlMazo.setEnabled(false);
+            envido.setEnabled(false);
+            envidoEsp.setVisible(false);
+            envidoEnvido.setVisible(false);
+            realEnvido.setVisible(false);
+            faltaEnvido.setVisible(false);
+            Thread thread = new Thread(){
+                public void run(){
+                    try{
+                        recibirMensaje(server.enviaEnvido(envidosCantados));
+                    } catch(IOException er){
+                        System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                    }
+                }
+            };
+            thread.start();
+            imprimeAIEnvido(0,false);
         });
 
         // Boton Real Envido
@@ -369,17 +394,31 @@ public class InterfazServidor extends JFrame {
         realEnvido.setBorderPainted(false);
         fondo.add(realEnvido);
         realEnvido.addActionListener((ActionEvent e) -> {
-            if(espera)
-                return;
             efectos.setFile("src/truco_java/musica/boton.wav", 1);
             efectos.play();
             envidosCantados.add(3);
-            try{
-                recibirMensaje(server.enviaEnvido(envidosCantados));
-            } catch(IOException er){
-                System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
-            }
-            envidosCantados.clear();
+            truco.setEnabled(false);
+            irAlMazo.setEnabled(false);
+            truco.setEnabled(false);
+            quieroEnv.setVisible(false);
+            noQuieroEnv.setVisible(false);
+            irAlMazo.setEnabled(false);
+            envido.setEnabled(false);
+            envidoEsp.setVisible(false);
+            envidoEnvido.setVisible(false);
+            realEnvido.setVisible(false);
+            faltaEnvido.setVisible(false);
+            Thread thread = new Thread(){
+                public void run(){
+                    try{
+                        recibirMensaje(server.enviaEnvido(envidosCantados));
+                    } catch(IOException er){
+                        System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                    }
+                }
+            };
+            thread.start();
+            imprimeAIEnvido(0,false);
 
         });
 
@@ -392,17 +431,29 @@ public class InterfazServidor extends JFrame {
         faltaEnvido.setBorderPainted(false);
         fondo.add(faltaEnvido);
         faltaEnvido.addActionListener((ActionEvent e) -> {
-            if(espera)
-                return;
             efectos.setFile("src/truco_java/musica/boton.wav", 1);
             efectos.play();
             envidosCantados.add(4);
-            try{
-                recibirMensaje(server.enviaEnvido(envidosCantados));
-            } catch(IOException er){
-                System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
-            }
-            envidosCantados.clear();
+            truco.setEnabled(false);
+            quieroEnv.setVisible(false);
+            noQuieroEnv.setVisible(false);
+            irAlMazo.setEnabled(false);
+            envido.setEnabled(false);
+            envidoEsp.setVisible(false);
+            envidoEnvido.setVisible(false);
+            realEnvido.setVisible(false);
+            faltaEnvido.setVisible(false);
+            Thread thread = new Thread(){
+                public void run(){
+                    try{
+                        recibirMensaje(server.enviaEnvido(envidosCantados));
+                    } catch(IOException er){
+                        System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                    }
+                }
+            };
+            thread.start();
+            imprimeAIEnvido(0,false);
         });
 
         //Botones de Quiero y No quiero envido
@@ -414,17 +465,29 @@ public class InterfazServidor extends JFrame {
         quieroEnv.setBorderPainted(false);
         fondo.add(quieroEnv);
         quieroEnv.addActionListener((ActionEvent e) -> {
-            if(espera)
-                return;
             efectos.setFile("src/truco_java/musica/boton.wav", 1);
             efectos.play();
-            envidosCantados.add(5); //El 5 significa que quiere
-            try{
-                recibirMensaje(server.enviaEnvido(envidosCantados));
-            } catch(IOException er){
-                System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
-            }
-            envidosCantados.clear();
+            envidosCantados.add(5); //El 5 significa que quiere. Procesa el puntaje en el cliente
+            truco.setEnabled(false);
+            quieroEnv.setVisible(false);
+            noQuieroEnv.setVisible(false);
+            irAlMazo.setEnabled(false);
+            envido.setEnabled(false);
+            envidoEsp.setVisible(false);
+            envidoEnvido.setVisible(false);
+            realEnvido.setVisible(false);
+            faltaEnvido.setVisible(false);
+            Thread thread = new Thread(){
+                public void run(){
+                    try{
+                        recibirMensaje(server.enviaEnvido(envidosCantados));
+                    } catch(IOException er){
+                        System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                    }
+                }
+            };
+            thread.start();
+            imprimeAIEnvido(0,false);
             });
 
         noQuieroEnv = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/noQuieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
@@ -435,17 +498,29 @@ public class InterfazServidor extends JFrame {
         noQuieroEnv.setBorderPainted(false);
         fondo.add(noQuieroEnv);
         noQuieroEnv.addActionListener((ActionEvent e) -> {
-            if(espera)
-                return;
             efectos.setFile("src/truco_java/musica/boton.wav", 1);
             efectos.play();
             envidosCantados.add(-1);
-            try{
-                recibirMensaje(server.enviaEnvido(envidosCantados));
-            } catch(IOException er){
-                System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
-            }
-            envidosCantados.clear();
+            truco.setEnabled(false);
+            quieroEnv.setVisible(false);
+            noQuieroEnv.setVisible(false);
+            irAlMazo.setEnabled(false);
+            envido.setEnabled(false);
+            envidoEsp.setVisible(false);
+            envidoEnvido.setVisible(false);
+            realEnvido.setVisible(false);
+            faltaEnvido.setVisible(false);
+            Thread thread = new Thread(){
+                public void run(){
+                    try{
+                        recibirMensaje(server.enviaEnvido(envidosCantados));
+                    } catch(IOException er){
+                        System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                    }
+                }
+            };
+            thread.start();
+            imprimeAIEnvido(0,false);
         });
 
         // Boton Truco
@@ -1414,29 +1489,6 @@ public class InterfazServidor extends JFrame {
         System.out.println(cat);
 
         switch(cat){
-            case "envido":
-                int nivel = Integer.parseInt(scanf.next());
-                imprimeAIEnvido(nivel, false);
-
-                PC1Enabled=false;
-                PC2Enabled=false;
-                PC3Enabled=false;
-                irAlMazo.setEnabled(false);
-                truco.setEnabled(false);
-                envido.setEnabled(false);
-                quieroEnv.setVisible(true);
-                noQuieroEnv.setVisible(true);
-
-                ArrayList<JButton> botones = new ArrayList<>();
-                botones.add(envidoEsp);
-                botones.add(envidoEnvido);
-                botones.add(realEnvido);
-                botones.add(faltaEnvido);
-                for(int i=0;i<nivel;i++)
-                    botones.get(i).setVisible(false);
-                for(int i=nivel;i<5;i++)
-                    botones.get(i).setVisible(true);
-                break;
             case "update":
                 System.out.println("Llego la actualizacion");
                 int nuevaCantCartasOponente=Integer.parseInt(scanf.next());
@@ -1499,7 +1551,7 @@ public class InterfazServidor extends JFrame {
                     else
                         truco.setEnabled(false);
 
-                    if(jugador.getMano().isEmpty() && !envidoFinalizado)
+                    if(jugador.getCartasJugadas().isEmpty() && !envidoFinalizado)
                         envido.setEnabled(true);
                     else
                         envido.setEnabled(false);
@@ -1537,10 +1589,84 @@ public class InterfazServidor extends JFrame {
                 oponente.setPuntaje(Integer.parseInt(scanf.next()), this);
                 jugador.setPuntaje(Integer.parseInt(scanf.next()), this);
                 break;
+            case "e":
+                int nivel = Integer.parseInt(scanf.next());
+                imprimeAIEnvido(nivel, false);
+                setFondo(1);
+
+                PC1Enabled=false;
+                PC2Enabled=false;
+                PC3Enabled=false;
+                irAlMazo.setEnabled(false);
+                truco.setEnabled(false);
+                envido.setEnabled(false);
+
+                ArrayList<JButton> botones = new ArrayList<>();
+                botones.add(envidoEsp);
+                botones.add(envidoEnvido);
+                botones.add(realEnvido);
+                botones.add(faltaEnvido);
+                for(int i=0;i<nivel;i++)
+                    botones.get(i).setVisible(false);
+                for(int i=nivel;i<4;i++){
+                    botones.get(i).setVisible(true);
+                    botones.get(i).setEnabled(true);
+                }
+                quieroEnv.setVisible(true);
+                noQuieroEnv.setVisible(true);
+                break;
+            case "imprimir":
+                String aImprimir="";
+                while(scanf.hasNext()){
+                    String temp = scanf.next() + " ";
+                    if(!temp.equals("ç "))
+                        aImprimir+=temp;
+                    else break;
+                }
+                Thread thread = new Thread(){
+                    public void run(){
+                        System.out.println("Esperando a que el cliente se conecte");
+                        try{
+                            recibirMensaje(server.recibirMensaje());
+                        } catch(IOException er){
+                            System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                        }
+                        System.out.println("Recibe el mensaje");
+                    }
+                };
+                final String imprime = aImprimir;
+                thread.start();
+                Thread thread2 = new Thread(){
+                    public void run(){
+                        JOptionPane.showMessageDialog(null, imprime);
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
+                    }
+                };
+                thread2.start();
+                break;
+            case "kill":
+                menu.setVisible(true);
+                dispose();
             default:
                 System.out.println("No se detecto la categoria del mensaje: " + cat);
+                for(int i=0;i<cat.length();i++)
+                    System.out.println(i+": "+cat.charAt(i));
                 break;
         }
+        //
+        // //Elimina un caracter de basura más y entra de vuelta al switch
+        // categoria="";
+        // for(int i=1;i<cat.length();i++)
+        //     categoria+=cat.charAt(i);
+        //
+        // switch(categoria){
+        //     default:
+        //         System.out.println("No se detecto la categoria del mensaje: " + cat);
+        //         for(int i=0;i<cat.length();i++)
+        //             System.out.println(i+": "+cat.charAt(i));
+        //         break;
+        // }
         scanf.close();
     }
 }

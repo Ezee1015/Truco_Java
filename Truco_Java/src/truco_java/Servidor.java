@@ -10,7 +10,7 @@ public class Servidor extends Conexion{
     public Servidor() throws IOException{
         super("servidor");
         cs = ss.accept();
-        System.out.println("Cliente en línea");
+        System.out.println("servidor");
     }
 
     public String recibirMensaje() throws IOException{
@@ -70,7 +70,8 @@ public class Servidor extends Conexion{
 
     public String enviaEnvido(ArrayList<Integer> envidosCantados) throws IOException{
         // Envia la peticion
-        enviaMensaje(String.valueOf(envidosCantados.get(envidosCantados.size()-1)));
+        System.out.println("e " + String.valueOf(envidosCantados.get(envidosCantados.size()-1)));
+        enviaMensaje("e " + String.valueOf(envidosCantados.get(envidosCantados.size()-1)));
         return recibirMensaje();
     }
 

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Cliente extends Conexion {
     public Cliente() throws IOException{
         super("cliente");
+        System.out.println("cliente");
     }
 
     public String recibirMensaje() throws IOException{
@@ -67,7 +68,8 @@ public class Cliente extends Conexion {
 
     public String enviaEnvido(ArrayList<Integer> envidosCantados) throws IOException{
         // Envia la peticion
-        enviaMensaje(String.valueOf(envidosCantados.get(envidosCantados.size()-1)));
+        System.out.println("e " + String.valueOf(envidosCantados.get(envidosCantados.size()-1)));
+        enviaMensaje("e " + envidosCantados.get(envidosCantados.size()-1));
         return recibirMensaje();
     }
 
@@ -94,5 +96,9 @@ public class Cliente extends Conexion {
         mensaje+=String.valueOf(nivelTruco)+" "+String.valueOf(envidoFinalizado)+" "+String.valueOf(habilitadoARetrucar)+" "+turnoOponente + " " + puntajeJugador + " " + puntajeOponente;
 
         enviaMensaje(mensaje);
+    }
+
+    public void enviarKill() throws IOException{
+            enviaMensaje("kill");
     }
 }
