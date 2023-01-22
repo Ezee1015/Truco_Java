@@ -66,10 +66,9 @@ public class Cliente extends Conexion {
         }
     }
 
-    public String enviaEnvido(ArrayList<Integer> envidosCantados) throws IOException{
+    public String enviaEnvido(ArrayList<Integer> envidosCantados, int nivelTruco, int habilitadoARetrucar) throws IOException{
         // Envia la peticion
-        System.out.println("e " + String.valueOf(envidosCantados.get(envidosCantados.size()-1)));
-        enviaMensaje("e " + envidosCantados.get(envidosCantados.size()-1));
+        enviaMensaje("e " + String.valueOf(envidosCantados.get(envidosCantados.size()-1)) + " " + nivelTruco + " " + habilitadoARetrucar);
         return recibirMensaje();
     }
 
@@ -98,7 +97,12 @@ public class Cliente extends Conexion {
         enviaMensaje(mensaje);
     }
 
-    public void enviarKill() throws IOException{
+    public void enviaKill() throws IOException{
             enviaMensaje("kill");
+    }
+
+    public String enviaTruco(int nivelTruco, int habilitadoARetrucar) throws IOException{
+        enviaMensaje("t " + nivelTruco + " " + habilitadoARetrucar);
+        return recibirMensaje();
     }
 }

@@ -68,14 +68,18 @@ public class Servidor extends Conexion{
         }
     }
 
-    public String enviaEnvido(ArrayList<Integer> envidosCantados) throws IOException{
+    public String enviaEnvido(ArrayList<Integer> envidosCantados, int nivelTruco, int habilitadoARetrucar) throws IOException{
         // Envia la peticion
-        System.out.println("e " + String.valueOf(envidosCantados.get(envidosCantados.size()-1)));
-        enviaMensaje("e " + String.valueOf(envidosCantados.get(envidosCantados.size()-1)));
+        enviaMensaje("e " + String.valueOf(envidosCantados.get(envidosCantados.size()-1)) + " " + nivelTruco + " " + habilitadoARetrucar);
         return recibirMensaje();
     }
 
     public void tirarCarta(int posCarta) throws IOException{
         enviaMensaje("CTira " + String.valueOf(posCarta));
+    }
+
+    public String enviaTruco(int nivelTruco, int habilitadoARetrucar) throws IOException{
+        enviaMensaje("t " + nivelTruco + " " + habilitadoARetrucar);
+        return recibirMensaje();
     }
 }

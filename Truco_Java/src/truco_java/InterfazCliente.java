@@ -310,29 +310,29 @@ public class InterfazCliente extends JFrame {
         irAlMazo.setBorderPainted(false);
         fondo.add(irAlMazo);
         irAlMazo.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            JOptionPane.showMessageDialog(null, "Te has ido al mazo. Repartiendo...");
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
-            int puntos=0;
-            if(!envidoFinalizado && oponente.getCartasJugadas().isEmpty())
-                puntos++;
-            oponente.setPuntaje(oponente.getPuntaje()+puntos+calcularTrucoGanado(), this);
-            try {
-                otraPartida();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de comenzar otra partida: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
-            }
-            try {
-                habilitaTurno();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
-            }
+            // efectos.setFile("src/truco_java/musica/boton.wav", 1);
+            // efectos.play();
+            // JOptionPane.showMessageDialog(null, "Te has ido al mazo. Repartiendo...");
+            // efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            // efectos.play();
+            // int puntos=0;
+            // if(!envidoFinalizado && oponente.getCartasJugadas().isEmpty())
+            //     puntos++;
+            // oponente.setPuntaje(oponente.getPuntaje()+puntos+calcularTrucoGanado(), this);
+            // try {
+            //     otraPartida();
+            // } catch (IOException ex) {
+            //     JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de comenzar otra partida: " + ex.getMessage());
+            //     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            //     efectos.play();
+            // }
+            // try {
+            //     habilitaTurno();
+            // } catch (IOException ex) {
+            //     JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
+            //     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            //     efectos.play();
+            // }
         });
 
         // Boton envido especifico
@@ -356,10 +356,15 @@ public class InterfazCliente extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            habilitadoARetrucar=2;
+            if(!envidoFinalizado && oponente.getCartasJugadas().isEmpty()){
+                if(nivelTruco!=0) nivelTruco--;
+                habilitadoARetrucar = 0;
+            }
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        recibirMensaje(client.enviaEnvido(envidosCantados));
+                        recibirMensaje(client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
                     } catch(IOException er){
                         System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
                     }
@@ -390,10 +395,15 @@ public class InterfazCliente extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            habilitadoARetrucar=2;
+            if(!envidoFinalizado && oponente.getCartasJugadas().isEmpty()){
+                if(nivelTruco!=0) nivelTruco--;
+                habilitadoARetrucar = 0;
+            }
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        recibirMensaje(client.enviaEnvido(envidosCantados));
+                        recibirMensaje(client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
                     } catch(IOException er){
                         System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
                     }
@@ -424,10 +434,15 @@ public class InterfazCliente extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            habilitadoARetrucar=2;
+            if(!envidoFinalizado && oponente.getCartasJugadas().isEmpty()){
+                if(nivelTruco!=0) nivelTruco--;
+                habilitadoARetrucar = 0;
+            }
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        recibirMensaje(client.enviaEnvido(envidosCantados));
+                        recibirMensaje(client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
                     } catch(IOException er){
                         System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
                     }
@@ -458,10 +473,15 @@ public class InterfazCliente extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            habilitadoARetrucar=2;
+            if(!envidoFinalizado && oponente.getCartasJugadas().isEmpty()){
+                if(nivelTruco!=0) nivelTruco--;
+                habilitadoARetrucar = 0;
+            }
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        recibirMensaje(client.enviaEnvido(envidosCantados));
+                        recibirMensaje(client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
                     } catch(IOException er){
                         System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
                     }
@@ -608,15 +628,25 @@ public class InterfazCliente extends JFrame {
             efectos.play();
             envidoFinalizado = true;
             if(habilitadoARetrucar != 2){
+                quieroTruco.setVisible(false);
+                noQuieroTruco.setVisible(false);
+                truco.setEnabled(false);
+                envido.setEnabled(false);
+                irAlMazo.setEnabled(false);
+
                 nivelTruco++;
                 habilitadoARetrucar = 2;
-                // try {
-                //     AICantaTruco(true);
-                // } catch (IOException ex) {
-                //     JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el truco de " + nombreOponente + ": " + ex.getMessage());
-                //     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                //     efectos.play();
-                // }
+                Thread thread = new Thread(){
+                    public void run(){
+                        try{
+                            recibirMensaje(client.enviaTruco(nivelTruco, habilitadoARetrucar));
+                        } catch(IOException er){
+                            System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                        }
+                    }
+                };
+                thread.start();
+                imprimeAIEnvido(0,false);
             }
         });
 
@@ -719,7 +749,13 @@ public class InterfazCliente extends JFrame {
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
             if(dialogResult == JOptionPane.YES_OPTION){
-                oponente.setPuntaje(15, this);
+                try {
+                    client.enviaMensaje("retira");
+                } catch (Exception ex) {
+                    System.out.println("No se pudo enviar el mensaje");
+                }
+                menu.setVisible(true);
+                dispose();
             }
         });
     }
@@ -1074,18 +1110,17 @@ public class InterfazCliente extends JFrame {
     }
 
     private void habilitaTurno() throws IOException {
-        System.out.println("ENTRA EN HABILITATURNO JAJAJAJAJAJAJ");
         if(termino)
             return;
         if(compruebaSiTerminoPartida()==1) {
             client.enviaMensaje("imprimir Termino la Partida. Ha ganado " + nombreJugador);
-            JOptionPane.showMessageDialog(null, "Termino la Partida. Ganaste!");
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             try {
-                client.enviarKill();
+                client.enviaKill();
             } catch (Exception e) {
                 System.out.println("Error al enviar al Mensaje, receptor deconectado");
             }
+            JOptionPane.showMessageDialog(null, "Termino la Partida. Ganaste!");
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
             // Suma puntos al ganador
             jugador.setPuntaje(jugador.getPuntaje() + calcularTrucoGanado(), this);
@@ -1095,6 +1130,11 @@ public class InterfazCliente extends JFrame {
         }
         if(compruebaSiTerminoPartida()==2) {
             client.enviaMensaje("imprimir Termino la Partida. Ganaste!");
+            try {
+                client.enviaKill();
+            } catch (Exception e) {
+                System.out.println("Error al enviar al Mensaje, receptor deconectado");
+            }
             JOptionPane.showMessageDialog(null, "Termino la Partida. Ha ganado " + nombreOponente + ".");
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
@@ -1897,6 +1937,8 @@ public class InterfazCliente extends JFrame {
                 break;
             case "e":
                 int nivel = Integer.parseInt(scanf.next());
+                nivelTruco = Integer.parseInt(scanf.next());
+                habilitadoARetrucar = Integer.parseInt(scanf.next());
                 setFondo(1);
 
                 if(nivel==-1){
@@ -2009,6 +2051,25 @@ public class InterfazCliente extends JFrame {
                 }
                 scanf.close();
                 return;
+            case "retira":
+                JOptionPane.showMessageDialog(null, "El oponente " + nombreOponente + " se ha retirado.");
+                oponente.setPuntaje(15, this);
+                break;
+            case "t":
+                nivelTruco = Integer.parseInt(scanf.next());
+                habilitadoARetrucar = Integer.parseInt(scanf.next());
+
+                // Si no se canto envido y es la primer ronda
+                if(!envidoFinalizado && oponente.getCartasJugadas().isEmpty())
+                    envido.setEnabled(true);
+
+                try {
+                    imprimeAITruco(nivelTruco, false);
+                } catch (Exception e) {
+                    System.out.println("No se pudo dibujar las cartas o reproducir las voces");
+                }
+                quieroTruco.setVisible(false);
+                noQuieroTruco.setVisible(false);
             default:
                 System.out.println("No se detecto la categoria del mensaje: " + cat);
                 for(int i=0;i<cat.length();i++)
