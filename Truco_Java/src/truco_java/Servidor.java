@@ -54,8 +54,7 @@ public class Servidor extends Conexion{
         // Envia la peticion
         try {
             salidaServidor = new DataOutputStream(cs.getOutputStream());
-            System.out.println(mensaje + " ç");
-            salidaServidor.writeUTF(mensaje);
+            salidaServidor.writeUTF(mensaje + " ç");
         } catch (Exception e) {
             if(e.getMessage().equalsIgnoreCase("Socket is closed")){
                 reconectar();
@@ -79,5 +78,9 @@ public class Servidor extends Conexion{
     public String enviaTruco(int nivelTruco, int habilitadoARetrucar) throws IOException{
         enviaMensaje("truco " + nivelTruco + " " + habilitadoARetrucar);
         return recibirMensaje();
+    }
+
+    public void enviaPersona(int numero, String nombre) throws IOException{
+        enviaMensaje("persona " + numero + " " + nombre);
     }
 }

@@ -106,4 +106,9 @@ public class Cliente extends Conexion {
     public void enviaPuntaje(int puntajeJugador, int puntajeOponente) throws IOException{
         enviaMensaje("puntaje " + puntajeJugador + " " + puntajeOponente);
     }
+
+    public String enviaPersona(int numero, String nombre) throws IOException{
+        enviaMensaje("persona " + numero + " " + nombre);
+        return recibirMensaje();
+    }
 }

@@ -48,7 +48,7 @@ public class InterfazCliente extends JFrame {
 
     // Jugadores
     private Persona jugador = new Persona(null, false);
-    private final int numeroPersonaje = new Random().nextInt(6) + 1; // Representa el personaje que fue generado;
+    private int numeroPersonaje = MenuJugar.numeroJugador; // Representa el personaje que fue generado;
     private String nombreOponente ="la PC";
     private String nombreJugador  ="el Jugador";
     private Persona oponente = new Persona(null, true);
@@ -59,6 +59,28 @@ public class InterfazCliente extends JFrame {
     private boolean envidoFinalizado = false;
     private int habilitadoARetrucar = 0; // 1--> Jugador; 2--> AI
 
+    private void cargarNombreJugador() throws IOException{
+        String nombre = "";
+        if(Truco_Java.posUsuario!=-1){
+            nombre = Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).getNombre();
+
+            if(nombre!=null && nombre.length()>0)
+                nombre = nombre.substring(0, 1).toUpperCase()+nombre.substring(1);
+        } else {
+            switch(MenuJugar.numeroJugador){
+                case 1: nombre="El Carpincho"; break;
+                case 2: nombre="La Roca"; break;
+                case 3: nombre="Messi"; break;
+                case 4: nombre="El Diego"; break;
+                case 5: nombre="Boris"; break;
+                case 6: nombre="Guido"; break;
+            }
+        }
+
+        nombreJugador=nombre;
+        recibirMensaje(client.enviaPersona(numeroPersonaje, nombre));
+        System.out.println("Cliente: " + nombreJugador + " | servidor: "+ nombreOponente);
+    }
 
     public InterfazCliente(Truco_Java menu) throws IOException {
         this.menu = menu;
@@ -66,13 +88,12 @@ public class InterfazCliente extends JFrame {
 
         setLayout(null);
         setDefaultCloseOperation(3);
-        switch(numeroPersonaje){
-            case 1: nombreOponente="El Carpincho"; break;
-            case 2: nombreOponente="La Roca"; break;
-            case 3: nombreOponente="Messi"; break;
-            case 4: nombreOponente="El Diego"; break;
-            case 5: nombreOponente="Boris"; break;
-            case 6: nombreOponente="Guido"; break;
+
+        try {
+            cargarNombreJugador();
+        } catch (Exception e) {
+            System.out.println("ERROR EN LA COMUNICACION INICIAL! NO SE PUDO IDENTIFICAR AL JUGADOR - " + e.getMessage());
+            e.printStackTrace();
         }
 
         // Inicializa la carta de movimiento
@@ -2097,6 +2118,28 @@ public class InterfazCliente extends JFrame {
                         System.out.println("no se pudo crear otra partida");
                     }
                 }
+                break;
+            case "persona":
+                System.out.println("ENTRA EN PERSONA");
+                numeroPersonaje = Integer.parseInt(scanf.next());
+                nombreOponente="";
+                while(scanf.hasNext()){
+                    String nombreTemp = scanf.next();
+                    if(!nombreTemp.equals("ç")) nombreOponente += nombreTemp;
+                    if(scanf.hasNext()) nombreOponente+=" ";
+                }
+
+                if(nombreOponente.isEmpty()){ // Si no se pasó ningún nombre
+                    switch(numeroPersonaje){
+                        case 1: nombreOponente="El Carpincho"; break;
+                        case 2: nombreOponente="La Roca"; break;
+                        case 3: nombreOponente="Messi"; break;
+                        case 4: nombreOponente="El Diego"; break;
+                        case 5: nombreOponente="Boris"; break;
+                        case 6: nombreOponente="Guido"; break;
+                    }
+                }
+                else nombreOponente = nombreOponente.substring(0, 1).toUpperCase()+nombreOponente.substring(1);
                 break;
             default:
                 System.out.println("No se detecto la categoria del mensaje: " + cat);

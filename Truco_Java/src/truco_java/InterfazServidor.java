@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -43,7 +42,7 @@ public class InterfazServidor extends JFrame {
 
     // Jugadores
     private Persona jugador = new Persona(null, true);
-    private final int numeroPersonaje = new Random().nextInt(6) + 1; // Representa el personaje que fue generado;
+    private int numeroPersonaje; // Representa el personaje que fue generado;
     private String nombreOponente ="la PC";
     private Persona oponente = new Persona(null, false);
     private boolean termino = false;
@@ -58,16 +57,14 @@ public class InterfazServidor extends JFrame {
     public InterfazServidor(Truco_Java menu) throws IOException {
         this.menu = menu;
 
+        try{
+            recibirMensaje(server.recibirMensaje());
+        } catch(IOException er){
+            System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+        }
+
         setLayout(null);
         setDefaultCloseOperation(3);
-        switch(numeroPersonaje){
-            case 1: nombreOponente="El Carpincho"; break;
-            case 2: nombreOponente="La Roca"; break;
-            case 3: nombreOponente="Messi"; break;
-            case 4: nombreOponente="El Diego"; break;
-            case 5: nombreOponente="Boris"; break;
-            case 6: nombreOponente="Guido"; break;
-        }
 
         // Inicializa la carta de movimiento
         movCarta.setOpaque(false);
@@ -1510,6 +1507,24 @@ public class InterfazServidor extends JFrame {
             case "retira":
                 JOptionPane.showMessageDialog(null, "El oponente " + nombreOponente + " se ha retirado.");
                 oponente.setPuntaje(15, this);
+                break;
+            case "persona":
+                numeroPersonaje = Integer.parseInt(scanf.next());
+                nombreOponente="";
+                while(scanf.hasNext()){
+                    String nombreTemp = scanf.next();
+                    if(!nombreTemp.equals("ç")) nombreOponente += nombreTemp;
+                    if(scanf.hasNext()) nombreOponente+=" ";
+                }
+                String nombre = "";
+                if(Truco_Java.posUsuario!=-1)
+                    nombre = Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).getNombre();
+
+                try {
+                    server.enviaPersona(MenuJugar.numeroJugador, nombre);
+                } catch (Exception e) {
+                    System.out.println("ERROR EN LA COMUNICACION INICIAL! NO SE PUDO IDENTIFICAR AL JUGADOR");
+                }
                 break;
             default:
                 System.out.println("No se detecto la categoria del mensaje: " + cat);
