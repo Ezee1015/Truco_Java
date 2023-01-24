@@ -12,17 +12,20 @@ public class Servidor extends Conexion{
         cs = ss.accept();
         System.out.println("servidor");
     }
+                BufferedReader entrada;
+
 
     public String recibirMensaje() throws IOException{
         // if(ss==null)
         //     reconectar();
+        if(entrada==null)
+             entrada = new BufferedReader(new InputStreamReader(cs.getInputStream()));
 
         try {
             // salidaServidor = new DataOutputStream(cs.getOutputStream());
             // salidaCliente.writeUTF("Petición recibida y aceptada");
 
             System.out.println("atrapado aca");
-            BufferedReader entrada = new BufferedReader(new InputStreamReader(cs.getInputStream()));
             String mensaje="";
 
             System.out.println("Comienza la escucha");
@@ -34,13 +37,8 @@ public class Servidor extends Conexion{
                     break;
                 }
             }
-            // while(((mensajeServidor = entrada.readLine()) != null && mensajeServidor!="") ) {
-            //     mensaje=mensajeServidor;
-            //     System.out.println("AJKDHFALKJSDHFALKJSHDFLJAKSDHFLKJASHDLFKJAHSLDKFHALKSDHFLKAHDLKFJHSADLKFHALSDJKFHASLKDHFKLSAHDF");
-            // }
 
             System.out.println("Fin de la conexión + " + mensaje);
-
             return mensaje;
         } catch (Exception e) {
             if(e.getMessage().equalsIgnoreCase("Socket is closed")){
@@ -70,7 +68,7 @@ public class Servidor extends Conexion{
 
     public String enviaEnvido(ArrayList<Integer> envidosCantados, int nivelTruco, int habilitadoARetrucar) throws IOException{
         // Envia la peticion
-        enviaMensaje("e " + String.valueOf(envidosCantados.get(envidosCantados.size()-1)) + " " + nivelTruco + " " + habilitadoARetrucar);
+        enviaMensaje("envido " + String.valueOf(envidosCantados.get(envidosCantados.size()-1)) + " " + nivelTruco + " " + habilitadoARetrucar);
         return recibirMensaje();
     }
 
@@ -79,7 +77,7 @@ public class Servidor extends Conexion{
     }
 
     public String enviaTruco(int nivelTruco, int habilitadoARetrucar) throws IOException{
-        enviaMensaje("t " + nivelTruco + " " + habilitadoARetrucar);
+        enviaMensaje("truco " + nivelTruco + " " + habilitadoARetrucar);
         return recibirMensaje();
     }
 }
