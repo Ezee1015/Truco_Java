@@ -119,7 +119,7 @@ public class Truco_Java extends JFrame{
                 InterfazServidor acerca = new InterfazServidor(this);
                 acerca.setIconImage(icono.getImage());
                 acerca.setBounds(0,0,500,800);
-                acerca.setTitle("Acerca del Juego");
+                acerca.setTitle("Servidor");
                 acerca.setResizable(false);
                 acerca.setLocationRelativeTo(null);
                 acerca.setVisible(true);
@@ -142,7 +142,7 @@ public class Truco_Java extends JFrame{
                 InterfazCliente acerca = new InterfazCliente(this);
                 acerca.setIconImage(icono.getImage());
                 acerca.setBounds(0,0,500,800);
-                acerca.setTitle("Acerca del Juego");
+                acerca.setTitle("Cliente");
                 acerca.setResizable(false);
                 acerca.setLocationRelativeTo(null);
                 acerca.setVisible(true);

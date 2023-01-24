@@ -11,16 +11,13 @@ public class Cliente extends Conexion {
         super("cliente");
         System.out.println("cliente");
     }
+    BufferedReader entrada;
 
     public String recibirMensaje() throws IOException{
-        // if(ss==null)
-            // reconectar();
+        if(entrada==null)
+            entrada  = new BufferedReader(new InputStreamReader(cs.getInputStream()));
 
         try {
-            // salidaServidor = new DataOutputStream(cs.getOutputStream());
-            // salidaCliente.writeUTF("Petición recibida y aceptada");
-
-            BufferedReader entrada = new BufferedReader(new InputStreamReader(cs.getInputStream()));
             String mensaje="";
 
             System.out.println("Comienza la escucha");
@@ -68,11 +65,11 @@ public class Cliente extends Conexion {
 
     public String enviaEnvido(ArrayList<Integer> envidosCantados, int nivelTruco, int habilitadoARetrucar) throws IOException{
         // Envia la peticion
-        enviaMensaje("e " + String.valueOf(envidosCantados.get(envidosCantados.size()-1)) + " " + nivelTruco + " " + habilitadoARetrucar);
+        enviaMensaje("envido " + String.valueOf(envidosCantados.get(envidosCantados.size()-1)) + " " + nivelTruco + " " + habilitadoARetrucar);
         return recibirMensaje();
     }
 
-    public void actualizarInfo(int cantCartasJugador, ArrayList<Carta> cartasJugadasJugador,ArrayList<Carta> manoOponente, int[] posManoOponente, ArrayList<Carta> jugadasOponente, int nivelTruco, boolean envidoFinalizado, int habilitadoARetrucar, boolean turnoOponente, int puntajeJugador, int puntajeOponente) throws IOException{
+    public void actualizarInfo(int cantCartasJugador, ArrayList<Carta> cartasJugadasJugador,ArrayList<Carta> manoOponente, int[] posManoOponente, ArrayList<Carta> jugadasOponente, int nivelTruco, boolean envidoFinalizado, int habilitadoARetrucar, boolean turnoOponente) throws IOException{
         // Envia la peticion
         String mensaje = "update " + String.valueOf(cantCartasJugador)+" ";
         for(int i=0;i<3-cantCartasJugador;i++){
@@ -92,7 +89,7 @@ public class Cliente extends Conexion {
             mensaje+=jugadasOponente.get(i).getPalo()+" ";
         }
 
-        mensaje+=String.valueOf(nivelTruco)+" "+String.valueOf(envidoFinalizado)+" "+String.valueOf(habilitadoARetrucar)+" "+turnoOponente + " " + puntajeJugador + " " + puntajeOponente;
+        mensaje+=String.valueOf(nivelTruco)+" "+String.valueOf(envidoFinalizado)+" "+String.valueOf(habilitadoARetrucar)+" "+turnoOponente/*  + " " + puntajeJugador + " " + puntajeOponente */;
 
         enviaMensaje(mensaje);
     }
@@ -102,7 +99,11 @@ public class Cliente extends Conexion {
     }
 
     public String enviaTruco(int nivelTruco, int habilitadoARetrucar) throws IOException{
-        enviaMensaje("t " + nivelTruco + " " + habilitadoARetrucar);
+        enviaMensaje("truco " + nivelTruco + " " + habilitadoARetrucar);
         return recibirMensaje();
+    }
+
+    public void enviaPuntaje(int puntajeJugador, int puntajeOponente) throws IOException{
+        enviaMensaje("puntaje " + puntajeJugador + " " + puntajeOponente);
     }
 }
