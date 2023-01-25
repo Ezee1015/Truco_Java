@@ -259,5 +259,29 @@ public class MenuJugar extends JFrame{
               fondos.get(0).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugadores/fondo.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
         }
 
+        // Barra 1
+        JLabel barra1 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/division.png")).getScaledInstance(188, 4, Image.SCALE_SMOOTH)));
+        barra1.setBounds(5, 200, 188, 4);
+        multijugador.setBounds(198, 180, 150, 40);
+        barra1.setVisible(true);
+        fondo.add(barra1);
+        // Barra 2
+        JLabel barra2 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/division.png")).getScaledInstance(168, 4, Image.SCALE_SMOOTH)));
+        barra2.setBounds(325, 200, 168, 4);
+        multijugador.setBounds(198, 180, 150, 40);
+        barra2.setVisible(true);
+        fondo.add(barra2);
+        // Barra 3
+        JLabel barra3 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/division.png")).getScaledInstance(168, 4, Image.SCALE_SMOOTH)));
+        barra3.setBounds(5, 388, 178, 4);
+        multijugador.setBounds(198, 185, 150, 40);
+        barra3.setVisible(true);
+        fondo.add(barra3);
+        // Barra 4
+        JLabel barra4 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/division.png")).getScaledInstance(168, 4, Image.SCALE_SMOOTH)));
+        barra4.setBounds(330, 388, 165, 4);
+        multijugador.setBounds(198, 185, 150, 40);
+        barra4.setVisible(true);
+        fondo.add(barra4);
   }
 }
