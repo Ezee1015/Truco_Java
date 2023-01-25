@@ -7,15 +7,17 @@ import java.net.Socket;
 
 public class Conexion
 {
-    private final int PUERTO = 1234;
-    private final String HOST = "localhost";
+    private int PUERTO = 1234;
+    private String HOST = "localhost";
     protected String mensajeServidor;
     protected ServerSocket ss;
     protected Socket cs;
     protected DataOutputStream salidaServidor, salidaCliente;
     String tipo;
 
-    public Conexion(String tipo) throws IOException {
+    public Conexion(String tipo, String ip, int puerto) throws IOException {
+        HOST = ip;
+        PUERTO = puerto;
         this.tipo=tipo;
         if(tipo.equalsIgnoreCase("servidor")) {
             ss = new ServerSocket(PUERTO);

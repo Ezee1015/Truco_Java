@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Servidor extends Conexion{
-    public Servidor() throws IOException{
-        super("servidor");
+    public Servidor(String ip, int puerto) throws IOException{
+        super("servidor", ip, puerto);
         cs = ss.accept();
         System.out.println("servidor");
     }

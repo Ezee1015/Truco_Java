@@ -25,12 +25,13 @@ import javax.swing.text.StyledDocument;
 public class InterfazCliente extends JFrame {
     // La interfaz cliente es la que comanda la ejecución del juego, y quien ordena
     // y organiza todo
-    Cliente client = new Cliente();
+    Cliente client;
 
     // Swing
     private ArrayList<Carta> mazo = new ArrayList<>();
     private JLabel fondo = new JLabel();
     private Truco_Java menu;
+    private MenuJugar menuJugar;
     private JLabel OC1, OC2, OC3;
     private JLabel OCT1, OCT2, OCT3;
     private JButton PC1, PC2, PC3;
@@ -48,7 +49,7 @@ public class InterfazCliente extends JFrame {
 
     // Jugadores
     private Persona jugador = new Persona(null, false);
-    private int numeroPersonaje = MenuJugar.numeroJugador; // Representa el personaje que fue generado;
+    private int numeroPersonaje; // Representa el personaje que fue generado;
     private String nombreOponente ="la PC";
     private String nombreJugador  ="el Jugador";
     private Persona oponente = new Persona(null, true);
@@ -67,7 +68,7 @@ public class InterfazCliente extends JFrame {
             if(nombre!=null && nombre.length()>0)
                 nombre = nombre.substring(0, 1).toUpperCase()+nombre.substring(1);
         } else {
-            switch(MenuJugar.numeroJugador){
+            switch(MenuJugar.numeroJugador+1){
                 case 1: nombre="El Carpincho"; break;
                 case 2: nombre="La Roca"; break;
                 case 3: nombre="Messi"; break;
@@ -78,12 +79,13 @@ public class InterfazCliente extends JFrame {
         }
 
         nombreJugador=nombre;
-        recibirMensaje(client.enviaPersona(numeroPersonaje, nombre));
-        System.out.println("Cliente: " + nombreJugador + " | servidor: "+ nombreOponente);
+        recibirMensaje(client.enviaPersona(MenuJugar.numeroJugador+1, nombre));
     }
 
-    public InterfazCliente(Truco_Java menu) throws IOException {
+    public InterfazCliente(Truco_Java menu, String ip, int puerto, MenuJugar menuJugar) throws IOException {
+        client = new Cliente(ip, puerto);
         this.menu = menu;
+        this.menuJugar = menuJugar;
         cargarMazo();
 
         setLayout(null);
@@ -822,7 +824,7 @@ public class InterfazCliente extends JFrame {
             efectos.play();
             // Si todavia no comenzo la partida
             if(repartir.isEnabled()){
-                menu.setVisible(true);
+                menuJugar.setVisible(true);
                 termino=true;
                 dispose();
                 return;
@@ -838,7 +840,7 @@ public class InterfazCliente extends JFrame {
                 } catch (Exception ex) {
                     System.out.println("No se pudo enviar el mensaje");
                 }
-                menu.setVisible(true);
+                menuJugar.setVisible(true);
                 dispose();
             }
         });
@@ -869,7 +871,7 @@ public class InterfazCliente extends JFrame {
             JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó el Jugador. Felicidades");
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
-            menu.setVisible(true);
+            menuJugar.setVisible(true);
             termino=true;
             otraPartida();
             dispose();
@@ -884,7 +886,7 @@ public class InterfazCliente extends JFrame {
             JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó " + nombreOponente + ". Será la próxima...");
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
-            menu.setVisible(true);
+            menuJugar.setVisible(true);
             termino=true;
             otraPartida();
             dispose();
@@ -1741,6 +1743,7 @@ public class InterfazCliente extends JFrame {
         else
             estadoPersChar = 'b'; // personaje AI Pregunta (truco, envido, o retrucar cualquiera de las anteriores)
 
+        System.out.println("FONDO: " + numeroPersonaje);
         String imagen = "src/truco_java/fondos/bg" + numeroPersonaje + estadoPersChar + ".png";
         fondo.setIcon(new ImageIcon(imagen));
     }
@@ -2120,7 +2123,6 @@ public class InterfazCliente extends JFrame {
                 }
                 break;
             case "persona":
-                System.out.println("ENTRA EN PERSONA");
                 numeroPersonaje = Integer.parseInt(scanf.next());
                 nombreOponente="";
                 while(scanf.hasNext()){

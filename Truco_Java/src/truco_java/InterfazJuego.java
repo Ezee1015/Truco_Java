@@ -41,7 +41,7 @@ public class InterfazJuego extends JFrame {
     private int habilitadoARetrucar = 0; // 1--> Jugador; 2--> AI
     private JLabel fondoEstado;
     private JLabel puntajeAI = new JLabel(), puntajeJugador = new JLabel();
-    private final int numeroPersonaje = new Random().nextInt(6) + 1; // Representa el personaje que fue generado;
+    private final int numeroPersonaje = MenuJugar.numeroJugador+1; // Representa el personaje que fue generado;
     private String nombrePersonaje ="la PC";
     private final Music cantar = new Music();
     private static final Music efectos = new Music();

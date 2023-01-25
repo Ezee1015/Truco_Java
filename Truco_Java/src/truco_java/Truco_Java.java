@@ -68,19 +68,20 @@ public class Truco_Java extends JFrame{
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
             setVisible(false);
-            InterfazJuego juego;
+            MenuJugar juego;
             try {
-                juego = new InterfazJuego(this);
+                juego = new MenuJugar(this);
                 juego.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
                 juego.setResizable(false);
                 juego.setTitle("Juego Truco");
-                juego.setBounds(0,0,505,800);
+                juego.setBounds(0,0,500,500);
                 juego.setLocationRelativeTo(null);
                 juego.setVisible(true);
                 //Muestra el mensaje que avisa para comenzar el juego
-                JOptionPane.showMessageDialog(null, "Aprete el mazo de cartas para comenzar el juego...");
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                // juego.setBounds(0,0,505,800);
+                // JOptionPane.showMessageDialog(null, "Aprete el mazo de cartas para comenzar el juego...");
+                // efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                // efectos.play();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar el juego: " + ex.getMessage());
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
@@ -106,6 +107,7 @@ public class Truco_Java extends JFrame{
 
 
 
+        // ***TEMPORAL PARA DESARROLLO***
         JButton servidor = new JButton("Servidor");
         servidor.setBounds(0, 0, 140, 40);
         servidor.setVisible(true);
@@ -116,7 +118,7 @@ public class Truco_Java extends JFrame{
             setVisible(false);
             ImageIcon icono = new ImageIcon("src/truco_java/fondos/icono.png");
             try {
-                InterfazServidor acerca = new InterfazServidor(this);
+                InterfazServidor acerca = new InterfazServidor(this, "localhost", 1234, null);
                 acerca.setIconImage(icono.getImage());
                 acerca.setBounds(0,0,500,800);
                 acerca.setTitle("Servidor");
@@ -139,7 +141,7 @@ public class Truco_Java extends JFrame{
             setVisible(false);
             ImageIcon icono = new ImageIcon("src/truco_java/fondos/icono.png");
             try {
-                InterfazCliente acerca = new InterfazCliente(this);
+                InterfazCliente acerca = new InterfazCliente(this, "localhost", 1234, null);
                 acerca.setIconImage(icono.getImage());
                 acerca.setBounds(0,0,500,800);
                 acerca.setTitle("Cliente");
@@ -152,7 +154,6 @@ public class Truco_Java extends JFrame{
                 efectos.play();
             }
         });
-
 
 
 

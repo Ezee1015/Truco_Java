@@ -7,8 +7,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Cliente extends Conexion {
-    public Cliente() throws IOException{
-        super("cliente");
+    public Cliente(String ip, int puerto) throws IOException{
+        super("cliente", ip, puerto);
         System.out.println("cliente");
     }
     BufferedReader entrada;

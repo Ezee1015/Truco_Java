@@ -21,11 +21,12 @@ import javax.swing.text.StyledDocument;
 
 public class InterfazServidor extends JFrame {
     // La interfaz Servidor es quien espera los comandos del cliente para actuar
-    Servidor server = new Servidor();
+    Servidor server;
 
     // Swing
     private JLabel fondo = new JLabel();
     private Truco_Java menu;
+    private MenuJugar menuJugar;
     private JLabel AIC1, AIC2, AIC3;
     private JLabel AICT1, AICT2, AICT3;
     private JButton PC1, PC2, PC3;
@@ -52,16 +53,45 @@ public class InterfazServidor extends JFrame {
     private int cantCartasOponente;
     private int nivelTruco;
     private boolean envidoFinalizado;
+    // public boolean conectado = false;
     private int habilitadoARetrucar; // 2--> Jugador; 1--> Oponente
 
-    public InterfazServidor(Truco_Java menu) throws IOException {
+    public InterfazServidor(Truco_Java menu, String ip, int puerto, MenuJugar menuJugar) throws IOException {
         this.menu = menu;
+        this.menuJugar = menuJugar;
+        InterfazServidor interfaz = this;
 
-        try{
-            recibirMensaje(server.recibirMensaje());
-        } catch(IOException er){
-            System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
-        }
+        EsperaServidor esperar = new EsperaServidor(menuJugar, puerto);
+
+        Thread esperarThread = new Thread(){
+            public void run(){
+                // RECIBE LA INFORMACIÓN ACERCA DEL PERSONAJE OPONENTE
+                try{
+                    server = new Servidor(ip, puerto);
+                    recibirMensaje(server.recibirMensaje());
+                } catch(IOException er){
+                    System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                }
+                interfaz.setVisible(true);
+                esperar.dispose();
+                setFondo(0);
+                try{
+                    recibirMensaje(server.recibirMensaje());
+                } catch(IOException er){
+                    System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                }
+            }
+        };
+        esperarThread.start();
+
+        esperar.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
+        esperar.setResizable(false);
+        esperar.setTitle("Esperando Conección");
+        esperar.setBounds(0,0,500,300);
+        esperar.setLocationRelativeTo(null);
+        esperar.setVisible(true);
+
+        // conectado=true;
 
         setLayout(null);
         setDefaultCloseOperation(3);
@@ -72,7 +102,6 @@ public class InterfazServidor extends JFrame {
         movCarta.setBorderPainted(false);
 
         // Fondo
-        setFondo(0);
         fondo.setBounds(0, 0, 500, 800);
         fondo.setVisible(true);
         add(fondo);
@@ -680,13 +709,13 @@ public class InterfazServidor extends JFrame {
             efectos.play();
             // Si todavia no comenzo la partida
             if(repartir.isEnabled()){
-                menu.setVisible(true);
+                menuJugar.setVisible(true);
                 termino=true;
                 dispose();
                 return;
             }
 
-            // Si se quiere sallir en medio de la partida
+            // Si se quiere salir en medio de la partida
             int dialogResult = JOptionPane.showConfirmDialog (null, "Está seguro que desea abandonar la partida?\nSe declarará a " + nombreOponente + " como ganador...","Atención!",JOptionPane.YES_NO_OPTION);
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
@@ -696,22 +725,10 @@ public class InterfazServidor extends JFrame {
                 } catch (Exception ex) {
                     System.out.println("No se pudo enviar el mensaje");
                 }
-                menu.setVisible(true);
+                menuJugar.setVisible(true);
                 dispose();
             }
         });
-
-        //Espera al cliente
-        Thread thread = new Thread(){
-            public void run(){
-                try{
-                    recibirMensaje(server.recibirMensaje());
-                } catch(IOException er){
-                    System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
-                }
-            }
-        };
-        thread.start();
     }
 
     public void dibujarPuntaje() throws IOException {
@@ -1052,6 +1069,7 @@ public class InterfazServidor extends JFrame {
         else
             estadoPersChar = 'b'; // personaje AI Pregunta (truco, envido, o retrucar cualquiera de las anteriores)
 
+        System.out.println("FONDO: " + numeroPersonaje);
         String imagen = "src/truco_java/fondos/bg" + numeroPersonaje + estadoPersChar + ".png";
         fondo.setIcon(new ImageIcon(imagen));
     }
@@ -1521,7 +1539,7 @@ public class InterfazServidor extends JFrame {
                     nombre = Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).getNombre();
 
                 try {
-                    server.enviaPersona(MenuJugar.numeroJugador, nombre);
+                    server.enviaPersona(MenuJugar.numeroJugador+1, nombre);
                 } catch (Exception e) {
                     System.out.println("ERROR EN LA COMUNICACION INICIAL! NO SE PUDO IDENTIFICAR AL JUGADOR");
                 }
