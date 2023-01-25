@@ -58,7 +58,7 @@ public class EsperaServidor extends JFrame {
         });
 
         JLabel esperando = new JLabel("Esperando conexion");
-        esperando.setBounds(180, 115, 150, 25);
+        esperando.setBounds(130, 115, 250, 25);
         esperando.setFont(new Font("Arial", Font.BOLD, 25));
         esperando.setForeground(Color.WHITE);
         esperando.setVisible(true);
