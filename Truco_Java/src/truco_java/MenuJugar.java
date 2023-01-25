@@ -2,6 +2,8 @@ package truco_java;
 
 import java.awt.Color;
 import java.awt.Font;
+
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import java.awt.event.ActionEvent;
 import javax.swing.JFrame;
@@ -67,13 +69,45 @@ public class MenuJugar extends JFrame{
         multijugador.setVisible(true);
         fondo.add(multijugador);
 
+
+        MenuJugar temp = this;
+        JTextField ipCliente = new JTextField();
+        JTextField puertoCliente = new JTextField();
+        Action conectarAction = new AbstractAction() {
+              //Función encargada de analizar el presionado de tecla
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    efectos.play();
+                    setVisible(false);
+                    InterfazCliente juego;
+                    // TODO: CHECKEAR QUE SE INGRESARAN BIEN LA IP Y EL PUERTO
+                    try {
+                          juego = new InterfazCliente(menu, ipCliente.getText(), Integer.parseInt(puertoCliente.getText()), temp);
+                          juego.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
+                          juego.setResizable(false);
+                          juego.setTitle("Juego Truco - Cliente");
+                          juego.setBounds(0,0,505,800);
+                          juego.setLocationRelativeTo(null);
+                          juego.setVisible(true);
+                          //Muestra el mensaje que avisa para comenzar el juego
+                          JOptionPane.showMessageDialog(null, "Aprete el mazo de cartas para comenzar el juego...");
+                          efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                          efectos.play();
+                    } catch (IOException ex) {
+                          JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar el juego: " + ex.getMessage());
+                          efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                          efectos.play();
+                    }
+              }
+        };
+
         JLabel ipLabel = new JLabel("Direccion IP");
         ipLabel.setBounds(80, 215, 90, 15);
         ipLabel.setFont(new Font("Arial", Font.BOLD, 15));
         ipLabel.setForeground(Color.WHITE);
         ipLabel.setVisible(true);
         fondo.add(ipLabel);
-        JTextField ipCliente = new JTextField();
         ipCliente.setBounds(20,230,200,30);
         ipCliente.setOpaque(false);
         ipCliente.setBorder(null);
@@ -92,7 +126,6 @@ public class MenuJugar extends JFrame{
         puertoClienteLabel.setForeground(Color.WHITE);
         puertoClienteLabel.setVisible(true);
         fondo.add(puertoClienteLabel);
-        JTextField puertoCliente = new JTextField();
         puertoCliente.setBounds(20,280,200,30);
         puertoCliente.setOpaque(false);
         puertoCliente.setBorder(null);
@@ -104,38 +137,48 @@ public class MenuJugar extends JFrame{
         fondoPuertoCliente.setBounds(puertoCliente.getX(),puertoCliente.getY(),puertoCliente.getWidth(),puertoCliente.getHeight());
         fondoPuertoCliente.setVisible(true);
         fondo.add(fondoPuertoCliente);
+        ipCliente.addActionListener((ActionEvent e) -> {
+              puertoCliente.requestFocus();
 
-        JButton conectar = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugarBoton.png")).getScaledInstance(140, 40, Image.SCALE_SMOOTH)));
+        });
+        puertoCliente.addActionListener(conectarAction);
+
+
+        JButton conectar = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/conectarBoton.png")).getScaledInstance(140, 40, Image.SCALE_SMOOTH)));
         conectar.setBounds(50, 325, 140, 40);
         conectar.setVisible(true);
         conectar.setOpaque(false);
         conectar.setContentAreaFilled(false);
         conectar.setBorderPainted(false);
         fondo.add(conectar);
-        conectar.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
-            setVisible(false);
-            InterfazCliente juego;
-            // TODO: CHECKEAR QUE SE INGRESARAN BIEN LA IP Y EL PUERTO
-            try {
-                juego = new InterfazCliente(menu, ipCliente.getText(), Integer.parseInt(puertoCliente.getText()), this);
-                juego.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
-                juego.setResizable(false);
-                juego.setTitle("Juego Truco - Cliente");
-                juego.setBounds(0,0,505,800);
-                juego.setLocationRelativeTo(null);
-                juego.setVisible(true);
-                //Muestra el mensaje que avisa para comenzar el juego
-                JOptionPane.showMessageDialog(null, "Aprete el mazo de cartas para comenzar el juego...");
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar el juego: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
-            }
-        });
+        conectar.addActionListener(conectarAction);
+
+        JTextField puertoServer = new JTextField();
+        Action salaAction = new AbstractAction() {
+              //Función encargada de analizar el presionado de tecla
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    efectos.play();
+                    setVisible(false);
+                    InterfazServidor juego;
+                    // TODO: CHECKEAR QUE SE INGRESARAN BIEN LA IP Y EL PUERTO
+                    try {
+                          juego = new InterfazServidor(menu, "localhost", Integer.parseInt(puertoServer.getText()), temp);
+                          juego.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
+                          juego.setResizable(false);
+                          juego.setTitle("Juego Truco - Servidor");
+                          juego.setBounds(0,0,505,800);
+                          juego.setLocationRelativeTo(null);
+                          juego.setVisible(false);
+                    } catch (IOException ex) {
+                          JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar el juego: " + ex.getMessage());
+                          efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                          efectos.play();
+                    }
+              }
+        };
+
 
         JLabel puertoServerLabel = new JLabel("Puerto");
         puertoServerLabel.setBounds(355, 245, 90, 15);
@@ -143,7 +186,6 @@ public class MenuJugar extends JFrame{
         puertoServerLabel.setForeground(Color.WHITE);
         puertoServerLabel.setVisible(true);
         fondo.add(puertoServerLabel);
-        JTextField puertoServer = new JTextField();
         puertoServer.setBounds(280,260,200,30);
         puertoServer.setOpaque(false);
         puertoServer.setBorder(null);
@@ -155,34 +197,16 @@ public class MenuJugar extends JFrame{
         fondoPuertoServer.setBounds(puertoServer.getX(),puertoServer.getY(),puertoServer.getWidth(),puertoServer.getHeight());
         fondoPuertoServer.setVisible(true);
         fondo.add(fondoPuertoServer);
+        puertoServer.addActionListener(salaAction);
 
-        JButton sala = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugarBoton.png")).getScaledInstance(140, 40, Image.SCALE_SMOOTH)));
+        JButton sala = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/crearSalaBoton.png")).getScaledInstance(140, 40, Image.SCALE_SMOOTH)));
         sala.setBounds(307, 325, 140, 40);
         sala.setVisible(true);
         sala.setOpaque(false);
         sala.setContentAreaFilled(false);
         sala.setBorderPainted(false);
         fondo.add(sala);
-        sala.addActionListener((ActionEvent e) -> {
-              efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-              efectos.play();
-              setVisible(false);
-              InterfazServidor juego;
-              // TODO: CHECKEAR QUE SE INGRESARAN BIEN LA IP Y EL PUERTO
-              try {
-                    juego = new InterfazServidor(menu, "localhost", Integer.parseInt(puertoServer.getText()), this);
-                    juego.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
-                    juego.setResizable(false);
-                    juego.setTitle("Juego Truco - Servidor");
-                    juego.setBounds(0,0,505,800);
-                    juego.setLocationRelativeTo(null);
-                    juego.setVisible(false);
-              } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar el juego: " + ex.getMessage());
-                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    efectos.play();
-              }
-        });
+        sala.addActionListener(salaAction);
 
         JLabel partidaRapidaLabel = new JLabel("Partida Rapida");
         partidaRapidaLabel.setBounds(185, 370, 150, 40);
