@@ -40,6 +40,7 @@ public class InterfazServidor extends JFrame {
     private boolean PC1Enabled=false, PC2Enabled=false, PC3Enabled=false;
     private final Music cantar = new Music();
     private static final Music efectos = new Music();
+    private JLabel fondoConexion = new JLabel(new ImageIcon("src/truco_java/fondos/turnoJugador.png"));
 
     // Jugadores
     private Persona jugador = new Persona(null, true);
@@ -357,6 +358,7 @@ public class InterfazServidor extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
             habilitadoARetrucar=1;
 
             nivelTruco=0;
@@ -398,6 +400,7 @@ public class InterfazServidor extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
             habilitadoARetrucar=1;
 
             nivelTruco=0;
@@ -441,6 +444,7 @@ public class InterfazServidor extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
             habilitadoARetrucar=1;
 
             nivelTruco=0;
@@ -483,6 +487,7 @@ public class InterfazServidor extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
             habilitadoARetrucar=1;
 
             nivelTruco=0;
@@ -524,6 +529,7 @@ public class InterfazServidor extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
 
             Thread thread = new Thread(){
                 public void run(){
@@ -560,6 +566,8 @@ public class InterfazServidor extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+
             Thread thread = new Thread(){
                 public void run(){
                     try{
@@ -599,6 +607,7 @@ public class InterfazServidor extends JFrame {
                 PC1Enabled=false;
                 PC2Enabled=false;
                 PC3Enabled=false;
+                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
 
                 nivelTruco++;
                 habilitadoARetrucar = 1;
@@ -641,6 +650,7 @@ public class InterfazServidor extends JFrame {
             noQuieroTruco.setVisible(false);
             irAlMazo.setEnabled(false);
             envidoFinalizado=true;
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
 
             Thread thread = new Thread(){
                 public void run(){
@@ -668,6 +678,8 @@ public class InterfazServidor extends JFrame {
             efectos.play();
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+
             Thread thread = new Thread(){
                 public void run(){
                     try{
@@ -729,6 +741,12 @@ public class InterfazServidor extends JFrame {
                 dispose();
             }
         });
+
+        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+        fondoConexion.setBounds(0,730,500,50);
+        fondoConexion.setOpaque(false);
+        fondoConexion.setVisible(true);
+        fondo.add(fondoConexion);
     }
 
     public void dibujarPuntaje() throws IOException {
@@ -1322,6 +1340,7 @@ public class InterfazServidor extends JFrame {
                 }
 
                 if(Boolean.parseBoolean(scanf.next())){// Es el turno del jugador
+                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoJugador.png"));
                     PC1Enabled=true;
                     PC2Enabled=true;
                     PC3Enabled=true;
@@ -1348,6 +1367,7 @@ public class InterfazServidor extends JFrame {
 
                     irAlMazo.setEnabled(true);
                 } else{ // Turno Oponente
+                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
                     PC1Enabled=false;
                     PC2Enabled=false;
                     PC3Enabled=false;
@@ -1424,6 +1444,8 @@ public class InterfazServidor extends JFrame {
                     return;
                 }
 
+                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
+
                 for(int i=0;i<nivel;i++)
                     botones.get(i).setVisible(false);
                 for(int i=nivel;i<4;i++){
@@ -1473,6 +1495,7 @@ public class InterfazServidor extends JFrame {
                 if(!envidoFinalizado && jugador.getCartasJugadas().isEmpty())
                     envido.setEnabled(true);
 
+                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
                 try {
                     imprimeAITruco(nivelTrucoTemp, false);
                 } catch (Exception e) {

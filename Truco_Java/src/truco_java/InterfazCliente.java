@@ -1,5 +1,6 @@
 package truco_java;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.awt.Font;
 import java.awt.Image;
@@ -46,6 +47,7 @@ public class InterfazCliente extends JFrame {
     private boolean PC1Enabled=false, PC2Enabled=false, PC3Enabled=false;
     private JTextPane estado;
     private boolean termino = false;
+    private JLabel fondoConexion = new JLabel(new ImageIcon("src/truco_java/fondos/turnoJugador.png"));
 
     // Jugadores
     private Persona jugador = new Persona(null, false);
@@ -381,6 +383,7 @@ public class InterfazCliente extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
 
             nivelTruco=0;
             habilitadoARetrucar = 0;
@@ -421,6 +424,7 @@ public class InterfazCliente extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
 
             nivelTruco=0;
             habilitadoARetrucar = 0;
@@ -461,6 +465,7 @@ public class InterfazCliente extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
 
             nivelTruco=0;
             habilitadoARetrucar = 0;
@@ -501,6 +506,7 @@ public class InterfazCliente extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
 
             nivelTruco=0;
             habilitadoARetrucar = 0;
@@ -713,6 +719,7 @@ public class InterfazCliente extends JFrame {
                     }
                 };
                 thread.start();
+                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
                 try {
                     imprimeAITruco(0,false);
                 } catch (Exception ex) {
@@ -844,6 +851,12 @@ public class InterfazCliente extends JFrame {
                 dispose();
             }
         });
+
+        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
+        fondoConexion.setBounds(0,730,500,50);
+        fondoConexion.setOpaque(false);
+        fondoConexion.setVisible(true);
+        fondo.add(fondoConexion);
     }
 
     public void dibujarPuntaje() throws IOException {
@@ -1241,6 +1254,7 @@ public class InterfazCliente extends JFrame {
                 PC1Enabled=true;
                 PC2Enabled=true;
                 PC3Enabled=true;
+                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoJugador.png"));
             } else {
                 System.out.println("Entrada 2");
                 truco.setEnabled(false);
@@ -1250,6 +1264,7 @@ public class InterfazCliente extends JFrame {
                 PC2Enabled=false;
                 PC3Enabled=false;
                 sincronizar(true);
+                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
                 Thread thread = new Thread(){
                     public void run(){
                         try{
@@ -1270,6 +1285,7 @@ public class InterfazCliente extends JFrame {
             PC2Enabled=true;
             PC3Enabled=true;
             sincronizar(false);
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoJugador.png"));
         } else if (!jugador.getCartasJugadas().isEmpty() && oponente.getCartasJugadas().isEmpty()) { // Ya Jugó el Jugador. Turno AI
             System.out.println("Entrada 4");
             truco.setEnabled(false);
@@ -1280,6 +1296,7 @@ public class InterfazCliente extends JFrame {
             PC3Enabled=false;
             // No hace falta que se cante envido, porque ya lo verifica dentro de AICantaTruco
             sincronizar(true);
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
             Thread thread = new Thread(){
                 public void run(){
                     try{
@@ -1306,6 +1323,7 @@ public class InterfazCliente extends JFrame {
                     PC2Enabled=true;
                     PC3Enabled=true;
                     sincronizar(false);
+                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoJugador.png"));
                 } else if (rankingAI > rankingJugador) { // si gano AI en la anterior ronda
                     System.out.println("Entrada 6");
                     truco.setEnabled(false);
@@ -1315,6 +1333,7 @@ public class InterfazCliente extends JFrame {
                     PC2Enabled=false;
                     PC3Enabled=false;
                     sincronizar(true);
+                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
                     Thread thread = new Thread(){
                         public void run(){
                             try{
@@ -1336,6 +1355,7 @@ public class InterfazCliente extends JFrame {
                         PC2Enabled=true;
                         PC3Enabled=true;
                         sincronizar(false);
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoJugador.png"));
                     } else { // Es mano la AI
                         System.out.println("Entrada 8");
                         truco.setEnabled(false);
@@ -1345,6 +1365,7 @@ public class InterfazCliente extends JFrame {
                         PC2Enabled=false;
                         PC3Enabled=false;
                         sincronizar(true);
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
                         Thread thread = new Thread(){
                             public void run(){
                                 try{
@@ -1367,6 +1388,7 @@ public class InterfazCliente extends JFrame {
                 PC2Enabled=true;
                 PC3Enabled=true;
                 sincronizar(false);
+                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoJugador.png"));
             } else if (jugador.getCartasJugadas().size() - 1 == oponente.getCartasJugadas().size()) { // Si ya el jugador tiró en esa ronda
                 System.out.println("Entrada 10");
                 truco.setEnabled(false);
@@ -1376,6 +1398,7 @@ public class InterfazCliente extends JFrame {
                 PC2Enabled=false;
                 PC3Enabled=false;
                 sincronizar(true);
+                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
                 Thread thread = new Thread(){
                     public void run(){
                         try{
@@ -1386,6 +1409,7 @@ public class InterfazCliente extends JFrame {
                     }
                 };
                 thread.start();
+                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
             }
         }
     }
@@ -1998,6 +2022,7 @@ public class InterfazCliente extends JFrame {
                         botones.get(i).setVisible(true);
                         botones.get(i).setEnabled(true);
                     }
+                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
                 } else {
                     if (jugador.calcularEnvido() > oponente.calcularEnvido()) { //Si gana el jugador
                         try{
@@ -2099,6 +2124,7 @@ public class InterfazCliente extends JFrame {
                     nivelTruco=nivelTrucoTemp;
                     if(nivelTrucoTemp==3) truco.setEnabled(false);
                     else truco.setEnabled(true);
+                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
                 } else {
                     truco.setEnabled(false);
                     quieroTruco.setVisible(false);
@@ -2117,7 +2143,7 @@ public class InterfazCliente extends JFrame {
                     try {
                         habilitaTurno();
                     } catch (Exception e) {
-                        System.out.println("no se pudo crear otra partida");
+                        System.out.println("no se pudo habilitar el turno");
                     }
                 }
                 break;
