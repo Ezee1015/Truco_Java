@@ -1952,7 +1952,7 @@ public class InterfazCliente extends JFrame {
         String cat = scanf.next();
 
         switch(cat){
-            case "CTira":
+            case "tira":
                 int pos = Integer.parseInt(scanf.next());
                 oponente.agregarCartaJugada(oponente.getPosMano()[pos]);
                 // Indica que carta no se debe dibujar

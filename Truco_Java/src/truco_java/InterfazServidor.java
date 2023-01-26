@@ -145,6 +145,7 @@ public class InterfazServidor extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
             try {
                 tirarCarta(0);
             } catch (IOException ex) {
@@ -175,6 +176,7 @@ public class InterfazServidor extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
             try {
                 tirarCarta(1);
             } catch (IOException ex) {
@@ -205,6 +207,7 @@ public class InterfazServidor extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
             try {
                 tirarCarta(2);
             } catch (IOException ex) {

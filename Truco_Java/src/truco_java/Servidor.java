@@ -64,7 +64,7 @@ public class Servidor extends Conexion{
     }
 
     public void tirarCarta(int posCarta) throws IOException{
-        enviaMensaje("CTira " + String.valueOf(posCarta));
+        enviaMensaje("tira " + String.valueOf(posCarta));
     }
 
     public String enviaTruco(int nivelTruco, int habilitadoARetrucar) throws IOException{
