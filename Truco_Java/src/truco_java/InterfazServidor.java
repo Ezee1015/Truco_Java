@@ -47,6 +47,7 @@ public class InterfazServidor extends JFrame {
     private String nombreOponente ="la PC";
     private Persona oponente = new Persona(null, false);
     private boolean termino = false;
+    JLabel puntajeFondo = new JLabel();
 
     // Información temporal del juego
     private ArrayList<Integer> envidosCantados = new ArrayList<>();
@@ -314,22 +315,21 @@ public class InterfazServidor extends JFrame {
         irAlMazo.setBorderPainted(false);
         fondo.add(irAlMazo);
         irAlMazo.addActionListener((ActionEvent e) -> {
-            // efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            // efectos.play();
-            // JOptionPane.showMessageDialog(null, "Te has ido al mazo. Repartiendo...");
-            // efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            // efectos.play();
-            // int puntos=0;
-            // if(!envidoFinalizado && oponente.getCartasJugadas().isEmpty())
-            //     puntos++;
-            // oponente.setPuntaje(oponente.getPuntaje()+puntos+calcularTrucoGanado(), this);
-            // try {
-            //     dibujarPuntaje();
-            // } catch (IOException ex) {
-            //     JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de dibujar el puntaje: " + ex.getMessage());
-            //     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            //     efectos.play();
-            // }
+            efectos.setFile("src/truco_java/musica/boton.wav", 1);
+            efectos.play();
+            Thread thread = new Thread(){
+                public void run(){
+                    try{
+                        recibirMensaje(server.enviaIrAlMazo());
+                    } catch(IOException er){
+                        System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
+                    }
+                }
+            };
+            thread.start();
+            JOptionPane.showMessageDialog(null, "Te has ido al mazo.");
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
         });
 
         // Boton envido especifico
@@ -682,7 +682,7 @@ public class InterfazServidor extends JFrame {
         });
 
         // Fondo puntaje
-        JLabel puntajeFondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg"+ numeroPersonaje +".png")).getScaledInstance(100, 150, Image.SCALE_SMOOTH)));
+        puntajeFondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg"+ numeroPersonaje +".png")).getScaledInstance(100, 150, Image.SCALE_SMOOTH)));
         puntajeFondo.setBounds(390, 10, 100, 150);
         puntajeFondo.setVisible(true);
         fondo.add(puntajeFondo);
@@ -1375,8 +1375,13 @@ public class InterfazServidor extends JFrame {
                             System.out.println("error al dibujar las cartas");
                         }
                     }
-                // oponente.setPuntaje(Integer.parseInt(scanf.next()), this);
-                // jugador.setPuntaje(Integer.parseInt(scanf.next()), this);
+                oponente.setPuntaje(Integer.parseInt(scanf.next()), this);
+                jugador.setPuntaje(Integer.parseInt(scanf.next()), this);
+                try {
+                    dibujarPuntaje();
+                } catch (Exception e) {
+                    System.out.println("ERROR AL DIBUJAR PUNTAJE");
+                }
                 break;
             case "envido":
                 int nivel = Integer.parseInt(scanf.next());
@@ -1542,6 +1547,11 @@ public class InterfazServidor extends JFrame {
                     server.enviaPersona(MenuJugar.numeroJugador+1, nombre);
                 } catch (Exception e) {
                     System.out.println("ERROR EN LA COMUNICACION INICIAL! NO SE PUDO IDENTIFICAR AL JUGADOR");
+                }
+                try {
+                    puntajeFondo.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg"+ numeroPersonaje +".png")).getScaledInstance(100, 150, Image.SCALE_SMOOTH)));
+                } catch (Exception e) {
+                    System.out.println("NO SE HA PODIDO CARGAR LA IMAGEN");
                 }
                 break;
             default:

@@ -7,11 +7,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Cliente extends Conexion {
+    BufferedReader entrada;
+
     public Cliente(String ip, int puerto) throws IOException{
         super("cliente", ip, puerto);
         System.out.println("cliente");
     }
-    BufferedReader entrada;
 
     public String recibirMensaje() throws IOException{
         if(entrada==null)
@@ -29,13 +30,6 @@ public class Cliente extends Conexion {
                     break;
                 }
             }
-            // while(((mensajeServidor = entrada.readLine()) != null && mensajeServidor!="") ) {
-            //     mensaje=mensajeServidor;
-            //     System.out.println("AJKDHFALKJSDHFALKJSHDFLJAKSDHFLKJASHDLFKJAHSLDKFHALKSDHFLKAHDLKFJHSADLKFHALSDJKFHASLKDHFKLSAHDF");
-            // }
-
-            System.out.println("Fin de la conexión + " + mensaje);
-
             return mensaje;
         } catch (Exception e) {
             if(e.getMessage().equalsIgnoreCase("Socket is closed")){
@@ -51,7 +45,6 @@ public class Cliente extends Conexion {
         // Envia la peticion
         try {
             salidaServidor = new DataOutputStream(cs.getOutputStream());
-            System.out.println(mensaje + " ç");
             salidaServidor.writeUTF(mensaje + " ç");
         } catch (Exception e) {
             if(e.getMessage().equalsIgnoreCase("Socket is closed")){
@@ -59,7 +52,6 @@ public class Cliente extends Conexion {
                 enviaMensaje(mensaje);
                 return;
             }
-            System.out.println(e.getMessage());
         }
     }
 
@@ -69,7 +61,7 @@ public class Cliente extends Conexion {
         return recibirMensaje();
     }
 
-    public void actualizarInfo(int cantCartasJugador, ArrayList<Carta> cartasJugadasJugador,ArrayList<Carta> manoOponente, int[] posManoOponente, ArrayList<Carta> jugadasOponente, int nivelTruco, boolean envidoFinalizado, int habilitadoARetrucar, boolean turnoOponente) throws IOException{
+    public void actualizarInfo(int cantCartasJugador, ArrayList<Carta> cartasJugadasJugador,ArrayList<Carta> manoOponente, int[] posManoOponente, ArrayList<Carta> jugadasOponente, int nivelTruco, boolean envidoFinalizado, int habilitadoARetrucar, boolean turnoOponente, int puntajeJugador, int puntajeOponente) throws IOException{
         // Envia la peticion
         String mensaje = "update " + String.valueOf(cantCartasJugador)+" ";
         for(int i=0;i<3-cantCartasJugador;i++){
@@ -89,7 +81,7 @@ public class Cliente extends Conexion {
             mensaje+=jugadasOponente.get(i).getPalo()+" ";
         }
 
-        mensaje+=String.valueOf(nivelTruco)+" "+String.valueOf(envidoFinalizado)+" "+String.valueOf(habilitadoARetrucar)+" "+turnoOponente/*  + " " + puntajeJugador + " " + puntajeOponente */;
+        mensaje+=String.valueOf(nivelTruco)+" "+String.valueOf(envidoFinalizado)+" "+String.valueOf(habilitadoARetrucar)+" "+turnoOponente + " " + puntajeJugador + " " + puntajeOponente;
 
         enviaMensaje(mensaje);
     }

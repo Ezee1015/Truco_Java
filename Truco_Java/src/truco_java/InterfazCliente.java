@@ -333,29 +333,29 @@ public class InterfazCliente extends JFrame {
         irAlMazo.setBorderPainted(false);
         fondo.add(irAlMazo);
         irAlMazo.addActionListener((ActionEvent e) -> {
-            // efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            // efectos.play();
-            // JOptionPane.showMessageDialog(null, "Te has ido al mazo. Repartiendo...");
-            // efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            // efectos.play();
-            // int puntos=0;
-            // if(!envidoFinalizado && oponente.getCartasJugadas().isEmpty())
-            //     puntos++;
-            // oponente.setPuntaje(oponente.getPuntaje()+puntos+calcularTrucoGanado(), this);
-            // try {
-            //     otraPartida();
-            // } catch (IOException ex) {
-            //     JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de comenzar otra partida: " + ex.getMessage());
-            //     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            //     efectos.play();
-            // }
-            // try {
-            //     habilitaTurno();
-            // } catch (IOException ex) {
-            //     JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-            //     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            //     efectos.play();
-            // }
+            efectos.setFile("src/truco_java/musica/boton.wav", 1);
+            efectos.play();
+            JOptionPane.showMessageDialog(null, "Te has ido al mazo. Repartiendo...");
+            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.play();
+            int puntos=0;
+            if(!envidoFinalizado && oponente.getCartasJugadas().isEmpty())
+                puntos++;
+            oponente.setPuntaje(oponente.getPuntaje()+puntos+calcularTrucoGanado(), this);
+            try {
+                otraPartida();
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de comenzar otra partida: " + ex.getMessage());
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
+            }
+            try {
+                habilitaTurno();
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
+            }
         });
 
         // Boton envido especifico
@@ -1743,7 +1743,6 @@ public class InterfazCliente extends JFrame {
         else
             estadoPersChar = 'b'; // personaje AI Pregunta (truco, envido, o retrucar cualquiera de las anteriores)
 
-        System.out.println("FONDO: " + numeroPersonaje);
         String imagen = "src/truco_java/fondos/bg" + numeroPersonaje + estadoPersChar + ".png";
         fondo.setIcon(new ImageIcon(imagen));
     }
@@ -2143,6 +2142,26 @@ public class InterfazCliente extends JFrame {
                 }
                 else nombreOponente = nombreOponente.substring(0, 1).toUpperCase()+nombreOponente.substring(1);
                 break;
+            case "mazo":
+                int puntos=0;
+                if(!envidoFinalizado && jugador.getCartasJugadas().isEmpty())
+                    puntos++;
+                jugador.setPuntaje(jugador.getPuntaje() + puntos + calcularTrucoGanado(), this);
+                try {
+                    otraPartida();
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de comenzar otra partida: " + ex.getMessage());
+                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    efectos.play();
+                }
+                try {
+                    habilitaTurno();
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
+                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    efectos.play();
+                }
+                break;
             default:
                 System.out.println("No se detecto la categoria del mensaje: " + cat);
                 for(int i=0;i<cat.length();i++)
@@ -2164,13 +2183,13 @@ public class InterfazCliente extends JFrame {
 
     private void sincronizar(boolean turnoOponente){
         try {
-            client.actualizarInfo(jugador.mano.size(), jugador.getCartasJugadas(), oponente.getMano(), oponente.getPosMano(), oponente.getCartasJugadas(),nivelTruco, envidoFinalizado, habilitadoARetrucar, turnoOponente);
+            client.actualizarInfo(jugador.mano.size(), jugador.getCartasJugadas(), oponente.getMano(), oponente.getPosMano(), oponente.getCartasJugadas(),nivelTruco, envidoFinalizado, habilitadoARetrucar, turnoOponente, jugador.getPuntaje(), oponente.getPuntaje());
         } catch (IOException e) {
             for(int i=0;i<30;i++){
                 try {
                     Thread.sleep(500);
                     System.out.println("Envia mensaje de actualizacion de vuelta: " + e.getMessage());
-                    client.actualizarInfo(jugador.mano.size(), jugador.getMano(), oponente.getMano(), oponente.getPosMano(), oponente.getCartasJugadas(), nivelTruco, envidoFinalizado, habilitadoARetrucar, turnoOponente);
+                    client.actualizarInfo(jugador.mano.size(), jugador.getMano(), oponente.getMano(), oponente.getPosMano(), oponente.getCartasJugadas(), nivelTruco, envidoFinalizado, habilitadoARetrucar, turnoOponente, jugador.getPuntaje(), oponente.getPuntaje());
                     break;
                 } catch (Exception er) {}
             }
