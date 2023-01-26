@@ -1554,8 +1554,10 @@ public class InterfazServidor extends JFrame {
                 thread3.start();
                 break;
             case "retira":
-                JOptionPane.showMessageDialog(null, "El oponente " + nombreOponente + " se ha retirado.");
                 oponente.setPuntaje(15, this);
+                JOptionPane.showMessageDialog(null, "El oponente " + nombreOponente + " se ha retirado. Has ganado!");
+                menu.setVisible(true);
+                dispose();
                 break;
             case "persona":
                 numeroPersonaje = Integer.parseInt(scanf.next());

@@ -2121,8 +2121,10 @@ public class InterfazCliente extends JFrame {
                 scanf.close();
                 return;
             case "retira":
-                JOptionPane.showMessageDialog(null, "El oponente " + nombreOponente + " se ha retirado.");
                 oponente.setPuntaje(15, this);
+                JOptionPane.showMessageDialog(null, "El oponente " + nombreOponente + " se ha retirado. Has ganado!");
+                menu.setVisible(true);
+                dispose();
                 break;
             case "truco":
                 int nivelTrucoTemp = Integer.parseInt(scanf.next());
