@@ -390,8 +390,10 @@ public class InterfazCliente extends JFrame {
 
             Thread thread = new Thread(){
                 public void run(){
+                    System.out.println("LLAMA THREAD 1");
                     try{
-                        recibirMensaje(client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
+                        client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar);
+                        recibirMensaje(client.recibirMensaje());
                     } catch(IOException er){
                         System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
                     }
@@ -431,8 +433,10 @@ public class InterfazCliente extends JFrame {
 
             Thread thread = new Thread(){
                 public void run(){
+                        System.out.println("LLAMA THREAD 2");
                     try{
-                        recibirMensaje(client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
+                        client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar);
+                        recibirMensaje(client.recibirMensaje());
                     } catch(IOException er){
                         System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
                     }
@@ -472,8 +476,10 @@ public class InterfazCliente extends JFrame {
 
             Thread thread = new Thread(){
                 public void run(){
+                        System.out.println("LLAMA THREAD 3");
                     try{
-                        recibirMensaje(client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
+                        client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar);
+                        recibirMensaje(client.recibirMensaje());
                     } catch(IOException er){
                         System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
                     }
@@ -514,7 +520,9 @@ public class InterfazCliente extends JFrame {
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        recibirMensaje(client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
+                        System.out.println("LLAMA THREAD 4");
+                        client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar);
+                        recibirMensaje(client.recibirMensaje());
                     } catch(IOException er){
                         System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
                     }
@@ -539,6 +547,7 @@ public class InterfazCliente extends JFrame {
             Thread thread = new Thread(){
                 public void run(){
                     try {
+                        System.out.println("LLAMA THREAD 5");
                         client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar);
                     } catch (Exception ex) {
                         System.out.println("No se pudo enviar el mensaje");
@@ -546,6 +555,7 @@ public class InterfazCliente extends JFrame {
                 }
             };
             thread.start();
+
             // VERIFICA QUIEN GANA
             if (jugador.calcularEnvido() > oponente.calcularEnvido()) { //Si gana el jugador
                 try{
@@ -649,6 +659,7 @@ public class InterfazCliente extends JFrame {
             Thread thread = new Thread(){
                 public void run(){
                     try {
+                        System.out.println("LLAMA THREAD 6");
                         client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar);
                     } catch (Exception ex) {
                         System.out.println("No se pudo enviar el mensaje");
@@ -712,7 +723,9 @@ public class InterfazCliente extends JFrame {
                 Thread thread = new Thread(){
                     public void run(){
                         try{
-                            recibirMensaje(client.enviaTruco(nivelTruco, habilitadoARetrucar));
+                            System.out.println("LLAMA THREAD 7");
+                            client.enviaTruco(nivelTruco, habilitadoARetrucar);
+                            recibirMensaje(client.recibirMensaje());
                         } catch(IOException er){
                             System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
                         }
@@ -750,6 +763,7 @@ public class InterfazCliente extends JFrame {
             Thread thread = new Thread(){
                 public void run(){
                     try{
+                        System.out.println("LLAMA THREAD 8");
                         client.enviaTruco(4, habilitadoARetrucar);
                     } catch(IOException er){
                         System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
@@ -1268,6 +1282,7 @@ public class InterfazCliente extends JFrame {
                 Thread thread = new Thread(){
                     public void run(){
                         try{
+                            System.out.println("LLAMA THREAD 10");
                             recibirMensaje(client.recibirMensaje());
                         } catch(IOException er){
                             System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
@@ -1300,6 +1315,7 @@ public class InterfazCliente extends JFrame {
             Thread thread = new Thread(){
                 public void run(){
                     try{
+                        System.out.println("LLAMA THREAD 11");
                         recibirMensaje(client.recibirMensaje());
                     } catch(IOException er){
                         System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
@@ -1337,6 +1353,7 @@ public class InterfazCliente extends JFrame {
                     Thread thread = new Thread(){
                         public void run(){
                             try{
+                                System.out.println("LLAMA THREAD 12");
                                 recibirMensaje(client.recibirMensaje());
                             } catch(IOException er){
                                 System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
@@ -1369,6 +1386,7 @@ public class InterfazCliente extends JFrame {
                         Thread thread = new Thread(){
                             public void run(){
                                 try{
+                                    System.out.println("LLAMA THREAD 13");
                                     recibirMensaje(client.recibirMensaje());
                                 } catch(IOException er){
                                     System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
@@ -1402,6 +1420,7 @@ public class InterfazCliente extends JFrame {
                 Thread thread = new Thread(){
                     public void run(){
                         try{
+                            System.out.println("LLAMA THREAD 14");
                             recibirMensaje(client.recibirMensaje());
                         } catch(IOException er){
                             System.out.println("Error en la reconexión con el servidor: " + er.getMessage());

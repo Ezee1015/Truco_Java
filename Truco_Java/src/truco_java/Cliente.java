@@ -55,10 +55,9 @@ public class Cliente extends Conexion {
         }
     }
 
-    public String enviaEnvido(ArrayList<Integer> envidosCantados, int nivelTruco, int habilitadoARetrucar) throws IOException{
+    public void enviaEnvido(ArrayList<Integer> envidosCantados, int nivelTruco, int habilitadoARetrucar) throws IOException{
         // Envia la peticion
         enviaMensaje("envido " + String.valueOf(envidosCantados.get(envidosCantados.size()-1)) + " " + nivelTruco + " " + habilitadoARetrucar);
-        return recibirMensaje();
     }
 
     public void actualizarInfo(int cantCartasJugador, ArrayList<Carta> cartasJugadasJugador,ArrayList<Carta> manoOponente, int[] posManoOponente, ArrayList<Carta> jugadasOponente, int nivelTruco, boolean envidoFinalizado, int habilitadoARetrucar, boolean turnoOponente, int puntajeJugador, int puntajeOponente) throws IOException{
@@ -90,9 +89,8 @@ public class Cliente extends Conexion {
             enviaMensaje("kill");
     }
 
-    public String enviaTruco(int nivelTruco, int habilitadoARetrucar) throws IOException{
+    public void enviaTruco(int nivelTruco, int habilitadoARetrucar) throws IOException{
         enviaMensaje("truco " + nivelTruco + " " + habilitadoARetrucar);
-        return recibirMensaje();
     }
 
     public void enviaPuntaje(int puntajeJugador, int puntajeOponente) throws IOException{
