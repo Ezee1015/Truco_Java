@@ -127,6 +127,7 @@ public class MenuJugar extends JFrame{
         puertoClienteLabel.setVisible(true);
         fondo.add(puertoClienteLabel);
         puertoCliente.setBounds(20,280,200,30);
+        puertoCliente.setText("1234");
         puertoCliente.setOpaque(false);
         puertoCliente.setBorder(null);
         puertoCliente.setHorizontalAlignment(JTextField.CENTER);
@@ -187,6 +188,7 @@ public class MenuJugar extends JFrame{
         puertoServerLabel.setVisible(true);
         fondo.add(puertoServerLabel);
         puertoServer.setBounds(280,260,200,30);
+        puertoServer.setText("1234");
         puertoServer.setOpaque(false);
         puertoServer.setBorder(null);
         puertoServer.setHorizontalAlignment(JTextField.CENTER);
@@ -200,7 +202,7 @@ public class MenuJugar extends JFrame{
         puertoServer.addActionListener(salaAction);
 
         JButton sala = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/crearSalaBoton.png")).getScaledInstance(140, 40, Image.SCALE_SMOOTH)));
-        sala.setBounds(307, 325, 140, 40);
+        sala.setBounds(317, 325, 140, 40);
         sala.setVisible(true);
         sala.setOpaque(false);
         sala.setContentAreaFilled(false);
@@ -209,7 +211,7 @@ public class MenuJugar extends JFrame{
         sala.addActionListener(salaAction);
 
         JLabel partidaRapidaLabel = new JLabel("Partida Rapida");
-        partidaRapidaLabel.setBounds(185, 370, 150, 40);
+        partidaRapidaLabel.setBounds(187, 370, 150, 40);
         partidaRapidaLabel.setFont(new Font("Arial", Font.BOLD, 20));
         partidaRapidaLabel.setForeground(Color.WHITE);
         partidaRapidaLabel.setVisible(true);
@@ -286,25 +288,21 @@ public class MenuJugar extends JFrame{
         // Barra 1
         JLabel barra1 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/division.png")).getScaledInstance(188, 4, Image.SCALE_SMOOTH)));
         barra1.setBounds(5, 200, 188, 4);
-        multijugador.setBounds(198, 180, 150, 40);
         barra1.setVisible(true);
         fondo.add(barra1);
         // Barra 2
         JLabel barra2 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/division.png")).getScaledInstance(168, 4, Image.SCALE_SMOOTH)));
         barra2.setBounds(325, 200, 168, 4);
-        multijugador.setBounds(198, 180, 150, 40);
         barra2.setVisible(true);
         fondo.add(barra2);
         // Barra 3
-        JLabel barra3 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/division.png")).getScaledInstance(168, 4, Image.SCALE_SMOOTH)));
+        JLabel barra3 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/division.png")).getScaledInstance(178, 4, Image.SCALE_SMOOTH)));
         barra3.setBounds(5, 388, 178, 4);
-        multijugador.setBounds(198, 185, 150, 40);
         barra3.setVisible(true);
         fondo.add(barra3);
         // Barra 4
-        JLabel barra4 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/division.png")).getScaledInstance(168, 4, Image.SCALE_SMOOTH)));
+        JLabel barra4 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/division.png")).getScaledInstance(165, 4, Image.SCALE_SMOOTH)));
         barra4.setBounds(330, 388, 165, 4);
-        multijugador.setBounds(198, 185, 150, 40);
         barra4.setVisible(true);
         fondo.add(barra4);
   }
