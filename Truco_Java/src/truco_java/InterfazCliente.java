@@ -539,7 +539,7 @@ public class InterfazCliente extends JFrame {
             Thread thread = new Thread(){
                 public void run(){
                     try {
-                        recibirMensaje(client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
+                        client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar);
                     } catch (Exception ex) {
                         System.out.println("No se pudo enviar el mensaje");
                     }
@@ -649,7 +649,7 @@ public class InterfazCliente extends JFrame {
             Thread thread = new Thread(){
                 public void run(){
                     try {
-                        recibirMensaje(client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
+                        client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar);
                     } catch (Exception ex) {
                         System.out.println("No se pudo enviar el mensaje");
                     }
@@ -750,7 +750,7 @@ public class InterfazCliente extends JFrame {
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        recibirMensaje(client.enviaTruco(4, habilitadoARetrucar));
+                        client.enviaTruco(4, habilitadoARetrucar);
                     } catch(IOException er){
                         System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
                     }
