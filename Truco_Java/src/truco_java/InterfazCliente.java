@@ -337,6 +337,7 @@ public class InterfazCliente extends JFrame {
         irAlMazo.addActionListener((ActionEvent e) -> {
             efectos.setFile("src/truco_java/musica/boton.wav", 1);
             efectos.play();
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
             JOptionPane.showMessageDialog(null, "Te has ido al mazo. Repartiendo...");
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
@@ -563,6 +564,7 @@ public class InterfazCliente extends JFrame {
                 } catch(IOException er){
                     System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
                 }
+                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
                 JOptionPane.showMessageDialog(null, "Has ganado. " + nombreOponente + " tenía " + oponente.calcularEnvido() + " de envido.");
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                 efectos.play();
@@ -574,6 +576,7 @@ public class InterfazCliente extends JFrame {
                 } catch(IOException er){
                     System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
                 }
+                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
                 JOptionPane.showMessageDialog(null, "Has perdido. " + nombreOponente + " tenía " + oponente.calcularEnvido() + " de envido.");
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                 efectos.play();
@@ -586,6 +589,7 @@ public class InterfazCliente extends JFrame {
                     } catch(IOException er){
                         System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
                     }
+                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
                     JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has ganado por mano");
                     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                     efectos.play();
@@ -596,6 +600,7 @@ public class InterfazCliente extends JFrame {
                     } catch(IOException er){
                         System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
                     }
+                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
                     JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has perdido, " + nombreOponente + " es mano");
                     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                     efectos.play();
@@ -1238,6 +1243,7 @@ public class InterfazCliente extends JFrame {
             return;
         if(compruebaSiTerminoPartida()==1) {
             client.enviaMensaje("imprimir Termino la Partida. Ha ganado " + nombreJugador);
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
             JOptionPane.showMessageDialog(null, "Termino la Partida. Ganaste!");
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
@@ -1249,6 +1255,7 @@ public class InterfazCliente extends JFrame {
         }
         if(compruebaSiTerminoPartida()==2) {
             client.enviaMensaje("imprimir Termino la Partida. Ganaste!");
+            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
             JOptionPane.showMessageDialog(null, "Termino la Partida. Ha ganado " + nombreOponente + ".");
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
@@ -2049,6 +2056,7 @@ public class InterfazCliente extends JFrame {
                         } catch(IOException er){
                             System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
                         }
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
                         JOptionPane.showMessageDialog(null, "Has ganado. " + nombreOponente + " tenía " + oponente.calcularEnvido() + " de envido.");
                         efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                         efectos.play();
@@ -2060,6 +2068,7 @@ public class InterfazCliente extends JFrame {
                         } catch(IOException er){
                             System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
                         }
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
                         JOptionPane.showMessageDialog(null, "Has perdido. " + nombreOponente + " tenía " + oponente.calcularEnvido() + " de envido.");
                         efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                         efectos.play();
@@ -2072,6 +2081,7 @@ public class InterfazCliente extends JFrame {
                             } catch(IOException er){
                                 System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
                             }
+                            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
                             JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has ganado por mano");
                             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                             efectos.play();
@@ -2082,6 +2092,7 @@ public class InterfazCliente extends JFrame {
                             } catch(IOException er){
                                 System.out.println("Error en la reconexión con el servidor: " + er.getMessage());
                             }
+                            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
                             JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has perdido, " + nombreOponente + " es mano");
                             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                             efectos.play();
@@ -2152,6 +2163,7 @@ public class InterfazCliente extends JFrame {
                     noQuieroTruco.setVisible(false);
                     if(nivelTrucoTemp==-1){
                         jugador.setPuntaje(jugador.getPuntaje() + calcularTrucoPerdido(), this);
+                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
                         JOptionPane.showMessageDialog(null, "" + nombreOponente + " ha rechazado el Truco. Repartiendo...");
                         efectos.setFile("src/truco_java/musica/boton.wav", 1);
                         efectos.play();
