@@ -90,10 +90,6 @@ public class MenuJugar extends JFrame{
                           juego.setBounds(0,0,505,800);
                           juego.setLocationRelativeTo(null);
                           juego.setVisible(true);
-                          //Muestra el mensaje que avisa para comenzar el juego
-                          JOptionPane.showMessageDialog(null, "Aprete el mazo de cartas para comenzar el juego...");
-                          efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                          efectos.play();
                     } catch (IOException ex) {
                           JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar el juego: " + ex.getMessage());
                           efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);

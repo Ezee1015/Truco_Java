@@ -2200,6 +2200,15 @@ public class InterfazCliente extends JFrame {
                     }
                 }
                 else nombreOponente = nombreOponente.substring(0, 1).toUpperCase()+nombreOponente.substring(1);
+
+                Thread thread = new Thread(){
+                    public void run(){
+                        JOptionPane.showMessageDialog(null, "Has entrado a la sala de " + nombreOponente + ".\n Aprete el mazo para repartir y comenzar a jugar...");
+                        efectos.setFile("src/truco_java/musica/boton.wav", 1);
+                        efectos.play();
+                    }
+                };
+                thread.start();
                 break;
             case "mazo":
                 int puntos=0;

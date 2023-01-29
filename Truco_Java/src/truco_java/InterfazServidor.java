@@ -1571,6 +1571,14 @@ public class InterfazServidor extends JFrame {
                 if(Truco_Java.posUsuario!=-1)
                     nombre = Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).getNombre();
 
+                Thread thread1 = new Thread(){
+                    public void run(){
+                        JOptionPane.showMessageDialog(null, nombreOponente + " ha entrado en la sala. Esperando a que el oponente reparta...");
+                        efectos.setFile("src/truco_java/musica/boton.wav", 1);
+                        efectos.play();
+                    }
+                };
+                thread1.start();
                 try {
                     server.enviaPersona(MenuJugar.numeroJugador+1, nombre);
                 } catch (Exception e) {
@@ -1598,5 +1606,5 @@ public class InterfazServidor extends JFrame {
                 break;
         }
         scanf.close();
-    }
+  }
 }
