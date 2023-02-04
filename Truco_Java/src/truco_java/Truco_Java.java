@@ -68,19 +68,20 @@ public class Truco_Java extends JFrame{
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
             setVisible(false);
-            InterfazJuego juego;
+            MenuJugar juego;
             try {
-                juego = new InterfazJuego(this);
+                juego = new MenuJugar(this);
                 juego.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
                 juego.setResizable(false);
                 juego.setTitle("Juego Truco");
-                juego.setBounds(0,0,505,800);
+                juego.setBounds(0,0,500,500);
                 juego.setLocationRelativeTo(null);
                 juego.setVisible(true);
                 //Muestra el mensaje que avisa para comenzar el juego
-                JOptionPane.showMessageDialog(null, "Aprete el mazo de cartas para comenzar el juego...");
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                // juego.setBounds(0,0,505,800);
+                // JOptionPane.showMessageDialog(null, "Aprete el mazo de cartas para comenzar el juego...");
+                // efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                // efectos.play();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar el juego: " + ex.getMessage());
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);

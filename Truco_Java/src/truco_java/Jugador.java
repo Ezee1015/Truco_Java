@@ -31,6 +31,28 @@ public class Jugador {
       }
     }
 
+    public void setPuntaje(int puntaje, InterfazServidor interfaz) {
+      this.puntaje = puntaje;
+      try {
+        interfaz.dibujarPuntaje();
+      } catch (IOException ex) {
+        JOptionPane.showMessageDialog(null, "Ha sucedido un error en el dibujado del puntaje: " + ex.getMessage());
+        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+        efectos.play();
+      }
+    }
+
+    public void setPuntaje(int puntaje, InterfazCliente interfaz) {
+      this.puntaje = puntaje;
+      try {
+        interfaz.dibujarPuntaje();
+      } catch (IOException ex) {
+        JOptionPane.showMessageDialog(null, "Ha sucedido un error en el dibujado del puntaje: " + ex.getMessage());
+        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+        efectos.play();
+      }
+    }
+
     public ArrayList<Carta> getMano() {
         return mano;
     }
