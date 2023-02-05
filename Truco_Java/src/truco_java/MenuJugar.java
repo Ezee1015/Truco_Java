@@ -64,7 +64,7 @@ public class MenuJugar extends JFrame{
 
         JLabel multijugador = new JLabel("Multijugador");
         multijugador.setBounds(198, 180, 150, 40);
-        multijugador.setFont(new Font("Arial", Font.BOLD, 20));
+        multijugador.setFont(new Font("Arial", Font.BOLD, 19));
         multijugador.setForeground(Color.WHITE);
         multijugador.setVisible(true);
         fondo.add(multijugador);
@@ -100,7 +100,7 @@ public class MenuJugar extends JFrame{
 
         JLabel ipLabel = new JLabel("Direccion IP");
         ipLabel.setBounds(80, 215, 90, 15);
-        ipLabel.setFont(new Font("Arial", Font.BOLD, 15));
+        ipLabel.setFont(new Font("Arial", Font.BOLD, 14));
         ipLabel.setForeground(Color.WHITE);
         ipLabel.setVisible(true);
         fondo.add(ipLabel);
@@ -206,9 +206,9 @@ public class MenuJugar extends JFrame{
         fondo.add(sala);
         sala.addActionListener(salaAction);
 
-        JLabel partidaRapidaLabel = new JLabel("Partida Rapida");
+        JLabel partidaRapidaLabel = new JLabel("Partida Rápida");
         partidaRapidaLabel.setBounds(187, 370, 150, 40);
-        partidaRapidaLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        partidaRapidaLabel.setFont(new Font("Arial", Font.BOLD, 19));
         partidaRapidaLabel.setForeground(Color.WHITE);
         partidaRapidaLabel.setVisible(true);
         fondo.add(partidaRapidaLabel);

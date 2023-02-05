@@ -86,7 +86,7 @@ public class EsperaServidor extends JFrame {
         fondo.add(puerto);
 
         JTextPane datos = new JTextPane();
-        datos.setBounds(90,190,320,55);
+        datos.setBounds(100,180,320,65);
         datos.setText(obtenerIPs()+"\n"+puertoNum);
         datos.setForeground(Color.WHITE);
         datos.setFont(new Font("Arial", Font.BOLD, 25));
