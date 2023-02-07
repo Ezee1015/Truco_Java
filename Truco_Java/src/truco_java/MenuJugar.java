@@ -276,7 +276,7 @@ public class MenuJugar extends JFrame{
               JLabel fondoJugador = new JLabel();
               fondoJugador.setVisible(true);
               fondoJugador.setBounds(jugador.getX(), jugador.getY(), jugador.getWidth(), jugador.getHeight());
-              fondoJugador.setBounds(18+(65*i)+(18*i), 115, 60, 60);
+              fondoJugador.setBounds(12+(65*i)+(18*i), 115, 60, 60);
               fondos.add(fondoJugador);
               fondo.add(fondoJugador);
               fondoJugador.add(jugador);
