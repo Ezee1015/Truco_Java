@@ -27,9 +27,24 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ezee1015/Truco_Java/main
 ```
 
 ## Screenshots
+### Menus
 <div style=" display:flex; flex-direction: row">
   <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/menu.png" alt="Menu" style="width: 380px;;">
-  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/acercaDe.png" alt="Menu" style="width: 380px;">
+  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/menu jugar.png" alt="Menu" style="width: 380px;">
+  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/registro.png" alt="Menu" style="width: 380px;;">
+  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/log in.png" alt="Menu" style="width: 380px;">
+<div>
+### Multijugador
+<div style=" display:flex; flex-direction: row">
+  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/cliente 1.png" alt="Menu" style="width: 380px;">
+  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/servidor 1.png" alt="Menu" style="width: 380px;">
+  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/cliente 2.png" alt="Menu" style="width: 380px;">
+  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/servidor 2.png" alt="Menu" style="width: 380px;">
+  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/cliente 3.png" alt="Menu" style="width: 380px;">
+  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/servidor 3.png" alt="Menu" style="width: 380px;">
+<div>
+### Partida Rapida
+<div style=" display:flex; flex-direction: row">
   <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/juego1.png" alt="Menu" style="width: 380px;">
   <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/juego2.png" alt="Menu" style="width: 380px;">
   <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/juego3.png" alt="Menu" style="width: 380px;">
