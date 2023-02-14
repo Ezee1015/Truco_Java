@@ -24,5 +24,4 @@ echo 'pkill Xvnc' >> ~/truco.sh
 
 chmod +x ~/truco.sh
 
-clear
 echo -e "\n\n\n\nYa se ha terminado de instalar. Por favor reinicie la sesión y ejecute 'truco'"
