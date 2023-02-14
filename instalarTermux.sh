@@ -1,7 +1,7 @@
 #!/bin/bash
 
 pkg update
-pkg x11-repo -y
+pkg install x11-repo -y
 pkg install xorg-server tigervnc mpv git openjdk-17 ant -y
 
 cd ~/
