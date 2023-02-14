@@ -1,7 +1,7 @@
 #!/bin/bash
 
-apt update && apt upgrade
-apt install xorg-server tigervnc mpv git openjdk-17 ant
+apt update
+apt install xorg-server tigervnc mpv git openjdk-17 ant -y
 
 cd ~/
 git clone https://github.com/Ezee1015/Truco_Java
