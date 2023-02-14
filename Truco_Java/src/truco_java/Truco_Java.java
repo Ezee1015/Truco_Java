@@ -18,9 +18,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JCheckBox;
 import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import javax.swing.text.Utilities;
 
 public class Truco_Java extends JFrame{
 
@@ -413,16 +415,45 @@ public class Truco_Java extends JFrame{
         posUsuario=posiUsuario;
         registrarBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/eliminarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
         sesionBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cerrarSesionBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
-        bienvenidoMSG.setText("¡Bienvenido " + listaUsuarios.get(posUsuario).getNombre() + "!");
-        if(listaUsuarios.get(posUsuario).getNombre().length() > 18)
-            bienvenidoMSG.setText(listaUsuarios.get(posUsuario).getNombre());
-        if(listaUsuarios.get(posUsuario).getNombre().length() > 29)
-            bienvenidoMSG.setText("¡Bienvenido!");
+
+        String mensaje[] = new String[3];
+        mensaje[0]="¡Bienvenido " + listaUsuarios.get(posUsuario).getNombre() + "!";
+        mensaje[1]=listaUsuarios.get(posUsuario).getNombre();
+        mensaje[2]="¡Bienvenido!";
+        if(cantidadLineasJTextPane(bienvenidoMSG, mensaje[0]) == 1) bienvenidoMSG.setText(mensaje[0]);
+        else if(cantidadLineasJTextPane(bienvenidoMSG, mensaje[1]) == 1) bienvenidoMSG.setText(mensaje[1]);
+        else bienvenidoMSG.setText(mensaje[2]);
+
+        System.out.println(cantidadLineasJTextPane(bienvenidoMSG, mensaje[0]));
+        System.out.println(cantidadLineasJTextPane(bienvenidoMSG, mensaje[1]));
+        System.out.println(cantidadLineasJTextPane(bienvenidoMSG, mensaje[2]));
+
         bienvenido.setVisible(true);
         if(listaUsuarios.get(posUsuario).getPuntajeAI()>0 || listaUsuarios.get(posUsuario).getPuntajeJugador()>0)
             puntajeFondo.setVisible(true);
         else
             puntajeFondo.setVisible(false);
         contraseñaBoton.setVisible(true);
+    }
+
+    private static int cantidadLineasJTextPane(JTextPane panel, String texto){
+        String antiguoTexto = panel.getText();
+        panel.setText(texto);
+
+        int caracteres = panel.getText().length();
+        int lineas = (caracteres == 0) ? 1 : 0;
+
+        try {
+            int offset = caracteres;
+            while (offset > 0) {
+                offset = Utilities.getRowStart(panel, offset) - 1;
+                lineas++;
+            }
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+
+        panel.setText(antiguoTexto);
+        return lineas;
     }
 }
