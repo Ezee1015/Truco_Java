@@ -20,7 +20,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 public class InterfazCliente extends JFrame {
-    // La interfaz cliente es quien espera los comandos del cliente para actuar
+    // La interfaz cliente es quien espera los comandos del servidor para actuar
     Cliente client;
 
     // Swing
