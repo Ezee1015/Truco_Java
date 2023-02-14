@@ -99,7 +99,7 @@ public class Registrarse extends JFrame {
                 }
                 Usuario nuevo;
                 try {
-                    nuevo = new Usuario(usuario.getText(),new Encriptacion().encriptar(Truco_Java.ganadasJugador+";sig;"+Truco_Java.ganadasJugador, new String(contraseña.getPassword())));
+                    nuevo = new Usuario(usuario.getText(),new Encriptacion().encriptar(Truco_Java.ganadasJugador+";sig;"+Truco_Java.ganadasAI, new String(contraseña.getPassword())));
                 } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
                         JOptionPane.showMessageDialog(null, "No se puedo crear el usuario. Intente con otra contraseña.");
                         efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
