@@ -424,10 +424,6 @@ public class Truco_Java extends JFrame{
         else if(cantidadLineasJTextPane(bienvenidoMSG, mensaje[1]) == 1) bienvenidoMSG.setText(mensaje[1]);
         else bienvenidoMSG.setText(mensaje[2]);
 
-        System.out.println(cantidadLineasJTextPane(bienvenidoMSG, mensaje[0]));
-        System.out.println(cantidadLineasJTextPane(bienvenidoMSG, mensaje[1]));
-        System.out.println(cantidadLineasJTextPane(bienvenidoMSG, mensaje[2]));
-
         bienvenido.setVisible(true);
         if(listaUsuarios.get(posUsuario).getPuntajeAI()>0 || listaUsuarios.get(posUsuario).getPuntajeJugador()>0)
             puntajeFondo.setVisible(true);
