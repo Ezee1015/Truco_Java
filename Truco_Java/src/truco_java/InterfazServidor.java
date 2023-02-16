@@ -98,7 +98,11 @@ public class InterfazServidor extends JFrame {
                     server = new Servidor(ip, puerto);
                     // Carga los nombres
                     try {
-                        cargarNombreJugador();
+                        // Tengo que hacer una comprobación en caso que el menu EsperarConexion haya
+                        // salido (que cierra el 'server'), y no de tiempo a cerrar la conexión antes de
+                        // la escucha y tire un error
+                        if(server!= null) cargarNombreJugador();
+                        else return;
                     } catch (Exception e) {
                         fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar el nombre del Jugador: " + e.getMessage());

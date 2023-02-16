@@ -56,7 +56,7 @@ public class EsperaServidor extends JFrame {
 
             try {
                   // Cierra el servidor
-                  new Cliente("localhost",puertoNum);
+                  new Cliente("localhost", puertoNum);
                   while(servidor.server==null);
                   servidor.server.killServer();
 
