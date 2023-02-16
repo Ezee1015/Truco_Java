@@ -12,12 +12,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
+
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MenuJugar extends JFrame{
 
@@ -79,9 +85,22 @@ public class MenuJugar extends JFrame{
               public void actionPerformed(ActionEvent e) {
                     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                     efectos.play();
+                    // Chequea que la ip y el puerto ingresado sean correctos
+                    if(ipCliente.getText().isEmpty() || !ipCliente.getText().matches("(\\b25[0-5]|\\b2[0-4][0-9]|\\b[01]?[0-9][0-9]?)(\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}")){
+                          JOptionPane.showMessageDialog(null, "Ha ingresado una dirección IP invalida");
+                          efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                          efectos.play();
+                          return;
+                    }
+                    if(puertoCliente.getText().isEmpty() || !puertoCliente.getText().matches("^((6553[0-5])|(655[0-2][0-9])|(65[0-4][0-9]{2})|(6[0-4][0-9]{3})|([1-5][0-9]{4})|([0-5]{0,5})|([0-9]{1,4}))$")){
+                          JOptionPane.showMessageDialog(null, "Ha ingresado un puerto invalido");
+                          efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                          efectos.play();
+                          return;
+                    }
+
                     setVisible(false);
                     InterfazCliente juego;
-                    // TODO: CHECKEAR QUE SE INGRESARAN BIEN LA IP Y EL PUERTO
                     try {
                           juego = new InterfazCliente(menu, ipCliente.getText(), Integer.parseInt(puertoCliente.getText()), temp);
                           juego.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
@@ -90,10 +109,11 @@ public class MenuJugar extends JFrame{
                           juego.setBounds(0,0,505,800);
                           juego.setLocationRelativeTo(null);
                           juego.setVisible(true);
-                    } catch (IOException ex) {
+                    } catch (Exception ex) {
                           JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar el juego: " + ex.getMessage());
                           efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                           efectos.play();
+                          setVisible(true);
                     }
               }
         };
@@ -115,6 +135,18 @@ public class MenuJugar extends JFrame{
         fondoIp.setBounds(ipCliente.getX(),ipCliente.getY(),ipCliente.getWidth(),ipCliente.getHeight());
         fondoIp.setVisible(true);
         fondo.add(fondoIp);
+        // Habilita solo numeros y puntos
+        ((AbstractDocument)ipCliente.getDocument()).setDocumentFilter(new DocumentFilter(){
+              Pattern regEx = Pattern.compile("\\d*|\\.");
+              @Override
+              public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                  Matcher matcher = regEx.matcher(text);
+                  if(!matcher.matches()){
+                      return;
+                  }
+                  super.replace(fb, offset, length, text, attrs);
+              }
+          });
 
         JLabel puertoClienteLabel = new JLabel("Puerto");
         puertoClienteLabel.setBounds(95, 265, 90, 15);
@@ -139,6 +171,18 @@ public class MenuJugar extends JFrame{
 
         });
         puertoCliente.addActionListener(conectarAction);
+        // Habilita solo numeros
+        ((AbstractDocument)puertoCliente.getDocument()).setDocumentFilter(new DocumentFilter(){
+              Pattern regEx = Pattern.compile("\\d*");
+              @Override
+              public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                  Matcher matcher = regEx.matcher(text);
+                  if(!matcher.matches()){
+                      return;
+                  }
+                  super.replace(fb, offset, length, text, attrs);
+              }
+          });
 
 
         JButton conectar = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/conectarBoton.png")).getScaledInstance(140, 40, Image.SCALE_SMOOTH)));
@@ -157,9 +201,15 @@ public class MenuJugar extends JFrame{
               public void actionPerformed(ActionEvent e) {
                     efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                     efectos.play();
+                    if(puertoServer.getText().isEmpty() || !puertoServer.getText().matches("^((6553[0-5])|(655[0-2][0-9])|(65[0-4][0-9]{2})|(6[0-4][0-9]{3})|([1-5][0-9]{4})|([0-5]{0,5})|([0-9]{1,4}))$")){
+                          JOptionPane.showMessageDialog(null, "Ha ingresado un puerto invalido");
+                          efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                          efectos.play();
+                          return;
+                    }
+
                     setVisible(false);
                     InterfazServidor juego;
-                    // TODO: CHECKEAR QUE SE INGRESARAN BIEN LA IP Y EL PUERTO
                     try {
                           juego = new InterfazServidor(menu, "localhost", Integer.parseInt(puertoServer.getText()), temp);
                           juego.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
