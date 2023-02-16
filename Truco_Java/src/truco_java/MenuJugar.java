@@ -255,14 +255,12 @@ public class MenuJugar extends JFrame{
               jugador.setContentAreaFilled(false);
               jugador.setBorderPainted(false);
               jugador.addActionListener((ActionEvent e) -> {
-                    for(int x=0;x<fondos.size();x++){
-                          try {
-                                fondos.get(x).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugadores/fondoInactivo.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
-                          } catch (Exception ex) {
-                                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar la imagen de fondo: " + ex.getMessage());
-                                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                                efectos.play();
-                          }
+                    try {
+                          fondos.get(numeroJugador).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugadores/fondoInactivo.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
+                    } catch (Exception ex) {
+                          JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar la imagen de fondo: " + ex.getMessage());
+                          efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                          efectos.play();
                     }
                     try {
                           fondos.get(pos).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugadores/fondo.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
@@ -280,10 +278,13 @@ public class MenuJugar extends JFrame{
               fondos.add(fondoJugador);
               fondo.add(fondoJugador);
               fondoJugador.add(jugador);
-              for(int x=0;x<fondos.size();x++)
-                    fondos.get(x).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugadores/fondoInactivo.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
-              fondos.get(0).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugadores/fondo.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
         }
+        // Coloca los fondos inactivos
+        for(int x=0;x<fondos.size();x++)
+              fondos.get(x).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugadores/fondoInactivo.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
+        // Activa la primera seleccion
+        fondos.get(0).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugadores/fondo.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
+        numeroJugador=0;
 
         // Barra 1
         JLabel barra1 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/division.png")).getScaledInstance(188, 4, Image.SCALE_SMOOTH)));
