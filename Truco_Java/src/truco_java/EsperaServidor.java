@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -25,7 +26,7 @@ public class EsperaServidor extends JFrame {
     JButton atras = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
     private static final Music efectos = new Music();
 
-  public EsperaServidor (MenuJugar menu, int puertoNum) throws IOException {
+  public EsperaServidor (MenuJugar menu, int puertoNum, InterfazServidor servidor) throws IOException {
         setLayout(null);
         setDefaultCloseOperation(3);
 
@@ -52,9 +53,22 @@ public class EsperaServidor extends JFrame {
         atras.addActionListener((ActionEvent e) -> {
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
-            menu.setVisible(true);
-            setVisible(false);
-            dispose();
+
+            try {
+                  // Cierra el servidor
+                  new Cliente("localhost",puertoNum);
+                  while(servidor.server==null);
+                  servidor.server.killServer();
+
+                  // Cierra la ventana y aparece el menu
+                  menu.setVisible(true);
+                  setVisible(false);
+                  dispose();
+            } catch (Exception ex) {
+                  JOptionPane.showMessageDialog(null, "Ha sucedido un error al cerrar la conexión: " + ex.getMessage());
+                  efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                  efectos.play();
+            }
         });
 
         JLabel esperando = new JLabel("Esperando conexion");

@@ -25,7 +25,7 @@ import javax.swing.text.StyledDocument;
 public class InterfazServidor extends JFrame {
     // La interfaz Servidor es la que comanda la ejecución del juego, y quien ordena
     // y organiza todo
-    Servidor server;
+    public Servidor server;
 
     // Swing
     private ArrayList<Carta> mazo = new ArrayList<>();
@@ -89,7 +89,7 @@ public class InterfazServidor extends JFrame {
         cargarMazo();
 
         InterfazServidor interfaz = this;
-        EsperaServidor esperar = new EsperaServidor(menuJugar, puerto);
+        EsperaServidor esperar = new EsperaServidor(menuJugar, puerto, this);
 
         Thread esperarThread = new Thread(){
             public void run(){

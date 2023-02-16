@@ -35,4 +35,17 @@ public class Conexion
             cs = new Socket(HOST, PUERTO);
         }
     }
+
+    public void killServer(){
+        if(!tipo.equals("servidor"))
+            return;
+        try {
+            ss.close();
+            cs.close();
+        } catch (Exception e) {
+            System.out.println("nooooo");
+        }
+        ss = null;
+        cs = null;
+    }
 }
