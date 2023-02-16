@@ -71,7 +71,7 @@ public class Servidor extends Conexion{
     }
 
     public void enviaKill() throws IOException{
-            enviaMensaje("kill");
+        enviaMensaje("kill");
     }
 
     public void enviaPuntaje(int puntajeJugador, int puntajeOponente) throws IOException{
