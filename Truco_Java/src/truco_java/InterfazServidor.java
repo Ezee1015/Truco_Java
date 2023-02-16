@@ -913,15 +913,8 @@ public class InterfazServidor extends JFrame {
         atras.addActionListener((ActionEvent e) -> {
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
-            // Si todavia no comenzo la partida
-            if(repartir.isEnabled()){
-                menuJugar.setVisible(true);
-                termino=true;
-                dispose();
-                return;
-            }
 
-            // Si se quiere sallir en medio de la partida
+            // Si se quiere salir en medio de la partida
             int dialogResult = JOptionPane.showConfirmDialog (null, "Está seguro que desea abandonar la partida?\nSe declarará a " + nombreOponente + " como ganador...","Atención!",JOptionPane.YES_NO_OPTION);
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
@@ -936,6 +929,7 @@ public class InterfazServidor extends JFrame {
                 }
                 menuJugar.setVisible(true);
                 dispose();
+                server.killServer();
             }
         });
 
@@ -978,6 +972,7 @@ public class InterfazServidor extends JFrame {
             termino=true;
             otraPartida();
             dispose();
+            server.killServer();
         }
         if(oponentePunt==15){
             try {
@@ -996,6 +991,7 @@ public class InterfazServidor extends JFrame {
             termino=true;
             otraPartida();
             dispose();
+            server.killServer();
         }
     }
 
@@ -2230,6 +2226,7 @@ public class InterfazServidor extends JFrame {
                 JOptionPane.showMessageDialog(null, "El oponente " + nombreOponente + " se ha retirado. Has ganado!");
                 menu.setVisible(true);
                 dispose();
+                server.killServer();
                 break;
             case "truco":
                 int nivelTrucoTemp = Integer.parseInt(scanf.next());

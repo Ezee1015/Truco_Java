@@ -746,13 +746,6 @@ public class InterfazCliente extends JFrame {
         atras.addActionListener((ActionEvent e) -> {
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
-            // Si todavia no comenzo la partida
-            if(repartir.isEnabled()){
-                menuJugar.setVisible(true);
-                termino=true;
-                dispose();
-                return;
-            }
 
             // Si se quiere salir en medio de la partida
             int dialogResult = JOptionPane.showConfirmDialog (null, "Está seguro que desea abandonar la partida?\nSe declarará a " + nombreOponente + " como ganador...","Atención!",JOptionPane.YES_NO_OPTION);
