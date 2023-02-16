@@ -43,7 +43,6 @@ public class Conexion
             ss.close();
             cs.close();
         } catch (Exception e) {
-            System.out.println("nooooo");
         }
         ss = null;
         cs = null;
