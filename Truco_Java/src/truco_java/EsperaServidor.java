@@ -56,7 +56,7 @@ public class EsperaServidor extends JFrame {
 
             try {
                   // Cierra el servidor
-                  new Cliente("localhost", puertoNum);
+                  new Cliente("127.0.0.1", puertoNum);
                   while(servidor.server==null);
                   servidor.server.killServer();
 
@@ -129,13 +129,13 @@ public class EsperaServidor extends JFrame {
                     }
               }
         } catch (Exception e) {
-              return "localhost";
+              return "127.0.0.1";
         }
 
         for (String i : IPs) {
             if(i.substring(0,7).equals(plantillaIP))
                   return i;
         }
-        return "localhost";
+        return "127.0.0.1";
   }
 }
