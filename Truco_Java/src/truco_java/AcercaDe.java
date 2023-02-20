@@ -66,7 +66,7 @@ public class AcercaDe extends JFrame {
         atras.setEnabled(false);
         fondo.add(atras);
         atras.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efectos.setFile("src/truco_java/musica/tirarCarta.wav", 1);
             efectos.play();
             determinarDescripcion(false);
         });
@@ -80,7 +80,6 @@ public class AcercaDe extends JFrame {
         adelante.setEnabled(true);
         fondo.add(adelante);
         adelante.addActionListener((ActionEvent e) -> {
-            // efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.setFile("src/truco_java/musica/tirarCarta.wav", 1);
             efectos.play();
             determinarDescripcion(true);
