@@ -5,8 +5,12 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.awt.Desktop;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -304,12 +308,19 @@ public class Truco_Java extends JFrame{
         fondo.add(movCartas);
 
         // Créditos
-        JLabel creditos = new JLabel("Versión 3.2 | Creado por Leonardo D.S. - Licencia GPL");
-        creditos.setBounds(10, 440, 490, 35);
+        JLabel creditos = new JLabel("   Versión 3.2 | Creado por Leonardo D.S. - Licencia GPL");
+        creditos.setBounds(0, 443, 500, 30);
         creditos.setFont(new Font("Arial", Font.BOLD, 14));
         creditos.setForeground(Color.WHITE);
         creditos.setVisible(true);
         fondo.add(creditos);
+        creditos.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    Desktop.getDesktop().browse(new URL("https://github.com/Ezee1015/Truco_Java").toURI());
+                } catch (Exception ex) {}
+            }
+        });
 
         // Fondo puntaje
         puntajeFondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg0.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
