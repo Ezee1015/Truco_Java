@@ -304,7 +304,7 @@ public class Truco_Java extends JFrame{
         fondo.add(movCartas);
 
         // Créditos
-        JLabel creditos = new JLabel("Creado por Leonardo D.S. - 2022 - Licencia GPL v3.0");
+        JLabel creditos = new JLabel("Versión 3.1 | Creado por Leonardo D.S. - Licencia GPL");
         creditos.setBounds(10, 440, 490, 35);
         creditos.setFont(new Font("Arial", Font.BOLD, 14));
         creditos.setForeground(Color.WHITE);
