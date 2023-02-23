@@ -1092,15 +1092,14 @@ public class InterfazServidor extends JFrame {
         manos.add(PC2);
         manos.add(PC3);
 
-        for(int i=0;i<jugador.getMano().size();i++){
-            if(jugador.getPosMano()[i]==-1){
-               manos.get(i).setVisible(false);
-               manos.get(i).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+        for(int i=0;i<3;i++){
+            if(jugador.getPosMano()[i]<0){
+                manos.get(i).setVisible(false);
+                manos.get(i).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
             } else {
-               manos.get(i).setVisible(true);
-               manos.get(i).setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(jugador.getPosMano()[i]).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+                manos.get(i).setVisible(true);
+                manos.get(i).setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(jugador.getPosMano()[i]).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
             }
-
         }
 
         //switch (jugador.getMano().size()) {
