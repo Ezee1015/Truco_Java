@@ -47,6 +47,7 @@ public class InterfazServidor extends JFrame {
     private JTextPane estado;
     private boolean termino = false;
     private JLabel fondoConexion = new JLabel(new ImageIcon("src/truco_java/fondos/turnoJugador.png"));
+    JLabel puntajeFondo;
 
     // Jugadores
     private Persona jugador = new Persona(null, false);
@@ -113,6 +114,7 @@ public class InterfazServidor extends JFrame {
                     interfaz.setVisible(true);
                     esperar.dispose();
                     setFondo(0);
+                    puntajeFondo.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg"+ numeroPersonaje +".png")).getScaledInstance(100, 150, Image.SCALE_SMOOTH)));
                 } catch(IOException er){
                     fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                     JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
@@ -895,7 +897,7 @@ public class InterfazServidor extends JFrame {
         });
 
         // Fondo puntaje
-        JLabel puntajeFondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg"+ numeroPersonaje +".png")).getScaledInstance(100, 150, Image.SCALE_SMOOTH)));
+        puntajeFondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg"+ numeroPersonaje +".png")).getScaledInstance(100, 150, Image.SCALE_SMOOTH)));
         puntajeFondo.setBounds(390, 10, 100, 150);
         puntajeFondo.setVisible(true);
         fondo.add(puntajeFondo);
