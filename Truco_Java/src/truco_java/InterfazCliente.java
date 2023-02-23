@@ -1387,7 +1387,7 @@ public class InterfazCliente extends JFrame {
                         efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                         efectos.play();
                     }
-                    if(habilitadoARetrucar==2 || habilitadoARetrucar==0)
+                    if((habilitadoARetrucar==2 || habilitadoARetrucar==0) && nivelTruco!=3)
                         truco.setEnabled(true);
                     else
                         truco.setEnabled(false);
