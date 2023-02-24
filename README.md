@@ -2,14 +2,14 @@
 ![Logo](Truco_Java/src/truco_java/fondos/logo.png)
 
 ## ¿Qué es?
-Esta aplicación es un [juego de *truco argentino*](https://es.wikipedia.org/wiki/Truco_argentino) hecho en *java* (mediante [ant](https://en.wikipedia.org/wiki/Apache_Ant),[Neovim](http://neovim.io/) y [NetBeans](https://es.wikipedia.org/wiki/NetBeans)). En este juego podrás jugar con un amigo por red local o una partida rápida, con una inteligencia que tiene dos modos:
+Esta aplicación es un [juego de *truco argentino*](https://es.wikipedia.org/wiki/Truco_argentino) hecho en *java* (mediante [ant](https://en.wikipedia.org/wiki/Apache_Ant),[Neovim](http://neovim.io/) y [NetBeans](https://es.wikipedia.org/wiki/NetBeans)). En este juego podrás jugar con un amigo por red o una partida rápida, con una inteligencia que tiene dos modos:
 * Normal: En donde la "Inteligencia" (algoritmo) puede mentir, y jugar de manera más astuta/inteligente.
 * Fácil: Ideado para principiante que comienzan en el truco. Las partidas que se ganen o pierdan, no seran contadas en el puntaje de partidas ganadas.
 
 Ah, por cierto, esta versión [no contiene la opción de cantar 'flor'](https://github.com/Ezee1015/Truco_Java#por-qu%C3%A9-este-juego-no-tiene-flor).
 
 ## Modo Multijugador por LAN
-Este juego, además de ofrecer la posibilidad de jugar contra la aplicación (un algoritmo), dispone de un modo multijugador en el cual podrás jugar con tus amigos en una partida de 1 vs 1 dentro de la misma red local. Ambos modos NO requieren de acceso a internet.
+Este juego, además de ofrecer la posibilidad de jugar contra la aplicación (un algoritmo), dispone de un modo multijugador en el cual podrás jugar con tus amigos en una partida de 1 vs 1 dentro de la misma red local o fuera de ella (con Internet, gracias a la implementación P2P). Ambos modos NO requieren de acceso a internet.
 
 ## ¿Cómo se juega el Truco argentino?
 [En este link de Wikipedia](https://es.wikipedia.org/wiki/Truco_argentino) hay una interesante guía sobre la historia del truco.
