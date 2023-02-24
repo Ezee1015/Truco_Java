@@ -1649,6 +1649,10 @@ public class InterfazServidor extends JFrame {
                 texto = "Falta Envido!";
                 if(numeroPersonaje==5) texto = "Falta Envido my mate!";
                 break;
+            case 5:
+                texto = "Quiero!";
+                if(numeroPersonaje==5) texto = "Easy peasy. Quiero!";
+                break;
         }
 
         estado.setText(texto);
@@ -2123,8 +2127,8 @@ public class InterfazServidor extends JFrame {
                 habilitadoARetrucar = Integer.parseInt(scanf.next());
                 setFondo(1);
 
+                imprimeAIEnvido(nivel, false);
                 if(nivel==-1){
-                    imprimeAIEnvido(-1, false);
                     jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoPerdido(), this);
                     envidoFinalizado=true;
                     envido.setEnabled(false);
@@ -2151,7 +2155,6 @@ public class InterfazServidor extends JFrame {
                         efectos.play();
                     }
                 } else if(nivel<5){
-                    imprimeAIEnvido(nivel, false);
                     envidosCantados.add(nivel);
                     PC1Enabled=false;
                     PC2Enabled=false;

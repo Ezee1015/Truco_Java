@@ -1040,8 +1040,8 @@ public class InterfazCliente extends JFrame {
                 if(numeroPersonaje==5) texto = "Falta Envido my mate!";
                 break;
             case 5:
-                estado.setText("Quiero!");
-                if(numeroPersonaje==5) estado.setText("Easy peasy. Quiero!");
+                texto = "Quiero!";
+                if(numeroPersonaje==5) texto = "Easy peasy. Quiero!";
                 break;
         }
 
