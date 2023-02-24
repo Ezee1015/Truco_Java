@@ -2306,6 +2306,13 @@ public class InterfazServidor extends JFrame {
                     if(nivelTrucoTemp==3) truco.setEnabled(false);
                     else truco.setEnabled(true);
                     fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
+                    try {
+                        dibujarBotones();
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes o sonidos: " + e.getMessage());
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
+                    }
                 } else {
                     truco.setEnabled(false);
                     quieroTruco.setVisible(false);

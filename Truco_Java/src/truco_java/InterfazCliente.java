@@ -1599,6 +1599,13 @@ public class InterfazCliente extends JFrame {
                     quieroTruco.setVisible(true);
                     noQuieroTruco.setVisible(true);
                     nivelTruco=nivelTrucoTemp;
+                    try {
+                        dibujarBotones();
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes o sonidos: " + e.getMessage());
+                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efectos.play();
+                    }
                 } else {
                     truco.setEnabled(false);
                     quieroTruco.setVisible(false);
