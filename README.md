@@ -8,8 +8,8 @@ Esta aplicación es un [juego de *truco argentino*](https://es.wikipedia.org/wik
 
 Ah, por cierto, esta versión [no contiene la opción de cantar 'flor'](https://github.com/Ezee1015/Truco_Java#por-qu%C3%A9-este-juego-no-tiene-flor).
 
-## Modo Multijugador por LAN
-Este juego, además de ofrecer la posibilidad de jugar contra la aplicación (un algoritmo), dispone de un modo multijugador en el cual podrás jugar con tus amigos en una partida de 1 vs 1 dentro de la misma red local o fuera de ella (con Internet, gracias a la implementación P2P). Ambos modos NO requieren de acceso a internet.
+## Modo Multijugador por LAN o Internet
+Este juego, además de ofrecer la posibilidad de jugar contra la aplicación (un algoritmo), dispone de un modo multijugador en el cual podrás jugar con tus amigos en una partida de 1 vs 1 dentro de la misma red local. Estos últimos dos modos NO requieren de acceso a internet. También está la opción, con Internet, gracias a la implementación P2P, que permite jugar a dos personas en diferentes redes.
 
 ## ¿Cómo se juega el Truco argentino?
 [En este link de Wikipedia](https://es.wikipedia.org/wiki/Truco_argentino) hay una interesante guía sobre la historia del truco.
