@@ -1008,7 +1008,7 @@ public class InterfazServidor extends JFrame {
 
         if(jugadorPunt==15){
             try {
-                server.enviaMensaje("Termino el Juego. Ganó " + nombreJugador + ". Será la próxima...");
+                server.enviaMensaje("imprimir Termino el Juego. Ganó " + nombreJugador + ". Será la próxima...");
                 server.enviaKill();
             } catch (Exception e) {
                 fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
@@ -1027,7 +1027,7 @@ public class InterfazServidor extends JFrame {
         }
         if(oponentePunt==15){
             try {
-                server.enviaMensaje( "Termino el Juego. Has ganado! Felicidades");
+                server.enviaMensaje("imprimir Termino el Juego. Has ganado! Felicidades");
                 server.enviaKill();
             } catch (Exception e) {
                 fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
