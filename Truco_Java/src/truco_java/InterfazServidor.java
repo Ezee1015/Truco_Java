@@ -419,6 +419,14 @@ public class InterfazServidor extends JFrame {
             efectos.play();
             envidosCantados.add(1);
             truco.setEnabled(false);
+            try {
+                nivelTruco=0;
+                dibujarBotones();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
+            }
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
             quieroEnv.setVisible(false);
@@ -464,6 +472,14 @@ public class InterfazServidor extends JFrame {
             efectos.play();
             envidosCantados.add(2);
             truco.setEnabled(false);
+            try {
+                nivelTruco=0;
+                dibujarBotones();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
+            }
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
             quieroEnv.setVisible(false);
@@ -509,6 +525,14 @@ public class InterfazServidor extends JFrame {
             efectos.play();
             envidosCantados.add(3);
             truco.setEnabled(false);
+            try {
+                nivelTruco=0;
+                dibujarBotones();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
+            }
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
             quieroEnv.setVisible(false);
@@ -554,6 +578,14 @@ public class InterfazServidor extends JFrame {
             efectos.play();
             envidosCantados.add(4);
             truco.setEnabled(false);
+            try {
+                nivelTruco=0;
+                dibujarBotones();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
+            }
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
             quieroEnv.setVisible(false);
@@ -685,6 +717,8 @@ public class InterfazServidor extends JFrame {
             PC2Enabled=true;
             PC3Enabled=true;
             try {
+                nivelTruco=0;
+                dibujarBotones();
                 dibujarPuntaje();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el dibujar el puntaje: " + ex.getMessage());
@@ -746,6 +780,8 @@ public class InterfazServidor extends JFrame {
             thread.start();
             setFondo(0);
             try {
+                nivelTruco=0;
+                dibujarBotones();
                 dibujarPuntaje();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de dibujar los puntajes: " + ex.getMessage());
