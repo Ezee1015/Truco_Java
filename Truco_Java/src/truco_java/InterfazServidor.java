@@ -375,6 +375,14 @@ public class InterfazServidor extends JFrame {
             efectos.setFile("src/truco_java/musica/boton.wav", 1);
             efectos.play();
             fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
+            try{
+                server.enviaMensaje("imprimir " + nombreJugador + " se ha ido al mazo. Repartiendo...");
+            } catch(IOException er){
+                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + er.getMessage());
+                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efectos.play();
+            }
             JOptionPane.showMessageDialog(null, "Te has ido al mazo. Repartiendo...");
             efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
             efectos.play();
@@ -2323,6 +2331,7 @@ public class InterfazServidor extends JFrame {
                 if(!envidoFinalizado && jugador.getCartasJugadas().isEmpty())
                     puntos++;
                 jugador.setPuntaje(jugador.getPuntaje() + puntos + calcularTrucoGanado(), this);
+                JOptionPane.showMessageDialog(null, nombreOponente + " se ha ido al mazo. Repartiendo...");
                 try {
                     otraPartida();
                 } catch (IOException ex) {
