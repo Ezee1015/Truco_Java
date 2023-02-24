@@ -630,6 +630,7 @@ public class InterfazServidor extends JFrame {
             efectos.setFile("src/truco_java/musica/boton.wav", 1);
             efectos.play();
             envidosCantados.add(5);
+            envidoFinalizado=true;
             Thread thread = new Thread(){
                 public void run(){
                     try {
@@ -757,6 +758,7 @@ public class InterfazServidor extends JFrame {
             efectos.setFile("src/truco_java/musica/boton.wav", 1);
             efectos.play();
             envidosCantados.add(-1);
+            envidoFinalizado=true;
             quieroEnv.setVisible(false);
             noQuieroEnv.setVisible(false);
             envido.setEnabled(false);
@@ -2180,6 +2182,7 @@ public class InterfazServidor extends JFrame {
                     }
                     fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
                 } else {
+                    envidoFinalizado=true;
                     if (jugador.calcularEnvido() > oponente.calcularEnvido()) { //Si gana el jugador
                         try{
                             server.enviaMensaje("imprimir Has Perdido. " + nombreJugador + " tenía " + jugador.calcularEnvido() + " de envido.");
