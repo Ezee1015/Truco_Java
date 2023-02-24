@@ -185,6 +185,8 @@ public class InterfazServidor extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            truco.setEnabled(false);
+            irAlMazo.setEnabled(false);
             try {
                 tirarCarta(0);
             } catch (IOException ex) {
@@ -215,6 +217,8 @@ public class InterfazServidor extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            truco.setEnabled(false);
+            irAlMazo.setEnabled(false);
             try {
                 tirarCarta(1);
             } catch (IOException ex) {
@@ -245,6 +249,8 @@ public class InterfazServidor extends JFrame {
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
+            truco.setEnabled(false);
+            irAlMazo.setEnabled(false);
             try {
                 tirarCarta(2);
             } catch (IOException ex) {
@@ -383,9 +389,7 @@ public class InterfazServidor extends JFrame {
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                 efectos.play();
             }
-            JOptionPane.showMessageDialog(null, "Te has ido al mazo. Repartiendo...");
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
+            ThreadOptionPane("Te has ido al mazo. Repartiendo...");
             int puntos=0;
             if(!envidoFinalizado && oponente.getCartasJugadas().isEmpty())
                 puntos++;
@@ -656,9 +660,7 @@ public class InterfazServidor extends JFrame {
                     efectos.play();
                 }
                 fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
-                JOptionPane.showMessageDialog(null, "Has ganado. " + nombreOponente + " tenía " + oponente.calcularEnvido() + " de envido.");
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                ThreadOptionPane("Has ganado. " + nombreOponente + " tenía " + oponente.calcularEnvido() + " de envido.");
                 jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(oponente.getPuntaje()), this);
             }
             else if (jugador.calcularEnvido() < oponente.calcularEnvido()) { // Si gana el oponente
@@ -671,9 +673,7 @@ public class InterfazServidor extends JFrame {
                     efectos.play();
                 }
                 fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
-                JOptionPane.showMessageDialog(null, "Has perdido. " + nombreOponente + " tenía " + oponente.calcularEnvido() + " de envido.");
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                ThreadOptionPane("Has perdido. " + nombreOponente + " tenía " + oponente.calcularEnvido() + " de envido.");
                 oponente.setPuntaje(oponente.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()), this);
             }
             else if (jugador.calcularEnvido() == oponente.calcularEnvido()) { // Si empatan...
@@ -682,14 +682,12 @@ public class InterfazServidor extends JFrame {
                         server.enviaMensaje("imprimir Empate (" + jugador.calcularEnvido() + " de envido). Has perdido, " + nombreJugador + " es mano");
                     } catch(IOException er){
                         fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + er.getMessage());
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + er.getMessage());
                         efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
                         efectos.play();
                     }
                     fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
-                    JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has ganado por mano");
-                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    efectos.play();
+                    ThreadOptionPane("Empate (" + jugador.calcularEnvido() + " de envido). Has ganado por mano");
                     jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(oponente.getPuntaje()), this);
                 } else { // .. y el oponente es mano
                     try{
@@ -701,9 +699,7 @@ public class InterfazServidor extends JFrame {
                         efectos.play();
                     }
                     fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
-                    JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has perdido, " + nombreOponente + " es mano");
-                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    efectos.play();
+                    ThreadOptionPane("Empate (" + jugador.calcularEnvido() + " de envido). Has perdido, " + nombreOponente + " es mano");
                     oponente.setPuntaje(oponente.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()), this);
                 }
             }
@@ -1368,9 +1364,7 @@ public class InterfazServidor extends JFrame {
         if(compruebaSiTerminoPartida()==1) {
             server.enviaMensaje("imprimir Termino la Partida. Ha ganado " + nombreJugador);
             fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
-            JOptionPane.showMessageDialog(null, "Termino la Partida. Ganaste!");
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
+            ThreadOptionPane("Termino la Partida. Ganaste!");
             // Suma puntos al ganador
             jugador.setPuntaje(jugador.getPuntaje() + calcularTrucoGanado(), this);
             otraPartida();
@@ -1380,9 +1374,7 @@ public class InterfazServidor extends JFrame {
         if(compruebaSiTerminoPartida()==2) {
             server.enviaMensaje("imprimir Termino la Partida. Ganaste!");
             fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
-            JOptionPane.showMessageDialog(null, "Termino la Partida. Ha ganado " + nombreOponente + ".");
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
+            ThreadOptionPane("Termino la Partida. Ha ganado " + nombreOponente + ".");
             // Suma puntos al ganador
             oponente.setPuntaje(oponente.getPuntaje() + calcularTrucoGanado(), this);
             otraPartida();
@@ -2193,9 +2185,7 @@ public class InterfazServidor extends JFrame {
                             efectos.play();
                         }
                         fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
-                        JOptionPane.showMessageDialog(null, "Has ganado. " + nombreOponente + " tenía " + oponente.calcularEnvido() + " de envido.");
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        ThreadOptionPane("Has ganado. " + nombreOponente + " tenía " + oponente.calcularEnvido() + " de envido.");
                         jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(oponente.getPuntaje()), this);
                     }
                     else if (jugador.calcularEnvido() < oponente.calcularEnvido()) { // Si gana el oponente
@@ -2208,9 +2198,7 @@ public class InterfazServidor extends JFrame {
                             efectos.play();
                         }
                         fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
-                        JOptionPane.showMessageDialog(null, "Has perdido. " + nombreOponente + " tenía " + oponente.calcularEnvido() + " de envido.");
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        ThreadOptionPane("Has perdido. " + nombreOponente + " tenía " + oponente.calcularEnvido() + " de envido.");
                         oponente.setPuntaje(oponente.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()), this);
                     }
                     else if (jugador.calcularEnvido() == oponente.calcularEnvido()) { // Si empatan...
@@ -2224,9 +2212,7 @@ public class InterfazServidor extends JFrame {
                                 efectos.play();
                             }
                             fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
-                            JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has ganado por mano");
-                            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                            efectos.play();
+                            ThreadOptionPane("Empate (" + jugador.calcularEnvido() + " de envido). Has ganado por mano");
                             jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(oponente.getPuntaje()), this);
                         } else { // .. y el oponente es mano
                             try{
@@ -2238,9 +2224,7 @@ public class InterfazServidor extends JFrame {
                                 efectos.play();
                             }
                             fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
-                            JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has perdido, " + nombreOponente + " es mano");
-                            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                            efectos.play();
+                            ThreadOptionPane("Empate (" + jugador.calcularEnvido() + " de envido). Has perdido, " + nombreOponente + " es mano");
                             oponente.setPuntaje(oponente.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()), this);
                         }
                     }
@@ -2323,9 +2307,7 @@ public class InterfazServidor extends JFrame {
                     if(nivelTrucoTemp==-1){
                         jugador.setPuntaje(jugador.getPuntaje() + calcularTrucoPerdido(), this);
                         fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
-                        JOptionPane.showMessageDialog(null, "" + nombreOponente + " ha rechazado el Truco. Repartiendo...");
-                        efectos.setFile("src/truco_java/musica/boton.wav", 1);
-                        efectos.play();
+                        ThreadOptionPane("" + nombreOponente + " ha rechazado el Truco. Repartiendo...");
                         try {
                             otraPartida();
                         } catch (Exception e) {
@@ -2366,21 +2348,14 @@ public class InterfazServidor extends JFrame {
                 }
                 else nombreOponente = nombreOponente.substring(0, 1).toUpperCase()+nombreOponente.substring(1);
 
-                Thread thread = new Thread(){
-                    public void run(){
-                        JOptionPane.showMessageDialog(null, "Has entrado a la sala de " + nombreOponente + ".\n Aprete el mazo para repartir y comenzar a jugar...");
-                        efectos.setFile("src/truco_java/musica/boton.wav", 1);
-                        efectos.play();
-                    }
-                };
-                thread.start();
+                ThreadOptionPane("Has entrado a la sala de " + nombreOponente + ".\n Aprete el mazo para repartir y comenzar a jugar...");
                 break;
             case "mazo":
                 int puntos=0;
                 if(!envidoFinalizado && jugador.getCartasJugadas().isEmpty())
                     puntos++;
                 jugador.setPuntaje(jugador.getPuntaje() + puntos + calcularTrucoGanado(), this);
-                JOptionPane.showMessageDialog(null, nombreOponente + " se ha ido al mazo. Repartiendo...");
+                ThreadOptionPane(nombreOponente + " se ha ido al mazo. Repartiendo...");
                 try {
                     otraPartida();
                 } catch (IOException ex) {
@@ -2428,5 +2403,19 @@ public class InterfazServidor extends JFrame {
                 } catch (Exception er) {}
             }
         }
+    }
+
+    // En la mayoría de los JOptionPane no es necesario utiliza un thread, pero en
+    // ciertos casos, donde la comunicación tiene que ser inmediata y no esperar la
+    // respuesta del usuario, es requerido colocar al JOptionPane en un Thread
+    private void ThreadOptionPane(String mensaje){
+        Thread thread = new Thread(){
+            public void run(){
+                JOptionPane.showMessageDialog(null, mensaje);
+                efectos.setFile("src/truco_java/musica/boton.wav", 1);
+                efectos.play();
+            }
+        };
+        thread.start();
     }
 }

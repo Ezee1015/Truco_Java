@@ -137,6 +137,8 @@ public class InterfazCliente extends JFrame {
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
             fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+            truco.setEnabled(false);
+            irAlMazo.setEnabled(false);
             try {
                 tirarCarta(0);
             } catch (IOException ex) {
@@ -168,6 +170,8 @@ public class InterfazCliente extends JFrame {
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
             fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+            truco.setEnabled(false);
+            irAlMazo.setEnabled(false);
             try {
                 tirarCarta(1);
             } catch (IOException ex) {
@@ -199,6 +203,8 @@ public class InterfazCliente extends JFrame {
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
             fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+            truco.setEnabled(false);
+            irAlMazo.setEnabled(false);
             try {
                 tirarCarta(2);
             } catch (IOException ex) {
