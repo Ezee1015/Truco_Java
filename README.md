@@ -62,6 +62,9 @@ Por lo que por ambas razones anteriores, dicidí no incluirlo.
 ## No funciona el audio y no funciona correctamente el juego :-(
 Si no funciona el audio a través de la solución multimedia que incluye Java por defecto, se puede optar por instalar mpv para hacer funcionar el audio por esa alternativa. En caso que el juego no puede reproducir audio por ninguna de esas vías, se corrompe, por lo tanto, para poder hacer que el juego funcione correctamente, se puede desactivar el sonido desde el menú principal. Con esto el juego no reproducirá ningún sonido, y por ende no se romperá.
 
+## En Windows se abre como un archivo comprimido
+Este es un problema con la configuración por defecto configurada para la apertura de archivos .jar. [Puede solucionarlo siguiendo estas instrucciones](https://stackoverflow.com/questions/57699084/how-to-open-a-jar-file-by-default-on-windows-10-64-bit)
+
 ## Disclaimer
 Muchas gracias por haberse interesado en este juego. No se pretende ni se tiene la intención de ofender, insultar ni discriminar a nadie. Esta aplicación fue diseñada en forma humorística para divertir a sus jugadores. No es nuestra intensión perjudicar a ninguna persona y pedimos disculpas de antemano.
 
