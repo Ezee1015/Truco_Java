@@ -196,7 +196,15 @@ public class EsperaServidor extends JFrame {
                     return br.readLine();
               }
         } catch (Exception e) {
-              return "Desconocido";
+              urlString = "https://icanhazip.com/";
+              try {
+                    URL url = new URL(urlString);
+                    try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()))) {
+                          return br.readLine();
+                    }
+              } catch (Exception ex) {
+                    return "Desconocido";
+              }
         }
   }
 }
