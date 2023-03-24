@@ -59,10 +59,10 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ezee1015/Truco_Java/main
 
 Por lo que por ambas razones anteriores, dicidí no incluirlo.
 
-## No funciona el audio y no funciona correctamente el juego :-(
+## ¿Qué hago si no funciona el audio y no funciona correctamente el juego? :-(
 Si no funciona el audio a través de la solución multimedia que incluye Java por defecto, se puede optar por instalar mpv para hacer funcionar el audio por esa alternativa. En caso que el juego no puede reproducir audio por ninguna de esas vías, se corrompe, por lo tanto, para poder hacer que el juego funcione correctamente, se puede desactivar el sonido desde el menú principal. Con esto el juego no reproducirá ningún sonido, y por ende no se romperá.
 
-## En Windows se abre como un archivo comprimido
+## ¿Qué hago si en Windows se abre como un archivo comprimido? :-(
 Este es un problema con la configuración por defecto configurada para la apertura de archivos .jar. [Puede solucionarlo siguiendo estas instrucciones](https://stackoverflow.com/questions/57699084/how-to-open-a-jar-file-by-default-on-windows-10-64-bit) o [estas instrucciones](https://stackoverflow.com/questions/394616/running-jar-file-on-windows)
 
 ## Disclaimer
