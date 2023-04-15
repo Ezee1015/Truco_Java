@@ -27,13 +27,14 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ezee1015/Truco_Java/main
 ```
 
 ## Screenshots
-### Menus
+<h3>Menus</h3>
 <div style=" display:flex; flex-direction: row">
   <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/menu.png" alt="Menu" style="width: 380px;;">
   <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/menujugar.png" alt="Menu" style="width: 380px;">
   <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/registro.png" alt="Menu" style="width: 380px;;">
   <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/login.png" alt="Menu" style="width: 380px;">
 <div>
+<hr>
 <h3>Multijugador</h3>
 <div style=" display:flex; flex-direction: row">
   <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/cliente1.png" alt="Menu" style="width: 380px;">
@@ -43,6 +44,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ezee1015/Truco_Java/main
   <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/cliente3.png" alt="Menu" style="width: 380px;">
   <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/servidor3.png" alt="Menu" style="width: 380px;">
 <div>
+<hr>
 <h3>Partida Rapida</h3>
 <div style=" display:flex; flex-direction: row">
   <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/juego1.png" alt="Menu" style="width: 380px;">
