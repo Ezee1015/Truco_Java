@@ -1581,6 +1581,11 @@ public class InterfazServidor extends JFrame {
 
     private int calcularEnvidoPerdido() {
         int total = 0;
+        envidoFinalizado = true;
+
+        if( (envidosCantados.size() == 1) || // Si solo se canto un envido, da un punto
+            (envidosCantados.size() == 2 && envidosCantados.get(envidosCantados.size()-1)==-1)) // o Si se cantó un envido y un no quiero
+            return 1;
 
         for (int i = 0; i < envidosCantados.size()-1; i++) {
             switch (envidosCantados.get(i)) {
@@ -1595,11 +1600,6 @@ public class InterfazServidor extends JFrame {
                     break;
             }
         }
-
-        if(envidosCantados.size() == 1) // Si solo se canto un envido, da un punto
-            total+=1;
-
-        envidoFinalizado = true;
         return total;
     }
 
