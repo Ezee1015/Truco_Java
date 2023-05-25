@@ -2266,7 +2266,7 @@ public class InterfazServidor extends JFrame {
             case "retira":
                 oponente.setPuntaje(15, this);
                 JOptionPane.showMessageDialog(null, "El oponente " + nombreOponente + " se ha retirado. Has ganado!");
-                menu.setVisible(true);
+                menuJugar.setVisible(true);
                 dispose();
                 server.killServer();
                 break;
