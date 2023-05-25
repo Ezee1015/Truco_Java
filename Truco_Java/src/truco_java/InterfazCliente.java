@@ -996,6 +996,20 @@ public class InterfazCliente extends JFrame {
         if(menu.movCartas.isSelected()){ //Si no se quiere movimiento de cartas
             try {
                 dibujarCartas();
+                Thread thread = new Thread(){
+                    public void run(){
+                        try{
+                            client.tirarCarta(pos);
+                            recibirMensaje(client.recibirMensaje());
+                        } catch(IOException er){
+                            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                            JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                            efectos.play();
+                        }
+                    }
+                };
+                thread.start();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error: " + ex.getMessage());
                 efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
