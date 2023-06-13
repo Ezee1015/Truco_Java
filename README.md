@@ -1,5 +1,23 @@
 # Truco_Java
+
 ![Logo](Truco_Java/src/truco_java/fondos/logo.png)
+
+# Índice
+<!-- vim-markdown-toc GFM -->
+
+* [¿Qué es?](#qué-es)
+* [¿El modo Multijugador es por LAN o por Internet?](#el-modo-multijugador-es-por-lan-o-por-internet)
+* [¿Cómo se juega el Truco argentino?](#cómo-se-juega-el-truco-argentino)
+* [Dependencias](#dependencias)
+* [¿Cómo puedo jugar al juego (la aplicación)?](#cómo-puedo-jugar-al-juego-la-aplicación)
+* [Screenshots](#screenshots)
+* [¿Por qué este juego no tiene flor?](#por-qué-este-juego-no-tiene-flor)
+* [¿Qué hago si no funciona el audio y no funciona correctamente el juego? :-(](#qué-hago-si-no-funciona-el-audio-y-no-funciona-correctamente-el-juego--)
+* [¿Qué hago si en Windows se abre como un archivo comprimido? :-(](#qué-hago-si-en-windows-se-abre-como-un-archivo-comprimido--)
+* [Disclaimer](#disclaimer)
+* [Agregadecimientos](#agregadecimientos)
+
+<!-- vim-markdown-toc -->
 
 ## ¿Qué es?
 Esta aplicación es un [juego de *truco argentino*](https://es.wikipedia.org/wiki/Truco_argentino) hecho en *java* (mediante [ant](https://en.wikipedia.org/wiki/Apache_Ant),[Neovim](http://neovim.io/) y [NetBeans](https://es.wikipedia.org/wiki/NetBeans)). En este juego podrás jugar con un amigo por red o una partida rápida, con una inteligencia que tiene dos modos:
@@ -8,7 +26,7 @@ Esta aplicación es un [juego de *truco argentino*](https://es.wikipedia.org/wik
 
 Ah, por cierto, esta versión [no contiene la opción de cantar 'flor'](https://github.com/Ezee1015/Truco_Java#por-qu%C3%A9-este-juego-no-tiene-flor).
 
-## Modo Multijugador por LAN o Internet
+## ¿El modo Multijugador es por LAN o por Internet?
 Este juego, además de ofrecer la posibilidad de jugar contra la aplicación (algoritmo), dispone de un modo multijugador en el cual podrás jugar con tus amigos en una partida de 1 vs 1 dentro de la misma red local (dados los permisos correspondientes en el firewall de quien cree la sala de juego). Estos últimos dos modos NO requieren de acceso a internet, aunque, otrá opción (con Internet), gracias a la implementación P2P, permite jugar a dos personas en diferentes redes. Esta última opción requerirá de abrir un puerto en el router (que apunte al puerto correspondiente de la PC del servidor) en la red de la persona que cree la sala, para que la computadora cliente pueda comunicarse.
 
 ## ¿Cómo se juega el Truco argentino?
