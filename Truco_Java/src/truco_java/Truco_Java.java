@@ -45,7 +45,7 @@ public class Truco_Java extends JFrame{
     private static final Music effects = new Music();
     public static int gamesWonPlayer=0, gamesWonAi=0;
     private boolean easyMode = false;
-    public static ArrayList<Usuario> userList = new ArrayList<>();
+    public static ArrayList<User> userList = new ArrayList<>();
     public static int userIndex=-1;
 
     public Truco_Java () throws IOException {
@@ -74,9 +74,9 @@ public class Truco_Java extends JFrame{
             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
             effects.play();
             setVisible(false);
-            MenuJugar gameMenu;
+            PlayMenu gameMenu;
             try {
-                gameMenu = new MenuJugar(this);
+                gameMenu = new PlayMenu(this);
                 gameMenu.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
                 gameMenu.setResizable(false);
                 gameMenu.setTitle("Juego Truco");
@@ -101,10 +101,10 @@ public class Truco_Java extends JFrame{
             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
             effects.play();
             setVisible(false);
-            AcercaDe about;
+            About about;
             ImageIcon icono = new ImageIcon("src/truco_java/fondos/icono.png");
             try {
-                about = new AcercaDe(this);
+                about = new About(this);
                 about.setIconImage(icono.getImage());
                 about.setBounds(0,0,500,500);
                 about.setTitle("Acerca del Juego");
@@ -128,10 +128,10 @@ public class Truco_Java extends JFrame{
         passwordButton.addActionListener((ActionEvent e) -> {
             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
             effects.play();
-            CambioContraseña pass;
+            ChangePassword pass;
 
             try {
-                pass = new CambioContraseña(this);
+                pass = new ChangePassword(this);
                 pass.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
                 pass.setBounds(0,0,500,350);
                 pass.setTitle("Acerca del Juego");
@@ -169,7 +169,7 @@ public class Truco_Java extends JFrame{
             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
             effects.play();
 
-            Usuario.loadUsers();
+            User.loadUsers();
             if(Truco_Java.userList.isEmpty()){
                 JOptionPane.showMessageDialog(null, "No existen usuarios registrados.");
                 effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
@@ -177,9 +177,9 @@ public class Truco_Java extends JFrame{
                 return;
             }
 
-            Sesion session;
+            Session session;
             try {
-                session = new Sesion(this);
+                session = new Session(this);
                 session.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
                 session.setBounds(0,0,500,350);
                 session.setTitle("Acerca del Juego");
@@ -220,10 +220,10 @@ public class Truco_Java extends JFrame{
                 return;
             }
 
-            Usuario.loadUsers();
-            Registrarse register;
+            User.loadUsers();
+            Register register;
             try {
-                register = new Registrarse(this);
+                register = new Register(this);
                 register.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
                 register.setBounds(0,0,500,350);
                 register.setTitle("Acerca del Juego");

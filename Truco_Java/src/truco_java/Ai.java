@@ -5,16 +5,16 @@ import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.JOptionPane;
 
-public class JugadorAI extends Jugador {
+public class Ai extends Player {
   private int playersDeclaredEnvido = -1;
   private static final Music effects = new Music();
 
-  public JugadorAI(ArrayList<Carta> cards, boolean firstHand) {
+  public Ai(ArrayList<Card> cards, boolean firstHand) {
     super(cards, firstHand);
   }
 
-  public Carta playTurnAlgorithm(Persona p, InterfazJuego interfaceGame) throws IOException{
-    ArrayList<Carta> playerPlayedCards = p.getPlayedCards();
+  public Card playTurnAlgorithm(Person p, SinglePlayer interfaceGame) throws IOException{
+    ArrayList<Card> playerPlayedCards = p.getPlayedCards();
 
     // If it's the first round and the player didn't play
     if(playerPlayedCards.isEmpty())
@@ -64,18 +64,18 @@ public class JugadorAI extends Jugador {
     return throwBestCard();
   }
 
-  public Carta throwRandomCard(){
+  public Card throwRandomCard(){
     return throwCardAtPos(new Random().nextInt(cards.size()));
   }
 
-  public Carta throwCardAtPos (int pos){
-    Carta toThrow = cards.get(pos);
+  public Card throwCardAtPos (int pos){
+    Card toThrow = cards.get(pos);
     cards.remove(pos);
     playedCards.add(toThrow);
     return toThrow;
   }
 
-  public Carta throwBestCard (){
+  public Card throwBestCard (){
     if(cards.isEmpty()) return null;
 
     int bestCardPos = 0;
@@ -87,7 +87,7 @@ public class JugadorAI extends Jugador {
     return throwCardAtPos(bestCardPos);
   }
 
-  public Carta throwWorstCard (){
+  public Card throwWorstCard (){
     if(cards.isEmpty()) return null;
 
     int worstCardPos = 0;
@@ -99,7 +99,7 @@ public class JugadorAI extends Jugador {
     return throwCardAtPos(worstCardPos);
   }
 
-  public int envidoAlgorithm(int envidoLevel, Persona p, Truco_Java menu){
+  public int envidoAlgorithm(int envidoLevel, Person p, Truco_Java menu){
     /*
         States:
         0 --> No quiero / No se cantó
@@ -225,7 +225,7 @@ public class JugadorAI extends Jugador {
     return cant;
   }
 
-  public int trucoAlgorithm (int trucoLevel, Persona p, Truco_Java menu) {
+  public int trucoAlgorithm (int trucoLevel, Person p, Truco_Java menu) {
     /*
       States:
       0 --> No quiero / No se cantó
@@ -379,7 +379,7 @@ public class JugadorAI extends Jugador {
     return 0;
   }
 
-  public int easyTrucoAlgorithm (int trucoLevel, Persona p) {
+  public int easyTrucoAlgorithm (int trucoLevel, Person p) {
     /*
       States:
       0 --> No quiero / No se cantó
@@ -453,7 +453,7 @@ public class JugadorAI extends Jugador {
   // This function is only called when the player and the AI have already thrown 2
   // cards each and the 'envido' was played.
   // Calculates tries to predict the card left of the player with the 'envido' declared
-  private int predictCardWithEnvido(ArrayList<Carta> playerPlayedCards) {
+  private int predictCardWithEnvido(ArrayList<Card> playerPlayedCards) {
     if((playerPlayedCards.size()!=2 && playedCards.size()>=2) || playersDeclaredEnvido==-1)
       return 0;
     /*
@@ -470,7 +470,7 @@ public class JugadorAI extends Jugador {
     for(int i=0;i<2;i++)
       thrownNumbers.add(playerPlayedCards.get(i).getNumber());
 
-    Carta aiLastCard;
+    Card aiLastCard;
     if(playedCards.size()==2)
       aiLastCard=cards.get(0);
     else
@@ -516,7 +516,7 @@ public class JugadorAI extends Jugador {
         return 0;
 
       // If AI wins to the number (the stick 'basto' is random)
-      if(aiLastCard.rankingCard() > new Carta(playersDeclaredEnvido, "basto").rankingCard())
+      if(aiLastCard.rankingCard() > new Card(playersDeclaredEnvido, "basto").rankingCard())
         return 1;
     }
 
@@ -549,7 +549,7 @@ public class JugadorAI extends Jugador {
     }
 
     if(playersDeclaredEnvido>20){
-      ArrayList<Carta> possibilities = new ArrayList<>();
+      ArrayList<Card> possibilities = new ArrayList<>();
       // Looks for the probability of cards that the player can have
       for (int i = 0; i < 2; i++) {
         int numberPosibility;
@@ -562,13 +562,13 @@ public class JugadorAI extends Jugador {
           numberPosibility = playersDeclaredEnvido - 20;
         // If they have a jack, horse or king left
         if(numberPosibility==0){
-          possibilities.add(new Carta(10, thrownSticks.get(i)));
-          possibilities.add(new Carta(11, thrownSticks.get(i)));
-          possibilities.add(new Carta(12, thrownSticks.get(i)));
+          possibilities.add(new Card(10, thrownSticks.get(i)));
+          possibilities.add(new Card(11, thrownSticks.get(i)));
+          possibilities.add(new Card(12, thrownSticks.get(i)));
         }
         // If it's from 1 to 7
         if (numberPosibility>0 && numberPosibility<8) // Si el le queda un numero de carta
-          possibilities.add(new Carta(numberPosibility, thrownSticks.get(i)));
+          possibilities.add(new Card(numberPosibility, thrownSticks.get(i)));
       }
 
       // Deletes from the remaining card possibilities, all the cards I have or had
@@ -588,7 +588,7 @@ public class JugadorAI extends Jugador {
       // envido that that person has, that means that they had already played the
       // cards that were in the 'envido', so the remaining card is unknown
       if(playerPlayedCards.size() == 2){
-        Persona temp = new Persona(null,false);
+        Person temp = new Person(null,false);
         temp.setCards(playerPlayedCards);
         if(temp.calculateEnvido() == playersDeclaredEnvido)
           return 0;
@@ -606,8 +606,8 @@ public class JugadorAI extends Jugador {
       // 10,11,12 and 3, but AI couldn't win the 3 although the 10, 11 and 12 it could.
       // So the probability was a 75%, but with this function, is 50%
       for(int i=0; i<possibilities.size()-1; i++){
-        Carta c1 = possibilities.get(i);
-        Carta c2 = possibilities.get(i+1);
+        Card c1 = possibilities.get(i);
+        Card c2 = possibilities.get(i+1);
         if(c1.getStick().equals(c2.getStick()))
           if(c1.getNumber() >= 10 && c1.getNumber() <= 12 )
             if(c2.getNumber() >= 10 && c2.getNumber() <= 12 ){

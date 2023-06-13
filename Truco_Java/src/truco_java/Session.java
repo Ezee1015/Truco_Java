@@ -23,13 +23,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class Sesion extends JFrame {
+public class Session extends JFrame {
     private JButton back = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
     private static final Music effects = new Music();
     private DefaultComboBoxModel<String> modelComboBox = new DefaultComboBoxModel<String>();
     private JComboBox<String> comboBoxUser = new JComboBox<String>(modelComboBox);
 
-  public Sesion (Truco_Java menu) throws IOException {
+  public Session (Truco_Java menu) throws IOException {
         setLayout(null);
         setDefaultCloseOperation(3);
 

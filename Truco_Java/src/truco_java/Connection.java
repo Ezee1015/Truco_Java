@@ -8,7 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class Conexion {
+public class Connection {
     private int PORT = 1234;
     private String HOST = "localhost";
     protected BufferedReader input;
@@ -18,7 +18,7 @@ public class Conexion {
     protected DataOutputStream outputServer, salidaCliente;
     private String tipo;
 
-    public Conexion(String tipo, String ip, int puerto) throws IOException {
+    public Connection(String tipo, String ip, int puerto) throws IOException {
         HOST = ip;
         PORT = puerto;
         this.tipo=tipo;

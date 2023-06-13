@@ -14,12 +14,12 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.JOptionPane;
 
-public class Usuario {
+public class User {
     private static final Music effects = new Music();
     private String name, password=null, encrypt;
     private int playerPoints=0, AiPoints=0;
 
-    public Usuario(String name, String encrypt) {
+    public User(String name, String encrypt) {
         this.name = name;
         this.encrypt = encrypt;
     }
@@ -58,7 +58,7 @@ public class Usuario {
         try {
             String data = playerPoints + ";sig;" + AiPoints;
 
-            encrypt = new Encriptacion().encrypt(data, password);
+            encrypt = new Encryption().encrypt(data, password);
 
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
                 JOptionPane.showMessageDialog(null, "No se pudo encriptar los puntajes: " + ex.getMessage());
@@ -127,7 +127,7 @@ public class Usuario {
             obj.useDelimiter(";sig;");
 
             while (obj.hasNext())
-                Truco_Java.userList.add(new Usuario(obj.next(),obj.next()));
+                Truco_Java.userList.add(new User(obj.next(),obj.next()));
 
             obj.close();
         } catch (FileNotFoundException | NoSuchElementException ex) {
@@ -138,7 +138,7 @@ public class Usuario {
         this.password=password;
         Scanner scanner;
         try{
-             scanner = new Scanner(new Encriptacion().desencriptar(encrypt, password));
+             scanner = new Scanner(new Encryption().desencriptar(encrypt, password));
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
             JOptionPane.showMessageDialog(null, "Contraseña incorrecta.");
             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);

@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 
-public class Jugador {
-  protected ArrayList<Carta> cards = new ArrayList<>();
-  protected ArrayList<Carta> playedCards = new ArrayList<>();
+public class Player {
+  protected ArrayList<Card> cards = new ArrayList<>();
+  protected ArrayList<Card> playedCards = new ArrayList<>();
   protected int points=0;
   protected boolean firstHand;
   private static final Music effects = new Music();
 
-    public Jugador(ArrayList<Carta> cards, boolean firstHand) {
+    public Player(ArrayList<Card> cards, boolean firstHand) {
         this.cards = cards;
         this.firstHand = firstHand;
     }
@@ -20,7 +20,7 @@ public class Jugador {
         return points;
     }
 
-    public void setPoints(int points, InterfazJuego interfaceGame) {
+    public void setPoints(int points, SinglePlayer interfaceGame) {
       this.points = points;
       try {
         interfaceGame.updatePoints();
@@ -31,7 +31,7 @@ public class Jugador {
       }
     }
 
-    public void setPoints(int points, InterfazServidor interfaceGame) {
+    public void setPoints(int points, ServerMultiplayer interfaceGame) {
       this.points = points;
       try {
         interfaceGame.updatePoints();
@@ -42,7 +42,7 @@ public class Jugador {
       }
     }
 
-    public void setPoints(int points, InterfazCliente interfaceGame) {
+    public void setPoints(int points, ClientMultiplayer interfaceGame) {
       this.points = points;
       try {
         interfaceGame.updatePoints();
@@ -53,17 +53,17 @@ public class Jugador {
       }
     }
 
-    public ArrayList<Carta> getCards() {
+    public ArrayList<Card> getCards() {
         return cards;
     }
 
-    public void setCards(ArrayList<Carta> cards) {
+    public void setCards(ArrayList<Card> cards) {
         this.cards = cards;
         sortCards();
     }
 
     public void sortCards(){
-      ArrayList<Carta> temp = new ArrayList<>();
+      ArrayList<Card> temp = new ArrayList<>();
 
       for(int x=0;x<cards.size()+temp.size();x++){
         int posMin=0;
@@ -79,11 +79,11 @@ public class Jugador {
       cards.addAll(temp);
     }
 
-    public ArrayList<Carta> getPlayedCards() {
+    public ArrayList<Card> getPlayedCards() {
         return playedCards;
     }
 
-    public void setPlayedCards(ArrayList<Carta> playedCards) {
+    public void setPlayedCards(ArrayList<Card> playedCards) {
         this.playedCards = playedCards;
     }
 
@@ -97,7 +97,7 @@ public class Jugador {
 
     protected int calculateEnvido(){
       int envido=0;
-      ArrayList<Carta> cardsOriginal = new ArrayList<>();
+      ArrayList<Card> cardsOriginal = new ArrayList<>();
       cardsOriginal.addAll(cards);
       cardsOriginal.addAll(playedCards);
 

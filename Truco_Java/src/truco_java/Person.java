@@ -2,10 +2,10 @@ package truco_java;
 
 import java.util.ArrayList;
 
-public class Persona extends Jugador {
+public class Person extends Player {
     private int posCards[] = new int[3];
 
-    public Persona(ArrayList<Carta> cards, boolean firstHand) {
+    public Person(ArrayList<Card> cards, boolean firstHand) {
         super(cards, firstHand);
     }
 
@@ -17,8 +17,8 @@ public class Persona extends Jugador {
         posCards=p;
     }
 
-    public Carta throwCard(int pos){
-        Carta toThrow = cards.get(pos);
+    public Card throwCard(int pos){
+        Card toThrow = cards.get(pos);
         cards.remove(pos);
         playedCards.add(toThrow);
         return toThrow;

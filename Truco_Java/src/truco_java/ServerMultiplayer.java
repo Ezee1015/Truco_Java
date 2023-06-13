@@ -22,14 +22,14 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-public class InterfazServidor extends JFrame {
-    public Servidor server;
+public class ServerMultiplayer extends JFrame {
+    public Server server;
 
     // Swing
-    private ArrayList<Carta> deck = new ArrayList<>();
+    private ArrayList<Card> deck = new ArrayList<>();
     private JLabel background = new JLabel();
     private Truco_Java menu;
-    private MenuJugar playMenu;
+    private PlayMenu playMenu;
     private JLabel cardOpponent1, cardOpponent2, cardOpponent3;
     private JLabel cardThrownOpponent1, cardThrownOpponent2, cardThrownOpponent3;
     private JButton cardPlayer1, cardPlayer2, cardPlayer3;
@@ -46,11 +46,11 @@ public class InterfazServidor extends JFrame {
     JLabel pointsBackground;
 
     // Players
-    private Persona player = new Persona(null, false);
+    private Person player = new Person(null, false);
     private int opponentNumber; // Represents the player that was selected personaje que fue generado
     private String opponentName = "the PC";
     private String playerName = "the Player";
-    private Persona opponent = new Persona(null, true);
+    private Person opponent = new Person(null, true);
 
     // Information of the game
     private int trucoLevel = 0;
@@ -68,7 +68,7 @@ public class InterfazServidor extends JFrame {
             if(name!=null && name.length()>0)
                 name = name.substring(0, 1).toUpperCase()+name.substring(1);
         } else {
-            switch(MenuJugar.playerNumber+1){
+            switch(PlayMenu.playerNumber+1){
                 case 1: name="El Carpincho"; break;
                 case 2: name="La Roca"; break;
                 case 3: name="Messi"; break;
@@ -79,24 +79,24 @@ public class InterfazServidor extends JFrame {
         }
 
         playerName=name;
-        server.sendPerson(MenuJugar.playerNumber+1, name);
+        server.sendPerson(PlayMenu.playerNumber+1, name);
         decodeMessage(server.receiveMessage());
     }
 
-    public InterfazServidor(Truco_Java menu, String ip, int port, MenuJugar playMenu) throws IOException {
+    public ServerMultiplayer(Truco_Java menu, String ip, int port, PlayMenu playMenu) throws IOException {
         this.menu = menu;
         this.playMenu = playMenu;
         loadDeck();
 
-        InterfazServidor serverInterface = this;
-        EsperaServidor waitingRoom = new EsperaServidor(playMenu, port, this);
+        ServerMultiplayer serverInterface = this;
+        WaitingRoom waitingRoom = new WaitingRoom(playMenu, port, this);
 
         Thread waitingRoomThread = new Thread(){
             public void run(){
                 // RECIBE LA INFORMACIÓN ACERCA DEL PERSONAJE OPONENTE
                 // Creates the server and waits to receive the information about the opponent
                 try{
-                    server = new Servidor(ip, port);
+                    server = new Server(ip, port);
                     // Carga los nombres
                     try {
                         exchangePlayersName();
@@ -1012,52 +1012,52 @@ public class InterfazServidor extends JFrame {
     }
 
     private void loadDeck() {
-        deck.add(new Carta(1, "espada"));
-        deck.add(new Carta(2, "espada"));
-        deck.add(new Carta(3, "espada"));
-        deck.add(new Carta(4, "espada"));
-        deck.add(new Carta(5, "espada"));
-        deck.add(new Carta(6, "espada"));
-        deck.add(new Carta(7, "espada"));
-        deck.add(new Carta(10, "espada"));
-        deck.add(new Carta(11, "espada"));
-        deck.add(new Carta(12, "espada"));
-        deck.add(new Carta(1, "basto"));
-        deck.add(new Carta(2, "basto"));
-        deck.add(new Carta(3, "basto"));
-        deck.add(new Carta(4, "basto"));
-        deck.add(new Carta(5, "basto"));
-        deck.add(new Carta(6, "basto"));
-        deck.add(new Carta(7, "basto"));
-        deck.add(new Carta(10, "basto"));
-        deck.add(new Carta(11, "basto"));
-        deck.add(new Carta(12, "basto"));
-        deck.add(new Carta(1, "oro"));
-        deck.add(new Carta(2, "oro"));
-        deck.add(new Carta(3, "oro"));
-        deck.add(new Carta(4, "oro"));
-        deck.add(new Carta(5, "oro"));
-        deck.add(new Carta(6, "oro"));
-        deck.add(new Carta(7, "oro"));
-        deck.add(new Carta(10, "oro"));
-        deck.add(new Carta(11, "oro"));
-        deck.add(new Carta(12, "oro"));
-        deck.add(new Carta(1, "copa"));
-        deck.add(new Carta(2, "copa"));
-        deck.add(new Carta(3, "copa"));
-        deck.add(new Carta(4, "copa"));
-        deck.add(new Carta(5, "copa"));
-        deck.add(new Carta(6, "copa"));
-        deck.add(new Carta(7, "copa"));
-        deck.add(new Carta(10, "copa"));
-        deck.add(new Carta(11, "copa"));
-        deck.add(new Carta(12, "copa"));
+        deck.add(new Card(1, "espada"));
+        deck.add(new Card(2, "espada"));
+        deck.add(new Card(3, "espada"));
+        deck.add(new Card(4, "espada"));
+        deck.add(new Card(5, "espada"));
+        deck.add(new Card(6, "espada"));
+        deck.add(new Card(7, "espada"));
+        deck.add(new Card(10, "espada"));
+        deck.add(new Card(11, "espada"));
+        deck.add(new Card(12, "espada"));
+        deck.add(new Card(1, "basto"));
+        deck.add(new Card(2, "basto"));
+        deck.add(new Card(3, "basto"));
+        deck.add(new Card(4, "basto"));
+        deck.add(new Card(5, "basto"));
+        deck.add(new Card(6, "basto"));
+        deck.add(new Card(7, "basto"));
+        deck.add(new Card(10, "basto"));
+        deck.add(new Card(11, "basto"));
+        deck.add(new Card(12, "basto"));
+        deck.add(new Card(1, "oro"));
+        deck.add(new Card(2, "oro"));
+        deck.add(new Card(3, "oro"));
+        deck.add(new Card(4, "oro"));
+        deck.add(new Card(5, "oro"));
+        deck.add(new Card(6, "oro"));
+        deck.add(new Card(7, "oro"));
+        deck.add(new Card(10, "oro"));
+        deck.add(new Card(11, "oro"));
+        deck.add(new Card(12, "oro"));
+        deck.add(new Card(1, "copa"));
+        deck.add(new Card(2, "copa"));
+        deck.add(new Card(3, "copa"));
+        deck.add(new Card(4, "copa"));
+        deck.add(new Card(5, "copa"));
+        deck.add(new Card(6, "copa"));
+        deck.add(new Card(7, "copa"));
+        deck.add(new Card(10, "copa"));
+        deck.add(new Card(11, "copa"));
+        deck.add(new Card(12, "copa"));
     }
 
     private void mixDeck() {
         for (int i = 0; i < 100; i++) {
             Random random = new Random();
-            ArrayList<Carta> tempDeck = new ArrayList<>();
+            ArrayList<Card> tempDeck = new ArrayList<>();
             for (int x = 0; x < deck.size() + tempDeck.size(); x++) {
                 int mixingPos = random.nextInt(deck.size());
                 tempDeck.add(deck.get(mixingPos));
@@ -1210,7 +1210,7 @@ public class InterfazServidor extends JFrame {
             try {
                 Thread.sleep(1200);
             } catch (InterruptedException ex) {
-                Logger.getLogger(InterfazServidor.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ServerMultiplayer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -1245,11 +1245,11 @@ public class InterfazServidor extends JFrame {
         truco.setEnabled(true);
 
         // Deals
-        ArrayList<Carta> cards1 = new ArrayList<>();
+        ArrayList<Card> cards1 = new ArrayList<>();
         cards1.add(deck.get(0));
         cards1.add(deck.get(2));
         cards1.add(deck.get(4));
-        ArrayList<Carta> cards2 = new ArrayList<>();
+        ArrayList<Card> cards2 = new ArrayList<>();
         cards2.add(deck.get(1));
         cards2.add(deck.get(3));
         cards2.add(deck.get(5));

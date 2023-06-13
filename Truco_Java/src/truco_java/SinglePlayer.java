@@ -21,7 +21,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-public class InterfazJuego extends JFrame {
+public class SinglePlayer extends JFrame {
 
     // Swing
     private JLabel background = new JLabel();
@@ -37,15 +37,15 @@ public class InterfazJuego extends JFrame {
     private JButton movingCard = new JButton();
 
     // Players
-    private JugadorAI ai = new JugadorAI(null, false);
-    private Persona player = new Persona(null, true);
+    private Ai ai = new Ai(null, false);
+    private Person player = new Person(null, true);
 
     // Information of the game
     private Truco_Java menu;
-    private ArrayList<Carta> deck = new ArrayList<>();
+    private ArrayList<Card> deck = new ArrayList<>();
     private boolean cardPlayer1Enabled=false, cardPlayer2Enabled=false, cardPlayer3Enabled=false;
     private boolean finishedGame = false;
-    private final int aiNumber = MenuJugar.playerNumber+1; // Represents the character that was selected
+    private final int aiNumber = PlayMenu.playerNumber+1; // Represents the character that was selected
     private String aiName ="the PC";
     private final Music aiVoice = new Music();
     private static final Music effects = new Music();
@@ -54,7 +54,7 @@ public class InterfazJuego extends JFrame {
     private ArrayList<Integer> envidosDeclared;
     private boolean finishedEnvido = false;
 
-    public InterfazJuego(Truco_Java menu) throws IOException {
+    public SinglePlayer(Truco_Java menu) throws IOException {
         this.menu = menu;
         loadDeck();
 
@@ -698,52 +698,52 @@ public class InterfazJuego extends JFrame {
     }
 
     private void loadDeck() {
-        deck.add(new Carta(1, "espada"));
-        deck.add(new Carta(2, "espada"));
-        deck.add(new Carta(3, "espada"));
-        deck.add(new Carta(4, "espada"));
-        deck.add(new Carta(5, "espada"));
-        deck.add(new Carta(6, "espada"));
-        deck.add(new Carta(7, "espada"));
-        deck.add(new Carta(10, "espada"));
-        deck.add(new Carta(11, "espada"));
-        deck.add(new Carta(12, "espada"));
-        deck.add(new Carta(1, "basto"));
-        deck.add(new Carta(2, "basto"));
-        deck.add(new Carta(3, "basto"));
-        deck.add(new Carta(4, "basto"));
-        deck.add(new Carta(5, "basto"));
-        deck.add(new Carta(6, "basto"));
-        deck.add(new Carta(7, "basto"));
-        deck.add(new Carta(10, "basto"));
-        deck.add(new Carta(11, "basto"));
-        deck.add(new Carta(12, "basto"));
-        deck.add(new Carta(1, "oro"));
-        deck.add(new Carta(2, "oro"));
-        deck.add(new Carta(3, "oro"));
-        deck.add(new Carta(4, "oro"));
-        deck.add(new Carta(5, "oro"));
-        deck.add(new Carta(6, "oro"));
-        deck.add(new Carta(7, "oro"));
-        deck.add(new Carta(10, "oro"));
-        deck.add(new Carta(11, "oro"));
-        deck.add(new Carta(12, "oro"));
-        deck.add(new Carta(1, "copa"));
-        deck.add(new Carta(2, "copa"));
-        deck.add(new Carta(3, "copa"));
-        deck.add(new Carta(4, "copa"));
-        deck.add(new Carta(5, "copa"));
-        deck.add(new Carta(6, "copa"));
-        deck.add(new Carta(7, "copa"));
-        deck.add(new Carta(10, "copa"));
-        deck.add(new Carta(11, "copa"));
-        deck.add(new Carta(12, "copa"));
+        deck.add(new Card(1, "espada"));
+        deck.add(new Card(2, "espada"));
+        deck.add(new Card(3, "espada"));
+        deck.add(new Card(4, "espada"));
+        deck.add(new Card(5, "espada"));
+        deck.add(new Card(6, "espada"));
+        deck.add(new Card(7, "espada"));
+        deck.add(new Card(10, "espada"));
+        deck.add(new Card(11, "espada"));
+        deck.add(new Card(12, "espada"));
+        deck.add(new Card(1, "basto"));
+        deck.add(new Card(2, "basto"));
+        deck.add(new Card(3, "basto"));
+        deck.add(new Card(4, "basto"));
+        deck.add(new Card(5, "basto"));
+        deck.add(new Card(6, "basto"));
+        deck.add(new Card(7, "basto"));
+        deck.add(new Card(10, "basto"));
+        deck.add(new Card(11, "basto"));
+        deck.add(new Card(12, "basto"));
+        deck.add(new Card(1, "oro"));
+        deck.add(new Card(2, "oro"));
+        deck.add(new Card(3, "oro"));
+        deck.add(new Card(4, "oro"));
+        deck.add(new Card(5, "oro"));
+        deck.add(new Card(6, "oro"));
+        deck.add(new Card(7, "oro"));
+        deck.add(new Card(10, "oro"));
+        deck.add(new Card(11, "oro"));
+        deck.add(new Card(12, "oro"));
+        deck.add(new Card(1, "copa"));
+        deck.add(new Card(2, "copa"));
+        deck.add(new Card(3, "copa"));
+        deck.add(new Card(4, "copa"));
+        deck.add(new Card(5, "copa"));
+        deck.add(new Card(6, "copa"));
+        deck.add(new Card(7, "copa"));
+        deck.add(new Card(10, "copa"));
+        deck.add(new Card(11, "copa"));
+        deck.add(new Card(12, "copa"));
     }
 
     private void mixDeck() {
         for (int i = 0; i < 100; i++) {
             Random random = new Random();
-            ArrayList<Carta> tempDeck = new ArrayList<>();
+            ArrayList<Card> tempDeck = new ArrayList<>();
             for (int x = 0; x < deck.size() + tempDeck.size(); x++) {
                 int posMezcla = random.nextInt(deck.size());
                 tempDeck.add(deck.get(posMezcla));
@@ -880,7 +880,7 @@ public class InterfazJuego extends JFrame {
             try {
                 Thread.sleep(1200);
             } catch (InterruptedException ex) {
-                Logger.getLogger(InterfazJuego.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(SinglePlayer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -916,11 +916,11 @@ public class InterfazJuego extends JFrame {
         truco.setEnabled(true);
 
         // deals cards
-        ArrayList<Carta> hand1 = new ArrayList<>();
+        ArrayList<Card> hand1 = new ArrayList<>();
         hand1.add(deck.get(0));
         hand1.add(deck.get(2));
         hand1.add(deck.get(4));
-        ArrayList<Carta> hand2 = new ArrayList<>();
+        ArrayList<Card> hand2 = new ArrayList<>();
         hand2.add(deck.get(1));
         hand2.add(deck.get(3));
         hand2.add(deck.get(5));

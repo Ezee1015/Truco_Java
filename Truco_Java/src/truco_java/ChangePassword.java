@@ -18,11 +18,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class CambioContraseña extends JFrame {
+public class ChangePassword extends JFrame {
     private JButton back = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
     private static final Music effects = new Music();
 
-  public CambioContraseña (Truco_Java menu) throws IOException {
+  public ChangePassword (Truco_Java menu) throws IOException {
         setLayout(null);
         setDefaultCloseOperation(3);
         menu.setVisible(false);

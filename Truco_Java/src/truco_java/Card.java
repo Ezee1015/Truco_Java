@@ -1,10 +1,10 @@
 package truco_java;
 
-public class Carta {
+public class Card {
   private int number;
   private String stick;
 
-    public Carta(int number, String stick) {
+    public Card(int number, String stick) {
         this.number = number;
         this.stick = stick;
     }

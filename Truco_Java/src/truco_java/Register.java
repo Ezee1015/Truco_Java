@@ -23,11 +23,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class Registrarse extends JFrame {
+public class Register extends JFrame {
     private JButton back = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
     private static final Music effects = new Music();
 
-  public Registrarse (Truco_Java menu) throws IOException {
+  public Register (Truco_Java menu) throws IOException {
         setLayout(null);
         setDefaultCloseOperation(3);
         menu.setVisible(false);
@@ -92,9 +92,9 @@ public class Registrarse extends JFrame {
                         return;
                     }
                 }
-                Usuario newUser;
+                User newUser;
                 try {
-                    newUser = new Usuario(userField.getText(),new Encriptacion().encrypt(Truco_Java.gamesWonPlayer+";sig;"+Truco_Java.gamesWonAi, new String(passwordField.getPassword())));
+                    newUser = new User(userField.getText(),new Encryption().encrypt(Truco_Java.gamesWonPlayer+";sig;"+Truco_Java.gamesWonAi, new String(passwordField.getPassword())));
                 } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
                         JOptionPane.showMessageDialog(null, "No se puedo crear el usuario. Intente con otra contraseña.");
                         effects.setFile("src/truco_java/musica/botonMenu.wav", 1);

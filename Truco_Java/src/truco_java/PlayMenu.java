@@ -23,13 +23,13 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MenuJugar extends JFrame{
+public class PlayMenu extends JFrame{
 
   public static int playerNumber=0;
   private static final Music effects = new Music();
   private JButton back;
 
-  public MenuJugar (Truco_Java menu) throws IOException{
+  public PlayMenu (Truco_Java menu) throws IOException{
         setLayout(null);
         setDefaultCloseOperation(3);
         menu.setVisible(false);
@@ -68,7 +68,7 @@ public class MenuJugar extends JFrame{
         background.add(multiplayerLabel);
 
 
-        MenuJugar menuJugar = this;
+        PlayMenu menuJugar = this;
         JTextField clientIp = new JTextField();
         JTextField clientPort = new JTextField();
         Action connectAction = new AbstractAction() {
@@ -91,9 +91,9 @@ public class MenuJugar extends JFrame{
                     }
 
                     setVisible(false);
-                    InterfazCliente game;
+                    ClientMultiplayer game;
                     try {
-                          game = new InterfazCliente(menu, clientIp.getText(), Integer.parseInt(clientPort.getText()), menuJugar);
+                          game = new ClientMultiplayer(menu, clientIp.getText(), Integer.parseInt(clientPort.getText()), menuJugar);
                           game.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
                           game.setResizable(false);
                           game.setTitle("Juego Truco - Cliente");
@@ -200,9 +200,9 @@ public class MenuJugar extends JFrame{
                     }
 
                     setVisible(false);
-                    InterfazServidor game;
+                    ServerMultiplayer game;
                     try {
-                          game = new InterfazServidor(menu, "localhost", Integer.parseInt(serverPort.getText()), menuJugar);
+                          game = new ServerMultiplayer(menu, "localhost", Integer.parseInt(serverPort.getText()), menuJugar);
                           game.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
                           game.setResizable(false);
                           game.setTitle("Juego Truco - Servidor");
@@ -264,9 +264,9 @@ public class MenuJugar extends JFrame{
             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
             effects.play();
             setVisible(false);
-            InterfazJuego game;
+            SinglePlayer game;
             try {
-                game = new InterfazJuego(menu);
+                game = new SinglePlayer(menu);
                 game.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
                 game.setResizable(false);
                 game.setTitle("Juego Truco");

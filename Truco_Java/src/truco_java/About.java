@@ -15,7 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextPane;
 
-public class AcercaDe extends JFrame {
+public class About extends JFrame {
     private JTextPane description;
     private JButton back = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
     private JButton next = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/adelante.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
@@ -24,7 +24,7 @@ public class AcercaDe extends JFrame {
     private static final Music effects = new Music();
 
 
-  public AcercaDe (Truco_Java menu) throws IOException {
+  public About (Truco_Java menu) throws IOException {
         setLayout(null);
         setDefaultCloseOperation(3);
 

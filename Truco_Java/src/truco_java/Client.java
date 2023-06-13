@@ -2,9 +2,9 @@ package truco_java;
 
 import java.io.IOException;
 
-public class Cliente extends Conexion {
+public class Client extends Connection {
 
-    public Cliente(String ip, int port) throws IOException{
+    public Client(String ip, int port) throws IOException{
         super("client", ip, port);
     }
 

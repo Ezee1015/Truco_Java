@@ -12,7 +12,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
-public class Encriptacion {
+public class Encryption {
 
     private SecretKeySpec createKey(String key) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         byte[] claveEncriptacion = key.getBytes("UTF-8");

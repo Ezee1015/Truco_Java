@@ -24,13 +24,13 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-public class EsperaServidor extends JFrame {
+public class WaitingRoom extends JFrame {
     private JButton back = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
     private static final Music effects = new Music();
     private boolean local = true;
     private String publicIP;
 
-  public EsperaServidor (MenuJugar menu, int port, InterfazServidor server) throws IOException {
+  public WaitingRoom (PlayMenu menu, int port, ServerMultiplayer server) throws IOException {
         setLayout(null);
         setDefaultCloseOperation(3);
 
@@ -57,7 +57,7 @@ public class EsperaServidor extends JFrame {
 
             try {
                   // Closes the server
-                  new Cliente("127.0.0.1", port);
+                  new Client("127.0.0.1", port);
                   while(server.server==null);
                   server.server.killServer();
 

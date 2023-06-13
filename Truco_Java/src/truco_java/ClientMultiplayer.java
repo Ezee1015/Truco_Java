@@ -19,13 +19,13 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-public class InterfazCliente extends JFrame {
-    Cliente client;
+public class ClientMultiplayer extends JFrame {
+    Client client;
 
     // Swing
     private JLabel background = new JLabel();
     private Truco_Java menu;
-    private MenuJugar playMenu;
+    private PlayMenu playMenu;
     private JLabel cardOpponent1, cardOpponent2, cardOpponent3;
     private JLabel cardThrownOpponent1, cardThrownOpponent2, cardThrownOpponent3;
     private JButton cardPlayer1, cardPlayer2, cardPlayer3;
@@ -44,10 +44,10 @@ public class InterfazCliente extends JFrame {
     JLabel pointsBackground = new JLabel();
 
     // Players
-    private Persona player = new Persona(null, true);
+    private Person player = new Person(null, true);
     private int opponentNumber; // Represents the player that was selected personaje que fue generado
     private String opponentName ="la PC";
-    private Persona opponent = new Persona(null, false);
+    private Person opponent = new Person(null, false);
 
     // Information of the game
     private ArrayList<Integer> envidosDeclared = new ArrayList<>();
@@ -56,8 +56,8 @@ public class InterfazCliente extends JFrame {
     private boolean finishedEnvido;
     private int enabledToRetrucar; // 2--> Player; 1--> opponent
 
-    public InterfazCliente(Truco_Java menu, String ip, int port, MenuJugar playMenu) throws IOException {
-        client = new Cliente(ip,port);
+    public ClientMultiplayer(Truco_Java menu, String ip, int port, PlayMenu playMenu) throws IOException {
+        client = new Client(ip,port);
         this.menu = menu;
         this.playMenu = playMenu;
 
@@ -1335,15 +1335,15 @@ public class InterfazCliente extends JFrame {
                     moveCardOpponent = true;
                 opponentCardsCount=newCountCardsOpponent;
 
-                ArrayList<Carta> playedCardsOpponent = new ArrayList<>();
+                ArrayList<Card> playedCardsOpponent = new ArrayList<>();
                 for(int i=0;i<3-opponentCardsCount;i++)
-                    playedCardsOpponent.add(new Carta(Integer.parseInt(scanf.next()), scanf.next()));
+                    playedCardsOpponent.add(new Card(Integer.parseInt(scanf.next()), scanf.next()));
                 opponent.setPlayedCards(playedCardsOpponent);
 
-                ArrayList<Carta> cards = new ArrayList<>();
+                ArrayList<Card> cards = new ArrayList<>();
                 int sizeCards = Integer.parseInt(scanf.next());
                 for(int i=0;i<sizeCards;i++)
-                    cards.add(new Carta(Integer.parseInt(scanf.next()), scanf.next()));
+                    cards.add(new Card(Integer.parseInt(scanf.next()), scanf.next()));
                 player.setCards(cards);
 
                 int[] positionCards = new int[3];
@@ -1351,9 +1351,9 @@ public class InterfazCliente extends JFrame {
                     positionCards[i]=Integer.parseInt(scanf.next());
                 player.setPosCards(positionCards);
 
-                ArrayList<Carta> playedCards = new ArrayList<>();
+                ArrayList<Card> playedCards = new ArrayList<>();
                 for(int i=0;i<3-sizeCards;i++)
-                    playedCards.add(new Carta(Integer.parseInt(scanf.next()), scanf.next()));
+                    playedCards.add(new Card(Integer.parseInt(scanf.next()), scanf.next()));
                 player.setPlayedCards(playedCards);
 
                 trucoLevel=Integer.parseInt(scanf.next());
@@ -1650,7 +1650,7 @@ public class InterfazCliente extends JFrame {
                 };
                 thread1.start();
                 try {
-                    client.sendPerson(MenuJugar.playerNumber+1, nombre);
+                    client.sendPerson(PlayMenu.playerNumber+1, nombre);
                 } catch (Exception e) {
                     connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                     JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + e.getMessage());
