@@ -79,7 +79,8 @@ public class InterfazServidor extends JFrame {
         }
 
         playerName=name;
-        decodeMessage(server.sendPerson(MenuJugar.playerNumber+1, name));
+        server.sendPerson(MenuJugar.playerNumber+1, name);
+        decodeMessage(server.receiveMessage());
     }
 
     public InterfazServidor(Truco_Java menu, String ip, int port, MenuJugar playMenu) throws IOException {

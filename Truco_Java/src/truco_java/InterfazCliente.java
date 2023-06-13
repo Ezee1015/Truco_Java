@@ -358,7 +358,8 @@ public class InterfazCliente extends JFrame {
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        decodeMessage(client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar));
+                        client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar);
+                        decodeMessage(client.receiveMessage());
                     } catch(IOException er){
                         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
@@ -410,7 +411,8 @@ public class InterfazCliente extends JFrame {
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        decodeMessage(client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar));
+                        client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar);
+                        decodeMessage(client.receiveMessage());
                     } catch(IOException er){
                         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
@@ -463,7 +465,8 @@ public class InterfazCliente extends JFrame {
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        decodeMessage(client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar));
+                        client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar);
+                        decodeMessage(client.receiveMessage());
                     } catch(IOException er){
                         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
@@ -516,7 +519,8 @@ public class InterfazCliente extends JFrame {
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        decodeMessage(client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar));
+                        client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar);
+                        decodeMessage(client.receiveMessage());
                     } catch(IOException er){
                         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
@@ -557,7 +561,8 @@ public class InterfazCliente extends JFrame {
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        decodeMessage(client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar));
+                        client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar);
+                        decodeMessage(client.receiveMessage());
                     } catch(IOException er){
                         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
@@ -605,7 +610,8 @@ public class InterfazCliente extends JFrame {
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        decodeMessage(client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar));
+                        client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar);
+                        decodeMessage(client.receiveMessage());
                     } catch(IOException er){
                         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
@@ -650,7 +656,8 @@ public class InterfazCliente extends JFrame {
                 Thread thread = new Thread(){
                     public void run(){
                         try{
-                            decodeMessage(client.sendTruco(trucoLevel, enabledToRetrucar));
+                            client.sendTruco(trucoLevel, enabledToRetrucar);
+                            decodeMessage(client.receiveMessage());
                         } catch(IOException er){
                         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
@@ -696,7 +703,8 @@ public class InterfazCliente extends JFrame {
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        decodeMessage(client.sendTruco(4, enabledToRetrucar));
+                        client.sendTruco(4, enabledToRetrucar);
+                        decodeMessage(client.receiveMessage());
                     } catch(IOException er){
                         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
@@ -727,7 +735,8 @@ public class InterfazCliente extends JFrame {
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        decodeMessage(client.sendTruco(-1,enabledToRetrucar));
+                        client.sendTruco(-1,enabledToRetrucar);
+                        decodeMessage(client.receiveMessage());
                     } catch(IOException er){
                         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
