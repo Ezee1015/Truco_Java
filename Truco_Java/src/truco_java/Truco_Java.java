@@ -30,198 +30,189 @@ import javax.swing.text.Utilities;
 
 public class Truco_Java extends JFrame{
 
-    public static JCheckBox musica = new JCheckBox("Musica y Sonido", true);
-    public JCheckBox facil = new JCheckBox("Modo Fácil", false);
-    public JCheckBox movCartas = new JCheckBox("Modo Rápido", false);
-    public static Music musicaFondo = new Music();
-    public static int ganadasJugador=0, ganadasAI=0;
-    public static JTextPane puntajeAI, puntajeJugador;
-    public static JLabel puntajeFondo;
-    private boolean facilChecked = false;
-    private static final Music efectos = new Music();
-    public static ArrayList<Usuario> listaUsuarios = new ArrayList();
-    private static JButton sesionBoton, registrarBoton, contraseñaBoton;
-    private static JLabel bienvenido;
-    private static JTextPane bienvenidoMSG;
-    public static int posUsuario=-1;
+    //Swing
+    public static JCheckBox musicCheckBox = new JCheckBox("Musica y Sonido", true);
+    public JCheckBox easyCheckBox = new JCheckBox("Modo Fácil", false);
+    public JCheckBox fastModeCheckBox = new JCheckBox("Modo Rápido", false);
+    public static JTextPane AiPoints, playerPoints;
+    public static JLabel pointsBackground;
+    private static JButton sessionButton, registerButton, passwordButton;
+    private static JLabel welcomeLabel;
+    private static JTextPane welcomePane;
+
+    // Variables
+    public static Music music = new Music();
+    private static final Music effects = new Music();
+    public static int gamesWonPlayer=0, gamesWonAi=0;
+    private boolean easyMode = false;
+    public static ArrayList<Usuario> userList = new ArrayList<>();
+    public static int userIndex=-1;
 
     public Truco_Java () throws IOException {
 
         setLayout(null);
         setDefaultCloseOperation(3);
 
-        // Fondo
-        JLabel fondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/menu.png")).getScaledInstance(500, 500, Image.SCALE_SMOOTH)));
-        fondo.setBounds(0, 0, 500, 500);
-        fondo.setVisible(true);
-        add(fondo);
+        JLabel background = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/menu.png")).getScaledInstance(500, 500, Image.SCALE_SMOOTH)));
+        background.setBounds(0, 0, 500, 500);
+        background.setVisible(true);
+        add(background);
 
-        // Logo
         JLabel logo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/logo.png")).getScaledInstance(300, 100, Image.SCALE_SMOOTH)));
         logo.setBounds(100, 35, 300, 100);
         logo.setVisible(true);
-        fondo.add(logo);
+        background.add(logo);
 
-        // Jugar
-        JButton jugar = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugarBoton.png")).getScaledInstance(300, 60, Image.SCALE_SMOOTH)));
-        jugar.setBounds(100, 330, 300, 60);
-        jugar.setVisible(true);
-        jugar.setOpaque(false);
-        jugar.setContentAreaFilled(false);
-        jugar.setBorderPainted(false);
-        fondo.add(jugar);
-        jugar.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
+        JButton playButton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugarBoton.png")).getScaledInstance(300, 60, Image.SCALE_SMOOTH)));
+        playButton.setBounds(100, 330, 300, 60);
+        playButton.setVisible(true);
+        playButton.setOpaque(false);
+        playButton.setContentAreaFilled(false);
+        playButton.setBorderPainted(false);
+        background.add(playButton);
+        playButton.addActionListener((ActionEvent e) -> {
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
             setVisible(false);
-            MenuJugar juego;
+            MenuJugar gameMenu;
             try {
-                juego = new MenuJugar(this);
-                juego.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
-                juego.setResizable(false);
-                juego.setTitle("Juego Truco");
-                juego.setBounds(0,0,500,500);
-                juego.setLocationRelativeTo(null);
-                juego.setVisible(true);
-                //Muestra el mensaje que avisa para comenzar el juego
-                // juego.setBounds(0,0,505,800);
-                // JOptionPane.showMessageDialog(null, "Aprete el mazo de cartas para comenzar el juego...");
-                // efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                // efectos.play();
+                gameMenu = new MenuJugar(this);
+                gameMenu.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
+                gameMenu.setResizable(false);
+                gameMenu.setTitle("Juego Truco");
+                gameMenu.setBounds(0,0,500,500);
+                gameMenu.setLocationRelativeTo(null);
+                gameMenu.setVisible(true);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar el juego: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
         });
 
-        // Acerca De
-        JButton acercaBoton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/acercaBoton.png")).getScaledInstance(140, 40, Image.SCALE_SMOOTH)));
-        acercaBoton.setBounds(100, 400, 140, 40);
-        acercaBoton.setVisible(true);
-        acercaBoton.setOpaque(false);
-        acercaBoton.setContentAreaFilled(false);
-        acercaBoton.setBorderPainted(false);
-        fondo.add(acercaBoton);
-        acercaBoton.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
+        JButton aboutButton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/acercaBoton.png")).getScaledInstance(140, 40, Image.SCALE_SMOOTH)));
+        aboutButton.setBounds(100, 400, 140, 40);
+        aboutButton.setVisible(true);
+        aboutButton.setOpaque(false);
+        aboutButton.setContentAreaFilled(false);
+        aboutButton.setBorderPainted(false);
+        background.add(aboutButton);
+        aboutButton.addActionListener((ActionEvent e) -> {
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
             setVisible(false);
-            AcercaDe acerca;
+            AcercaDe about;
             ImageIcon icono = new ImageIcon("src/truco_java/fondos/icono.png");
             try {
-                acerca = new AcercaDe(this);
-                acerca.setIconImage(icono.getImage());
-                acerca.setBounds(0,0,500,500);
-                acerca.setTitle("Acerca del Juego");
-                acerca.setResizable(false);
-                acerca.setLocationRelativeTo(null);
-                acerca.setVisible(true);
+                about = new AcercaDe(this);
+                about.setIconImage(icono.getImage());
+                about.setBounds(0,0,500,500);
+                about.setTitle("Acerca del Juego");
+                about.setResizable(false);
+                about.setLocationRelativeTo(null);
+                about.setVisible(true);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar la información acerca del juego: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
         });
 
-        // Cambiar Contraseña Usuario
-        contraseñaBoton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/contraseñaBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
-        contraseñaBoton.setBounds(410, 280, 75, 40);
-        contraseñaBoton.setVisible(false);
-        contraseñaBoton.setOpaque(false);
-        contraseñaBoton.setContentAreaFilled(false);
-        contraseñaBoton.setBorderPainted(false);
-        fondo.add(contraseñaBoton);
-        contraseñaBoton.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
-            CambioContraseña contraseña;
+        passwordButton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/contraseñaBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
+        passwordButton.setBounds(410, 280, 75, 40);
+        passwordButton.setVisible(false);
+        passwordButton.setOpaque(false);
+        passwordButton.setContentAreaFilled(false);
+        passwordButton.setBorderPainted(false);
+        background.add(passwordButton);
+        passwordButton.addActionListener((ActionEvent e) -> {
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+            CambioContraseña pass;
 
             try {
-                contraseña = new CambioContraseña(this);
-                contraseña.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
-                contraseña.setBounds(0,0,500,350);
-                contraseña.setTitle("Acerca del Juego");
-                contraseña.setResizable(false);
-                contraseña.setLocationRelativeTo(null);
-                contraseña.setUndecorated(true);
-                contraseña.setVisible(true);
+                pass = new CambioContraseña(this);
+                pass.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
+                pass.setBounds(0,0,500,350);
+                pass.setTitle("Acerca del Juego");
+                pass.setResizable(false);
+                pass.setLocationRelativeTo(null);
+                pass.setUndecorated(true);
+                pass.setVisible(true);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar la información acerca del juego: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
         });
 
-        // Inicio de Sesion / Salir
-        sesionBoton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/iniciarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
-        sesionBoton.setBounds(410, 340, 75, 40);
-        sesionBoton.setVisible(true);
-        sesionBoton.setOpaque(false);
-        sesionBoton.setContentAreaFilled(false);
-        sesionBoton.setBorderPainted(false);
-        fondo.add(sesionBoton);
-        sesionBoton.addActionListener((ActionEvent e) -> {
-            if(posUsuario!=-1){
-                efectos.setFile("src/truco_java/musica/pop.wav", 1);
-                efectos.play();
+        sessionButton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/iniciarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
+        sessionButton.setBounds(410, 340, 75, 40);
+        sessionButton.setVisible(true);
+        sessionButton.setOpaque(false);
+        sessionButton.setContentAreaFilled(false);
+        sessionButton.setBorderPainted(false);
+        background.add(sessionButton);
+        sessionButton.addActionListener((ActionEvent e) -> {
+            if(userIndex!=-1){
+                effects.setFile("src/truco_java/musica/pop.wav", 1);
+                effects.play();
                 try {
-                    sesionAccion(false,0, false);
+                    sessionAction(false,0, false);
                 } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Error al cerrar la cuenta: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                    JOptionPane.showMessageDialog(null, "Error al cerrar la cuenta: " + ex.getMessage());
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
                 }
                 return;
             }
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
 
-            Usuario.cargarUsuarios();
-            if(Truco_Java.listaUsuarios.isEmpty()){
+            Usuario.loadUsers();
+            if(Truco_Java.userList.isEmpty()){
                 JOptionPane.showMessageDialog(null, "No existen usuarios registrados.");
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
                 return;
             }
 
-            Sesion sesion;
+            Sesion session;
             try {
-                sesion = new Sesion(this);
-                sesion.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
-                sesion.setBounds(0,0,500,350);
-                sesion.setTitle("Acerca del Juego");
-                sesion.setResizable(false);
-                sesion.setLocationRelativeTo(null);
-                sesion.setUndecorated(true);
-                sesion.setVisible(true);
+                session = new Sesion(this);
+                session.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
+                session.setBounds(0,0,500,350);
+                session.setTitle("Acerca del Juego");
+                session.setResizable(false);
+                session.setLocationRelativeTo(null);
+                session.setUndecorated(true);
+                session.setVisible(true);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar la información acerca del juego: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
         });
 
-        // Registrarse
-        registrarBoton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/registrarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
-        registrarBoton.setBounds(410, 400, 75, 40);
-        registrarBoton.setVisible(true);
-        registrarBoton.setOpaque(false);
-        registrarBoton.setContentAreaFilled(false);
-        registrarBoton.setBorderPainted(false);
-        fondo.add(registrarBoton);
-        registrarBoton.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
-            if(posUsuario!=-1){
+        registerButton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/registrarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
+        registerButton.setBounds(410, 400, 75, 40);
+        registerButton.setVisible(true);
+        registerButton.setOpaque(false);
+        registerButton.setContentAreaFilled(false);
+        registerButton.setBorderPainted(false);
+        background.add(registerButton);
+        registerButton.addActionListener((ActionEvent e) -> {
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+            if(userIndex!=-1){
                 int dialogResult = JOptionPane.showConfirmDialog(null, "Está a punto de eliminar su usuario ¿Desea continuar con la operación?","Aclaración",JOptionPane.YES_NO_OPTION);
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
                 if(dialogResult == JOptionPane.YES_OPTION){
-                    listaUsuarios.get(posUsuario).guardarCambios(true, 0);
-                    listaUsuarios.remove(posUsuario);
+                    userList.get(userIndex).saveChanges(true, 0);
+                    userList.remove(userIndex);
                     try {
-                        sesionAccion(false,0, true);
+                        sessionAction(false,0, true);
                     } catch (IOException ex) {
                         Logger.getLogger(Truco_Java.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -229,92 +220,87 @@ public class Truco_Java extends JFrame{
                 return;
             }
 
-            Usuario.cargarUsuarios();
-            Registrarse sesion;
+            Usuario.loadUsers();
+            Registrarse register;
             try {
-                sesion = new Registrarse(this);
-                sesion.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
-                sesion.setBounds(0,0,500,350);
-                sesion.setTitle("Acerca del Juego");
-                sesion.setResizable(false);
-                sesion.setLocationRelativeTo(null);
-                sesion.setUndecorated(true);
-                sesion.setVisible(true);
+                register = new Registrarse(this);
+                register.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
+                register.setBounds(0,0,500,350);
+                register.setTitle("Acerca del Juego");
+                register.setResizable(false);
+                register.setLocationRelativeTo(null);
+                register.setUndecorated(true);
+                register.setVisible(true);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar la información acerca del juego: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
         });
 
-        // Salir
-        JButton salir = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/salirBoton.png")).getScaledInstance(140, 40, Image.SCALE_SMOOTH)));
-        salir.setBounds(260, 400, 140, 40);
-        salir.setVisible(true);
-        salir.setOpaque(false);
-        salir.setContentAreaFilled(false);
-        salir.setBorderPainted(false);
-        fondo.add(salir);
-        salir.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
+        JButton exit = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/salirBoton.png")).getScaledInstance(140, 40, Image.SCALE_SMOOTH)));
+        exit.setBounds(260, 400, 140, 40);
+        exit.setVisible(true);
+        exit.setOpaque(false);
+        exit.setContentAreaFilled(false);
+        exit.setBorderPainted(false);
+        background.add(exit);
+        exit.addActionListener((ActionEvent e) -> {
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
             System.exit(0);
         });
 
-        // CheckBox selector de musica ON/OFF
-        musica.setBounds(100, 300, 140, 20);
-        musica.setOpaque(false);
-        fondo.add(musica);
-        musica.addItemListener((ItemEvent e) -> {
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
+        musicCheckBox.setBounds(100, 300, 140, 20);
+        musicCheckBox.setOpaque(false);
+        background.add(musicCheckBox);
+        musicCheckBox.addItemListener((ItemEvent e) -> {
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
             if(e.getStateChange()==1){
-                musicaFondo.setFile("src/truco_java/musica/fondo.wav");
-                musicaFondo.play();
+                music.setFile("src/truco_java/musica/fondo.wav");
+                music.play();
             } else{
                 try {
-                    musicaFondo.stop();
+                    music.stop();
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, "Ha sucedido un error al detener la música: " + ex.getMessage());
-                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    efectos.play();
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
                 }
             }
         });
 
-        // CheckBox selector de modo facil/dificil
-        facil.setBounds(280, 290, 250, 40);
-        facil.setOpaque(false);
-        fondo.add(facil);
-        facil.addItemListener((ItemEvent e) -> {
-            if(e.getStateChange()==1 && !facilChecked){
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+        easyCheckBox.setBounds(280, 290, 250, 40);
+        easyCheckBox.setOpaque(false);
+        background.add(easyCheckBox);
+        easyCheckBox.addItemListener((ItemEvent e) -> {
+            if(e.getStateChange()==1 && !easyMode){
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
                 int dialogResult = JOptionPane.showConfirmDialog(null, "Al estar en modo facil, no se sumará puntaje! Este está diseñado exclusivamente para practicar. ¿Aún así desea jugar en modo facil?","Aclaración",JOptionPane.YES_NO_OPTION);
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
                 if(dialogResult == JOptionPane.NO_OPTION)
-                    facil.setSelected(false);
+                    easyCheckBox.setSelected(false);
                 else {
-                    facilChecked=true;
-                    facil.setSelected(true);
+                    easyMode=true;
+                    easyCheckBox.setSelected(true);
                 }
             }
         });
 
-        // CheckBox de modo rápido
-        movCartas.setBounds(100, 270, 250, 40);
-        movCartas.setOpaque(false);
-        fondo.add(movCartas);
+        fastModeCheckBox.setBounds(100, 270, 250, 40);
+        fastModeCheckBox.setOpaque(false);
+        background.add(fastModeCheckBox);
 
-        // Créditos
-        JLabel creditos = new JLabel("    Versión 4.0 | Creado por Leonardo D.S. - Licencia GPL");
-        creditos.setBounds(0, 445, 500, 30);
-        creditos.setFont(new Font("Arial", Font.BOLD, 14));
-        creditos.setForeground(Color.WHITE);
-        creditos.setVisible(true);
-        fondo.add(creditos);
-        creditos.addMouseListener(new MouseAdapter() {
+        JLabel creditsLabel = new JLabel("    Versión 4.0 | Creado por Leonardo D.S. - Licencia GPL");
+        creditsLabel.setBounds(0, 445, 500, 30);
+        creditsLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        creditsLabel.setForeground(Color.WHITE);
+        creditsLabel.setVisible(true);
+        background.add(creditsLabel);
+        creditsLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 try {
                     Desktop.getDesktop().browse(new URL("https://github.com/Ezee1015/Truco_Java").toURI());
@@ -322,58 +308,54 @@ public class Truco_Java extends JFrame{
             }
         });
 
-        // Fondo puntaje
-        puntajeFondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg0.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
-        puntajeFondo.setBounds(10, 325, 75, 100);
-        puntajeFondo.setVisible(false);
-        fondo.add(puntajeFondo);
+        pointsBackground = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg0.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+        pointsBackground.setBounds(10, 325, 75, 100);
+        pointsBackground.setVisible(false);
+        background.add(pointsBackground);
 
-        // Puntaje Jugador
-        puntajeJugador = new JTextPane();
-        puntajeJugador.setText(Integer.toString(ganadasJugador));
-        puntajeJugador.setFont(new Font("Arial", Font.BOLD, 20));
-        puntajeJugador.setBounds(5, 50, 25, 30);
-        puntajeJugador.setVisible(true);
-        puntajeJugador.setEditable(false);
-        puntajeJugador.setOpaque(false);
-        puntajeFondo.add(puntajeJugador);
-        //Centra el texto
-        StyledDocument doc = puntajeJugador.getStyledDocument();
+        playerPoints = new JTextPane();
+        playerPoints.setText(Integer.toString(gamesWonPlayer));
+        playerPoints.setFont(new Font("Arial", Font.BOLD, 20));
+        playerPoints.setBounds(5, 50, 25, 30);
+        playerPoints.setVisible(true);
+        playerPoints.setEditable(false);
+        playerPoints.setOpaque(false);
+        pointsBackground.add(playerPoints);
+        // Center text
+        StyledDocument doc = playerPoints.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
-        // Puntaje Ai
-        puntajeAI = new JTextPane();
-        puntajeAI.setText(Integer.toString(ganadasAI));
-        puntajeAI.setFont(new Font("Arial", Font.BOLD, 20));
-        puntajeAI.setBounds(42, 50, 25, 30);
-        puntajeAI.setEditable(false);
-        puntajeAI.setOpaque(false);
-        puntajeAI.setVisible(true);
-        puntajeFondo.add(puntajeAI);
-        //Centra el texto
-        StyledDocument doc2 = puntajeAI.getStyledDocument();
+        AiPoints = new JTextPane();
+        AiPoints.setText(Integer.toString(gamesWonAi));
+        AiPoints.setFont(new Font("Arial", Font.BOLD, 20));
+        AiPoints.setBounds(42, 50, 25, 30);
+        AiPoints.setEditable(false);
+        AiPoints.setOpaque(false);
+        AiPoints.setVisible(true);
+        pointsBackground.add(AiPoints);
+        // Center text
+        StyledDocument doc2 = AiPoints.getStyledDocument();
         SimpleAttributeSet center2 = new SimpleAttributeSet();
         StyleConstants.setAlignment(center2, StyleConstants.ALIGN_CENTER);
         doc2.setParagraphAttributes(0, doc2.getLength(), center2, false);
 
-        // Mensaje de bienvenida al usuario
-        bienvenido = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cartelBienvenida.png")).getScaledInstance(360, 35, Image.SCALE_SMOOTH)));
-        bienvenido.setFont(new Font("Arial", Font.BOLD, 22));
-        bienvenido.setBounds(70, 5, 360, 35);
-        bienvenido.setVisible(false);
-        fondo.add(bienvenido);
-        bienvenidoMSG = new JTextPane();
-        bienvenidoMSG.setBounds(0, 3, 360, 35);
-        bienvenidoMSG.setFont(new Font("Arial", Font.BOLD, 22));
-        bienvenidoMSG.setEditable(false);
-        bienvenidoMSG.setForeground(Color.decode("#7b3e00"));
-        bienvenidoMSG.setOpaque(false);
-        bienvenidoMSG.setVisible(true);
-        bienvenido.add(bienvenidoMSG);
-        //Centra el texto
-        StyledDocument doc3 = bienvenidoMSG.getStyledDocument();
+        welcomeLabel = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cartelBienvenida.png")).getScaledInstance(360, 35, Image.SCALE_SMOOTH)));
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 22));
+        welcomeLabel.setBounds(70, 5, 360, 35);
+        welcomeLabel.setVisible(false);
+        background.add(welcomeLabel);
+        welcomePane = new JTextPane();
+        welcomePane.setBounds(0, 3, 360, 35);
+        welcomePane.setFont(new Font("Arial", Font.BOLD, 22));
+        welcomePane.setEditable(false);
+        welcomePane.setForeground(Color.decode("#7b3e00"));
+        welcomePane.setOpaque(false);
+        welcomePane.setVisible(true);
+        welcomeLabel.add(welcomePane);
+        // Center text
+        StyledDocument doc3 = welcomePane.getStyledDocument();
         SimpleAttributeSet center3 = new SimpleAttributeSet();
         StyleConstants.setAlignment(center3, StyleConstants.ALIGN_CENTER);
         doc3.setParagraphAttributes(0, doc3.getLength(), center3, false);
@@ -392,75 +374,75 @@ public class Truco_Java extends JFrame{
             menu.setVisible(true);
         } catch (IOException e){
             JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar el menu: " + e.getMessage());
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
             return;
         }
 
-        musicaFondo.setFile("src/truco_java/musica/fondo.wav");
-        musicaFondo.play();
+        music.setFile("src/truco_java/musica/fondo.wav");
+        music.play();
     }
 
-    public static void sesionAccion (boolean sesionIniciada, int posiUsuario, boolean eliminado) throws IOException{
-        if(!sesionIniciada){
-            registrarBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/registrarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
-            sesionBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/iniciarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
-            bienvenidoMSG.setText(null);
-            bienvenido.setVisible(false);
-            bienvenido.setText(null);
-            if(!eliminado){
-                listaUsuarios.get(posUsuario).encriptaPuntaje();
-                Truco_Java.listaUsuarios.get(posUsuario).guardarCambios(false, 0);
+    public static void sessionAction (boolean loggedIn, int index, boolean deleted) throws IOException{
+        if(!loggedIn){
+            registerButton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/registrarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
+            sessionButton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/iniciarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
+            welcomePane.setText(null);
+            welcomeLabel.setVisible(false);
+            welcomeLabel.setText(null);
+            if(!deleted){
+                userList.get(userIndex).encryptPoints();
+                Truco_Java.userList.get(userIndex).saveChanges(false, 0);
             }
-            ganadasAI=0;
-            ganadasJugador=0;
-            puntajeAI.setText(String.valueOf(ganadasAI));
-            puntajeJugador.setText(String.valueOf(ganadasJugador));
-            puntajeFondo.setVisible(false);
-            contraseñaBoton.setVisible(false);
-            posUsuario=-1;
+            gamesWonAi=0;
+            gamesWonPlayer=0;
+            AiPoints.setText(String.valueOf(gamesWonAi));
+            playerPoints.setText(String.valueOf(gamesWonPlayer));
+            pointsBackground.setVisible(false);
+            passwordButton.setVisible(false);
+            userIndex=-1;
             return;
         }
-        efectos.setFile("src/truco_java/musica/log-in.wav", 1);
-        efectos.play();
-        posUsuario=posiUsuario;
-        registrarBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/eliminarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
-        sesionBoton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cerrarSesionBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
+        effects.setFile("src/truco_java/musica/log-in.wav", 1);
+        effects.play();
+        userIndex=index;
+        registerButton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/eliminarBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
+        sessionButton.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cerrarSesionBoton.png")).getScaledInstance(75, 40, Image.SCALE_SMOOTH)));
 
-        String mensaje[] = new String[3];
-        mensaje[0]="¡Bienvenido " + listaUsuarios.get(posUsuario).getNombre() + "!";
-        mensaje[1]=listaUsuarios.get(posUsuario).getNombre();
-        mensaje[2]="¡Bienvenido!";
-        if(cantidadLineasJTextPane(bienvenidoMSG, mensaje[0]) == 1) bienvenidoMSG.setText(mensaje[0]);
-        else if(cantidadLineasJTextPane(bienvenidoMSG, mensaje[1]) == 1) bienvenidoMSG.setText(mensaje[1]);
-        else bienvenidoMSG.setText(mensaje[2]);
+        String message[] = new String[3];
+        message[0]="¡Bienvenido " + userList.get(userIndex).getName() + "!";
+        message[1]=userList.get(userIndex).getName();
+        message[2]="¡Bienvenido!";
+        if(textPaneLinesCount(welcomePane, message[0]) == 1) welcomePane.setText(message[0]);
+        else if(textPaneLinesCount(welcomePane, message[1]) == 1) welcomePane.setText(message[1]);
+        else welcomePane.setText(message[2]);
 
-        bienvenido.setVisible(true);
-        if(listaUsuarios.get(posUsuario).getPuntajeAI()>0 || listaUsuarios.get(posUsuario).getPuntajeJugador()>0)
-            puntajeFondo.setVisible(true);
+        welcomeLabel.setVisible(true);
+        if(userList.get(userIndex).getAiPoints()>0 || userList.get(userIndex).getPlayerPoints()>0)
+            pointsBackground.setVisible(true);
         else
-            puntajeFondo.setVisible(false);
-        contraseñaBoton.setVisible(true);
+            pointsBackground.setVisible(false);
+        passwordButton.setVisible(true);
     }
 
-    private static int cantidadLineasJTextPane(JTextPane panel, String texto){
-        String antiguoTexto = panel.getText();
-        panel.setText(texto);
+    private static int textPaneLinesCount(JTextPane panel, String text){
+        String oldText = panel.getText();
+        panel.setText(text);
 
-        int caracteres = panel.getText().length();
-        int lineas = (caracteres == 0) ? 1 : 0;
+        int chars = panel.getText().length();
+        int lines = (chars == 0) ? 1 : 0;
 
         try {
-            int offset = caracteres;
+            int offset = chars;
             while (offset > 0) {
                 offset = Utilities.getRowStart(panel, offset) - 1;
-                lineas++;
+                lines++;
             }
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
 
-        panel.setText(antiguoTexto);
-        return lineas;
+        panel.setText(oldText);
+        return lines;
     }
 }

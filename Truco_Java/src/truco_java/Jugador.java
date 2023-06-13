@@ -5,123 +5,124 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 
 public class Jugador {
-  protected ArrayList<Carta> mano = new ArrayList<>();
-  protected ArrayList<Carta> cartasJugadas = new ArrayList<>();
-  protected int puntaje=0;
-  protected boolean esMano;
-  private static final Music efectos = new Music();
+  protected ArrayList<Carta> cards = new ArrayList<>();
+  protected ArrayList<Carta> playedCards = new ArrayList<>();
+  protected int points=0;
+  protected boolean firstHand;
+  private static final Music effects = new Music();
 
-    public Jugador(ArrayList<Carta> mano, boolean esMano) {
-        this.mano = mano;
-        this.esMano = esMano;
+    public Jugador(ArrayList<Carta> cards, boolean firstHand) {
+        this.cards = cards;
+        this.firstHand = firstHand;
     }
 
-    public int getPuntaje() {
-        return puntaje;
+    public int getPoints() {
+        return points;
     }
 
-    public void setPuntaje(int puntaje, InterfazJuego interfaz) {
-      this.puntaje = puntaje;
+    public void setPoints(int points, InterfazJuego interfaceGame) {
+      this.points = points;
       try {
-        interfaz.dibujarPuntaje();
+        interfaceGame.updatePoints();
       } catch (IOException ex) {
         JOptionPane.showMessageDialog(null, "Ha sucedido un error en el dibujado del puntaje: " + ex.getMessage());
-        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-        efectos.play();
+        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+        effects.play();
       }
     }
 
-    public void setPuntaje(int puntaje, InterfazServidor interfaz) {
-      this.puntaje = puntaje;
+    public void setPoints(int points, InterfazServidor interfaceGame) {
+      this.points = points;
       try {
-        interfaz.dibujarPuntaje();
+        interfaceGame.updatePoints();
       } catch (IOException ex) {
         JOptionPane.showMessageDialog(null, "Ha sucedido un error en el dibujado del puntaje: " + ex.getMessage());
-        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-        efectos.play();
+        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+        effects.play();
       }
     }
 
-    public void setPuntaje(int puntaje, InterfazCliente interfaz) {
-      this.puntaje = puntaje;
+    public void setPoints(int points, InterfazCliente interfaceGame) {
+      this.points = points;
       try {
-        interfaz.dibujarPuntaje();
+        interfaceGame.updatePoints();
       } catch (IOException ex) {
         JOptionPane.showMessageDialog(null, "Ha sucedido un error en el dibujado del puntaje: " + ex.getMessage());
-        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-        efectos.play();
+        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+        effects.play();
       }
     }
 
-    public ArrayList<Carta> getMano() {
-        return mano;
+    public ArrayList<Carta> getCards() {
+        return cards;
     }
 
-    public void setMano(ArrayList<Carta> mano) {
-        this.mano = mano;
-        ordenarMano();
+    public void setCards(ArrayList<Carta> cards) {
+        this.cards = cards;
+        sortCards();
     }
 
-    public void ordenarMano(){
+    public void sortCards(){
       ArrayList<Carta> temp = new ArrayList<>();
 
-      for(int x=0;x<mano.size()+temp.size();x++){
-        int posMenor=0;
-        for(int i=1;i<mano.size();i++){
-          if(mano.get(i).rankingCarta()<mano.get(posMenor).rankingCarta()){
-            posMenor=i;
+      for(int x=0;x<cards.size()+temp.size();x++){
+        int posMin=0;
+        for(int i=1;i<cards.size();i++){
+          if(cards.get(i).rankingCard()<cards.get(posMin).rankingCard()){
+            posMin=i;
           }
         }
-        temp.add(mano.get(posMenor));
-        mano.remove(posMenor);
+        temp.add(cards.get(posMin));
+        cards.remove(posMin);
       }
 
-      mano.addAll(temp);
+      cards.addAll(temp);
     }
 
-    public ArrayList<Carta> getCartasJugadas() {
-        return cartasJugadas;
+    public ArrayList<Carta> getPlayedCards() {
+        return playedCards;
     }
 
-    public void setCartasJugadas(ArrayList<Carta> cartasJugadas) {
-        this.cartasJugadas = cartasJugadas;
+    public void setPlayedCards(ArrayList<Carta> playedCards) {
+        this.playedCards = playedCards;
     }
 
-    public boolean isMano() {
-        return esMano;
+    public boolean isFirstHand() {
+        return firstHand;
     }
 
-    public void setEsMano(boolean esMano) {
-        this.esMano = esMano;
+    public void setFirstHand(boolean firstHand) {
+        this.firstHand = firstHand;
     }
 
-    protected int calcularEnvido(){
+    protected int calculateEnvido(){
       int envido=0;
-      ArrayList<Carta> manoOrigi = new ArrayList<>();
-      manoOrigi.addAll(mano);
-      manoOrigi.addAll(cartasJugadas);
+      ArrayList<Carta> cardsOriginal = new ArrayList<>();
+      cardsOriginal.addAll(cards);
+      cardsOriginal.addAll(playedCards);
 
-      // Busca por pares por un envido de 20
-      for(int i=0; i<manoOrigi.size();i++){
-        int m1=i%(manoOrigi.size()+1);
-        int m2=(i+1)%(manoOrigi.size());
+      // Looks for pairs in order to find an envido of 20
+      for(int i=0; i<cardsOriginal.size();i++){
+        int c1=i%(cardsOriginal.size()+1);
+        int c2=(i+1)%(cardsOriginal.size());
 
-        if(manoOrigi.get(m1).getPalo().equals(manoOrigi.get(m2).getPalo())) {
-          int envidoTemp=20;
+        if(cardsOriginal.get(c1).getStick().equals(cardsOriginal.get(c2).getStick())) {
+          int tempEnvido=20;
 
-          if(manoOrigi.get(m1).getNumero() < 10)
-            envidoTemp += manoOrigi.get(m1).getNumero();
-          if(manoOrigi.get(m2).getNumero() < 10)
-            envidoTemp += manoOrigi.get(m2).getNumero();
+          if(cardsOriginal.get(c1).getNumber() < 10)
+            tempEnvido += cardsOriginal.get(c1).getNumber();
+          if(cardsOriginal.get(c2).getNumber() < 10)
+            tempEnvido += cardsOriginal.get(c2).getNumber();
 
-          if (envidoTemp>envido) envido=envidoTemp;
+          if (tempEnvido>envido) envido=tempEnvido;
         }
       }
 
-      // Si no hubo más de 20 en envido (no hubo dos del mismo palo)
+      // If there was no more than 20 of envido (there was nos 2 cards of the same
+      // stick)
       if (envido==0){
-        for(int i=0; i<manoOrigi.size();i++){
-          int num = manoOrigi.get(i).getNumero();
+        for(int i=0; i<cardsOriginal.size();i++){
+          int num = cardsOriginal.get(i).getNumber();
           if(num < 10 && num > envido) envido= num;
         }
       }
@@ -129,9 +130,9 @@ public class Jugador {
       return envido;
     }
 
-  public void agregarCartaJugada(int pos){
-      cartasJugadas.add(mano.get(pos));
-      mano.remove(pos);
+  public void addPlayedCards(int pos){
+      playedCards.add(cards.get(pos));
+      cards.remove(pos);
   }
 
 }

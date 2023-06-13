@@ -1,43 +1,43 @@
 package truco_java;
 
 public class Carta {
-  private int numero;
-  private String palo;
+  private int number;
+  private String stick;
 
-    public Carta(int numero, String palo) {
-        this.numero = numero;
-        this.palo = palo;
+    public Carta(int number, String stick) {
+        this.number = number;
+        this.stick = stick;
     }
 
-    public int getNumero() {
-        return numero;
+    public int getNumber() {
+        return number;
     }
 
-    public void setNumero(int numero) {
-        this.numero = numero;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
-    public String getPalo() {
-        return palo;
+    public String getStick() {
+        return stick;
     }
 
-    public void setPalo(String palo) {
-        this.palo = palo;
+    public void setStick(String stick) {
+        this.stick = stick;
     }
 
-  public int rankingCarta () { //Obtiene un numero según el palo y el numero que es
+  public int rankingCard () { //Obtiene un numero según el palo y el numero que es
     /*
      * 4 de Cualquiera --> 0
      * 1 de espada     --> 13
     */
-    switch(numero){
+    switch(number){
       case 4: return 0;
       case 5: return 1;
       case 6: return 2;
       case 7:
-        if(palo.equals("basto") || palo.equals("copa"))
+        if(stick.equals("basto") || stick.equals("copa"))
           return 3;
-        if(palo.equals("oro"))
+        if(stick.equals("oro"))
           return 10;
         else // espada
           return 11;
@@ -45,9 +45,9 @@ public class Carta {
       case 11: return 5;
       case 12: return 6;
       case 1:
-        if(palo.equals("oro") || palo.equals("copa"))
+        if(stick.equals("oro") || stick.equals("copa"))
           return 7;
-        if(palo.equals("basto"))
+        if(stick.equals("basto"))
           return 12;
         else // espada
           return 13;
@@ -57,11 +57,11 @@ public class Carta {
     return -1;
   }
 
-  public String linkCarta(){
-      return "src/truco_java/mazo/" + numero + " de " + palo + ".png";
+  public String linkCard(){
+      return "src/truco_java/mazo/" + number + " de " + stick + ".png";
   }
 
-  public String texto(){
-      return numero + " de " + palo;
+  public String text(){
+      return number + " de " + stick;
   }
 }

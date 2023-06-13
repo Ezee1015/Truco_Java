@@ -21,7 +21,7 @@ public class AcercaDe extends JFrame {
     private JButton next = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/adelante.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
     private JButton exit = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/volverBoton.png")).getScaledInstance(220, 50, Image.SCALE_SMOOTH)));
     private ArrayList<String> paragraph = new ArrayList<>();
-    private static final Music efects = new Music();
+    private static final Music effects = new Music();
 
 
   public AcercaDe (Truco_Java menu) throws IOException {
@@ -68,8 +68,8 @@ public class AcercaDe extends JFrame {
         back.setEnabled(false);
         backgound.add(back);
         back.addActionListener((ActionEvent e) -> {
-            efects.setFile("src/truco_java/musica/tirarCarta.wav", 1);
-            efects.play();
+            effects.setFile("src/truco_java/musica/tirarCarta.wav", 1);
+            effects.play();
             updateDescription(false);
         });
 
@@ -81,8 +81,8 @@ public class AcercaDe extends JFrame {
         next.setEnabled(true);
         backgound.add(next);
         next.addActionListener((ActionEvent e) -> {
-            efects.setFile("src/truco_java/musica/tirarCarta.wav", 1);
-            efects.play();
+            effects.setFile("src/truco_java/musica/tirarCarta.wav", 1);
+            effects.play();
             updateDescription(true);
         });
 
@@ -93,8 +93,8 @@ public class AcercaDe extends JFrame {
         exit.setBorderPainted(false);
         backgound.add(exit);
         exit.addActionListener((ActionEvent e) -> {
-            efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efects.play();
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
             setVisible(false);
             menu.setVisible(true);
             dispose();

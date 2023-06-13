@@ -24,135 +24,127 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class Registrarse extends JFrame {
-    JButton atras = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
-    private static final Music efectos = new Music();
+    private JButton back = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+    private static final Music effects = new Music();
 
   public Registrarse (Truco_Java menu) throws IOException {
         setLayout(null);
         setDefaultCloseOperation(3);
         menu.setVisible(false);
 
-        // Fondo
-        JLabel fondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondo_acerca.png")).getScaledInstance(500, 500, Image.SCALE_SMOOTH)));
-        fondo.setBounds(0, 0, 500, 500);
-        fondo.setVisible(true);
-        add(fondo);
+        JLabel background = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondo_acerca.png")).getScaledInstance(500, 500, Image.SCALE_SMOOTH)));
+        background.setBounds(0, 0, 500, 500);
+        background.setVisible(true);
+        add(background);
 
-        // Logo
         JLabel logo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/logo.png")).getScaledInstance(300, 100, Image.SCALE_SMOOTH)));
         logo.setBounds(90, 10, 300, 100);
         logo.setVisible(true);
-        fondo.add(logo);
+        background.add(logo);
 
-        // Atras
-        atras.setOpaque(false);
-        atras.setContentAreaFilled(false);
-        atras.setBorderPainted(false);
-        atras.setBounds(20, 20, 50, 50);
-        atras.setVisible(true);
-        atras.setEnabled(true);
-        fondo.add(atras);
-        atras.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
+        back.setOpaque(false);
+        back.setContentAreaFilled(false);
+        back.setBorderPainted(false);
+        back.setBounds(20, 20, 50, 50);
+        back.setVisible(true);
+        back.setEnabled(true);
+        background.add(back);
+        back.addActionListener((ActionEvent e) -> {
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
             menu.setVisible(true);
             setVisible(false);
             dispose();
         });
 
-        // Usuario
-        JLabel usuariosText = new JLabel("Usuario:");
-        usuariosText.setBounds(210, 135, 220, 15);
-        usuariosText.setFont(new Font("Arial", Font.BOLD, 19));
-        usuariosText.setForeground(Color.WHITE);
-        usuariosText.setVisible(true);
-        fondo.add(usuariosText);
-        JTextField usuario = new JTextField();
-        usuario.setBounds(50,155,400,30);
-        usuario.setOpaque(false);
-        usuario.setBorder(null);
-        usuario.setHorizontalAlignment(JTextField.CENTER);
-        usuario.setForeground(Color.white);
-        usuario.setFont(new Font("Arial", Font.BOLD, 16));
-        fondo.add(usuario);
-        // Fondo para mejorar la apariencia
-        JLabel fondoUsuario = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondoCheckBox.png")).getScaledInstance(400, 30, Image.SCALE_SMOOTH)));
-        fondoUsuario.setBounds(50,155,400,30);
-        fondoUsuario.setVisible(true);
-        fondo.add(fondoUsuario);
+        JLabel userLabel = new JLabel("Usuario:");
+        userLabel.setBounds(210, 135, 220, 15);
+        userLabel.setFont(new Font("Arial", Font.BOLD, 19));
+        userLabel.setForeground(Color.WHITE);
+        userLabel.setVisible(true);
+        background.add(userLabel);
+        JTextField userField = new JTextField();
+        userField.setBounds(50,155,400,30);
+        userField.setOpaque(false);
+        userField.setBorder(null);
+        userField.setHorizontalAlignment(JTextField.CENTER);
+        userField.setForeground(Color.white);
+        userField.setFont(new Font("Arial", Font.BOLD, 16));
+        background.add(userField);
+        JLabel userBackground = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondoCheckBox.png")).getScaledInstance(400, 30, Image.SCALE_SMOOTH)));
+        userBackground.setBounds(50,155,400,30);
+        userBackground.setVisible(true);
+        background.add(userBackground);
 
-        JPasswordField contraseña = new JPasswordField();
-        usuario.addActionListener((ActionEvent e) -> {
-            contraseña.requestFocus();
+        JPasswordField passwordField = new JPasswordField();
+        userField.addActionListener((ActionEvent e) -> {
+            passwordField.requestFocus();
         });
 
-        Action registrarAccion = new AbstractAction() {
+        Action registerAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for(int i=0;i<Truco_Java.listaUsuarios.size();i++){
-                    if(Truco_Java.listaUsuarios.get(i).getNombre().equals(usuario.getText())){
+                for(int i=0;i<Truco_Java.userList.size();i++){
+                    if(Truco_Java.userList.get(i).getName().equals(userField.getText())){
                         JOptionPane.showMessageDialog(null, "El nombre de usuario ya existe. Intente con otro");
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        effects.play();
                         return;
                     }
                 }
-                Usuario nuevo;
+                Usuario newUser;
                 try {
-                    nuevo = new Usuario(usuario.getText(),new Encriptacion().encriptar(Truco_Java.ganadasJugador+";sig;"+Truco_Java.ganadasAI, new String(contraseña.getPassword())));
+                    newUser = new Usuario(userField.getText(),new Encriptacion().encrypt(Truco_Java.gamesWonPlayer+";sig;"+Truco_Java.gamesWonAi, new String(passwordField.getPassword())));
                 } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
                         JOptionPane.showMessageDialog(null, "No se puedo crear el usuario. Intente con otra contraseña.");
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        effects.play();
                         return;
                 }
-                if(!nuevo.iniciarSesion(new String(contraseña.getPassword())))
+                if(!newUser.logIn(new String(passwordField.getPassword())))
                     return;
-                Truco_Java.listaUsuarios.add(nuevo);
+                Truco_Java.userList.add(newUser);
                 try {
-                    Truco_Java.sesionAccion(true, Truco_Java.listaUsuarios.size()-1, false);
+                    Truco_Java.sessionAction(true, Truco_Java.userList.size()-1, false);
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, "Error en el inicio de sesion tras la registración.");
-                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    efectos.play();
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
                     return;
                 }
-                Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).guardarCambios(false, 0);
+                Truco_Java.userList.get(Truco_Java.userIndex).saveChanges(false, 0);
                 menu.setVisible(true);
                 setVisible(false);
                 dispose();
             }
         };
 
-        // Contraseña
-        JLabel contraseñaText = new JLabel("Contraseña:");
-        contraseñaText.setBounds(192, 195, 220, 15);
-        contraseñaText.setFont(new Font("Arial", Font.BOLD, 19));
-        contraseñaText.setForeground(Color.WHITE);
-        contraseñaText.setVisible(true);
-        fondo.add(contraseñaText);
-        contraseña.setBounds(50,215,400,30);
-        contraseña.setOpaque(false);
-        contraseña.setBorder(null);
-        contraseña.setHorizontalAlignment(JTextField.CENTER);
-        contraseña.setForeground(Color.white);
-        contraseña.setFont(new Font("Arial", Font.BOLD, 16));
-        contraseña.addActionListener(registrarAccion);
-        fondo.add(contraseña);
-        // Fondo para mejorar la apariencia
-        JLabel fondoContraseña = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondoCheckBox.png")).getScaledInstance(400, 30, Image.SCALE_SMOOTH)));
-        fondoContraseña.setBounds(50, 215, 400, 30);
-        fondoContraseña.setVisible(true);
-        fondo.add(fondoContraseña);
+        JLabel passwordLabel = new JLabel("Contraseña:");
+        passwordLabel.setBounds(192, 195, 220, 15);
+        passwordLabel.setFont(new Font("Arial", Font.BOLD, 19));
+        passwordLabel.setForeground(Color.WHITE);
+        passwordLabel.setVisible(true);
+        background.add(passwordLabel);
+        passwordField.setBounds(50,215,400,30);
+        passwordField.setOpaque(false);
+        passwordField.setBorder(null);
+        passwordField.setHorizontalAlignment(JTextField.CENTER);
+        passwordField.setForeground(Color.white);
+        passwordField.setFont(new Font("Arial", Font.BOLD, 16));
+        passwordField.addActionListener(registerAction);
+        background.add(passwordField);
+        JLabel passwordBackground = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondoCheckBox.png")).getScaledInstance(400, 30, Image.SCALE_SMOOTH)));
+        passwordBackground.setBounds(50, 215, 400, 30);
+        passwordBackground.setVisible(true);
+        background.add(passwordBackground);
 
-        // Boton de registrarse
-        JButton registrarse = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/registrarseBoton.png")).getScaledInstance(150, 50, Image.SCALE_SMOOTH)));
-        registrarse.setBounds(175, 255, 150, 50);
-        registrarse.setVisible(true);
-        registrarse.setOpaque(false);
-        registrarse.setContentAreaFilled(false);
-        registrarse.setBorderPainted(false);
-        fondo.add(registrarse);
-        registrarse.addActionListener(registrarAccion);
+        JButton registerButton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/registrarseBoton.png")).getScaledInstance(150, 50, Image.SCALE_SMOOTH)));
+        registerButton.setBounds(175, 255, 150, 50);
+        registerButton.setVisible(true);
+        registerButton.setOpaque(false);
+        registerButton.setContentAreaFilled(false);
+        registerButton.setBorderPainted(false);
+        background.add(registerButton);
+        registerButton.addActionListener(registerAction);
   }
 }

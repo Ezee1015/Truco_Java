@@ -20,293 +20,274 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 public class InterfazCliente extends JFrame {
-    // La interfaz cliente es quien espera los comandos del servidor para actuar
     Cliente client;
 
     // Swing
-    private JLabel fondo = new JLabel();
+    private JLabel background = new JLabel();
     private Truco_Java menu;
-    private MenuJugar menuJugar;
-    private JLabel OC1, OC2, OC3;
-    private JLabel OCT1, OCT2, OCT3;
-    private JButton PC1, PC2, PC3;
-    private JLabel PCT1, PCT2, PCT3;
-    private JButton truco, envido, irAlMazo, envidoEsp, envidoEnvido, realEnvido, faltaEnvido;
-    private JButton noQuieroEnv, quieroEnv, noQuieroTruco, quieroTruco;
-    private JLabel fondoEstado;
-    private JLabel puntajeOponente = new JLabel(), puntajeJugador = new JLabel();
-    private JTextPane estado;
-    private JButton movCarta = new JButton();
+    private MenuJugar playMenu;
+    private JLabel cardOpponent1, cardOpponent2, cardOpponent3;
+    private JLabel cardThrownOpponent1, cardThrownOpponent2, cardThrownOpponent3;
+    private JButton cardPlayer1, cardPlayer2, cardPlayer3;
+    private JLabel cardThrownPlayer1, cardThrownPlayer2, cardThrownPlayer3;
+    private JButton truco, envidoMenu, irAlMazo, envido, envidoEnvido, realEnvido, faltaEnvido;
+    private JButton noQuieroEnvido, quieroEnvido, noQuieroTruco, quieroTruco;
+    private JLabel statusBackground;
+    private JLabel pointsAi = new JLabel(), puntajeJugador = new JLabel();
+    private JTextPane status;
+    private JButton movingCard = new JButton();
     private boolean PC1Enabled=false, PC2Enabled=false, PC3Enabled=false;
-    private final Music cantar = new Music();
-    private static final Music efectos = new Music();
-    private JLabel fondoConexion = new JLabel(new ImageIcon("src/truco_java/fondos/turnoJugador.png"));
+    private final Music opponentVoice = new Music();
+    private static final Music efects = new Music();
+    private JLabel connectionBackground = new JLabel(new ImageIcon("src/truco_java/fondos/turnoJugador.png"));
+    private boolean finishedGame = false;
+    JLabel pointsBackground = new JLabel();
 
-    // Jugadores
-    private Persona jugador = new Persona(null, true);
-    private int numeroPersonaje; // Representa el personaje que fue generado;
-    private String nombreOponente ="la PC";
-    private Persona oponente = new Persona(null, false);
-    private boolean termino = false;
-    JLabel puntajeFondo = new JLabel();
+    // Players
+    private Persona player = new Persona(null, true);
+    private int opponentNumber; // Represents the player that was selected personaje que fue generado
+    private String opponentName ="la PC";
+    private Persona opponent = new Persona(null, false);
 
-    // Información temporal del juego
-    private ArrayList<Integer> envidosCantados = new ArrayList<>();
-    private int cantCartasOponente;
-    private int nivelTruco;
-    private boolean envidoFinalizado;
-    // public boolean conectado = false;
-    private int habilitadoARetrucar; // 2--> Jugador; 1--> Oponente
+    // Information of the game
+    private ArrayList<Integer> envidosDeclared = new ArrayList<>();
+    private int opponentCardsCount;
+    private int trucoLevel;
+    private boolean finishedEnvido;
+    private int enabledToRetrucar; // 2--> Player; 1--> opponent
 
-    public InterfazCliente(Truco_Java menu, String ip, int puerto, MenuJugar menuJugar) throws IOException {
-        client = new Cliente(ip,puerto);
+    public InterfazCliente(Truco_Java menu, String ip, int port, MenuJugar playMenu) throws IOException {
+        client = new Cliente(ip,port);
         this.menu = menu;
-        this.menuJugar = menuJugar;
+        this.playMenu = playMenu;
 
-        Thread esperarThread = new Thread(){
+        Thread waitingForName = new Thread(){
             public void run(){
                 try{
-                    recibirMensaje(client.recibirMensaje());
+                    decodeMessage(client.receiveMessage());
                 } catch (Exception e) {
-                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                     JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar el nombre del Jugador: " + e.getMessage());
-                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    efectos.play();
+                    efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    efects.play();
                 }
-                setFondo(0);
+                setBackground(0);
                 try{
-                    recibirMensaje(client.recibirMensaje());
+                    decodeMessage(client.receiveMessage());
                 } catch (Exception e) {
-                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                     JOptionPane.showMessageDialog(null, "Ha sucedido un error al recibir el mensaje: " + e.getMessage());
-                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    efectos.play();
+                    efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    efects.play();
                 }
             }
         };
-        esperarThread.start();
+        waitingForName.start();
 
         setLayout(null);
         setDefaultCloseOperation(3);
 
-        // Inicializa la carta de movimiento
-        movCarta.setOpaque(false);
-        movCarta.setContentAreaFilled(false);
-        movCarta.setBorderPainted(false);
+        movingCard.setOpaque(false);
+        movingCard.setContentAreaFilled(false);
+        movingCard.setBorderPainted(false);
 
-        // Fondo
-        fondo.setBounds(0, 0, 500, 800);
-        fondo.setVisible(true);
-        add(fondo);
+        background.setBounds(0, 0, 500, 800);
+        background.setVisible(true);
+        add(background);
 
-        // Oponente Carta 1
-        OC1 = new JLabel();
-        OC1.setBounds(100, 70, 75, 100);
-        OC1.setVisible(true);
-        fondo.add(OC1);
+        cardOpponent1 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+        cardOpponent1.setBounds(100, 70, 75, 100);
+        cardOpponent1.setVisible(true);
+        background.add(cardOpponent1);
 
-        // Oponente Carta 2
-        OC2 = new JLabel();
-        OC2.setBounds(200, 70, 75, 100);
-        OC2.setVisible(true);
-        fondo.add(OC2);
+        cardOpponent2 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+        cardOpponent2.setBounds(200, 70, 75, 100);
+        cardOpponent2.setVisible(true);
+        background.add(cardOpponent2);
 
-        // Oponente Carta 3
-        OC3 = new JLabel();
-        OC3.setBounds(300, 70, 75, 100);
-        OC3.setVisible(true);
-        fondo.add(OC3);
+        cardOpponent3 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+        cardOpponent3.setBounds(300, 70, 75, 100);
+        cardOpponent3.setVisible(true);
+        background.add(cardOpponent3);
 
-        // Persona Carta 1
-        PC1 = new JButton();
-        PC1.setBounds(10, 400, 155, 200);
-        PC1.setVisible(true);
+        cardPlayer1 = new JButton();
+        cardPlayer1.setBounds(10, 400, 155, 200);
+        cardPlayer1.setVisible(true);
         PC1Enabled=false;
-        PC1.setOpaque(false);
-        PC1.setContentAreaFilled(false);
-        PC1.setBorderPainted(false);
-        fondo.add(PC1);
-        PC1.addActionListener((ActionEvent e) -> {
+        cardPlayer1.setOpaque(false);
+        cardPlayer1.setContentAreaFilled(false);
+        cardPlayer1.setBorderPainted(false);
+        background.add(cardPlayer1);
+        cardPlayer1.addActionListener((ActionEvent e) -> {
             if(!PC1Enabled)
                 return;
-            efectos.setFile("src/truco_java/musica/tirarCarta.wav", 1);
-            efectos.play();
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
+            efects.setFile("src/truco_java/musica/tirarCarta.wav", 1);
+            efects.play();
+            envidoMenu.setEnabled(false);
+            envido.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
-            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
             truco.setEnabled(false);
             irAlMazo.setEnabled(false);
             try {
-                tirarCarta(0);
+                throwCard(0);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de tirar la primer carta: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efects.play();
             }
-            setFondo(0);
+            setBackground(0);
         });
 
-        // Persona Carta 2
-        PC2 = new JButton();
-        PC2.setBounds(170, 400, 155, 200);
-        PC2.setVisible(true);
+        cardPlayer2 = new JButton();
+        cardPlayer2.setBounds(170, 400, 155, 200);
+        cardPlayer2.setVisible(true);
         PC2Enabled=false;
-        PC2.setBorderPainted(false);
-        PC2.setOpaque(false);
-        PC2.setContentAreaFilled(false);
-        PC2.setBorderPainted(false);
-        fondo.add(PC2);
-        PC2.addActionListener((ActionEvent e) -> {
+        cardPlayer2.setBorderPainted(false);
+        cardPlayer2.setOpaque(false);
+        cardPlayer2.setContentAreaFilled(false);
+        cardPlayer2.setBorderPainted(false);
+        background.add(cardPlayer2);
+        cardPlayer2.addActionListener((ActionEvent e) -> {
             if(!PC2Enabled)
                 return;
-            efectos.setFile("src/truco_java/musica/tirarCarta.wav", 1);
-            efectos.play();
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
+            efects.setFile("src/truco_java/musica/tirarCarta.wav", 1);
+            efects.play();
+            envidoMenu.setEnabled(false);
+            envido.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
-            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
             truco.setEnabled(false);
             irAlMazo.setEnabled(false);
             try {
-                tirarCarta(1);
+                throwCard(1);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de tirar la segunda carta: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efects.play();
             }
-            setFondo(0);
+            setBackground(0);
         });
 
-        // Persona Carta 3
-        PC3 = new JButton();
-        PC3.setBounds(330, 400, 155, 200);
-        PC3.setVisible(true);
+        cardPlayer3 = new JButton();
+        cardPlayer3.setBounds(330, 400, 155, 200);
+        cardPlayer3.setVisible(true);
         PC3Enabled=false;
-        PC3.setBorderPainted(false);
-        PC3.setOpaque(false);
-        PC3.setContentAreaFilled(false);
-        PC3.setBorderPainted(false);
-        fondo.add(PC3);
-        PC3.addActionListener((ActionEvent e) -> {
+        cardPlayer3.setBorderPainted(false);
+        cardPlayer3.setOpaque(false);
+        cardPlayer3.setContentAreaFilled(false);
+        cardPlayer3.setBorderPainted(false);
+        background.add(cardPlayer3);
+        cardPlayer3.addActionListener((ActionEvent e) -> {
             if(!PC3Enabled)
                 return;
-            efectos.setFile("src/truco_java/musica/tirarCarta.wav", 1);
-            efectos.play();
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
+            efects.setFile("src/truco_java/musica/tirarCarta.wav", 1);
+            efects.play();
+            envidoMenu.setEnabled(false);
+            envido.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
-            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
             truco.setEnabled(false);
             irAlMazo.setEnabled(false);
             try {
-                tirarCarta(2);
+                throwCard(2);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de tirar la tercer carta: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efects.play();
             }
-            setFondo(0);
+            setBackground(0);
         });
 
-        JButton repartir = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cartasMazo.png")).getScaledInstance(80, 80, Image.SCALE_SMOOTH)));
-        repartir.setBounds(365, 280, 80, 80);
-        repartir.setBorderPainted(false);
-        repartir.setOpaque(false);
-        repartir.setContentAreaFilled(false);
-        repartir.setBorderPainted(false);
-        repartir.setVisible(true);
-        repartir.setEnabled(false);
-        fondo.add(repartir);
+        JButton dealCards = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cartasMazo.png")).getScaledInstance(80, 80, Image.SCALE_SMOOTH)));
+        dealCards.setBounds(365, 280, 80, 80);
+        dealCards.setBorderPainted(false);
+        dealCards.setOpaque(false);
+        dealCards.setContentAreaFilled(false);
+        dealCards.setBorderPainted(false);
+        dealCards.setVisible(true);
+        dealCards.setEnabled(false);
+        background.add(dealCards);
 
-        // Oponente Carta Tirada 1
-        OCT1 = new JLabel();
-        OCT1.setBounds(130, 210, 70, 80);
-        OCT1.setVisible(true);
-        fondo.add(OCT1);
+        cardThrownOpponent1 = new JLabel();
+        cardThrownOpponent1.setBounds(130, 210, 70, 80);
+        cardThrownOpponent1.setVisible(true);
+        background.add(cardThrownOpponent1);
 
-        // Oponente Carta Tirada 2
-        OCT2 = new JLabel();
-        OCT2.setBounds(210, 210, 70, 80);
-        OCT2.setVisible(true);
-        fondo.add(OCT2);
+        cardThrownOpponent2 = new JLabel();
+        cardThrownOpponent2.setBounds(210, 210, 70, 80);
+        cardThrownOpponent2.setVisible(true);
+        background.add(cardThrownOpponent2);
 
-        // Oponente Carta Tirada 3
-        OCT3 = new JLabel();
-        OCT3.setBounds(290, 210, 70, 80);
-        OCT3.setVisible(true);
-        fondo.add(OCT3);
+        cardThrownOpponent3 = new JLabel();
+        cardThrownOpponent3.setBounds(290, 210, 70, 80);
+        cardThrownOpponent3.setVisible(true);
+        background.add(cardThrownOpponent3);
 
-        // Persona Carta Tirada 1
-        PCT1 = new JLabel();
-        PCT1.setBounds(130, 310, 70, 80);
-        PCT1.setVisible(true);
-        fondo.add(PCT1);
+        cardThrownPlayer1 = new JLabel();
+        cardThrownPlayer1.setBounds(130, 310, 70, 80);
+        cardThrownPlayer1.setVisible(true);
+        background.add(cardThrownPlayer1);
 
-        // Persona Carta Tirada 2
-        PCT2 = new JLabel();
-        PCT2.setBounds(210, 310, 70, 80);
-        PCT2.setVisible(true);
-        fondo.add(PCT2);
+        cardThrownPlayer2 = new JLabel();
+        cardThrownPlayer2.setBounds(210, 310, 70, 80);
+        cardThrownPlayer2.setVisible(true);
+        background.add(cardThrownPlayer2);
 
-        // Persona Carta Tirada 3
-        PCT3 = new JLabel();
-        PCT3.setBounds(290, 310, 70, 80);
-        PCT3.setVisible(true);
-        fondo.add(PCT3);
+        cardThrownPlayer3 = new JLabel();
+        cardThrownPlayer3.setBounds(290, 310, 70, 80);
+        cardThrownPlayer3.setVisible(true);
+        background.add(cardThrownPlayer3);
 
-        // Fondo de la respuesta del Oponente
-        fondoEstado = new JLabel(new ImageIcon("src/truco_java/fondos/burbuja.png"));
-        fondoEstado.setBounds(50,170,400,45);
-        fondoEstado.setOpaque(false);
-        fondoEstado.setVisible(false);
-        fondo.add(fondoEstado);
+        statusBackground = new JLabel(new ImageIcon("src/truco_java/fondos/burbuja.png"));
+        statusBackground.setBounds(50,170,400,45);
+        statusBackground.setOpaque(false);
+        statusBackground.setVisible(false);
+        background.add(statusBackground);
 
-        estado = new JTextPane();
-        estado.setBounds(0,0,400,45);
-        estado.setFont(new Font("Serif", Font.ITALIC, 30));
-        estado.setEditable(false);
-        estado.setOpaque(false);
-        estado.setVisible(true);
-        fondoEstado.add(estado);
-        //Centra el texto
-        StyledDocument doc = estado.getStyledDocument();
+        status = new JTextPane();
+        status.setBounds(0,0,400,45);
+        status.setFont(new Font("Serif", Font.ITALIC, 30));
+        status.setEditable(false);
+        status.setOpaque(false);
+        status.setVisible(true);
+        statusBackground.add(status);
+        // Centers the text
+        StyledDocument doc = status.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
-        // Boton envido general
-        envido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/envidoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
-        envido.setBounds(170, 660, 155, 60);
-        envido.setVisible(true);
-        envido.setEnabled(false);
-        envido.setOpaque(false);
-        envido.setContentAreaFilled(false);
-        envido.setBorderPainted(false);
-        fondo.add(envido);
-        envido.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            if (envidoEsp.isVisible() == true) {
-                envidoEsp.setVisible(false);
+        envidoMenu = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/envidoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
+        envidoMenu.setBounds(170, 660, 155, 60);
+        envidoMenu.setVisible(true);
+        envidoMenu.setEnabled(false);
+        envidoMenu.setOpaque(false);
+        envidoMenu.setContentAreaFilled(false);
+        envidoMenu.setBorderPainted(false);
+        background.add(envidoMenu);
+        envidoMenu.addActionListener((ActionEvent e) -> {
+            efects.setFile("src/truco_java/musica/boton.wav", 1);
+            efects.play();
+            if (envido.isVisible() == true) {
+                envido.setVisible(false);
                 envidoEnvido.setVisible(false);
                 realEnvido.setVisible(false);
                 faltaEnvido.setVisible(false);
             } else {
-                envidoEsp.setVisible(true);
+                envido.setVisible(true);
                 envidoEnvido.setVisible(false);
                 realEnvido.setVisible(true);
                 faltaEnvido.setVisible(true);
             }
         });
 
-        // Boton Ir al mazo
         irAlMazo = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/irAlMazoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
         irAlMazo.setBounds(330, 660, 155, 60);
         irAlMazo.setVisible(true);
@@ -314,334 +295,329 @@ public class InterfazCliente extends JFrame {
         irAlMazo.setOpaque(false);
         irAlMazo.setContentAreaFilled(false);
         irAlMazo.setBorderPainted(false);
-        fondo.add(irAlMazo);
+        background.add(irAlMazo);
         irAlMazo.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
+            efects.setFile("src/truco_java/musica/boton.wav", 1);
+            efects.play();
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        recibirMensaje(client.enviaIrAlMazo());
+                        decodeMessage(client.sendIrAlMazo());
                     } catch(IOException er){
-                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efects.play();
                     }
                 }
             };
             thread.start();
             JOptionPane.showMessageDialog(null, "Te has ido al mazo.");
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
+            efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efects.play();
         });
 
-        // Boton envido especifico
-        envidoEsp = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/envidoGrandeBoton.png")).getScaledInstance(240, 50, Image.SCALE_SMOOTH)));
-        envidoEsp.setBounds(10, 595, 240, 50);
-        envidoEsp.setVisible(false);
-        envidoEsp.setOpaque(false);
-        envidoEsp.setContentAreaFilled(false);
-        envidoEsp.setBorderPainted(false);
-        fondo.add(envidoEsp);
-        envidoEsp.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            envidosCantados.add(1);
+        envido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/envidoGrandeBoton.png")).getScaledInstance(240, 50, Image.SCALE_SMOOTH)));
+        envido.setBounds(10, 595, 240, 50);
+        envido.setVisible(false);
+        envido.setOpaque(false);
+        envido.setContentAreaFilled(false);
+        envido.setBorderPainted(false);
+        background.add(envido);
+        envido.addActionListener((ActionEvent e) -> {
+            efects.setFile("src/truco_java/musica/boton.wav", 1);
+            efects.play();
+            envidosDeclared.add(1);
             truco.setEnabled(false);
             try {
-                nivelTruco=0;
-                dibujarBotones();
+                trucoLevel=0;
+                drawButtons();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efects.play();
             }
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
-            quieroEnv.setVisible(false);
-            noQuieroEnv.setVisible(false);
+            quieroEnvido.setVisible(false);
+            noQuieroEnvido.setVisible(false);
             irAlMazo.setEnabled(false);
-            quieroEnv.setVisible(false);
-            noQuieroEnv.setVisible(false);
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
+            quieroEnvido.setVisible(false);
+            noQuieroEnvido.setVisible(false);
+            envidoMenu.setEnabled(false);
+            envido.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
-            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-            habilitadoARetrucar=1;
+            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+            enabledToRetrucar=1;
 
-            nivelTruco=0;
-            habilitadoARetrucar = 0;
+            trucoLevel=0;
+            enabledToRetrucar = 0;
 
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        recibirMensaje(client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
+                        decodeMessage(client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar));
                     } catch(IOException er){
-                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efects.play();
                     }
                 }
             };
             thread.start();
-            imprimeAIEnvido(0,false);
+            printsEnvidoMessage(0,false);
         });
 
-        // Boton envido-envido
         envidoEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/envidoGrandeBoton.png")).getScaledInstance(240, 50, Image.SCALE_SMOOTH)));
         envidoEnvido.setBounds(10, 595, 240, 50);
         envidoEnvido.setVisible(false);
         envidoEnvido.setOpaque(false);
         envidoEnvido.setContentAreaFilled(false);
         envidoEnvido.setBorderPainted(false);
-        fondo.add(envidoEnvido);
+        background.add(envidoEnvido);
         envidoEnvido.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            envidosCantados.add(2);
+            efects.setFile("src/truco_java/musica/boton.wav", 1);
+            efects.play();
+            envidosDeclared.add(2);
             truco.setEnabled(false);
             try {
-                nivelTruco=0;
-                dibujarBotones();
+                trucoLevel=0;
+                drawButtons();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efects.play();
             }
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
-            quieroEnv.setVisible(false);
-            noQuieroEnv.setVisible(false);
+            quieroEnvido.setVisible(false);
+            noQuieroEnvido.setVisible(false);
             irAlMazo.setEnabled(false);
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
+            envidoMenu.setEnabled(false);
+            envido.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
-            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-            habilitadoARetrucar=1;
+            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+            enabledToRetrucar=1;
 
-            nivelTruco=0;
-            habilitadoARetrucar = 0;
+            trucoLevel=0;
+            enabledToRetrucar = 0;
 
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        recibirMensaje(client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
+                        decodeMessage(client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar));
                     } catch(IOException er){
-                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efects.play();
                     }
                 }
             };
             thread.start();
-            imprimeAIEnvido(0,false);
+            printsEnvidoMessage(0,false);
         });
 
-        // Boton Real Envido
         realEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/realEnvidoBoton.png")).getScaledInstance(117, 50, Image.SCALE_SMOOTH)));
         realEnvido.setBounds(252, 595, 117, 50);
         realEnvido.setVisible(false);
         realEnvido.setOpaque(false);
         realEnvido.setContentAreaFilled(false);
         realEnvido.setBorderPainted(false);
-        fondo.add(realEnvido);
+        background.add(realEnvido);
         realEnvido.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            envidosCantados.add(3);
+            efects.setFile("src/truco_java/musica/boton.wav", 1);
+            efects.play();
+            envidosDeclared.add(3);
             truco.setEnabled(false);
             try {
-                nivelTruco=0;
-                dibujarBotones();
+                trucoLevel=0;
+                drawButtons();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efects.play();
             }
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
             irAlMazo.setEnabled(false);
-            quieroEnv.setVisible(false);
-            noQuieroEnv.setVisible(false);
+            quieroEnvido.setVisible(false);
+            noQuieroEnvido.setVisible(false);
             irAlMazo.setEnabled(false);
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
+            envidoMenu.setEnabled(false);
+            envido.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
-            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-            habilitadoARetrucar=1;
+            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+            enabledToRetrucar=1;
 
-            nivelTruco=0;
-            habilitadoARetrucar = 0;
+            trucoLevel=0;
+            enabledToRetrucar = 0;
 
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        recibirMensaje(client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
+                        decodeMessage(client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar));
                     } catch(IOException er){
-                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efects.play();
                     }
                 }
             };
             thread.start();
-            imprimeAIEnvido(0,false);
+            printsEnvidoMessage(0,false);
 
         });
 
-        // Boton Falta Envido
         faltaEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/faltaEnvidoBoton.png")).getScaledInstance(117, 50, Image.SCALE_SMOOTH)));
         faltaEnvido.setBounds(373, 595, 117, 50);
         faltaEnvido.setVisible(false);
         faltaEnvido.setOpaque(false);
         faltaEnvido.setContentAreaFilled(false);
         faltaEnvido.setBorderPainted(false);
-        fondo.add(faltaEnvido);
+        background.add(faltaEnvido);
         faltaEnvido.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            envidosCantados.add(4);
+            efects.setFile("src/truco_java/musica/boton.wav", 1);
+            efects.play();
+            envidosDeclared.add(4);
             truco.setEnabled(false);
             try {
-                nivelTruco=0;
-                dibujarBotones();
+                trucoLevel=0;
+                drawButtons();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efects.play();
             }
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
-            quieroEnv.setVisible(false);
-            noQuieroEnv.setVisible(false);
+            quieroEnvido.setVisible(false);
+            noQuieroEnvido.setVisible(false);
             irAlMazo.setEnabled(false);
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
+            envidoMenu.setEnabled(false);
+            envido.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
-            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-            habilitadoARetrucar=1;
+            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+            enabledToRetrucar=1;
 
-            nivelTruco=0;
-            habilitadoARetrucar = 0;
+            trucoLevel=0;
+            enabledToRetrucar = 0;
 
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        recibirMensaje(client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
+                        decodeMessage(client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar));
                     } catch(IOException er){
-                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efects.play();
                     }
                 }
             };
             thread.start();
-            imprimeAIEnvido(0,false);
+            printsEnvidoMessage(0,false);
         });
 
-        //Botones de Quiero y No quiero envido
-        quieroEnv = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/quieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
-        quieroEnv.setBounds(10, 250, 110, 40);
-        quieroEnv.setVisible(false);
-        quieroEnv.setOpaque(false);
-        quieroEnv.setContentAreaFilled(false);
-        quieroEnv.setBorderPainted(false);
-        fondo.add(quieroEnv);
-        quieroEnv.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            envidosCantados.add(5); //El 5 significa que quiere. Procesa el puntaje en el cliente
+        quieroEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/quieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
+        quieroEnvido.setBounds(10, 250, 110, 40);
+        quieroEnvido.setVisible(false);
+        quieroEnvido.setOpaque(false);
+        quieroEnvido.setContentAreaFilled(false);
+        quieroEnvido.setBorderPainted(false);
+        background.add(quieroEnvido);
+        quieroEnvido.addActionListener((ActionEvent e) -> {
+            efects.setFile("src/truco_java/musica/boton.wav", 1);
+            efects.play();
+            // The '5' means 'Quiero'. It's going to be processed in the server
+            envidosDeclared.add(5);
             truco.setEnabled(false);
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
-            quieroEnv.setVisible(false);
-            noQuieroEnv.setVisible(false);
+            quieroEnvido.setVisible(false);
+            noQuieroEnvido.setVisible(false);
             irAlMazo.setEnabled(false);
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
+            envidoMenu.setEnabled(false);
+            envido.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
-            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
 
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        recibirMensaje(client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
+                        decodeMessage(client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar));
                     } catch(IOException er){
-                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efects.play();
                     }
                 }
             };
             thread.start();
-            imprimeAIEnvido(0,false);
+            printsEnvidoMessage(0,false);
             });
 
-        noQuieroEnv = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/noQuieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
-        noQuieroEnv.setBounds(10, 300, 110, 40);
-        noQuieroEnv.setVisible(false);
-        noQuieroEnv.setOpaque(false);
-        noQuieroEnv.setContentAreaFilled(false);
-        noQuieroEnv.setBorderPainted(false);
-        fondo.add(noQuieroEnv);
-        noQuieroEnv.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            envidosCantados.add(-1);
+        noQuieroEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/noQuieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
+        noQuieroEnvido.setBounds(10, 300, 110, 40);
+        noQuieroEnvido.setVisible(false);
+        noQuieroEnvido.setOpaque(false);
+        noQuieroEnvido.setContentAreaFilled(false);
+        noQuieroEnvido.setBorderPainted(false);
+        background.add(noQuieroEnvido);
+        noQuieroEnvido.addActionListener((ActionEvent e) -> {
+            efects.setFile("src/truco_java/musica/boton.wav", 1);
+            efects.play();
+            envidosDeclared.add(-1);
             truco.setEnabled(false);
             try {
-                nivelTruco=0;
-                dibujarBotones();
+                trucoLevel=0;
+                drawButtons();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efects.play();
             }
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
-            quieroEnv.setVisible(false);
-            noQuieroEnv.setVisible(false);
+            quieroEnvido.setVisible(false);
+            noQuieroEnvido.setVisible(false);
             irAlMazo.setEnabled(false);
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
+            envidoMenu.setEnabled(false);
+            envido.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
-            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
 
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        recibirMensaje(client.enviaEnvido(envidosCantados, nivelTruco, habilitadoARetrucar));
+                        decodeMessage(client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar));
                     } catch(IOException er){
-                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efects.play();
                     }
                 }
             };
             thread.start();
-            imprimeAIEnvido(0,false);
+            printsEnvidoMessage(0,false);
         });
 
-        // Boton Truco
         truco = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/trucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
         truco.setBounds(10, 660, 155, 60);
         truco.setVisible(true);
@@ -649,17 +625,17 @@ public class InterfazCliente extends JFrame {
         truco.setOpaque(false);
         truco.setContentAreaFilled(false);
         truco.setBorderPainted(false);
-        fondo.add(truco);
+        background.add(truco);
         truco.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            if(habilitadoARetrucar != 1){
-                envidoFinalizado = true;
+            efects.setFile("src/truco_java/musica/boton.wav", 1);
+            efects.play();
+            if(enabledToRetrucar != 1){
+                finishedEnvido = true;
                 quieroTruco.setVisible(false);
                 noQuieroTruco.setVisible(false);
                 truco.setEnabled(false);
-                envido.setEnabled(false);
-                envidoEsp.setVisible(false);
+                envidoMenu.setEnabled(false);
+                envido.setVisible(false);
                 envidoEnvido.setVisible(false);
                 realEnvido.setVisible(false);
                 faltaEnvido.setVisible(false);
@@ -667,47 +643,46 @@ public class InterfazCliente extends JFrame {
                 PC1Enabled=false;
                 PC2Enabled=false;
                 PC3Enabled=false;
-                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+                connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
 
-                nivelTruco++;
-                habilitadoARetrucar = 1;
+                trucoLevel++;
+                enabledToRetrucar = 1;
                 Thread thread = new Thread(){
                     public void run(){
                         try{
-                            recibirMensaje(client.enviaTruco(nivelTruco, habilitadoARetrucar));
+                            decodeMessage(client.sendTruco(trucoLevel, enabledToRetrucar));
                         } catch(IOException er){
-                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efects.play();
                         }
                     }
                 };
                 thread.start();
                 try {
-                    imprimeAITruco(0, false);
+                    printsTrucoMessage(0, false);
                 } catch (Exception ex) {
-                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                     JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes o sonidos: " + ex.getMessage());
-                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    efectos.play();
+                    efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    efects.play();
                 }
             }
         });
 
-        //Botones de Quiero y No quiero truco
         quieroTruco = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/quieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
         quieroTruco.setBounds(10, 250, 110, 40);
         quieroTruco.setVisible(false);
         quieroTruco.setOpaque(false);
         quieroTruco.setContentAreaFilled(false);
         quieroTruco.setBorderPainted(false);
-        fondo.add(quieroTruco);
+        background.add(quieroTruco);
         quieroTruco.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
+            efects.setFile("src/truco_java/musica/boton.wav", 1);
+            efects.play();
+            envidoMenu.setEnabled(false);
+            envido.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
@@ -715,23 +690,23 @@ public class InterfazCliente extends JFrame {
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
             irAlMazo.setEnabled(false);
-            envidoFinalizado=true;
-            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+            finishedEnvido=true;
+            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
 
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        recibirMensaje(client.enviaTruco(4, habilitadoARetrucar));
+                        decodeMessage(client.sendTruco(4, enabledToRetrucar));
                     } catch(IOException er){
-                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efects.play();
                     }
                 }
             };
             thread.start();
-            setFondo(0);
+            setBackground(0);
         });
 
 
@@ -741,228 +716,186 @@ public class InterfazCliente extends JFrame {
         noQuieroTruco.setOpaque(false);
         noQuieroTruco.setContentAreaFilled(false);
         noQuieroTruco.setBorderPainted(false);
-        fondo.add(noQuieroTruco);
+        background.add(noQuieroTruco);
         noQuieroTruco.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
+            efects.setFile("src/truco_java/musica/boton.wav", 1);
+            efects.play();
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
-            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
 
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        recibirMensaje(client.enviaTruco(-1,habilitadoARetrucar));
+                        decodeMessage(client.sendTruco(-1,enabledToRetrucar));
                     } catch(IOException er){
-                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efects.play();
                     }
                 }
             };
             thread.start();
-            setFondo(0);
+            setBackground(0);
         });
 
-        // Fondo puntaje
-        puntajeFondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg"+ numeroPersonaje +".png")).getScaledInstance(100, 150, Image.SCALE_SMOOTH)));
-        puntajeFondo.setBounds(390, 10, 100, 150);
-        puntajeFondo.setVisible(true);
-        fondo.add(puntajeFondo);
+        pointsBackground = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg"+ opponentNumber +".png")).getScaledInstance(100, 150, Image.SCALE_SMOOTH)));
+        pointsBackground.setBounds(390, 10, 100, 150);
+        pointsBackground.setVisible(true);
+        background.add(pointsBackground);
 
-        // Puntaje Jugador
         puntajeJugador.setBounds(0, 65, 50, 85);
         puntajeJugador.setVisible(true);
-        puntajeFondo.add(puntajeJugador);
+        pointsBackground.add(puntajeJugador);
 
-        // Puntaje Oponente
-        puntajeOponente.setBounds(50, 65, 50, 85);
-        puntajeOponente.setVisible(true);
-        puntajeFondo.add(puntajeOponente);
+        pointsAi.setBounds(50, 65, 50, 85);
+        pointsAi.setVisible(true);
+        pointsBackground.add(pointsAi);
 
-        JButton atras = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
-        atras.setOpaque(false);
-        atras.setContentAreaFilled(false);
-        atras.setBorderPainted(false);
-        atras.setBounds(10, 10, 50, 50);
-        atras.setVisible(true);
-        fondo.add(atras);
-        atras.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
+        JButton back = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+        back.setOpaque(false);
+        back.setContentAreaFilled(false);
+        back.setBorderPainted(false);
+        back.setBounds(10, 10, 50, 50);
+        back.setVisible(true);
+        background.add(back);
+        back.addActionListener((ActionEvent e) -> {
+            efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efects.play();
 
-            // Si se quiere salir en medio de la partida
-            int dialogResult = JOptionPane.showConfirmDialog (null, "Está seguro que desea abandonar la partida?\nSe declarará a " + nombreOponente + " como ganador...","Atención!",JOptionPane.YES_NO_OPTION);
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
+            int dialogResult = JOptionPane.showConfirmDialog (null, "Está seguro que desea abandonar la partida?\nSe declarará a " + opponentName + " como ganador...","Atención!",JOptionPane.YES_NO_OPTION);
+            efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            efects.play();
             if(dialogResult == JOptionPane.YES_OPTION){
                 try {
-                    client.enviaMensaje("retira");
+                    client.sendMessage("retira");
                 } catch (Exception ex) {
-                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                     JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + ex.getMessage());
-                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    efectos.play();
+                    efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    efects.play();
                 }
-                menuJugar.setVisible(true);
+                playMenu.setVisible(true);
                 dispose();
             }
         });
 
-        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-        fondoConexion.setBounds(0,730,500,50);
-        fondoConexion.setOpaque(false);
-        fondoConexion.setVisible(true);
-        fondo.add(fondoConexion);
+        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+        connectionBackground.setBounds(0,730,500,50);
+        connectionBackground.setOpaque(false);
+        connectionBackground.setVisible(true);
+        background.add(connectionBackground);
     }
 
-    public void dibujarPuntaje() throws IOException {
-        if(termino)
+    public void updatePoints() throws IOException {
+        if(finishedGame)
             return;
-        int jugadorPunt = jugador.getPuntaje();
-        int aiPunt = oponente.getPuntaje();
-        if(jugadorPunt > 15)
-            jugadorPunt = 15;
-        if(aiPunt > 15)
-            aiPunt = 15;
+        int playerPoints = player.getPoints();
+        int aiPoints = opponent.getPoints();
+        if(playerPoints > 15)
+            playerPoints = 15;
+        if(aiPoints > 15)
+            aiPoints = 15;
 
-        puntajeJugador.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + jugadorPunt + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
-        puntajeOponente.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + aiPunt + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
+        puntajeJugador.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + playerPoints + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
+        pointsAi.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + aiPoints + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
 
     }
 
-    private void dibujarCartas() throws IOException {
-        OC1.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
-        OC2.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
-        OC3.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+    private void drawCards() throws IOException {
+        // TODO: CHECK IF I DON'T NEED THIS, BECAUSE NOW I PUT IT WHEN THE CARDS ARE INITIALIZED
+        // cardAi1.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+        // cardAi2.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+        // cardAi3.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
 
-        switch (cantCartasOponente) {
+        switch (opponentCardsCount) {
             case 0:
-                OC1.setVisible(false);
-                OC2.setVisible(false);
-                OC3.setVisible(false);
+                cardOpponent1.setVisible(false);
+                cardOpponent2.setVisible(false);
+                cardOpponent3.setVisible(false);
                 break;
             case 1:
-                OC1.setVisible(true);
-                OC2.setVisible(false);
-                OC3.setVisible(false);
+                cardOpponent1.setVisible(true);
+                cardOpponent2.setVisible(false);
+                cardOpponent3.setVisible(false);
                 break;
             case 2:
-                OC1.setVisible(true);
-                OC2.setVisible(true);
-                OC3.setVisible(false);
+                cardOpponent1.setVisible(true);
+                cardOpponent2.setVisible(true);
+                cardOpponent3.setVisible(false);
                 break;
             case 3:
-                OC1.setVisible(true);
-                OC2.setVisible(true);
-                OC3.setVisible(true);
+                cardOpponent1.setVisible(true);
+                cardOpponent2.setVisible(true);
+                cardOpponent3.setVisible(true);
                 break;
         }
 
         ArrayList<JButton> manos = new ArrayList<>();
-        manos.add(PC1);
-        manos.add(PC2);
-        manos.add(PC3);
+        manos.add(cardPlayer1);
+        manos.add(cardPlayer2);
+        manos.add(cardPlayer3);
 
         for(int i=0;i<3;i++){
-            if(jugador.getPosMano()[i]<0){
+            if(player.getPosCards()[i]<0){
                 manos.get(i).setVisible(false);
                 manos.get(i).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
             } else {
                 manos.get(i).setVisible(true);
-                manos.get(i).setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(jugador.getPosMano()[i]).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+                manos.get(i).setIcon(new ImageIcon(ImageIO.read(new File(player.getCards().get(player.getPosCards()[i]).linkCard())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
             }
         }
 
-        //switch (jugador.getMano().size()) {
-        //    case 0:
-        //        PC1.setVisible(false);
-        //        PC1.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        PC2.setVisible(false);
-        //        PC1.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        PC3.setVisible(false);
-        //        PC1.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        break;
-        //    case 1:
-        //        PC1.setVisible(true);
-        //        PC1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(0).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        PC2.setVisible(false);
-        //        PC2.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        PC3.setVisible(false);
-        //        PC3.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        break;
-        //    case 2:
-        //        PC1.setVisible(true);
-        //        PC1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(0).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        PC2.setVisible(true);
-        //        PC2.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(1).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        PC3.setVisible(false);
-        //        PC3.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        break;
-        //    case 3:
-        //        PC1.setVisible(true);
-        //        PC1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(0).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        //PC1.setIcon(new ImageIcon(p.getMano().get(0).linkCarta()));
-        //        PC2.setVisible(true);
-        //        PC2.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(1).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        //PC2.setIcon(new ImageIcon(p.getMano().get(1).linkCarta()));
-        //        PC3.setVisible(true);
-        //        PC3.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(2).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        //PC3.setIcon(new ImageIcon(p.getMano().get(2).linkCarta()));
-        //        break;
-        //}
-
-        // Cartas ya tiradas
-        switch (oponente.getCartasJugadas().size()) {
+        switch (opponent.getPlayedCards().size()) {
             case 3:
-                OCT1.setIcon(new ImageIcon(ImageIO.read(new File(oponente.getCartasJugadas().get(0).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                OCT2.setIcon(new ImageIcon(ImageIO.read(new File(oponente.getCartasJugadas().get(1).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                OCT3.setIcon(new ImageIcon(ImageIO.read(new File(oponente.getCartasJugadas().get(2).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownOpponent1.setIcon(new ImageIcon(ImageIO.read(new File(opponent.getPlayedCards().get(0).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownOpponent2.setIcon(new ImageIcon(ImageIO.read(new File(opponent.getPlayedCards().get(1).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownOpponent3.setIcon(new ImageIcon(ImageIO.read(new File(opponent.getPlayedCards().get(2).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
                 break;
             case 2:
-                OCT1.setIcon(new ImageIcon(ImageIO.read(new File(oponente.getCartasJugadas().get(0).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                OCT2.setIcon(new ImageIcon(ImageIO.read(new File(oponente.getCartasJugadas().get(1).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                OCT3.setIcon(null);
+                cardThrownOpponent1.setIcon(new ImageIcon(ImageIO.read(new File(opponent.getPlayedCards().get(0).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownOpponent2.setIcon(new ImageIcon(ImageIO.read(new File(opponent.getPlayedCards().get(1).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownOpponent3.setIcon(null);
                 break;
             case 1:
-                OCT1.setIcon(new ImageIcon(ImageIO.read(new File(oponente.getCartasJugadas().get(0).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                OCT2.setIcon(null);
-                OCT3.setIcon(null);
+                cardThrownOpponent1.setIcon(new ImageIcon(ImageIO.read(new File(opponent.getPlayedCards().get(0).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownOpponent2.setIcon(null);
+                cardThrownOpponent3.setIcon(null);
                 break;
             case 0:
-                OCT1.setIcon(null);
-                OCT2.setIcon(null);
-                OCT3.setIcon(null);
+                cardThrownOpponent1.setIcon(null);
+                cardThrownOpponent2.setIcon(null);
+                cardThrownOpponent3.setIcon(null);
                 break;
         }
 
-        switch (jugador.getCartasJugadas().size()) {
+        switch (player.getPlayedCards().size()) {
             case 3:
-                PCT1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getCartasJugadas().get(0).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                PCT2.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getCartasJugadas().get(1).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                PCT3.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getCartasJugadas().get(2).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownPlayer1.setIcon(new ImageIcon(ImageIO.read(new File(player.getPlayedCards().get(0).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownPlayer2.setIcon(new ImageIcon(ImageIO.read(new File(player.getPlayedCards().get(1).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownPlayer3.setIcon(new ImageIcon(ImageIO.read(new File(player.getPlayedCards().get(2).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
                 break;
             case 2:
-                PCT1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getCartasJugadas().get(0).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                PCT2.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getCartasJugadas().get(1).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                PCT3.setIcon(null);
+                cardThrownPlayer1.setIcon(new ImageIcon(ImageIO.read(new File(player.getPlayedCards().get(0).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownPlayer2.setIcon(new ImageIcon(ImageIO.read(new File(player.getPlayedCards().get(1).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownPlayer3.setIcon(null);
                 break;
             case 1:
-                PCT1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getCartasJugadas().get(0).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                PCT2.setIcon(null);
-                PCT3.setIcon(null);
+                cardThrownPlayer1.setIcon(new ImageIcon(ImageIO.read(new File(player.getPlayedCards().get(0).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownPlayer2.setIcon(null);
+                cardThrownPlayer3.setIcon(null);
                 break;
             case 0:
-                PCT1.setIcon(null);
-                PCT2.setIcon(null);
-                PCT3.setIcon(null);
+                cardThrownPlayer1.setIcon(null);
+                cardThrownPlayer2.setIcon(null);
+                cardThrownPlayer3.setIcon(null);
                 break;
         }
     }
 
-    private void dibujarBotones() throws IOException {
-        switch (nivelTruco) {
+    private void drawButtons() throws IOException {
+        switch (trucoLevel) {
             case 0:
                 truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/trucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
                 break;
@@ -975,108 +908,108 @@ public class InterfazCliente extends JFrame {
         }
     }
 
-    private void tirarCarta(int pos) throws IOException {
-        // Intenta solucionar un bug de diferentes llamados que pueden perjudicar a la mano
+    private void throwCard(int pos) throws IOException {
         PC1Enabled=false;
         PC2Enabled=false;
         PC3Enabled=false;
 
-        if(!menu.movCartas.isSelected()) moverCartaPersona(pos, jugador.getMano().get(jugador.getPosMano()[pos]).linkCarta(), jugador.getCartasJugadas().size());
+        if(!menu.fastModeCheckBox.isSelected()) moveCardPlayer(pos, player.getCards().get(player.getPosCards()[pos]).linkCard(), player.getPlayedCards().size());
 
-        //Tira la carta
-        jugador.agregarCartaJugada(jugador.getPosMano()[pos]);
+        player.addPlayedCards(player.getPosCards()[pos]);
 
-        // Indica que carta no se debbe dibujar
-        int temp[] = jugador.getPosMano();
+        // Indicates which card should not be drawn
+        int temp[] = player.getPosCards();
         temp[pos] = -1;
         for(int i=pos+1;i<temp.length;i++)
             temp[i]-=1;
-        jugador.setPosMano(temp);
+        player.setPosCards(temp);
 
-        if(menu.movCartas.isSelected()){ //Si no se quiere movimiento de cartas
+        if(menu.fastModeCheckBox.isSelected()){
             try {
-                dibujarCartas();
+                drawCards();
                 Thread thread = new Thread(){
                     public void run(){
                         try{
                             client.throwCard(pos);
-                            recibirMensaje(client.receiveMessage());
+                            decodeMessage(client.receiveMessage());
                         } catch(IOException er){
-                            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                             JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                            efectos.play();
+                            efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                            efects.play();
                         }
                     }
                 };
                 thread.start();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efects.play();
             }
         }
     }
 
-    private void imprimeAIEnvido(int envido, boolean esLlamadoDesdeTimer){
-        String texto = " ";
-        fondoEstado.setVisible(true);
-        estado.setFont(new Font("Serif", Font.ITALIC, 30));
-        estado.setVisible(true);
+    private void printsEnvidoMessage(int envido, boolean isCalledFromTimer){
+        String text = " ";
+        statusBackground.setVisible(true);
+        status.setFont(new Font("Serif", Font.ITALIC, 30));
+        status.setVisible(true);
 
-        if(!esLlamadoDesdeTimer && envido!=0) {
-            if(envido==5) cantar.setFile("src/truco_java/cantos/truco/" + numeroPersonaje + "4.wav", 1);
-            else cantar.setFile("src/truco_java/cantos/envido/" + numeroPersonaje + envido + ".wav", 1);
-            cantar.play();
+        if(!isCalledFromTimer && envido!=0) {
+            if(envido==5) opponentVoice.setFile("src/truco_java/cantos/truco/" + opponentNumber + "4.wav", 1);
+            else opponentVoice.setFile("src/truco_java/cantos/envido/" + opponentNumber + envido + ".wav", 1);
+            opponentVoice.play();
         }
 
         switch(envido){
             case -1:
-                texto = "No quiero!";
-                if(numeroPersonaje==5) texto = "No tea? so No quiero!";
+                text = "No quiero!";
+                if(opponentNumber==5) text = "No tea? so No quiero!";
                 break;
             case 0:
-                fondoEstado.setVisible(false);
-                estado.setText("");
-                setFondo(0);
+                statusBackground.setVisible(false);
+                status.setText("");
+                setBackground(0);
                 return;
             case 1:
-                texto = "Envido!";
-                if(numeroPersonaje==5) texto = "Why not? Envido!";
+                text = "Envido!";
+                if(opponentNumber==5) text = "Why not? Envido!";
                 break;
             case 2:
-                texto = "Envido!";
-                if(numeroPersonaje==5) {
-                    texto = "What about another Envido?!";
-                    estado.setFont(new Font("Serif", Font.ITALIC, 25));
+                text = "Envido!";
+                if(opponentNumber==5) {
+                    text = "What about another Envido?!";
+                    status.setFont(new Font("Serif", Font.ITALIC, 25));
                 }
                 break;
             case 3:
-                texto = "Real Envido!";
-                if(numeroPersonaje==5) texto = "I say Real Envido!";
+                text = "Real Envido!";
+                if(opponentNumber==5) text = "I say Real Envido!";
                 break;
             case 4:
-                texto = "Falta Envido!";
-                if(numeroPersonaje==5) texto = "Falta Envido my mate!";
+                text = "Falta Envido!";
+                if(opponentNumber==5) text = "Falta Envido my mate!";
                 break;
             case 5:
-                texto = "Quiero!";
-                if(numeroPersonaje==5) texto = "Easy peasy. Quiero!";
+                text = "Quiero!";
+                if(opponentNumber==5) text = "Easy peasy. Quiero!";
                 break;
         }
 
-        estado.setText(texto);
-        setFondo(1);
-        final String textoTimer = texto; // tengo que crear una variable final porque sino el timer no me la acepta
+        status.setText(text);
+        setBackground(1);
 
+        // I have to create a final variable for the timer, otherwise it will complain
+        final String timerText = text;
         new java.util.Timer().schedule(
             new java.util.TimerTask() {
                 @Override
                 public void run() {
-                    if(estado.getText().equals(textoTimer)){ // Si sigue siendo el mismo texto que se puso antes y nada lo cambio (por ejemplo retrucar el envido o un truco
-                        if(quieroEnv.isVisible()) // Si todavia el usuario no se decidió
-                            imprimeAIEnvido(envido, true); // Lo vuelve a imprimir
-                        else imprimeAIEnvido(0, true); // sino lo desaparece
+                    // If no other method changed the text of the panel (for example: 'retrucar' or 'envido')
+                    if(status.getText().equals(timerText)){
+                        if(quieroEnvido.isVisible())
+                            printsEnvidoMessage(envido, true); // Prints again
+                        else printsEnvidoMessage(0, true); // Clears
                     }
                 }
             },
@@ -1084,74 +1017,74 @@ public class InterfazCliente extends JFrame {
             );
     }
 
-    private void imprimeAITruco(int trucoMSG, boolean esLlamadoDesdeTimer) throws IOException{
-        setFondo(1);
-        fondoEstado.setVisible(true);
+    private void printsTrucoMessage(int trucoMessage, boolean isCalledFromTimer) throws IOException{
+        setBackground(1);
+        statusBackground.setVisible(true);
 
-        if(!esLlamadoDesdeTimer && trucoMSG!=0) {
-            cantar.setFile("src/truco_java/cantos/truco/" + numeroPersonaje + trucoMSG + ".wav", 1);
-            cantar.play();
+        if(!isCalledFromTimer && trucoMessage!=0) {
+            opponentVoice.setFile("src/truco_java/cantos/truco/" + opponentNumber + trucoMessage + ".wav", 1);
+            opponentVoice.play();
         }
 
-        switch(trucoMSG){
+        // TODO: Put every `status.setText("xxxxxxx")` in a variable `text`, that after the switch calls the status.setText("xxxxxxx"). And update the `timerText` initialization
+        switch(trucoMessage){
             case -1:
-                estado.setText("No quiero!");
-                if(numeroPersonaje==5) estado.setText("This’s a rip-off. No quiero");
+                status.setText("No quiero!");
+                if(opponentNumber==5) status.setText("This’s a rip-off. No quiero");
                 break;
             case 0:
-                fondoEstado.setVisible(false);
-                estado.setText("");
-                setFondo(0);
+                statusBackground.setVisible(false);
+                status.setText("");
+                setBackground(0);
                 return;
             case 1:
-                estado.setText("Truco!");
-                if(numeroPersonaje==5) estado.setText("Come on, Truco!");
+                status.setText("Truco!");
+                if(opponentNumber==5) status.setText("Come on, Truco!");
                 truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/retrucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
                 truco.setEnabled(true);
                 break;
             case 2:
-                estado.setText("Re truco!");
-                if(numeroPersonaje==5) estado.setText("Re truco if you're brave!");
+                status.setText("Re truco!");
+                if(opponentNumber==5) status.setText("Re truco if you're brave!");
                 truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/valeCuatroBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
                 truco.setEnabled(true);
                 break;
             case 3:
-                estado.setText("Quiero vale 4!");
-                if(numeroPersonaje==5) estado.setText("Really? Quiero vale cuatro");
+                status.setText("Quiero vale 4!");
+                if(opponentNumber==5) status.setText("Really? Quiero vale cuatro");
                 truco.setEnabled(false);
                 break;
             case 4:
-                estado.setText("Quiero!");
-                if(numeroPersonaje==5) estado.setText("Easy peasy. Quiero!");
+                status.setText("Quiero!");
+                if(opponentNumber==5) status.setText("Easy peasy. Quiero!");
                 truco.setEnabled(false);
-                // setFondo(0);
                 break;
         }
 
-        envidoFinalizado = true;
-        final String textoTimer = estado.getText();
+        finishedEnvido = true;
+        final String timerText = status.getText();
 
         new java.util.Timer().schedule(
                 new java.util.TimerTask() {
                     @Override
                     public void run() {
-                        if(estado.getText().equals(textoTimer)){
+                        if(status.getText().equals(timerText)){
                             if(quieroTruco.isVisible()){
                                 try {
-                                    imprimeAITruco(trucoMSG, true);
+                                    printsTrucoMessage(trucoMessage, true);
                                 } catch (IOException ex) {
-                                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de escribir el mensaje de " + nombreOponente + " en el truco: " + ex.getMessage());
-                                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                                    efectos.play();
+                                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de escribir el mensaje de " + opponentName + " en el truco: " + ex.getMessage());
+                                    efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                                    efects.play();
                                 }
                             }
                             else {
                                 try {
-                                    imprimeAITruco(0, true);
+                                    printsTrucoMessage(0, true);
                                 } catch (IOException ex) {
-                                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de escribir el mensaje de " + nombreOponente + " en el truco: " + ex.getMessage());
-                                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                                    efectos.play();
+                                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de escribir el mensaje de " + opponentName + " en el truco: " + ex.getMessage());
+                                    efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                                    efects.play();
                                 }
                             }
                         }
@@ -1161,145 +1094,142 @@ public class InterfazCliente extends JFrame {
         );
     }
 
-    private void setFondo(int estadoPers){
-        char estadoPersChar;
-        if(estadoPers==0) // Fondo persoonaje normal
-            estadoPersChar = 'a'; // Personaje Oponente normal
-        else
-            estadoPersChar = 'b'; // personaje Oponente Pregunta (truco, envido, o retrucar cualquiera de las anteriores)
+    private void setBackground(int status){
+        char statusChar = status==0 ? 'a' : 'b';
+        // a ==> Normal Background
+        // b ==> Expression Background
 
-        String imagen = "src/truco_java/fondos/bg" + numeroPersonaje + estadoPersChar + ".png";
-        fondo.setIcon(new ImageIcon(imagen));
+        String image = "src/truco_java/fondos/bg" + opponentNumber + statusChar + ".png";
+        background.setIcon(new ImageIcon(image));
     }
 
-    private void moverCartaAI(int origen, int destino) throws IOException{
-        final int origenX, destinoX;
-        final String archivo = oponente.getCartasJugadas().get(oponente.getCartasJugadas().size()-1).linkCarta();
+    // TODO: Replace every hard-coded value into its corresponding property
+    private void moveCardOpponent(int origin, int destination) throws IOException{
+        final int originX, destinationX;
+        final String file = opponent.getPlayedCards().get(opponent.getPlayedCards().size()-1).linkCard();
 
-        //Según qué carta sea, la oculta y pone una temporal en reemplazo
-        // PostData: tengo que agarrar la ultima carta jugada para obtener su imagen
-        //  porque antes de llamar a moverCartaAI, tiro la carta desde la clase jugador
-        switch(origen){
+        // Depending on what card is, it hides it and puts a temporal one in replace
+        switch(origin){
             case 0:
-                OC1.setVisible(false);
-                origenX=100;
+                cardOpponent1.setVisible(false);
+                originX=100;
                 break;
             case 1:
-                OC2.setVisible(false);
-                origenX=180;
+                cardOpponent2.setVisible(false);
+                originX=180;
                 break;
             case 2:
-                OC3.setVisible(false);
-                origenX=300;
+                cardOpponent3.setVisible(false);
+                originX=300;
                 break;
             default:
-                origenX=0;
+                originX=0;
                 break;
         }
-        switch(destino){
+        switch(destination){
             case 0:
-                destinoX=130;
+                destinationX=130;
                 break;
             case 1:
-                destinoX=220;
+                destinationX=220;
                 break;
             case 2:
-                destinoX=300;
+                destinationX=300;
                 break;
             default:
-                destinoX=0;
+                destinationX=0;
                 break;
         }
 
-        if(menu.movCartas.isSelected()){ //Si no se quiere movimiento de cartas
+        if(menu.fastModeCheckBox.isSelected()){
             try {
-                dibujarCartas();
+                drawCards();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                efects.play();
             }
             return;
         }
 
-        movCarta.setBounds(origenX, 70, 75, 100);
-        movCarta.setVisible(true);
-        fondo.add(movCarta);
+        movingCard.setBounds(originX, 70, 75, 100);
+        movingCard.setVisible(true);
+        background.add(movingCard);
 
-        int porcentajeMov=40;
-        final int movX=(destinoX-origenX)/porcentajeMov, movY=(210-70)/porcentajeMov;
-        final int sizeX = (movCarta.getWidth()-70)/porcentajeMov;
-        final int sizeY = (movCarta.getHeight()-80)/porcentajeMov;
+        int movementPercentage=40;
+        final int moveX=(destinationX-originX)/movementPercentage, moveY=(210-70)/movementPercentage;
+        final int sizeX = (movingCard.getWidth()-70)/movementPercentage;
+        final int sizeY = (movingCard.getHeight()-80)/movementPercentage;
 
         Thread thread = new Thread(){
             public void run(){
-                timerMovCarta(movX, movY, origenX, 70, destinoX, 210, sizeX, sizeY, archivo, -1);
+                moveCardTimer(moveX, moveY, originX, 70, destinationX, 210, sizeX, sizeY, file, -1);
             }
         };
         thread.start();
     }
 
-    private void moverCartaPersona(int origen, String archivo, int destino) throws IOException{
-        final int origenX, destinoX;
+    private void moveCardPlayer(int origin, String file, int destination) throws IOException{
+        final int originX, destinationX;
 
-        //Según qué carta sea, la oculta y pone una temporal en reemplazo
-        switch(origen){
+        // Depending on what card is, it hides it and puts a temporal one in replace
+        switch(origin){
             case 0:
-                PC1.setVisible(false);
-                origenX=10;
+                cardPlayer1.setVisible(false);
+                originX=10;
                 break;
             case 1:
-                PC2.setVisible(false);
-                origenX=170;
+                cardPlayer2.setVisible(false);
+                originX=170;
                 break;
             case 2:
-                PC3.setVisible(false);
-                origenX=330;
+                cardPlayer3.setVisible(false);
+                originX=330;
                 break;
             default:
-                origenX=0;
+                originX=0;
                 break;
         }
-        switch(destino){
+        switch(destination){
             case 0:
-                destinoX=130;
+                destinationX=130;
                 break;
             case 1:
-                destinoX=210;
+                destinationX=210;
                 break;
             case 2:
-                destinoX=290;
+                destinationX=290;
                 break;
             default:
-                destinoX=0;
+                destinationX=0;
                 break;
         }
 
-        movCarta.setBounds(origenX, 400, 155, 200);
-        movCarta.setVisible(true);
-        fondo.add(movCarta);
+        movingCard.setBounds(originX, 400, 155, 200);
+        movingCard.setVisible(true);
+        background.add(movingCard);
 
         int porcentajeMov=40;
-        final int movX=(destinoX-origenX)/porcentajeMov, movY=(310-400)/porcentajeMov;
-        final int sizeX = (movCarta.getWidth()-70)/porcentajeMov;
-        final int sizeY = (movCarta.getHeight()-80)/porcentajeMov;
+        final int moveX=(destinationX-originX)/porcentajeMov, moveY=(310-400)/porcentajeMov;
+        final int sizeX = (movingCard.getWidth()-70)/porcentajeMov;
+        final int sizeY = (movingCard.getHeight()-80)/porcentajeMov;
 
         Thread thread = new Thread(){
             public void run(){
-                timerMovCarta(movX, movY, origenX, 400, destinoX, 310, sizeX, sizeY, archivo, origen);
+                moveCardTimer(moveX, moveY, originX, 400, destinationX, 310, sizeX, sizeY, file, origin);
             }
         };
         thread.start();
     }
 
-  public void timerMovCarta (int movX, int movY, int origenX, int origenY, int destinoX, int destinoY, int ancho, int alto, String archivo, int pos) {
+  public void moveCardTimer (int moveX, int moveY, int originX, int originY, int destinationX, int destinationY, int width, int height, String file, int pos) {
       new java.util.Timer().schedule(
             new java.util.TimerTask() {
               @Override
               public void run() {
-                  movCarta.setBounds(origenX+movX,origenY+movY, movCarta.getWidth()-ancho, movCarta.getHeight()-alto);
+                  movingCard.setBounds(originX+moveX,originY+moveY, movingCard.getWidth()-width, movingCard.getHeight()-height);
                   try {
-                  movCarta.setIcon(new ImageIcon(ImageIO.read(new File(archivo)).getScaledInstance(movCarta.getWidth()-ancho, movCarta.getHeight()-alto, Image.SCALE_SMOOTH)));
+                      movingCard.setIcon(new ImageIcon(ImageIO.read(new File(file)).getScaledInstance(movingCard.getWidth()-width, movingCard.getHeight()-height, Image.SCALE_SMOOTH)));
                   } catch (IOException e) {
                   }
               }
@@ -1312,9 +1242,9 @@ public class InterfazCliente extends JFrame {
       } catch (Exception e) {
       }
 
-      movCarta.repaint();
-      if(origenX-destinoX>5 || origenX-destinoX<-5){
-          timerMovCarta(movX,movY, origenX+movX, origenY+movY, destinoX, destinoY, ancho, alto, archivo, pos);
+      movingCard.repaint();
+      if(originX-destinationX>5 || originX-destinationX<-5){
+          moveCardTimer(moveX,moveY, originX+moveX, originY+moveY, destinationX, destinationY, width, height, file, pos);
           return;
       }
 
@@ -1324,22 +1254,22 @@ public class InterfazCliente extends JFrame {
       }
 
 
-      // Permite jugar
-      movCarta.setVisible(false);
-      fondo.remove(movCarta);
+      // Enables to play
+      movingCard.setVisible(false);
+      background.remove(movingCard);
       try {
-          dibujarCartas();
+          drawCards();
           if(pos!=-1) {
               Thread thread = new Thread(){
                   public void run(){
                       try{
-                          client.tirarCarta(pos);
-                          recibirMensaje(client.recibirMensaje());
+                          client.throwCard(pos);
+                          decodeMessage(client.receiveMessage());
                       } catch(IOException er){
-                          fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                          connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                           JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                          efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                          efectos.play();
+                          efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                          efects.play();
                       }
                   }
               };
@@ -1347,41 +1277,40 @@ public class InterfazCliente extends JFrame {
           }
       } catch (IOException ex) {
           JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de dibujar las cartas: " + ex.getMessage());
-          efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-          efectos.play();
+          efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+          efects.play();
       }
   }
 
-  // MENSAJE DEL CLIENTE
-  public void recibirMensaje (String mensaje) {
-      if(mensaje==""){
+  public void decodeMessage (String message) {
+      if(message==""){
           try {
-              recibirMensaje(client.recibirMensaje());
+              decodeMessage(client.receiveMessage());
           } catch (Exception e) {
-              fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+              connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
               JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + e.getMessage());
-              efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-              efectos.play();
+              efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+              efects.play();
           }
           return;
       }
-      Scanner scanf = new Scanner(mensaje.trim());
+      Scanner scanf = new Scanner(message.trim());
       String cat="";
       if(scanf.hasNext()) cat = scanf.next();
       else {
-          fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+          connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
           JOptionPane.showMessageDialog(null, "Ha sucedido un error en la comunicación. Mensaje corrupto");
-          efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-          efectos.play();
+          efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+          efects.play();
           Thread thread = new Thread(){
               public void run(){
                   try{
-                      recibirMensaje(client.recibirMensaje());
+                      decodeMessage(client.receiveMessage());
                   } catch(IOException er){
-                      fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                      connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                       JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                      efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                      efectos.play();
+                      efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                      efects.play();
                   }
               }
           };
@@ -1391,129 +1320,135 @@ public class InterfazCliente extends JFrame {
 
         switch(cat){
             case "update":
-                int nuevaCantCartasOponente=Integer.parseInt(scanf.next());
-                boolean animarOponente=false;
-                if(nuevaCantCartasOponente<cantCartasOponente)
-                    animarOponente = true;
-                cantCartasOponente=nuevaCantCartasOponente;
+                int newCountCardsOpponent=Integer.parseInt(scanf.next());
+                boolean moveCardOpponent=false;
+                if(newCountCardsOpponent < opponentCardsCount)
+                    moveCardOpponent = true;
+                opponentCardsCount=newCountCardsOpponent;
 
-                ArrayList<Carta> tempJugadasOponente = new ArrayList<>();
-                for(int i=0;i<3-cantCartasOponente;i++)
-                    tempJugadasOponente.add(new Carta(Integer.parseInt(scanf.next()), scanf.next()));
-                oponente.setCartasJugadas(tempJugadasOponente);
+                ArrayList<Carta> playedCardsOpponent = new ArrayList<>();
+                for(int i=0;i<3-opponentCardsCount;i++)
+                    playedCardsOpponent.add(new Carta(Integer.parseInt(scanf.next()), scanf.next()));
+                opponent.setPlayedCards(playedCardsOpponent);
 
-                ArrayList<Carta> tempMano = new ArrayList<>();
-                int sizeMano = Integer.parseInt(scanf.next());
-                for(int i=0;i<sizeMano;i++)
-                    tempMano.add(new Carta(Integer.parseInt(scanf.next()), scanf.next()));
-                jugador.setMano(tempMano);
+                ArrayList<Carta> cards = new ArrayList<>();
+                int sizeCards = Integer.parseInt(scanf.next());
+                for(int i=0;i<sizeCards;i++)
+                    cards.add(new Carta(Integer.parseInt(scanf.next()), scanf.next()));
+                player.setCards(cards);
 
-                int[] tempPosMano = new int[3];
+                int[] positionCards = new int[3];
                 for(int i=0;i<3;i++)
-                    tempPosMano[i]=Integer.parseInt(scanf.next());
-                jugador.setPosMano(tempPosMano);
+                    positionCards[i]=Integer.parseInt(scanf.next());
+                player.setPosCards(positionCards);
 
-                ArrayList<Carta> tempJugadas = new ArrayList<>();
-                for(int i=0;i<3-sizeMano;i++)
-                    tempJugadas.add(new Carta(Integer.parseInt(scanf.next()), scanf.next()));
-                jugador.setCartasJugadas(tempJugadas);
+                ArrayList<Carta> playedCards = new ArrayList<>();
+                for(int i=0;i<3-sizeCards;i++)
+                    playedCards.add(new Carta(Integer.parseInt(scanf.next()), scanf.next()));
+                player.setPlayedCards(playedCards);
 
-                nivelTruco=Integer.parseInt(scanf.next());
-                envidoFinalizado=Boolean.parseBoolean(scanf.next());
-                habilitadoARetrucar=Integer.parseInt(scanf.next());
+                trucoLevel=Integer.parseInt(scanf.next());
+                finishedEnvido=Boolean.parseBoolean(scanf.next());
+                enabledToRetrucar=Integer.parseInt(scanf.next());
 
-                if(animarOponente){
+                if(moveCardOpponent){
                     try {
-                        moverCartaAI(nuevaCantCartasOponente, 2-nuevaCantCartasOponente);
+                        moveCardOpponent(newCountCardsOpponent, 2-newCountCardsOpponent);
                     } catch (Exception e) {
-                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efects.play();
                     }
                 }
 
-                if(Boolean.parseBoolean(scanf.next())){// Es el turno del jugador
-                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoJugador.png"));
+                // It's player's turn
+                if(Boolean.parseBoolean(scanf.next())){
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoJugador.png"));
                     PC1Enabled=true;
                     PC2Enabled=true;
                     PC3Enabled=true;
+
                     try {
-                        dibujarBotones();
+                        drawButtons();
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efects.play();
                     }
-                    if((habilitadoARetrucar==2 || habilitadoARetrucar==0) && nivelTruco!=3)
+
+                    if((enabledToRetrucar==2 || enabledToRetrucar==0) && trucoLevel!=3)
                         truco.setEnabled(true);
                     else
                         truco.setEnabled(false);
-                    // Si la ultima carta es un 4 no le puede retrucar
-                    if(oponente.getCartasJugadas().size() == 3){
-                        if(oponente.getCartasJugadas().get(2).rankingCarta()==0) {
+                    // If the last card is 4, disable 'truco'
+                    if(opponent.getPlayedCards().size() == 3){
+                        if(opponent.getPlayedCards().get(2).rankingCard()==0) {
                             truco.setEnabled(false);
                         }
                     }
 
-                    if(jugador.getCartasJugadas().isEmpty() && !envidoFinalizado)
-                        envido.setEnabled(true);
+                    if(player.getPlayedCards().isEmpty() && !finishedEnvido)
+                        envidoMenu.setEnabled(true);
                     else
-                        envido.setEnabled(false);
+                        envidoMenu.setEnabled(false);
 
                     irAlMazo.setEnabled(true);
-                } else{ // Turno Oponente
-                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+                // Opponent's turn
+                } else{
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
                     PC1Enabled=false;
                     PC2Enabled=false;
                     PC3Enabled=false;
                     truco.setEnabled(false);
                     irAlMazo.setEnabled(false);
-                    envido.setEnabled(false);
+                    envidoMenu.setEnabled(false);
 
-                    //Espera al cliente
+                    // Waits for the server
                     Thread thread = new Thread(){
                         public void run(){
                             try{
-                                recibirMensaje(client.recibirMensaje());
+                                decodeMessage(client.receiveMessage());
                             } catch(IOException er){
-                                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                                connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                                 JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                                efectos.play();
+                                efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                                efects.play();
                             }
                         }
                     };
                     thread.start();
                 }
 
-                if(!animarOponente){
+                if(!moveCardOpponent){
                     try {
-                        dibujarCartas();
+                        drawCards();
                     } catch (Exception e) {
-                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efects.play();
                     }
                 }
-                oponente.setPuntaje(Integer.parseInt(scanf.next()), this);
-                jugador.setPuntaje(Integer.parseInt(scanf.next()), this);
+
+                opponent.setPoints(Integer.parseInt(scanf.next()), this);
+                player.setPoints(Integer.parseInt(scanf.next()), this);
+
                 try {
-                    dibujarPuntaje();
+                    updatePoints();
                 } catch (Exception e) {
-                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efects.play();
                 }
                 break;
             case "envido":
-                int nivel = Integer.parseInt(scanf.next());
-                nivelTruco = Integer.parseInt(scanf.next());
-                habilitadoARetrucar = Integer.parseInt(scanf.next());
-                imprimeAIEnvido(nivel, false);
-                setFondo(1);
+                int level = Integer.parseInt(scanf.next());
+                trucoLevel = Integer.parseInt(scanf.next());
+                enabledToRetrucar = Integer.parseInt(scanf.next());
+                printsEnvidoMessage(level, false);
+                setBackground(1);
 
                 PC1Enabled=false;
                 PC2Enabled=false;
@@ -1522,29 +1457,29 @@ public class InterfazCliente extends JFrame {
                 truco.setEnabled(false);
                 quieroTruco.setVisible(false);
                 noQuieroTruco.setVisible(false);
-                envido.setEnabled(false);
+                envidoMenu.setEnabled(false);
 
-                ArrayList<JButton> botones = new ArrayList<>();
-                botones.add(envidoEsp);
-                botones.add(envidoEnvido);
-                botones.add(realEnvido);
-                botones.add(faltaEnvido);
+                ArrayList<JButton> buttons = new ArrayList<>();
+                buttons.add(envido);
+                buttons.add(envidoEnvido);
+                buttons.add(realEnvido);
+                buttons.add(faltaEnvido);
 
-                if(nivel==5 || nivel==-1){
-                    quieroEnv.setVisible(false);
-                    noQuieroEnv.setVisible(false);
-                    envido.setEnabled(false);
-                    for(int i=0;i<botones.size();i++)
-                        botones.get(i).setVisible(false);
+                if(level==5 || level==-1){
+                    quieroEnvido.setVisible(false);
+                    noQuieroEnvido.setVisible(false);
+                    envidoMenu.setEnabled(false);
+                    for(int i=0;i<buttons.size();i++)
+                        buttons.get(i).setVisible(false);
                     Thread thread = new Thread(){
                         public void run(){
                             try{
-                                recibirMensaje(client.recibirMensaje());
+                                decodeMessage(client.receiveMessage());
                             } catch(IOException er){
-                                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                                connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                                 JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                                efectos.play();
+                                efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                                efects.play();
                             }
                         }
                     };
@@ -1552,90 +1487,89 @@ public class InterfazCliente extends JFrame {
                     return;
                 }
 
-                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
+                connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
 
-                for(int i=0;i<nivel;i++)
-                    botones.get(i).setVisible(false);
-                for(int i=nivel;i<4;i++){
-                    botones.get(i).setVisible(true);
-                    botones.get(i).setEnabled(true);
+                for(int i=0;i<level;i++)
+                    buttons.get(i).setVisible(false);
+                for(int i=level;i<4;i++){
+                    buttons.get(i).setVisible(true);
+                    buttons.get(i).setEnabled(true);
                 }
-                quieroEnv.setVisible(true);
-                noQuieroEnv.setVisible(true);
+                quieroEnvido.setVisible(true);
+                noQuieroEnvido.setVisible(true);
                 break;
             case "imprimir":
-                String aImprimir="";
+                String textToPrint="";
                 while(scanf.hasNext()){
                     String temp = scanf.next() + " ";
                     if(!temp.equals("ç "))
-                        aImprimir+=temp;
+                        textToPrint+=temp;
                     else break;
                 }
-                final String imprime = aImprimir;
+                final String imprime = textToPrint;
                 Thread thread2 = new Thread(){
                     public void run(){
                         JOptionPane.showMessageDialog(null, imprime);
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efects.play();
                     }
                 };
                 thread2.start();
                 Thread thread = new Thread(){
                     public void run(){
                         try{
-                            recibirMensaje(client.recibirMensaje());
+                            decodeMessage(client.receiveMessage());
                         } catch(IOException er){
-                            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                             JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                            efectos.play();
+                            efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                            efects.play();
                         }
                     }
                 };
                 thread.start();
                 break;
             case "kill":
-                menuJugar.setVisible(true);
+                playMenu.setVisible(true);
                 dispose();
                 break;
             case "truco":
-                int nivelTrucoTemp = Integer.parseInt(scanf.next());
-                habilitadoARetrucar = Integer.parseInt(scanf.next());
+                int newTrucoLevel = Integer.parseInt(scanf.next());
+                enabledToRetrucar = Integer.parseInt(scanf.next());
 
-                // Si no se canto envido y es la primer ronda
-                if(!envidoFinalizado && jugador.getCartasJugadas().isEmpty())
-                    envido.setEnabled(true);
+                if(!finishedEnvido && player.getPlayedCards().isEmpty())
+                    envidoMenu.setEnabled(true);
 
-                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
+                connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
                 try {
-                    imprimeAITruco(nivelTrucoTemp, false);
+                    printsTrucoMessage(newTrucoLevel, false);
                 } catch (Exception e) {
-                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                     JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes o sonidos: " + e.getMessage());
-                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    efectos.play();
+                    efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    efects.play();
                 }
-                if(nivelTrucoTemp!=4 && nivelTrucoTemp!=-1){
+                if(newTrucoLevel!=4 && newTrucoLevel!=-1){
                     quieroTruco.setVisible(true);
                     noQuieroTruco.setVisible(true);
-                    nivelTruco=nivelTrucoTemp;
+                    trucoLevel=newTrucoLevel;
                     try {
-                        dibujarBotones();
+                        drawButtons();
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes o sonidos: " + e.getMessage());
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efects.play();
                     }
                 } else {
                     truco.setEnabled(false);
                     quieroTruco.setVisible(false);
                     noQuieroTruco.setVisible(false);
-                    if(nivelTrucoTemp==-1){
+                    if(newTrucoLevel==-1){
                         Thread thread3 = new Thread(){
                             public void run(){
-                                JOptionPane.showMessageDialog(null, "" + nombreOponente + " ha rechazado el Truco. Repartiendo...");
-                                efectos.setFile("src/truco_java/musica/boton.wav", 1);
-                                efectos.play();
+                                JOptionPane.showMessageDialog(null, "" + opponentName + " ha rechazado el Truco. Repartiendo...");
+                                efects.setFile("src/truco_java/musica/boton.wav", 1);
+                                efects.play();
                             }
                         };
                         thread3.start();
@@ -1643,12 +1577,12 @@ public class InterfazCliente extends JFrame {
                     Thread thread1 = new Thread(){
                         public void run(){
                             try{
-                                recibirMensaje(client.recibirMensaje());
+                                decodeMessage(client.receiveMessage());
                             } catch(IOException er){
-                                fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                                connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                                 JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                                efectos.play();
+                                efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                                efects.play();
                             }
                         }
                     };
@@ -1656,78 +1590,79 @@ public class InterfazCliente extends JFrame {
                 }
                 break;
             case "puntaje":
-                oponente.setPuntaje(Integer.parseInt(scanf.next()), this);
-                jugador.setPuntaje(Integer.parseInt(scanf.next()), this);
+                opponent.setPoints(Integer.parseInt(scanf.next()), this);
+                player.setPoints(Integer.parseInt(scanf.next()), this);
                 try {
-                    dibujarPuntaje();
+                    updatePoints();
                 } catch (Exception e) {
-                        fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
+                        efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        efects.play();
                 }
                 Thread thread3 = new Thread(){
                     public void run(){
                         try{
-                            recibirMensaje(client.recibirMensaje());
+                            decodeMessage(client.receiveMessage());
                         } catch(IOException er){
-                            fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                             JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                            efectos.play();
+                            efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                            efects.play();
                         }
                     }
                 };
                 thread3.start();
                 break;
             case "retira":
-                oponente.setPuntaje(15, this);
-                JOptionPane.showMessageDialog(null, "El oponente " + nombreOponente + " se ha retirado. Has ganado!");
-                menuJugar.setVisible(true);
+                opponent.setPoints(15, this);
+                JOptionPane.showMessageDialog(null, "El oponente " + opponentName + " se ha retirado. Has ganado!");
+                playMenu.setVisible(true);
                 dispose();
                 break;
             case "persona":
-                numeroPersonaje = Integer.parseInt(scanf.next());
-                nombreOponente="";
+                opponentNumber = Integer.parseInt(scanf.next());
+                opponentName="";
                 while(scanf.hasNext()){
                     String nombreTemp = scanf.next();
-                    if(!nombreTemp.equals("ç")) nombreOponente += nombreTemp;
-                    if(scanf.hasNext()) nombreOponente+=" ";
+                    if(!nombreTemp.equals("ç")) opponentName += nombreTemp;
+                    if(scanf.hasNext()) opponentName+=" ";
                 }
                 String nombre = "";
-                if(Truco_Java.posUsuario!=-1)
-                    nombre = Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).getNombre();
+                if(Truco_Java.userIndex!=-1)
+                    nombre = Truco_Java.userList.get(Truco_Java.userIndex).getName();
 
                 Thread thread1 = new Thread(){
                     public void run(){
-                        JOptionPane.showMessageDialog(null, nombreOponente + " ha entrado en la sala. Esperando a que el oponente reparta...");
-                        efectos.setFile("src/truco_java/musica/boton.wav", 1);
-                        efectos.play();
+                        JOptionPane.showMessageDialog(null, opponentName + " ha entrado en la sala. Esperando a que el oponente reparta...");
+                        efects.setFile("src/truco_java/musica/boton.wav", 1);
+                        efects.play();
                     }
                 };
                 thread1.start();
                 try {
-                    client.enviaPersona(MenuJugar.numeroJugador+1, nombre);
+                    client.sendPerson(MenuJugar.playerNumber+1, nombre);
                 } catch (Exception e) {
-                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                     JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + e.getMessage());
-                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    efectos.play();
+                    efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    efects.play();
                 }
                 try {
-                    puntajeFondo.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg"+ numeroPersonaje +".png")).getScaledInstance(100, 150, Image.SCALE_SMOOTH)));
+                    pointsBackground.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg"+ opponentNumber +".png")).getScaledInstance(100, 150, Image.SCALE_SMOOTH)));
                 } catch (Exception e) {
-                    fondoConexion.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                     JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
-                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    efectos.play();
+                    efects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    efects.play();
                 }
                 break;
             default:
                 // System.out.println("No se detecto la categoria del mensaje: " + cat);
                 // for(int i=0;i<cat.length();i++)
                 //     System.out.println(i+": "+cat.charAt(i));
-                //Repite el mensaje con un caracter menos (caracteres basura del Socket)
+
+                // Repeats the message without the last characters (it can be garbage from socket)
                 String catTemp="";
                 for(int i=1;i<cat.length();i++){
                     catTemp+=cat.charAt(i);
@@ -1735,7 +1670,7 @@ public class InterfazCliente extends JFrame {
                 String mensajeTemp = catTemp + " ";
                 while(scanf.hasNext())
                     mensajeTemp+=scanf.next() + " ";
-                if(!mensaje.equals(" ")) recibirMensaje(mensajeTemp);
+                if(!message.equals(" ")) decodeMessage(mensajeTemp);
                 break;
         }
         scanf.close();

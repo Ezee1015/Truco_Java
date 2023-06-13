@@ -1,12 +1,3 @@
-/*
-- primera carta random
-- Si se empata, tirar siempre la mas alta a la segunda. Sino la segunda carta, si gano la primera, tiene la más alta, sino la más baja, la tercera es la que queda.
-- Si se empatan las tres rondas, gana el que no tenia la mano
-- Una posibilidad de 1 entre 15 de mentir si es facil o 1 entre 8 si es dificil para el envido (y una posibilidad de 1 a 15 de envido, 1 a 5 de real envido y de 1 de falta envido). Si el envido es mayor a 23 se canta envido, mayor de 27 real envido y mayor a 31 de falta envido
-Plus:
-- Crear una funcion: CalcularEnvidoRestante() para el modo dificil en JugadorAI
-*/
-
 package truco_java;
 
 import java.io.IOException;
@@ -15,601 +6,641 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 
 public class JugadorAI extends Jugador {
-    private int envidoJugadorCantado = -1;
-    private static final Music efectos = new Music();
+  private int playersDeclaredEnvido = -1;
+  private static final Music effects = new Music();
 
-    public JugadorAI(ArrayList<Carta> mano, boolean esMano) {
-        super(mano, esMano);
-    }
+  public JugadorAI(ArrayList<Carta> cards, boolean firstHand) {
+    super(cards, firstHand);
+  }
 
+  public Carta playTurnAlgorithm(Persona p, InterfazJuego interfaceGame) throws IOException{
+    ArrayList<Carta> playerPlayedCards = p.getPlayedCards();
 
-  public Carta jugarTurno(Persona p, InterfazJuego mesa) throws IOException{
-      if(p.cartasJugadas.isEmpty() && p.getCartasJugadas().isEmpty()) // si es la primera vez que tiro y el jugador no tiró
-          return tirarCartaRandom();
+    // If it's the first round and the player didn't play
+    if(playerPlayedCards.isEmpty())
+      return throwRandomCard();
 
-      if(p.getCartasJugadas().size()-1 == cartasJugadas.size()) { // Si el jugado ya tiro y me toca a mi
-        for(int i=0;i<mano.size();i++) { // Recorre desde la peor a la mejor carta
-                                         // Si hay una carta que empata la que ya tiro, y soy ganador/empate la primera mano. Tirarla
-          if(p.getCartasJugadas().size()>=2 && p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == mano.get(i).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() <= mano.get(0).rankingCarta() )
-            return tirarCartaPos(i);
-          // Buscar la carta de menor rango que le gane
-          if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() < mano.get(i).rankingCarta())
-            return tirarCartaPos(i);
-        }
-        // Si no le gano con ninguna de las carta que tenía, tirar la peor
-        return tirarPeorCarta();
+    // If the player has already played and it's the AI's turn
+    if(playerPlayedCards.size() > playedCards.size()) {
+      // From the worst to the best card (already sorted)
+      for(int i=0;i<cards.size();i++) {
+        // If there is a card that ties the one thrown by the player, and I won the first round. Throw it
+        if( playerPlayedCards.size()>1 &&
+            playerPlayedCards.get(playerPlayedCards.size()-1).rankingCard() == cards.get(i).rankingCard() &&
+            p.getPlayedCards().get(0).rankingCard() <= cards.get(0).rankingCard()
+          )
+          return throwCardAtPos(i);
+        // Looks for the worst card that can win
+        if(playerPlayedCards.get(playerPlayedCards.size()-1).rankingCard() < cards.get(i).rankingCard())
+          return throwCardAtPos(i);
       }
+      // If I can't win that card, throw the worst one
+      return throwWorstCard();
+    }
 
-
-      if(cartasJugadas.size()>=1){
-        if(p.getCartasJugadas().get(0).rankingCarta() == cartasJugadas.get(0).rankingCarta())
-          return tirarMejorCarta();
-        if(p.getCartasJugadas().get(0).rankingCarta() > cartasJugadas.get(0).rankingCarta()){
-          for(int i=0;i<mano.size();i++) { // Recorre desde la peor a la mejor carta
-            // Si hay una carta que empata la que ya tiro, y soy ganador/empate la primera mano. Tirarla
-            if(p.getCartasJugadas().size()>=2 && p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == mano.get(i).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() <= mano.get(0).rankingCarta() )
-              return tirarCartaPos(i);
-            // Buscar la carta de menor rango que le gane
-            if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() < mano.get(i).rankingCarta())
-              return tirarCartaPos(i);
-          }
-          return tirarMejorCarta();
+    if(playedCards.size()>=1){
+      if(playerPlayedCards.get(0).rankingCard() == playedCards.get(0).rankingCard())
+        return throwBestCard();
+      if(playerPlayedCards.get(0).rankingCard() > playedCards.get(0).rankingCard()){
+        // From the worst to the best card (already sorted)
+        for(int i=0;i<cards.size();i++) {
+          // If there is a card that ties the one thrown by the player, and I won/tie the first round. Throw it
+          if(
+              p.getPlayedCards().size()>=2 &&
+              p.getPlayedCards().get(p.getPlayedCards().size()-1).rankingCard() == cards.get(i).rankingCard() &&
+              p.getPlayedCards().get(0).rankingCard() <= cards.get(0).rankingCard()
+            )
+            return throwCardAtPos(i);
+          // Looks for the worst card that can win
+          if(p.getPlayedCards().get(p.getPlayedCards().size()-1).rankingCard() < cards.get(i).rankingCard())
+            return throwCardAtPos(i);
         }
-        if(p.getCartasJugadas().get(0).rankingCarta() < cartasJugadas.get(0).rankingCarta())
-          return tirarPeorCarta();
+        return throwBestCard();
       }
-
-      return tirarMejorCarta(); // Tira la ultima carta que queda
-  }
-
-  public Carta tirarCartaRandom(){
-    return tirarCartaPos(new Random().nextInt(mano.size()));
-  }
-
-  public Carta tirarCartaPos (int pos){
-    Carta aTirar = mano.get(pos);
-    mano.remove(pos);
-    cartasJugadas.add(aTirar);
-    return aTirar;
-  }
-
-  public Carta tirarMejorCarta (){
-    if(mano.isEmpty()) return null;
-
-    int mejor = 0;
-    for(int i=1; i<mano.size(); i++){
-      if(mano.get(mejor).rankingCarta() < mano.get(i).rankingCarta())
-        mejor = i;
+      if(p.getPlayedCards().get(0).rankingCard() < playedCards.get(0).rankingCard())
+        return throwWorstCard();
     }
 
-    return tirarCartaPos(mejor);
+    return throwBestCard();
   }
 
-  public Carta tirarPeorCarta (){
-    if(mano.isEmpty()) return null;
+  public Carta throwRandomCard(){
+    return throwCardAtPos(new Random().nextInt(cards.size()));
+  }
 
-    int peor = 0;
-    for(int i=1; i<mano.size(); i++){
-      if(mano.get(peor).rankingCarta() > mano.get(i).rankingCarta())
-        peor = i;
+  public Carta throwCardAtPos (int pos){
+    Carta toThrow = cards.get(pos);
+    cards.remove(pos);
+    playedCards.add(toThrow);
+    return toThrow;
+  }
+
+  public Carta throwBestCard (){
+    if(cards.isEmpty()) return null;
+
+    int bestCardPos = 0;
+    for(int i=1; i<cards.size(); i++){
+      if(cards.get(bestCardPos).rankingCard() < cards.get(i).rankingCard())
+        bestCardPos = i;
     }
 
-    return tirarCartaPos(peor);
+    return throwCardAtPos(bestCardPos);
   }
 
-  public int desidirEnvido(int estado, Persona p, Truco_Java menu){
-      /*
-      Estados:
+  public Carta throwWorstCard (){
+    if(cards.isEmpty()) return null;
+
+    int worstCardPos = 0;
+    for(int i=1; i<cards.size(); i++){
+      if(cards.get(worstCardPos).rankingCard() > cards.get(i).rankingCard())
+        worstCardPos = i;
+    }
+
+    return throwCardAtPos(worstCardPos);
+  }
+
+  public int envidoAlgorithm(int envidoLevel, Persona p, Truco_Java menu){
+    /*
+        States:
         0 --> No quiero / No se cantó
         1 --> Envido
         2 --> Envido - Envido
         3 --> Real Envido
         4 --> Falta Envido
-      *** Si devuelve el mismo numero que se le paso a la funcion, se le interpreta como un quiero
-      */
+        ** If it returns the same number that was given to the function, that's interpreted as 'quiero'
+     */
 
-      int desicion=0, obligado=estado;
-      Random random = new Random();
+    int decision=0, obligated=envidoLevel;
+    Random random = new Random();
 
-      if(calcularEnvido()<=23){               // Menos de 23 de envido, nada
-        if(random.nextInt(8) == 7 && !menu.facil.isSelected()) //El 7 es un numero de ejemplo para la probabilidad de 1/8
-            desicion = estado + 1;
-        return desicion;
-      }
+    // Less than 23 of envido, do nothing
+    if(calculateEnvido()<=23){
+      // The number '7' it's a random hard-coded number for a probability of 1 in 8
+      if(random.nextInt(8) == 7 && !menu.easyCheckBox.isSelected())
+        decision = envidoLevel + 1;
+      return decision;
+    }
 
-      if(estado==0 && calcularEnvido()>25)   // Más de 25 de envido y no se cantó, obliga a cantar
-        obligado = 1;
+    // More than 25 of envido and it was nos declared, obligate to declare
+    if(envidoLevel==0 && calculateEnvido()>25)
+      obligated = 1;
 
-      if(calcularEnvido()>30){                 // Más de 30 de envido, canta
-        if(estado==4)
-          return 4;
-        desicion = obligado + random.nextInt(4-obligado);
-      }
+    // More than 30 of envido, declare
+    if(calculateEnvido()>30){
+      if(envidoLevel==4)
+        return 4;
+      decision = obligated + random.nextInt(4-obligated);
+    }
 
+    else if(calculateEnvido()>27){
+      if(envidoLevel==3)
+        decision = 3;
+      else if(envidoLevel<4)
+        decision = obligated + random.nextInt(3-obligated);
+      else
+        decision = 0;
+    }
 
-      else if(calcularEnvido()>27){
-        if(estado==3)
-          desicion = 3;
-        else if(estado<4)
-          desicion = obligado + random.nextInt(3-obligado);
+    else if(calculateEnvido()>25){
+      if(envidoLevel<3) {
+        if (envidoLevel==2)
+          decision = 2;
         else
-          desicion = 0;
-      }
+          decision = obligated + random.nextInt(2 - obligated);
+      } else
+        decision = 0;
+    }
 
-      else if(calcularEnvido()>25){
-        if(estado<3) {
-          if (estado==2)
-            desicion = 2;
-          else
-            desicion = obligado + random.nextInt(2 - obligado);
-        } else
-          desicion = 0;
-      }
-
-      else if(calcularEnvido()>23){
-          switch (estado) {
-              case 1:
-                  desicion = 1;
-                  break;
-              case 0:
-                  desicion = random.nextInt(1-estado);
-                  break;
-              default:
-                  desicion = 0;
-                  break;
-          }
-      }
-
-      // Si se canta envido y el jugador le falta un punto para ganar, aceptar si o si.
-      if(estado>0 && p.getPuntaje()==14){
-        if(estado<3)
-          desicion = estado+1;
-        else
-          desicion = estado;
-      }
-
-      if(desicion==2 && estado!=1){
-        if(calcularEnvido()>27)
-          return 3;
-        else {
-          if(estado<2) return 1;
-          else return 0;
-        }
-      }
-
-      // Si retruca en menor nivel del que está la apuesta, no quiere
-      if(desicion<estado && desicion!=0)
-          return 0;
-
-      if(desicion==0 && estado>=3 && calcularEnvido()>26 && random.nextInt(2)==0 && !menu.facil.isSelected()) //Agrega una opcion para arriesgar
-        return estado;
-
-      if(desicion==0 && estado==0 && esMano==false && random.nextInt(4) == 3 && !menu.facil.isSelected())
-        return 1;
-
-      return desicion;
-  }
-
-  private int cantBuenasCartas () {
-    int cant=0;
-
-    for (int i = 0; i < mano.size(); i++)
-      if(mano.get(i).rankingCarta()>7)
-        cant++;
-
-    return cant;
-  }
-
-  private int cantMedianasCartas () {
-    int cant=0;
-
-    for (int i = 0; i < mano.size(); i++)
-      if(mano.get(i).rankingCarta()>4 && mano.get(i).rankingCarta()<8)
-        cant++;
-
-    return cant;
-  }
-
-  public int desidirTruco (int estado, Persona p, Truco_Java menu) {
-      /*
-      Estados:
-        0 --> No quiero / No se cantó
-        1 --> Truco
-        2 --> Retruco
-        3 --> Vale 4
-      *** Si devuelve el mismo numero que se le paso a la funcion, se le interpreta como un quiero
-      */
-
-  if(menu.facil.isSelected())
-    return desidirTrucoFacil(estado, p);
-
-  Random random = new Random();
-
-  int cantCartasTiradas = p.getCartasJugadas().size() + cartasJugadas.size();
-
-  // Si se canta truco y el jugador le falta un punto para ganar, aceptar si o si o retrucar hasta donde se pueda.
-  if(estado>0 && p.getPuntaje()==14){
-    if(estado!=3)
-      return estado+1;
-    else
-      return estado;
-  }
-
-  switch(cantCartasTiradas){
-    case 0:
-    case 1: // Primera mano
-      if(estado == 0)            // Si no se canto nada..
-        return 0;                // .. No cantar.
-      else {                     // Pero si me cantaron..
-        if(cantBuenasCartas()>=1) {// .. Si tengo más de una buena carta
-          if(cantMedianasCartas()>=1){ // Si también tengo una mediana, retruca
-            if(estado==3)
-              return 3;
-            return estado+1;
-          }
-          if(random.nextInt(2)==1) // Si solamente tengo una carta buena, una en dos de aceptar
-            return estado;
-        }
-      }
-      break;
-    case 4:
-    case 5: // Tercera Mano
-            // Calcula según el envido del jugador qué carta le queda
-      int jugarEnv = calcularGanoSegunEnvidoCantado(p.getCartasJugadas());
-      switch(jugarEnv){
-        case 0: break;
+    else if(calculateEnvido()>23){
+      switch (envidoLevel) {
         case 1:
-                if(estado==3)
-                  return 3;
-                return estado+1;
-        case 2:
-                if(random.nextInt(3)==1){
-                  if(estado==3)
-                    return 3;
-                  return estado+1;
-                }
-                break;
-        case 3:
-                return 0;
+          decision = 1;
+          break;
+        case 0:
+          decision = random.nextInt(1-envidoLevel);
+          break;
+        default:
+          decision = 0;
+          break;
       }
-      // Si esta en la ultima mano y solo falta tirar la AI...
-      if(p.getCartasJugadas().size()-1 == cartasJugadas.size()){
-        if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta()) // Si le gano, canto
-          return estado+random.nextInt(4-estado);
-        // Si le empata, pero gano la primera
-        else if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() == mano.get(0).rankingCarta())
-          return estado+random.nextInt(4-estado);
-        else if(random.nextInt(3)==1 && estado!=3 && p.getCartasJugadas().get(2).rankingCarta()<8) // Si pierdo: Random, retruca si no estoy en vale 4 y la carta que tiro es menor que un ancho falso
-          return estado+random.nextInt(3-estado)+1;
-      } else if(cartasJugadas.size() == 3 && cartasJugadas.get(2).rankingCarta()>9) { // Si queda una buena carta
-        if(estado == 3)
-          return 3;
-        return estado+random.nextInt(3-estado);      // Apostar todo
-      } else if(random.nextInt(4)==2)
-        return estado;
-      // Si esta en la ultima mano y solo falta tirar la Persona...
-      if(getCartasJugadas().size()-1 == p.getCartasJugadas().size()){
-        if(getCartasJugadas().get(2).rankingCarta() > 6){ // Si es buena, canto
-            if(estado == 3)
-              return 3;
-            return estado+random.nextInt(3-estado);      // Apostar todo
-        }
-        if(getCartasJugadas().get(2).rankingCarta() > 1 && getCartasJugadas().get(2).rankingCarta() < 6 && random.nextInt(3)==1){ // Apuesto todo
-            if(estado == 3)
-              return 3;
-            return estado+random.nextInt(3-estado);
-        }
-      }
-      break;
-    case 2:
-    case 3: // Segunda mano
-      if(cantBuenasCartas()==1 && cantMedianasCartas()==1){  // Si tengo mas una buena carta y una media
-        if(estado==3)
-          return 3;
-        return estado+random.nextInt(3-estado);
-      }
+    }
 
-      if(cantBuenasCartas()>1){  // Si tengo mas de una buena carta apostar todo
-        if(estado==3)
-          return 3;
-        return estado+random.nextInt(3-estado);
-      }
+    // If envido was declare and the player and the player is one point away from winning, accept
+    if(envidoLevel>0 && p.getPoints()==14){
+      if(envidoLevel<3)
+        decision = envidoLevel+1;
+      else
+        decision = envidoLevel;
+    }
 
-      if(cantBuenasCartas()==1 && estado!=0)  // Si tengo una buena carta, aceptar
-        return estado;
+    if(decision==2 && envidoLevel!=1){
+      if(calculateEnvido()>27)
+        return 3;
+      else {
+        if(envidoLevel<2) return 1;
+        else return 0;
+      }
+    }
 
-      // Si empaté la anterior...
-      if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == cartasJugadas.get(cartasJugadas.size()-1).rankingCarta()){
-        if(cantBuenasCartas()>=1){
-          if(estado==3)
-            return 3;
-          return estado+random.nextInt(3-estado);
-        }
-        if(cantMedianasCartas()>=1 && random.nextInt(2)==1)
-          return estado;
-      }
-      // Si ya tiré pero es el turno del jugador, y en la mano no me queda una buena carta, porque ya la tiré
-      if(p.getCartasJugadas().size()+1==cartasJugadas.size()){
-        if(cartasJugadas.get(cartasJugadas.size()-1).rankingCarta()>7) {
-          if(estado==3)
-            return 3;
-          return estado+random.nextInt(3-estado);
-        }
-        // Si la que tiré no era una carta buena sino una carta mediana
-        if(cartasJugadas.get(cartasJugadas.size()-1).rankingCarta()>5) {
-          if(estado==3)
-            return 3;
-          return estado+random.nextInt(3-estado);
-        }
-      }
-      // Si tengo más de una carta mediana, y el estado es menos de retruco, de manera random aceptar
-      if(cantMedianasCartas()>1 && estado<=2 && random.nextInt(3)==2)
-        return estado;
-      break;
+    // If it replies in a lower level that the offer, don't want
+    if(decision<envidoLevel && decision!=0)
+      return 0;
+
+    // Adds an option to risk
+    if(
+        decision==0 && envidoLevel>=3 && calculateEnvido()>26 &&
+        random.nextInt(2)==0 && !menu.easyCheckBox.isSelected()
+      )
+      return envidoLevel;
+
+    if(
+        decision==0 &&
+        envidoLevel==0 &&
+        firstHand==false &&
+        random.nextInt(4) == 3 &&
+        !menu.easyCheckBox.isSelected()
+      )
+      return 1;
+
+    return decision;
   }
+
+  private int goodCardsCount () {
+    int cant=0;
+
+    for (int i = 0; i < cards.size(); i++)
+      if(cards.get(i).rankingCard()>7)
+        cant++;
+
+    return cant;
+  }
+
+  private int mediumCardCount () {
+    int cant=0;
+
+    for (int i = 0; i < cards.size(); i++)
+      if(cards.get(i).rankingCard()>4 && cards.get(i).rankingCard()<8)
+        cant++;
+
+    return cant;
+  }
+
+  public int trucoAlgorithm (int trucoLevel, Persona p, Truco_Java menu) {
+    /*
+      States:
+      0 --> No quiero / No se cantó
+      1 --> Truco
+      2 --> Retruco
+      3 --> Vale 4
+       ** If it returns the same number that was given to the function, that's interpreted as 'quiero'
+     */
+
+    if(menu.easyCheckBox.isSelected())
+      return easyTrucoAlgorithm(trucoLevel, p);
+
+    Random random = new Random();
+
+    int cardsPlayedCount = p.getPlayedCards().size() + playedCards.size();
+
+    // If truco was declared and the player is one point away to win, accept or reply truco
+    if(trucoLevel>0 && p.getPoints()==14){
+      if(trucoLevel!=3)
+        return trucoLevel+1;
+      else
+        return trucoLevel;
+    }
+
+    switch(cardsPlayedCount){
+      case 0:
+      case 1: // First round
+        if(trucoLevel == 0)
+          return 0;
+        else {
+          if(goodCardsCount()>=1) {
+            if(mediumCardCount()>=1){
+              if(trucoLevel==3)
+                return 3;
+              return trucoLevel+1;
+            } else if(random.nextInt(2)==1)
+              return trucoLevel;
+          }
+        }
+        break;
+      case 4:
+      case 5: // Third round
+        int probabilityToWin = predictCardWithEnvido(p.getPlayedCards());
+        switch(probabilityToWin){
+          case 0: break;
+          case 1:
+                  if(trucoLevel==3)
+                    return 3;
+                  return trucoLevel+1;
+          case 2:
+                  if(random.nextInt(3)==1){
+                    if(trucoLevel==3)
+                      return 3;
+                    return trucoLevel+1;
+                  }
+                  break;
+          case 3:
+                  return 0;
+        }
+        // If it's in the last round and AI is the last one to throw
+        if(p.getPlayedCards().size()-1 == playedCards.size()){
+          if(cards.get(0).rankingCard() > p.getPlayedCards().get(2).rankingCard()) // If AI wins, declare
+            return trucoLevel+random.nextInt(4-trucoLevel);
+          // if it's a tie, but AI won the first
+          else if(
+              cards.get(0).rankingCard() > p.getPlayedCards().get(2).rankingCard() &&
+              p.getPlayedCards().get(0).rankingCard() == cards.get(0).rankingCard()
+            )
+            return trucoLevel+random.nextInt(4-trucoLevel);
+          // If AI looses: It can randomly reply (only if it isn't 'vale 4') and the card
+          // that the player has thrown is worse than an 'ancho falso'
+          else if(
+              random.nextInt(3)==1 && trucoLevel!=3 &&
+              p.getPlayedCards().get(2).rankingCard()<8
+              )
+            return trucoLevel+random.nextInt(3-trucoLevel)+1;
+        // If the last card is a good one
+        } else if(playedCards.size() == 3 && playedCards.get(2).rankingCard()>9) {
+          if(trucoLevel == 3)
+            return 3;
+          return trucoLevel+random.nextInt(3-trucoLevel);
+        } else if(random.nextInt(4)==2)
+          return trucoLevel;
+        // If its in the last round and the only thing left is the opponent to throw
+        if(getPlayedCards().size()-1 == p.getPlayedCards().size()){
+          // If it's good, declare
+          if(getPlayedCards().get(2).rankingCard() > 6){
+            if(trucoLevel == 3)
+              return 3;
+            // Go all in
+            return trucoLevel+random.nextInt(3-trucoLevel);
+          }
+          // Go all in
+          if(getPlayedCards().get(2).rankingCard() > 1 && getPlayedCards().get(2).rankingCard() < 6 && random.nextInt(3)==1){ // Apuesto todo
+            if(trucoLevel == 3)
+              return 3;
+            return trucoLevel+random.nextInt(3-trucoLevel);
+          }
+        }
+        break;
+      case 2:
+      case 3: // Second round
+        // If AI has a good card and a medium one
+        if(goodCardsCount()==1 && mediumCardCount()==1){
+          if(trucoLevel==3)
+            return 3;
+          return trucoLevel+random.nextInt(3-trucoLevel);
+        }
+
+        // If AI has more than one good card, go all in
+        if(goodCardsCount()>1){
+          if(trucoLevel==3)
+            return 3;
+          return trucoLevel+random.nextInt(3-trucoLevel);
+        }
+
+        // If AI has a good card, accept
+        if(goodCardsCount()==1 && trucoLevel!=0)
+          return trucoLevel;
+
+        // If I tie the previous round
+        if(p.getPlayedCards().get(p.getPlayedCards().size()-1).rankingCard() == playedCards.get(playedCards.size()-1).rankingCard()){
+          if(goodCardsCount()>=1){
+            if(trucoLevel==3)
+              return 3;
+            return trucoLevel+random.nextInt(3-trucoLevel);
+          }
+          if(mediumCardCount()>=1 && random.nextInt(2)==1)
+            return trucoLevel;
+        }
+        // If AI has already thrown but is the turn of the player, and the cards left to play are no good because AI already played
+        if(p.getPlayedCards().size()+1==playedCards.size()){
+          if(playedCards.get(playedCards.size()-1).rankingCard()>7) {
+            if(trucoLevel==3)
+              return 3;
+            return trucoLevel+random.nextInt(3-trucoLevel);
+          }
+          // If the card throwed was not a good card, but else, a medium one
+          if(playedCards.get(playedCards.size()-1).rankingCard()>5) {
+            if(trucoLevel==3)
+              return 3;
+            return trucoLevel+random.nextInt(3-trucoLevel);
+          }
+        }
+        // If AI has more than one medium card, and the trucoLevel is less than 'retruco', randomly accept or not
+        if(mediumCardCount()>1 && trucoLevel<=2 && random.nextInt(3)==2)
+          return trucoLevel;
+        break;
+    }
 
     return 0;
   }
 
-  public int desidirTrucoFacil (int estado, Persona p) {
-      /*
-      Estados:
-        0 --> No quiero / No se cantó
-        1 --> Truco
-        2 --> Retruco
-        3 --> Vale 4
-      *** Si devuelve el mismo numero que se le paso a la funcion, se le interpreta como un quiero
-      */
+  public int easyTrucoAlgorithm (int trucoLevel, Persona p) {
+    /*
+      States:
+      0 --> No quiero / No se cantó
+      1 --> Truco
+      2 --> Retruco
+      3 --> Vale 4
+       ** If it returns the same number that was given to the function, that's interpreted as 'quiero'
+     */
 
     Random random = new Random();
 
-  int cantCartasTiradas = p.getCartasJugadas().size() + cartasJugadas.size();
+    int cardsPlayedCount = p.getPlayedCards().size() + playedCards.size();
 
-  switch(cantCartasTiradas){
-    case 0:
-    case 1: // Primera mano
-      if(estado == 0)            // Si no se canto nada..
-        return 0;                // .. No cantar.
-      else {                     // Pero si me cantaron..
-        if(cantBuenasCartas()>=1 && cantMedianasCartas()>=1) // .. Solo aceptar si tengo más de una buena carta y una media
-          return estado;
-      }
-      break;
-    case 4:
-    case 5: // Tercera Mano
-      // Si esta en la ultima mano y solo falta tirar la AI...
-      if(p.getCartasJugadas().size()-1 == cartasJugadas.size()){
-          if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta()) // Si le gano, canto
-              return estado+random.nextInt(4-estado);
-          // Si le empata, pero gano la primera
-          else if(mano.get(0).rankingCarta() > p.getCartasJugadas().get(2).rankingCarta() && p.getCartasJugadas().get(0).rankingCarta() == mano.get(0).rankingCarta())
-              return estado+random.nextInt(4-estado);
-      } else if(cartasJugadas.size() == 3 && cartasJugadas.get(2).rankingCarta()>9) { // Si queda una buena carta
-        if(estado == 3)
-          return 3;
-        return estado+random.nextInt(3-estado);      // Apostar todo
-      }
-      break;
-    case 2:
-    case 3: // Segunda mano
-      if(cantBuenasCartas()>1){  // Si tengo mas de una buena carta apostar todo
-        if(estado==3)
-          return 3;
-        return estado+random.nextInt(3-estado);
-      }
-      // Si empaté la anterior...
-        if(p.getCartasJugadas().get(p.getCartasJugadas().size()-1).rankingCarta() == cartasJugadas.get(cartasJugadas.size()-1).rankingCarta()){
-          if(cantBuenasCartas()>=1){
-            if(estado==3)
+    switch(cardsPlayedCount){
+      case 0:
+      case 1: // First round
+        if(trucoLevel == 0)
+          return 0;
+        else {
+          if(goodCardsCount()>=1 && mediumCardCount()>=1)
+            return trucoLevel;
+        }
+        break;
+      case 4:
+      case 5: // Third round
+        // If it's in the last round and AI is the last one to throw
+        if(p.getPlayedCards().size()-1 == playedCards.size()){
+          if(cards.get(0).rankingCard() > p.getPlayedCards().get(2).rankingCard()) // If AI wins, declare
+            return trucoLevel+random.nextInt(4-trucoLevel);
+          // if it's a tie, but AI won the first
+          else if(cards.get(0).rankingCard() > p.getPlayedCards().get(2).rankingCard() && p.getPlayedCards().get(0).rankingCard() == cards.get(0).rankingCard())
+            return trucoLevel+random.nextInt(4-trucoLevel);
+        // If the last card is a good one
+        } else if(playedCards.size() == 3 && playedCards.get(2).rankingCard()>9) {
+          // Go all in
+          if(trucoLevel == 3)
+            return 3;
+          return trucoLevel+random.nextInt(3-trucoLevel);
+        }
+        break;
+      case 2:
+      case 3: // Second round
+        // If AI has more than one good card, go all in
+        if(goodCardsCount()>1){
+          if(trucoLevel==3)
+            return 3;
+          return trucoLevel+random.nextInt(3-trucoLevel);
+        }
+        // If I tie the previous round
+        if(p.getPlayedCards().get(p.getPlayedCards().size()-1).rankingCard() == playedCards.get(playedCards.size()-1).rankingCard()){
+          if(goodCardsCount()>=1){
+            if(trucoLevel==3)
               return 3;
-            return estado+random.nextInt(3-estado);
+            return trucoLevel+random.nextInt(3-trucoLevel);
           }
         }
-      break;
-  }
-
-  return 0;
-  }
-
-    public int getEnvidoJugadorCantado() {
-        return envidoJugadorCantado;
+        break;
     }
 
-    public void setEnvidoJugadorCantado(int envidoJugadorCantado) {
-        this.envidoJugadorCantado = envidoJugadorCantado;
-    }
+    return 0;
+  }
 
-    // SOLO LLAMAR A ESTA FUNCION CUANDO EL JUGADOR Y LA AI TIRARON SOLAMENTE 2 CARTAS
-    private int calcularGanoSegunEnvidoCantado(ArrayList<Carta> cartasJugadasJugador) { // Calcula si gano segun lo que canto de envido (que puedo deducir la carta)
-      if((cartasJugadasJugador.size()!=2 && cartasJugadas.size()>=2) || envidoJugadorCantado==-1) // Solamente juega si es la ultima ronda y si se jugó el envido
-        return 0;
-      /*
-        Devuelve:
-        0 --> No sé
-        1 --> Le gano
-        2 --> Hay posibilidades que le gane
-        3 --> No le gano
-        */
-      ArrayList<String> palos = new ArrayList<>(); // Variable que se usa despues en el codigo para almacenar los palos tirados
-      for(int i=0;i<2;i++)
-        palos.add(cartasJugadasJugador.get(i).getPalo());
-      ArrayList<Integer> numeros = new ArrayList<>(); // Variable que se usa despues en el codigo para almacenar los numeros tirados
-      for(int i=0;i<2;i++)
-        numeros.add(cartasJugadasJugador.get(i).getNumero());
+  public int getPlayersDeclaredEnvido() {
+    return playersDeclaredEnvido;
+  }
 
-      Carta ultimaCarta;
-      if(cartasJugadas.size()==2) // Si tiro 2 cartas, toma la que tiene en la mano
-        ultimaCarta=mano.get(0);
-      else // Si tiro las tres cartas, toma la última que tiró
-        ultimaCarta=cartasJugadas.get(2);
+  public void setPlayersDeclaredEnvido(int playersDeclaredEnvido) {
+    this.playersDeclaredEnvido = playersDeclaredEnvido;
+  }
 
-
-      if(envidoJugadorCantado==0){
-        if(ultimaCarta.rankingCarta()<4) // Si la carta que tengo es menor de 10
-          return 3;
-        if(ultimaCarta.rankingCarta()>6) // Si la carta que tengo es mayor de 12
-          return 1;
-        return 2; // Si la carta que está entre 10 y 12, hay probabilidades que le gane
-      }
-
-
-      if(envidoJugadorCantado==1){
-        if(numeros.contains(1)) // Si ya tiró esa carta
-          return 0;
-        if(palos.contains("espada") || palos.contains("basto")){
-          if(ultimaCarta.rankingCarta()==13)
-            return 1;
-          return 3;
-        }
-
-        if(ultimaCarta.rankingCarta()>7)
-          return 1;
-        if(ultimaCarta.rankingCarta()==7)
-          return 2;
-        return 3;
-      }
-
-      if(envidoJugadorCantado<4) { // Si tiene un dos o un tres
-        if(numeros.contains(2) || numeros.contains(3)) // Si ya tiró esa carta
-          return 0;
-        if(ultimaCarta.rankingCarta()>9) // Si tengo mas de un 3
-          return 1;
-        if(ultimaCarta.rankingCarta()>7) // Si tengo un 2 o un 3
-          return 2;
-        return 3;
-      }
-
-      if(envidoJugadorCantado<7){ // Si tiene un 4,5 o 6
-        if(numeros.contains(envidoJugadorCantado)) // Si ya tiró esa carta
-          return 0;
-
-        if(ultimaCarta.rankingCarta() > new Carta(envidoJugadorCantado, "basto").rankingCarta()) // Si le gano al numero del envido (el palo "basto" que puse es aleatorio)
-          return 1;
-      }
-
-      if(envidoJugadorCantado==7) { // Si tiene un siete
-        if(numeros.contains(7)) // Si ya tiró esa carta
-          return 0;
-        if(palos.contains("basto") || palos.contains("copa")){
-          if(ultimaCarta.rankingCarta()>10) // Si tengo un 7 de espada en adelante
-            return 1;
-          return 3;
-        }
-        if(ultimaCarta.rankingCarta()>3) // Si tengo mas de un 7 de copas o de basto
-          return 1;
-        return 3;
-      }
-
-      if(envidoJugadorCantado==20){
-        if(numeros.get(0) >= 10 && numeros.get(0) <= 12) // Si en la primer tiro un rey...
-          if(numeros.get(1) >= 10 && numeros.get(1) <= 12) // Y en la Segunda tiro otro rey...
-            if(palos.get(0).equals(palos.get(1))) // Y si son del mismo palo
-              return 0; // Significa que ya los tiro, por lo tanto no sé
-        if(ultimaCarta.rankingCarta()<4) // Si la carta que tengo es menor de 10
-          return 3;
-        if(ultimaCarta.rankingCarta()>6) // Si la carta que tengo es mayor de 12
-          return 1;
-        return 2; // Si la carta que está entre 10 y 12, hay probabilidades que le gane
-      }
-
-      //       if(envidoJugadorCantado<23){
-      //           if(numeros.contains(1) && numeros.contains(2))
-      //                 if(palos.get(0).equals(palos.get(1))) // Y si son del mismo palo
-      //                     return 0;
-
-      //           // Si ya tiro el ancho de espada o de basto, le queda un dos del otro palo
-      //           if((palos.contains("espada") || palos.contains("basto")) && numeros.contains(1))
-      //               if(ultimaCarta.rankingCarta()>=8)
-      //                   return 1;
-
-      //           if(ultimaCarta.rankingCarta()<7) // Si la carta que tengo es menor de ancho falso
-      //               return 3;
-      //           if(ultimaCarta.rankingCarta()>7) // Si la carta que tengo es mayor de ancho falso
-      //               return 1;
-      //           return 2; // Si la carta es un ancho falso
-      //       }
-
-      // Para cuando es más de 20
-      if(envidoJugadorCantado>20){
-        ArrayList<Carta> posibilidades = new ArrayList<>();
-        //Busca las posibilidades de las cartas que puede tener
-        for (int i = 0; i < 2; i++) {
-          int numPosibili;
-          if(numeros.get(i)<10) // Si es del 1 al 7 lo cuenta normal
-            numPosibili = envidoJugadorCantado - numeros.get(i) - 20;
-          else // Si es un 10,11,12 lo cuenta como envido 0
-            numPosibili = envidoJugadorCantado - 20;
-          if(numPosibili==0){ //Si le queda un rey
-            posibilidades.add(new Carta(10, palos.get(i)));
-            posibilidades.add(new Carta(11, palos.get(i)));
-            posibilidades.add(new Carta(12, palos.get(i)));
-          }
-          if (numPosibili>0 && numPosibili<8) // Si el le queda un numero de carta
-            posibilidades.add(new Carta(numPosibili, palos.get(i)));
-        }
-
-        // Eliminar de las posibilidades de la carta que le queda al contrincante las cartas que yo pudiese tener o haber tirado
-        for (int i = 0; i < posibilidades.size(); i++) {
-          for (int x = 0; x < mano.size(); x++)
-            if(posibilidades.get(i).equals(mano.get(x)))
-              posibilidades.remove(i);
-          for (int x = 0; x < cartasJugadas.size(); x++)
-            if(posibilidades.get(i).equals(cartasJugadas.get(x)))
-              posibilidades.remove(i);
-          for (int x = 0; x < cartasJugadasJugador.size(); x++)
-            if(posibilidades.get(i).equals(cartasJugadasJugador.get(x)))
-              posibilidades.remove(i);
-        }
-
-        // si las dos cartas que tiró conforman el nivel de envido que tiene
-        // significa que las cartas que tiró fueron del envido, por lo tanto
-        // devuelve un 0, o sea, que no sabe
-          if(cartasJugadasJugador.size() == 2){
-            Persona temp = new Persona(null,false);
-            temp.setMano(cartasJugadasJugador);
-            if(temp.calcularEnvido() == envidoJugadorCantado)
-              return 0;
-          }
-
-        // Recorre las posibilidades en busqueda de 10,11,12 y convertir lo que encuentre en su carta mayor.
-        // Si hay 2 o más de 10s (10, 11, 12) en el array de posibilidades, convierte las 2 o 3 que haya en la carta mayor. Ejemplo si hay 10 y 12, se convierte en un 12, si hay un 10 y 11, se convierte en un 11. Esto para que cuando calcule las posibilidades, no tome en cuenta 3 cartas del mismo tipo ( o sea reyes). Me paso que tocó en las posibilidades: 10,11,12,3. Pero no le ganaba al 3 pero si a los reyes, así que apostó con todo. Con esta modificación hubiese tenido un 50% en vez de un 75%.
-        // Ej: 10,11,12 --> 12
-        //     11,12    -->12
-        //     11, 10   --> 11
-        for(int i=0; i<posibilidades.size()-1; i++){
-          if(posibilidades.get(i).getPalo().equals(posibilidades.get(i+1).getPalo())) // Si las cartas son del mismo palo
-            if(posibilidades.get(i).getNumero() >= 10 && posibilidades.get(i).getNumero() <= 12 ) // Si la carta 1 está entre 10,11,12
-              if(posibilidades.get(i+1).getNumero() >= 10 && posibilidades.get(i+1).getNumero() <= 12 ){ // Si la carta 2 está entre 10,11,12
-                if(posibilidades.get(i).rankingCarta() > posibilidades.get(i+1).rankingCarta())
-                  posibilidades.remove(i+1);
-                else
-                  posibilidades.remove(i);
-                i--;
-              }
-        }
-
-        //Busca a cuantas cartas les gano de las probabilidades
-        int cantCartasQueLeGano=0;
-        for (int i = 0; i < posibilidades.size(); i++)
-          if(ultimaCarta.rankingCarta() > posibilidades.get(i).rankingCarta())
-            cantCartasQueLeGano++;
-
-        // Hace un calculo para ver si conviene o no jugar
-        double probabiliGanar;
-        try {
-          probabiliGanar = ((double)cantCartasQueLeGano / (double)posibilidades.size()) * 100.0;
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error en la Inteligencia de la PC: " + e.getMessage());
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
-            return 0;
-        }
-        if (probabiliGanar>80)
-          return 1;
-        if (probabiliGanar>40)
-          return 2;
-        return 3;
-      }
+  // This function is only called when the player and the AI have already thrown 2
+  // cards each and the 'envido' was played.
+  // Calculates tries to predict the card left of the player with the 'envido' declared
+  private int predictCardWithEnvido(ArrayList<Carta> playerPlayedCards) {
+    if((playerPlayedCards.size()!=2 && playedCards.size()>=2) || playersDeclaredEnvido==-1)
       return 0;
+    /*
+      Returns:
+      0 --> Unknown
+      1 --> AI wins
+      2 --> There's a change to win
+      3 --> Player wins
+    */
+    ArrayList<String> thrownSticks = new ArrayList<>(); // Variable to store thrown sticks
+    for(int i=0;i<2;i++)
+      thrownSticks.add(playerPlayedCards.get(i).getStick());
+    ArrayList<Integer> thrownNumbers = new ArrayList<>(); // Variable to store thrown numbers
+    for(int i=0;i<2;i++)
+      thrownNumbers.add(playerPlayedCards.get(i).getNumber());
+
+    Carta aiLastCard;
+    if(playedCards.size()==2)
+      aiLastCard=cards.get(0);
+    else
+      aiLastCard=playedCards.get(2);
+
+    if(playersDeclaredEnvido==0){ // two jacks, horses or kings
+      if(aiLastCard.rankingCard()<4)
+        return 3;
+      if(aiLastCard.rankingCard()>6)
+        return 1;
+      return 2;
+    }
+
+
+    if(playersDeclaredEnvido==1){
+      if(thrownNumbers.contains(1))
+        return 0;
+      if(thrownSticks.contains("espada") || thrownSticks.contains("basto")){
+        if(aiLastCard.rankingCard()==13)
+          return 1;
+        return 3;
+      }
+
+      if(aiLastCard.rankingCard()>7)
+        return 1;
+      if(aiLastCard.rankingCard()==7)
+        return 2;
+      return 3;
+    }
+
+    if(playersDeclaredEnvido<=3) {
+      if(thrownNumbers.contains(2) || thrownNumbers.contains(3))
+        return 0;
+      if(aiLastCard.rankingCard()>9)
+        return 1;
+      if(aiLastCard.rankingCard()>7)
+        return 2;
+      return 3;
+    }
+
+    if(playersDeclaredEnvido<=6){
+      if(thrownNumbers.contains(playersDeclaredEnvido))
+        return 0;
+
+      // If AI wins to the number (the stick 'basto' is random)
+      if(aiLastCard.rankingCard() > new Carta(playersDeclaredEnvido, "basto").rankingCard())
+        return 1;
+    }
+
+    if(playersDeclaredEnvido==7) {
+      if(thrownNumbers.contains(7))
+        return 0;
+      if(thrownSticks.contains("basto") || thrownSticks.contains("copa")){
+        if(aiLastCard.rankingCard()>10)
+          return 1;
+        return 3;
+      }
+      if(aiLastCard.rankingCard()>3)
+        return 1;
+      return 3;
+    }
+
+    if(playersDeclaredEnvido==20){
+      // First one is a jack, horse or king
+      if(thrownNumbers.get(0) >= 10 && thrownNumbers.get(0) <= 12)
+        // The same with the second round
+        if(thrownNumbers.get(1) >= 10 && thrownNumbers.get(1) <= 12)
+          // And they're both from the same stick
+          if(thrownSticks.get(0).equals(thrownSticks.get(1)))
+            return 0;
+      if(aiLastCard.rankingCard()<4)
+        return 3;
+      if(aiLastCard.rankingCard()>6)
+        return 1;
+      return 2;
+    }
+
+    if(playersDeclaredEnvido>20){
+      ArrayList<Carta> possibilities = new ArrayList<>();
+      // Looks for the probability of cards that the player can have
+      for (int i = 0; i < 2; i++) {
+        int numberPosibility;
+
+        // If it's from 1 to 7, counts as normal
+        if(thrownNumbers.get(i)<10)
+          numberPosibility = playersDeclaredEnvido - thrownNumbers.get(i) - 20;
+        // If it a 10, 11 or 12, counts as 0 (envido)
+        else
+          numberPosibility = playersDeclaredEnvido - 20;
+        // If they have a jack, horse or king left
+        if(numberPosibility==0){
+          possibilities.add(new Carta(10, thrownSticks.get(i)));
+          possibilities.add(new Carta(11, thrownSticks.get(i)));
+          possibilities.add(new Carta(12, thrownSticks.get(i)));
+        }
+        // If it's from 1 to 7
+        if (numberPosibility>0 && numberPosibility<8) // Si el le queda un numero de carta
+          possibilities.add(new Carta(numberPosibility, thrownSticks.get(i)));
+      }
+
+      // Deletes from the remaining card possibilities, all the cards I have or had
+      for (int i = 0; i < possibilities.size(); i++) {
+        for (int x = 0; x < cards.size(); x++)
+          if(possibilities.get(i).equals(cards.get(x)))
+            possibilities.remove(i);
+        for (int x = 0; x < playedCards.size(); x++)
+          if(possibilities.get(i).equals(playedCards.get(x)))
+            possibilities.remove(i);
+        for (int x = 0; x < playerPlayedCards.size(); x++)
+          if(possibilities.get(i).equals(playerPlayedCards.get(x)))
+            possibilities.remove(i);
+      }
+
+      // If the two cards that the player had already thrown are the exact number of
+      // envido that that person has, that means that they had already played the
+      // cards that were in the 'envido', so the remaining card is unknown
+      if(playerPlayedCards.size() == 2){
+        Persona temp = new Persona(null,false);
+        temp.setCards(playerPlayedCards);
+        if(temp.calculateEnvido() == playersDeclaredEnvido)
+          return 0;
+      }
+
+      // Searches for 10, 11 or 12 and it keeps the bigger one
+      // Ex: 10,11,12 --> 12
+      //     11,12    --> 12
+      //     11, 10   --> 11
+
+      // If there is 2 or more '10, 11 or 12' in the array of possibilities, keeps the
+      // bigger one and deletes the other ones. This is to make the algorithm not take
+      // in count those multiple cards, because it can make the probability not
+      // precise. Real case escenario: AI determined that the probabilities where
+      // 10,11,12 and 3, but AI couldn't win the 3 although the 10, 11 and 12 it could.
+      // So the probability was a 75%, but with this function, is 50%
+      for(int i=0; i<possibilities.size()-1; i++){
+        Carta c1 = possibilities.get(i);
+        Carta c2 = possibilities.get(i+1);
+        if(c1.getStick().equals(c2.getStick()))
+          if(c1.getNumber() >= 10 && c1.getNumber() <= 12 )
+            if(c2.getNumber() >= 10 && c2.getNumber() <= 12 ){
+              if(c1.rankingCard() > c2.rankingCard())
+                possibilities.remove(i+1);
+              else
+                possibilities.remove(i);
+              i--;
+            }
+      }
+
+      // Searches for how many cards AI can beat
+      int cardAiCanWinCount=0;
+      for (int i = 0; i < possibilities.size(); i++)
+        if(aiLastCard.rankingCard() > possibilities.get(i).rankingCard())
+          cardAiCanWinCount++;
+
+      // Calculates the possibility and returns the state
+      double possibility;
+      try {
+        possibility = ((double)cardAiCanWinCount / (double)possibilities.size()) * 100.0;
+      } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la Inteligencia de la PC: " + e.getMessage());
+        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+        effects.play();
+        return 0;
+      }
+      if (possibility>80)
+        return 1;
+      if (possibility>40)
+        return 2;
+      return 3;
+    }
+    return 0;
   }
 }

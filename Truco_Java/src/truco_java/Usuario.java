@@ -1,4 +1,5 @@
 package truco_java;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -14,110 +15,110 @@ import javax.crypto.NoSuchPaddingException;
 import javax.swing.JOptionPane;
 
 public class Usuario {
-    private static final Music efectos = new Music();
-    private String nombre, contraseña=null, encriptado;
-    private int puntajeJugador=0, puntajeAI=0;
+    private static final Music effects = new Music();
+    private String name, password=null, encrypt;
+    private int playerPoints=0, AiPoints=0;
 
-    public Usuario(String nombre, String encriptado) {
-        this.nombre = nombre;
-        this.encriptado = encriptado;
+    public Usuario(String name, String encrypt) {
+        this.name = name;
+        this.encrypt = encrypt;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public int getPuntajeJugador() {
-        return puntajeJugador;
+    public int getPlayerPoints() {
+        return playerPoints;
     }
 
-    public int getPuntajeAI() {
-        return puntajeAI;
+    public int getAiPoints() {
+        return AiPoints;
     }
 
-    public String getEncriptado() {
-        return encriptado;
+    public String getEncrypt() {
+        return encrypt;
     }
 
-    public void setPuntajeJugador(int puntajeJugador) {
-        this.puntajeJugador = puntajeJugador;
+    public void setPlayerPoints(int playerPoints) {
+        this.playerPoints = playerPoints;
     }
 
-    public void setPuntajeAI(int puntajeAI) {
-        this.puntajeAI = puntajeAI;
+    public void setAiPoints(int AiPoints) {
+        this.AiPoints = AiPoints;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void encriptaPuntaje(){
-        puntajeAI = Truco_Java.ganadasAI;
-        puntajeJugador = Truco_Java.ganadasJugador;
+    public void encryptPoints(){
+        AiPoints = Truco_Java.gamesWonAi;
+        playerPoints = Truco_Java.gamesWonPlayer;
         try {
-            String datosOriginales = puntajeJugador + ";sig;" + puntajeAI;
+            String data = playerPoints + ";sig;" + AiPoints;
 
-            encriptado = new Encriptacion().encriptar(datosOriginales, contraseña);
+            encrypt = new Encriptacion().encrypt(data, password);
 
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
                 JOptionPane.showMessageDialog(null, "No se pudo encriptar los puntajes: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
         }
     }
 
-    public void guardarCambios(boolean eliminar, int intentos){
+    public void saveChanges(boolean delete, int tries){
         File doc = new File("puntajes.txt");
         Scanner obj;
-        String aGuardar="";
+        String toSave="";
 
         try {
-            boolean seGuardo=false;
+            boolean saved=false;
             obj = new Scanner(doc);
             obj.useDelimiter(";sig;");
 
             while (obj.hasNext()){
-                String nombreTemp = obj.next();
-                String encriptadoTemp = obj.next();
-                if(nombreTemp.equals(nombre)){
-                    if(!eliminar)
-                        aGuardar+=nombre+";sig;"+encriptado;
-                    seGuardo=true;
-                    if(eliminar) aGuardar=aGuardar.substring(0, aGuardar.length() - 5);
+                String tempName = obj.next();
+                String tempEncrypt = obj.next();
+                if(tempName.equals(name)){
+                    if(!delete)
+                        toSave+=name+";sig;"+encrypt;
+                    saved=true;
+                    if(delete) toSave=toSave.substring(0, toSave.length() - 5);
                 } else {
-                    aGuardar+=nombreTemp+";sig;"+encriptadoTemp;
+                    toSave+=tempName+";sig;"+tempEncrypt;
                 }
-                if(obj.hasNext()) aGuardar+=";sig;";
+                if(obj.hasNext()) toSave+=";sig;";
             }
 
-            if(!seGuardo && !eliminar){ // Si no se guardo, lo guarda
-                if(doc.length()!=0) aGuardar+=";sig;";
-                aGuardar+=nombre+";sig;"+encriptado;
+            if(!saved && !delete){
+                if(doc.length()!=0) toSave+=";sig;";
+                toSave+=name+";sig;"+encrypt;
             }
             obj.close();
         } catch (FileNotFoundException | NoSuchElementException ex) {
-            aGuardar=nombre+";sig;"+encriptado;
+            toSave=name+";sig;"+encrypt;
         }
 
         try {
             FileWriter myWriter = new FileWriter("puntajes.txt");
-            myWriter.write(aGuardar);
+            myWriter.write(toSave);
             myWriter.close();
         } catch (IOException ex) {
-            if(intentos<30){
+            if(tries<30){
                 try { Thread.sleep(500); } catch (Exception e) {}
-                guardarCambios(eliminar, intentos+1);
+                saveChanges(delete, tries+1);
                 return;
             }
             JOptionPane.showMessageDialog(null, "No se pudo escribir los usuarios: " + ex.getMessage());
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
         }
 
     }
 
-    public static void cargarUsuarios(){
-        Truco_Java.listaUsuarios.clear();
+    public static void loadUsers(){
+        Truco_Java.userList.clear();
         File doc = new File("puntajes.txt");
         Scanner obj;
 
@@ -126,42 +127,41 @@ public class Usuario {
             obj.useDelimiter(";sig;");
 
             while (obj.hasNext())
-                Truco_Java.listaUsuarios.add(new Usuario(obj.next(),obj.next()));
+                Truco_Java.userList.add(new Usuario(obj.next(),obj.next()));
 
             obj.close();
         } catch (FileNotFoundException | NoSuchElementException ex) {
         }
     }
 
-    public boolean iniciarSesion(String contraseña){
-        this.contraseña=contraseña;
-        Scanner lector;
+    public boolean logIn(String password){
+        this.password=password;
+        Scanner scanner;
         try{
-             lector = new Scanner(new Encriptacion().desencriptar(encriptado, contraseña));
+             scanner = new Scanner(new Encriptacion().desencriptar(encrypt, password));
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
             JOptionPane.showMessageDialog(null, "Contraseña incorrecta.");
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
             return false;
         }
-        lector.useDelimiter(";sig;");
+        scanner.useDelimiter(";sig;");
 
         try{
-            puntajeJugador=Integer.parseInt(lector.next());
-            puntajeAI=Integer.parseInt(lector.next());
-            Truco_Java.ganadasAI=puntajeAI;
-            Truco_Java.ganadasJugador=puntajeJugador;
-            Truco_Java.puntajeJugador.setText(Integer.toString(Truco_Java.ganadasJugador));
-            Truco_Java.puntajeAI.setText(Integer.toString(Truco_Java.ganadasAI));
-            lector.close();
+            playerPoints=Integer.parseInt(scanner.next());
+            AiPoints=Integer.parseInt(scanner.next());
+            Truco_Java.gamesWonAi=AiPoints;
+            Truco_Java.gamesWonPlayer=playerPoints;
+            Truco_Java.playerPoints.setText(Integer.toString(Truco_Java.gamesWonPlayer));
+            Truco_Java.AiPoints.setText(Integer.toString(Truco_Java.gamesWonAi));
+            scanner.close();
         } catch(java.lang.NumberFormatException err){
             JOptionPane.showMessageDialog(null, "Contraseña incorrecta. No se pudo descrifar correctamente");
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
             return false;
         }
 
         return true;
     }
-
 }

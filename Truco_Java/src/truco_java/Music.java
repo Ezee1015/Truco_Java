@@ -13,11 +13,11 @@ import javax.swing.JOptionPane;
 public class Music {
     private Clip clip;
     private AudioInputStream sound;
-    private Timer reproductorMPV;
-    private boolean sonidoARM;
+    private Timer mpvPlayer;
+    private boolean android; // If it's in Android
 
     public void setFile(String soundFileName) {
-        if(!Truco_Java.musica.isSelected())
+        if(!Truco_Java.musicCheckBox.isSelected())
             return;
 
         try {
@@ -26,18 +26,19 @@ public class Music {
             clip = AudioSystem.getClip();
             clip.open(sound);
             clip.loop(50);
-            sonidoARM = false;
+            android = false;
         } catch (IOException | LineUnavailableException | UnsupportedAudioFileException l) {
             JOptionPane.showMessageDialog(null, "Error con el música: " + l.getMessage());
-        } catch (UnsatisfiedLinkError | IllegalArgumentException ex) { // Si se tiene mpv, reproducir por eso
-            sonidoARM = true;
-            timerLoop(soundFileName, 1);
+        } catch (UnsatisfiedLinkError | IllegalArgumentException ex) {
+            android = true;
+            playWithMpv(soundFileName, 1);
         }
     }
 
-    // Lo mismo que el anterior pero modifica los parametros. Esto solo hace que se reproducta una vez
+    // This plays only one time
+    // The same that the before function but this has different parameters.
     public void setFile(String soundFileName, int x) {
-        if(!Truco_Java.musica.isSelected())
+        if(!Truco_Java.musicCheckBox.isSelected())
             return;
 
         try {
@@ -45,28 +46,28 @@ public class Music {
             sound = AudioSystem.getAudioInputStream(file);
             clip = AudioSystem.getClip();
             clip.open(sound);
-            sonidoARM = false;
+            android = false;
         } catch (IOException | LineUnavailableException | UnsupportedAudioFileException l) {
             JOptionPane.showMessageDialog(null, "Error con el sonido: " + l.getMessage());
-        } catch (IllegalArgumentException ex){ // Si se tiene mpv, reproducir por eso
-            sonidoARM = true;
-            timerLoop(soundFileName, 0);
+        } catch (IllegalArgumentException ex){
+            android = true;
+            playWithMpv(soundFileName, 0);
         }
     }
 
     public void play() {
-        if(!Truco_Java.musica.isSelected())
+        if(!Truco_Java.musicCheckBox.isSelected())
             return;
 
-        if(sonidoARM)
+        if(android)
             return;
 
         clip.start();
     }
 
     public void stop() throws IOException {
-        if(sonidoARM) {
-            reproductorMPV.cancel();
+        if(android) {
+            mpvPlayer.cancel();
             return;
         }
         sound.close();
@@ -74,43 +75,40 @@ public class Music {
         clip.stop();
     }
 
-    private void timerLoop (String soundFileName, int repetir){
-        reproductorMPV = new java.util.Timer();
+    private void playWithMpv (String soundFileName, int repeat){
+        mpvPlayer = new java.util.Timer();
 
-        reproductorMPV.schedule(
+        mpvPlayer.schedule(
             new java.util.TimerTask() {
                 @Override
                 public void run() {
-                        //test command in linux
                         runCommand("mpv","--audio-display=no", soundFileName);
-                        // Runtime.getRuntime().exec("mpv --audio-display=no '" + soundFileName + "'");
-                    if(killTimer)
+                    if(killMpv)
                         return;
-                    if(repetir==1)
-                        timerLoop(soundFileName, repetir);
+                    if(repeat==1)
+                        playWithMpv(soundFileName, repeat);
                 }
             },
             1
         );
-}
-boolean killTimer=false;
-public void runCommand(String... command) {
-    ProcessBuilder processBuilder = new ProcessBuilder().command(command);
-
-    try {
-        Process process = processBuilder.start();
-
-        //wait for the process to complete
-        // process.waitFor();
-        while(process.isAlive()){
-            if(!Truco_Java.musica.isSelected()){
-                killTimer=true;
-                process.destroy();
-            }
-        }
-    } catch (IOException e) {
-        e.printStackTrace();
     }
-}
+
+    private boolean killMpv=false;
+    public void runCommand(String... command) {
+        ProcessBuilder processBuilder = new ProcessBuilder().command(command);
+
+        try {
+            Process process = processBuilder.start();
+
+            while(process.isAlive()){
+                if(!Truco_Java.musicCheckBox.isSelected()){
+                    killMpv=true;
+                    process.destroy();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

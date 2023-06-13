@@ -23,273 +23,262 @@ import javax.swing.text.StyledDocument;
 
 public class InterfazJuego extends JFrame {
 
-    private ArrayList<Carta> mazo = new ArrayList<>();
-    private JLabel fondo = new JLabel();
-    private Truco_Java menu;
-    private JLabel AIC1, AIC2, AIC3;
-    private JLabel AICT1, AICT2, AICT3;
-    private JButton PC1, PC2, PC3;
-    private JLabel PCT1, PCT2, PCT3;
-    private JButton truco, envido, irAlMazo, envidoEsp, envidoEnvido, realEnvido, faltaEnvido;
+    // Swing
+    private JLabel background = new JLabel();
+    private JLabel cardAi1, cardAi2, cardAi3;
+    private JLabel cardThrownAi1, cardThrownAi2, cardThrownAi3;
+    private JButton cardPlayer1, cardPlayer2, cardPlayer3;
+    private JLabel cardThrownPlayer1, cardThrownPlayer2, cardThrownPlayer3;
+    private JButton truco, envidoMenu, irAlMazo, envido, envidoEnvido, realEnvido, faltaEnvido;
+    private JButton noQuieroEnvido, quieroEnvido, noQuieroTruco, quieroTruco;
+    private JTextPane status;
+    private JLabel statusBackground;
+    private JLabel pointsAi = new JLabel(), pointsPlayer = new JLabel();
+    private JButton movingCard = new JButton();
+
+    // Players
     private JugadorAI ai = new JugadorAI(null, false);
-    private Persona jugador = new Persona(null, true);
-    private int nivelTruco = 0;
-    private ArrayList<Integer> envidosCantados;
-    private boolean envidoFinalizado = false;
-    private JButton noQuieroEnv, quieroEnv, noQuieroTruco, quieroTruco;
-    private JTextPane estado;
-    private int habilitadoARetrucar = 0; // 1--> Jugador; 2--> AI
-    private JLabel fondoEstado;
-    private JLabel puntajeAI = new JLabel(), puntajeJugador = new JLabel();
-    private final int numeroPersonaje = MenuJugar.numeroJugador+1; // Representa el personaje que fue generado;
-    private String nombrePersonaje ="la PC";
-    private final Music cantar = new Music();
-    private static final Music efectos = new Music();
-    private JButton movCarta = new JButton();
-    private boolean PC1Enabled=false, PC2Enabled=false, PC3Enabled=false;
-    private boolean termino = false;
+    private Persona player = new Persona(null, true);
+
+    // Information of the game
+    private Truco_Java menu;
+    private ArrayList<Carta> deck = new ArrayList<>();
+    private boolean cardPlayer1Enabled=false, cardPlayer2Enabled=false, cardPlayer3Enabled=false;
+    private boolean finishedGame = false;
+    private final int aiNumber = MenuJugar.playerNumber+1; // Represents the character that was selected
+    private String aiName ="the PC";
+    private final Music aiVoice = new Music();
+    private static final Music effects = new Music();
+    private int enabledToRetrucar = 0; // 1--> Player; 2--> AI
+    private int trucoLevel = 0;
+    private ArrayList<Integer> envidosDeclared;
+    private boolean finishedEnvido = false;
 
     public InterfazJuego(Truco_Java menu) throws IOException {
         this.menu = menu;
-        cargarMazo();
+        loadDeck();
 
         setLayout(null);
         setDefaultCloseOperation(3);
-        switch(numeroPersonaje){
-            case 1: nombrePersonaje="El Carpincho"; break;
-            case 2: nombrePersonaje="La Roca"; break;
-            case 3: nombrePersonaje="Messi"; break;
-            case 4: nombrePersonaje="El Diego"; break;
-            case 5: nombrePersonaje="Boris"; break;
-            case 6: nombrePersonaje="Guido"; break;
+        switch(aiNumber){
+            case 1: aiName="El Carpincho"; break;
+            case 2: aiName="La Roca"; break;
+            case 3: aiName="Messi"; break;
+            case 4: aiName="El Diego"; break;
+            case 5: aiName="Boris"; break;
+            case 6: aiName="Guido"; break;
         }
 
-        // Inicializa la carta de movimiento
-        movCarta.setOpaque(false);
-        movCarta.setContentAreaFilled(false);
-        movCarta.setBorderPainted(false);
+        // Initializes the moving card
+        movingCard.setOpaque(false);
+        movingCard.setContentAreaFilled(false);
+        movingCard.setBorderPainted(false);
 
-        // Fondo
-        setFondo(0);
-        fondo.setBounds(0, 0, 500, 800);
-        fondo.setVisible(true);
-        add(fondo);
+        setBackground(0);
+        background.setBounds(0, 0, 500, 800);
+        background.setVisible(true);
+        add(background);
 
-        // AI Carta 1
-        AIC1 = new JLabel();
-        AIC1.setBounds(100, 70, 75, 100);
-        AIC1.setVisible(true);
-        fondo.add(AIC1);
+        cardAi1 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+        cardAi1.setBounds(100, 70, 75, 100);
+        cardAi1.setVisible(false);
+        background.add(cardAi1);
 
-        // AI Carta 2
-        AIC2 = new JLabel();
-        AIC2.setBounds(200, 70, 75, 100);
-        AIC2.setVisible(true);
-        fondo.add(AIC2);
+        cardAi2 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+        cardAi2.setBounds(200, 70, 75, 100);
+        cardAi2.setVisible(false);
+        background.add(cardAi2);
 
-        // AI Carta 3
-        AIC3 = new JLabel();
-        AIC3.setBounds(300, 70, 75, 100);
-        AIC3.setVisible(true);
-        fondo.add(AIC3);
+        cardAi3 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+        cardAi3.setBounds(300, 70, 75, 100);
+        cardAi3.setVisible(false);
+        background.add(cardAi3);
 
-        // Persona Carta 1
-        PC1 = new JButton();
-        PC1.setBounds(10, 400, 155, 200);
-        PC1.setVisible(true);
-        PC1Enabled=false;
-        PC1.setOpaque(false);
-        PC1.setContentAreaFilled(false);
-        PC1.setBorderPainted(false);
-        fondo.add(PC1);
-        PC1.addActionListener((ActionEvent e) -> {
-            if(!PC1Enabled)
+        cardPlayer1 = new JButton();
+        cardPlayer1.setBounds(10, 400, 155, 200);
+        cardPlayer1.setVisible(true);
+        cardPlayer1Enabled=false;
+        cardPlayer1.setOpaque(false);
+        cardPlayer1.setContentAreaFilled(false);
+        cardPlayer1.setBorderPainted(false);
+        background.add(cardPlayer1);
+        cardPlayer1.addActionListener((ActionEvent e) -> {
+            if(!cardPlayer1Enabled)
                 return;
-            efectos.setFile("src/truco_java/musica/tirarCarta.wav", 1);
-            efectos.play();
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
+            effects.setFile("src/truco_java/musica/tirarCarta.wav", 1);
+            effects.play();
+            envidoMenu.setEnabled(false);
+            envido.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
             try {
-                tirarCarta(0);
+                throwCard(0);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de tirar la primer carta: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
-            setFondo(0);
+            setBackground(0);
         });
 
-        // Persona Carta 2
-        PC2 = new JButton();
-        PC2.setBounds(170, 400, 155, 200);
-        PC2.setVisible(true);
-        PC2Enabled=false;
-        PC2.setBorderPainted(false);
-        PC2.setOpaque(false);
-        PC2.setContentAreaFilled(false);
-        PC2.setBorderPainted(false);
-        fondo.add(PC2);
-        PC2.addActionListener((ActionEvent e) -> {
-            if(!PC2Enabled)
+        cardPlayer2 = new JButton();
+        cardPlayer2.setBounds(170, 400, 155, 200);
+        cardPlayer2.setVisible(true);
+        cardPlayer2Enabled=false;
+        cardPlayer2.setBorderPainted(false);
+        cardPlayer2.setOpaque(false);
+        cardPlayer2.setContentAreaFilled(false);
+        cardPlayer2.setBorderPainted(false);
+        background.add(cardPlayer2);
+        cardPlayer2.addActionListener((ActionEvent e) -> {
+            if(!cardPlayer2Enabled)
                 return;
-            efectos.setFile("src/truco_java/musica/tirarCarta.wav", 1);
-            efectos.play();
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
+            effects.setFile("src/truco_java/musica/tirarCarta.wav", 1);
+            effects.play();
+            envidoMenu.setEnabled(false);
+            envido.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
             try {
-                tirarCarta(1);
+                throwCard(1);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de tirar la segunda carta: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
-            setFondo(0);
+            setBackground(0);
         });
 
-        // Persona Carta 3
-        PC3 = new JButton();
-        PC3.setBounds(330, 400, 155, 200);
-        PC3.setVisible(true);
-        PC3Enabled=false;
-        PC3.setBorderPainted(false);
-        PC3.setOpaque(false);
-        PC3.setContentAreaFilled(false);
-        PC3.setBorderPainted(false);
-        fondo.add(PC3);
-        PC3.addActionListener((ActionEvent e) -> {
-            if(!PC3Enabled)
+        cardPlayer3 = new JButton();
+        cardPlayer3.setBounds(330, 400, 155, 200);
+        cardPlayer3.setVisible(true);
+        cardPlayer3Enabled=false;
+        cardPlayer3.setBorderPainted(false);
+        cardPlayer3.setOpaque(false);
+        cardPlayer3.setContentAreaFilled(false);
+        cardPlayer3.setBorderPainted(false);
+        background.add(cardPlayer3);
+        cardPlayer3.addActionListener((ActionEvent e) -> {
+            if(!cardPlayer3Enabled)
                 return;
-            efectos.setFile("src/truco_java/musica/tirarCarta.wav", 1);
-            efectos.play();
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
+            effects.setFile("src/truco_java/musica/tirarCarta.wav", 1);
+            effects.play();
+            envidoMenu.setEnabled(false);
+            envido.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
             try {
-                tirarCarta(2);
+                throwCard(2);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de tirar la tercer carta: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
-            setFondo(0);
+            setBackground(0);
         });
 
-        JButton repartir = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cartasMazo.png")).getScaledInstance(80, 80, Image.SCALE_SMOOTH)));
-        repartir.setBounds(365, 280, 80, 80);
-        repartir.setBorderPainted(false);
-        repartir.setOpaque(false);
-        repartir.setContentAreaFilled(false);
-        repartir.setBorderPainted(false);
-        repartir.setVisible(true);
-        fondo.add(repartir);
-        repartir.addActionListener((ActionEvent e) -> {
-            repartir.setEnabled(false);
+        JButton dealCards = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cartasMazo.png")).getScaledInstance(80, 80, Image.SCALE_SMOOTH)));
+        dealCards.setBounds(365, 280, 80, 80);
+        dealCards.setBorderPainted(false);
+        dealCards.setOpaque(false);
+        dealCards.setContentAreaFilled(false);
+        dealCards.setBorderPainted(false);
+        dealCards.setVisible(true);
+        background.add(dealCards);
+        dealCards.addActionListener((ActionEvent e) -> {
+            dealCards.setEnabled(false);
             try {
-                otraPartida();
+                anotherRound();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de comenzar otra partida: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
             try {
-                habilitaTurno();
+                updatesTurn();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
         });
 
-        // AI Carta Tirada 1
-        AICT1 = new JLabel();
-        AICT1.setBounds(130, 210, 70, 80);
-        AICT1.setVisible(true);
-        fondo.add(AICT1);
+        cardThrownAi1 = new JLabel();
+        cardThrownAi1.setBounds(130, 210, 70, 80);
+        cardThrownAi1.setVisible(true);
+        background.add(cardThrownAi1);
 
-        // AI Carta Tirada 2
-        AICT2 = new JLabel();
-        AICT2.setBounds(210, 210, 70, 80);
-        AICT2.setVisible(true);
-        fondo.add(AICT2);
+        cardThrownAi2 = new JLabel();
+        cardThrownAi2.setBounds(210, 210, 70, 80);
+        cardThrownAi2.setVisible(true);
+        background.add(cardThrownAi2);
 
-        // AI Carta Tirada 3
-        AICT3 = new JLabel();
-        AICT3.setBounds(290, 210, 70, 80);
-        AICT3.setVisible(true);
-        fondo.add(AICT3);
+        cardThrownAi3 = new JLabel();
+        cardThrownAi3.setBounds(290, 210, 70, 80);
+        cardThrownAi3.setVisible(true);
+        background.add(cardThrownAi3);
 
-        // Persona Carta Tirada 1
-        PCT1 = new JLabel();
-        PCT1.setBounds(130, 310, 70, 80);
-        PCT1.setVisible(true);
-        fondo.add(PCT1);
+        cardThrownPlayer1 = new JLabel();
+        cardThrownPlayer1.setBounds(130, 310, 70, 80);
+        cardThrownPlayer1.setVisible(true);
+        background.add(cardThrownPlayer1);
 
-        // Persona Carta Tirada 2
-        PCT2 = new JLabel();
-        PCT2.setBounds(210, 310, 70, 80);
-        PCT2.setVisible(true);
-        fondo.add(PCT2);
+        cardThrownPlayer2 = new JLabel();
+        cardThrownPlayer2.setBounds(210, 310, 70, 80);
+        cardThrownPlayer2.setVisible(true);
+        background.add(cardThrownPlayer2);
 
-        // Persona Carta Tirada 3
-        PCT3 = new JLabel();
-        PCT3.setBounds(290, 310, 70, 80);
-        PCT3.setVisible(true);
-        fondo.add(PCT3);
+        cardThrownPlayer3 = new JLabel();
+        cardThrownPlayer3.setBounds(290, 310, 70, 80);
+        cardThrownPlayer3.setVisible(true);
+        background.add(cardThrownPlayer3);
 
-        // Fondo de la respuesta de la AI
-        fondoEstado = new JLabel(new ImageIcon("src/truco_java/fondos/burbuja.png"));
-        fondoEstado.setBounds(50,170,400,45);
-        fondoEstado.setOpaque(false);
-        fondoEstado.setVisible(false);
-        fondo.add(fondoEstado);
+        statusBackground = new JLabel(new ImageIcon("src/truco_java/fondos/burbuja.png"));
+        statusBackground.setBounds(50,170,400,45);
+        statusBackground.setOpaque(false);
+        statusBackground.setVisible(false);
+        background.add(statusBackground);
 
-        estado = new JTextPane();
-        estado.setBounds(0,0,400,45);
-        estado.setFont(new Font("Serif", Font.ITALIC, 30));
-        estado.setEditable(false);
-        estado.setOpaque(false);
-        estado.setVisible(true);
-        fondoEstado.add(estado);
-        //Centra el texto
-        StyledDocument doc = estado.getStyledDocument();
+        status = new JTextPane();
+        status.setBounds(0,0,400,45);
+        status.setFont(new Font("Serif", Font.ITALIC, 30));
+        status.setEditable(false);
+        status.setOpaque(false);
+        status.setVisible(true);
+        statusBackground.add(status);
+        // Centers the text
+        StyledDocument doc = status.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
-        // Boton envido general
-        envido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/envidoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
-        envido.setBounds(170, 660, 155, 60);
-        envido.setVisible(true);
-        envido.setEnabled(false);
-        envido.setOpaque(false);
-        envido.setContentAreaFilled(false);
-        envido.setBorderPainted(false);
-        fondo.add(envido);
-        envido.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            if (envidoEsp.isVisible() == true) {
-                envidoEsp.setVisible(false);
+        envidoMenu = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/envidoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
+        envidoMenu.setBounds(170, 660, 155, 60);
+        envidoMenu.setVisible(true);
+        envidoMenu.setEnabled(false);
+        envidoMenu.setOpaque(false);
+        envidoMenu.setContentAreaFilled(false);
+        envidoMenu.setBorderPainted(false);
+        background.add(envidoMenu);
+        envidoMenu.addActionListener((ActionEvent e) -> {
+            effects.setFile("src/truco_java/musica/boton.wav", 1);
+            effects.play();
+            if (envido.isVisible() == true) {
+                envido.setVisible(false);
                 envidoEnvido.setVisible(false);
                 realEnvido.setVisible(false);
                 faltaEnvido.setVisible(false);
             } else {
-                envidoEsp.setVisible(true);
+                envido.setVisible(true);
                 envidoEnvido.setVisible(false);
                 realEnvido.setVisible(true);
                 faltaEnvido.setVisible(true);
             }
         });
 
-        // Boton Ir al mazo
         irAlMazo = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/irAlMazoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
         irAlMazo.setBounds(330, 660, 155, 60);
         irAlMazo.setVisible(true);
@@ -297,241 +286,233 @@ public class InterfazJuego extends JFrame {
         irAlMazo.setOpaque(false);
         irAlMazo.setContentAreaFilled(false);
         irAlMazo.setBorderPainted(false);
-        fondo.add(irAlMazo);
+        background.add(irAlMazo);
         irAlMazo.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
+            effects.setFile("src/truco_java/musica/boton.wav", 1);
+            effects.play();
             JOptionPane.showMessageDialog(null, "Te has ido al mazo. Repartiendo...");
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
-            int puntos=0;
-            if(!envidoFinalizado && ai.getCartasJugadas().isEmpty())
-                puntos++;
-            ai.setPuntaje(ai.getPuntaje()+puntos+calcularTrucoGanado(), this);
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+            int points=0;
+            if(!finishedEnvido && ai.getPlayedCards().isEmpty())
+                points++;
+            ai.setPoints(ai.getPoints()+points+countPointsWonTruco(), this);
             try {
-                dibujarPuntaje();
+                updatePoints();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de dibujar el puntaje: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
             try {
-                otraPartida();
+                anotherRound();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de comenzar otra partida: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
             try {
-            habilitaTurno();
+                updatesTurn();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
         });
 
-        // Boton envido especifico
-        envidoEsp = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/envidoGrandeBoton.png")).getScaledInstance(240, 50, Image.SCALE_SMOOTH)));
-        envidoEsp.setBounds(10, 595, 240, 50);
-        envidoEsp.setVisible(false);
-        envidoEsp.setOpaque(false);
-        envidoEsp.setContentAreaFilled(false);
-        envidoEsp.setBorderPainted(false);
-        fondo.add(envidoEsp);
-        envidoEsp.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            envidosCantados.add(1);
+        envido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/envidoGrandeBoton.png")).getScaledInstance(240, 50, Image.SCALE_SMOOTH)));
+        envido.setBounds(10, 595, 240, 50);
+        envido.setVisible(false);
+        envido.setOpaque(false);
+        envido.setContentAreaFilled(false);
+        envido.setBorderPainted(false);
+        background.add(envido);
+        envido.addActionListener((ActionEvent e) -> {
+            effects.setFile("src/truco_java/musica/boton.wav", 1);
+            effects.play();
+            envidosDeclared.add(1);
             try {
-                AICantaEnvido();
+                askAiEnvido();
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de " + nombrePersonaje + ": " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de " + aiName + ": " + ex.getMessage());
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
         });
 
-        // Boton envido-envido
         envidoEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/envidoGrandeBoton.png")).getScaledInstance(240, 50, Image.SCALE_SMOOTH)));
         envidoEnvido.setBounds(10, 595, 240, 50);
         envidoEnvido.setVisible(false);
         envidoEnvido.setOpaque(false);
         envidoEnvido.setContentAreaFilled(false);
         envidoEnvido.setBorderPainted(false);
-        fondo.add(envidoEnvido);
+        background.add(envidoEnvido);
         envidoEnvido.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            envidosCantados.add(2);
-            envidoEsp.setVisible(false);
+            effects.setFile("src/truco_java/musica/boton.wav", 1);
+            effects.play();
+            envidosDeclared.add(2);
+            envido.setVisible(false);
             envidoEnvido.setVisible(false);
             try {
-                AICantaEnvido();
+                askAiEnvido();
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de " + nombrePersonaje + ": " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de " + aiName + ": " + ex.getMessage());
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
         });
 
-        // Boton Real Envido
         realEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/realEnvidoBoton.png")).getScaledInstance(117, 50, Image.SCALE_SMOOTH)));
         realEnvido.setBounds(252, 595, 117, 50);
         realEnvido.setVisible(false);
         realEnvido.setOpaque(false);
         realEnvido.setContentAreaFilled(false);
         realEnvido.setBorderPainted(false);
-        fondo.add(realEnvido);
+        background.add(realEnvido);
         realEnvido.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            envidosCantados.add(3);
-            envidoEsp.setVisible(false);
+            effects.setFile("src/truco_java/musica/boton.wav", 1);
+            effects.play();
+            envidosDeclared.add(3);
+            envido.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             try {
-                AICantaEnvido();
+                askAiEnvido();
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de " + nombrePersonaje + ": " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de " + aiName + ": " + ex.getMessage());
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
         });
 
-        // Boton Falta Envido
         faltaEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/faltaEnvidoBoton.png")).getScaledInstance(117, 50, Image.SCALE_SMOOTH)));
         faltaEnvido.setBounds(373, 595, 117, 50);
         faltaEnvido.setVisible(false);
         faltaEnvido.setOpaque(false);
         faltaEnvido.setContentAreaFilled(false);
         faltaEnvido.setBorderPainted(false);
-        fondo.add(faltaEnvido);
+        background.add(faltaEnvido);
         faltaEnvido.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            envidosCantados.add(4);
-            envidoEsp.setVisible(false);
+            effects.setFile("src/truco_java/musica/boton.wav", 1);
+            effects.play();
+            envidosDeclared.add(4);
+            envido.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
             try {
-                AICantaEnvido();
+                askAiEnvido();
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de " + nombrePersonaje + ": " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de " + aiName + ": " + ex.getMessage());
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
         });
 
-        //Botones de Quiero y No quiero envido
-        quieroEnv = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/quieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
-        quieroEnv.setBounds(10, 250, 110, 40);
-        quieroEnv.setVisible(false);
-        quieroEnv.setOpaque(false);
-        quieroEnv.setContentAreaFilled(false);
-        quieroEnv.setBorderPainted(false);
-        fondo.add(quieroEnv);
-        quieroEnv.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            if (jugador.calcularEnvido() > ai.calcularEnvido()) { //Si gana el jugador
-                ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
-                JOptionPane.showMessageDialog(null, "Has ganado. " + nombrePersonaje + " tenía " + ai.calcularEnvido() + " de envido.");
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
-                jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()), this);
+        quieroEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/quieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
+        quieroEnvido.setBounds(10, 250, 110, 40);
+        quieroEnvido.setVisible(false);
+        quieroEnvido.setOpaque(false);
+        quieroEnvido.setContentAreaFilled(false);
+        quieroEnvido.setBorderPainted(false);
+        background.add(quieroEnvido);
+        quieroEnvido.addActionListener((ActionEvent e) -> {
+            effects.setFile("src/truco_java/musica/boton.wav", 1);
+            effects.play();
+            if (player.calculateEnvido() > ai.calculateEnvido()) {
+                ai.setPlayersDeclaredEnvido(player.calculateEnvido());
+                JOptionPane.showMessageDialog(null, "Has ganado. " + aiName + " tenía " + ai.calculateEnvido() + " de envido.");
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
+                player.setPoints(player.getPoints() + countPointsWonEnvido(ai.getPoints()), this);
             }
-            else if (jugador.calcularEnvido() < ai.calcularEnvido()) { // Si gana la AI
-                ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
-                JOptionPane.showMessageDialog(null, "Has perdido. " + nombrePersonaje + " tenía " + ai.calcularEnvido() + " de envido.");
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
-                ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()), this);
+            else if (player.calculateEnvido() < ai.calculateEnvido()) {
+                ai.setPlayersDeclaredEnvido(player.calculateEnvido());
+                JOptionPane.showMessageDialog(null, "Has perdido. " + aiName + " tenía " + ai.calculateEnvido() + " de envido.");
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
+                ai.setPoints(ai.getPoints() + countPointsWonEnvido(player.getPoints()), this);
             }
-            else if (jugador.calcularEnvido() == ai.calcularEnvido()) { // Si empatan...
-                if (jugador.isMano() == true) { // .. y el jugador es mano
-                    ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
-                    JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has ganado por mano");
-                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    efectos.play();
-                    jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()), this);
-                } else { // .. y la AI es mano
-                    ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
-                    JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has perdido, " + nombrePersonaje + " es mano");
-                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    efectos.play();
-                    ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()), this);
+            else if (player.calculateEnvido() == ai.calculateEnvido()) {
+                if (player.isFirstHand() == true) {
+                    ai.setPlayersDeclaredEnvido(player.calculateEnvido());
+                    JOptionPane.showMessageDialog(null, "Empate (" + player.calculateEnvido() + " de envido). Has ganado por mano");
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
+                    player.setPoints(player.getPoints() + countPointsWonEnvido(ai.getPoints()), this);
+                } else {
+                    ai.setPlayersDeclaredEnvido(player.calculateEnvido());
+                    JOptionPane.showMessageDialog(null, "Empate (" + player.calculateEnvido() + " de envido). Has perdido, " + aiName + " es mano");
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
+                    ai.setPoints(ai.getPoints() + countPointsWonEnvido(player.getPoints()), this);
                 }
             }
-            quieroEnv.setVisible(false);
-            noQuieroEnv.setVisible(false);
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
+            quieroEnvido.setVisible(false);
+            noQuieroEnvido.setVisible(false);
+            envidoMenu.setEnabled(false);
+            envido.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
-            PC1Enabled=true;
-            PC2Enabled=true;
-            PC3Enabled=true;
+            cardPlayer1Enabled=true;
+            cardPlayer2Enabled=true;
+            cardPlayer3Enabled=true;
             try {
-                dibujarPuntaje();
+                updatePoints();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el dibujar el puntaje: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
-            setFondo(0);
+            setBackground(0);
 
             try {
-                // Continua con el juego
-                habilitaTurno();
+                updatesTurn();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
             });
 
-        noQuieroEnv = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/noQuieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
-        noQuieroEnv.setBounds(10, 300, 110, 40);
-        noQuieroEnv.setVisible(false);
-        noQuieroEnv.setOpaque(false);
-        noQuieroEnv.setContentAreaFilled(false);
-        noQuieroEnv.setBorderPainted(false);
-        fondo.add(noQuieroEnv);
-        noQuieroEnv.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            ai.setPuntaje(ai.getPuntaje() + calcularEnvidoPerdido(), this);
+        noQuieroEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/noQuieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
+        noQuieroEnvido.setBounds(10, 300, 110, 40);
+        noQuieroEnvido.setVisible(false);
+        noQuieroEnvido.setOpaque(false);
+        noQuieroEnvido.setContentAreaFilled(false);
+        noQuieroEnvido.setBorderPainted(false);
+        background.add(noQuieroEnvido);
+        noQuieroEnvido.addActionListener((ActionEvent e) -> {
+            effects.setFile("src/truco_java/musica/boton.wav", 1);
+            effects.play();
+            ai.setPoints(ai.getPoints() + countPointsLoserEnvido(), this);
 
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
+            envidoMenu.setEnabled(false);
+            envido.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
-            quieroEnv.setVisible(false);
-            noQuieroEnv.setVisible(false);
-            setFondo(0);
+            quieroEnvido.setVisible(false);
+            noQuieroEnvido.setVisible(false);
+            setBackground(0);
             try {
-                dibujarPuntaje();
+                updatePoints();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de dibujar los puntajes: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
 
             try {
-                // Continua con el juego
-                habilitaTurno();
+                updatesTurn();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
         });
 
-        // Boton Truco
         truco = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/trucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
         truco.setBounds(10, 660, 155, 60);
         truco.setVisible(true);
@@ -539,51 +520,50 @@ public class InterfazJuego extends JFrame {
         truco.setOpaque(false);
         truco.setContentAreaFilled(false);
         truco.setBorderPainted(false);
-        fondo.add(truco);
+        background.add(truco);
         truco.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            envidoFinalizado = true;
-            if(habilitadoARetrucar != 2){
-                nivelTruco++;
-                habilitadoARetrucar = 2;
+            effects.setFile("src/truco_java/musica/boton.wav", 1);
+            effects.play();
+            finishedEnvido = true;
+            if(enabledToRetrucar != 2){
+                trucoLevel++;
+                enabledToRetrucar = 2;
                 try {
-                    AICantaTruco(true);
+                    askAiTruco(true);
                 } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el truco de " + nombrePersonaje + ": " + ex.getMessage());
-                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    efectos.play();
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el truco de " + aiName + ": " + ex.getMessage());
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
                 }
             }
         });
 
-        //Botones de Quiero y No quiero truco
         quieroTruco = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/quieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
         quieroTruco.setBounds(10, 250, 110, 40);
         quieroTruco.setVisible(false);
         quieroTruco.setOpaque(false);
         quieroTruco.setContentAreaFilled(false);
         quieroTruco.setBorderPainted(false);
-        fondo.add(quieroTruco);
+        background.add(quieroTruco);
         quieroTruco.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            PC1Enabled=true;
-            PC2Enabled=true;
-            PC3Enabled=true;
+            effects.setFile("src/truco_java/musica/boton.wav", 1);
+            effects.play();
+            cardPlayer1Enabled=true;
+            cardPlayer2Enabled=true;
+            cardPlayer3Enabled=true;
 
-            if(nivelTruco == 3)
+            if(trucoLevel == 3)
                 truco.setEnabled(false);
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
             try {
-                habilitaTurno();
+                updatesTurn();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
-            setFondo(0);
+            setBackground(0);
         });
 
 
@@ -593,321 +573,264 @@ public class InterfazJuego extends JFrame {
         noQuieroTruco.setOpaque(false);
         noQuieroTruco.setContentAreaFilled(false);
         noQuieroTruco.setBorderPainted(false);
-        fondo.add(noQuieroTruco);
+        background.add(noQuieroTruco);
         noQuieroTruco.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/boton.wav", 1);
-            efectos.play();
-            ai.setPuntaje(ai.getPuntaje() + calcularTrucoPerdido(), this);
+            effects.setFile("src/truco_java/musica/boton.wav", 1);
+            effects.play();
+            ai.setPoints(ai.getPoints() + countPointsLoseTruco(), this);
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
             try {
-                otraPartida();
+                anotherRound();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de comenzar otra partida: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
             try {
-                habilitaTurno();
+                updatesTurn();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
-            setFondo(0);
+            setBackground(0);
         });
 
-        // Fondo puntaje
-        JLabel puntajeFondo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg"+ numeroPersonaje +".png")).getScaledInstance(100, 150, Image.SCALE_SMOOTH)));
-        puntajeFondo.setBounds(390, 10, 100, 150);
-        puntajeFondo.setVisible(true);
-        fondo.add(puntajeFondo);
+        JLabel pointsBackground = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg"+ aiNumber +".png")).getScaledInstance(100, 150, Image.SCALE_SMOOTH)));
+        pointsBackground.setBounds(390, 10, 100, 150);
+        pointsBackground.setVisible(true);
+        background.add(pointsBackground);
 
-        // Puntaje Jugador
-        puntajeJugador.setBounds(0, 65, 50, 85);
-        puntajeJugador.setVisible(true);
-        puntajeFondo.add(puntajeJugador);
+        pointsPlayer.setBounds(0, 65, 50, 85);
+        pointsPlayer.setVisible(true);
+        pointsBackground.add(pointsPlayer);
 
-        // Puntaje Ai
-        puntajeAI.setBounds(50, 65, 50, 85);
-        puntajeAI.setVisible(true);
-        puntajeFondo.add(puntajeAI);
+        pointsAi.setBounds(50, 65, 50, 85);
+        pointsAi.setVisible(true);
+        pointsBackground.add(pointsAi);
 
-        JButton atras = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
-        atras.setOpaque(false);
-        atras.setContentAreaFilled(false);
-        atras.setBorderPainted(false);
-        atras.setBounds(10, 10, 50, 50);
-        atras.setVisible(true);
-        fondo.add(atras);
-        atras.addActionListener((ActionEvent e) -> {
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
-            // Si todavia no comenzo la partida
-            if(repartir.isEnabled()){
+        JButton back = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+        back.setOpaque(false);
+        back.setContentAreaFilled(false);
+        back.setBorderPainted(false);
+        back.setBounds(10, 10, 50, 50);
+        back.setVisible(true);
+        background.add(back);
+        back.addActionListener((ActionEvent e) -> {
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+
+            // If the game hasn't started
+            if(dealCards.isEnabled()){
                 menu.setVisible(true);
-                termino=true;
+                finishedGame=true;
                 dispose();
                 return;
             }
 
-            // Si se quiere sallir en medio de la partida
-            int dialogResult = JOptionPane.showConfirmDialog (null, "Está seguro que desea abandonar la partida?\nSe declarará a " + nombrePersonaje + " como ganador...","Atención!",JOptionPane.YES_NO_OPTION);
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
-            if(dialogResult == JOptionPane.YES_OPTION){
-                ai.setPuntaje(15, this);
-            }
+            // If the game has started
+            int dialogResult = JOptionPane.showConfirmDialog (null, "Está seguro que desea abandonar la partida?\nSe declarará a " + aiName + " como ganador...","Atención!",JOptionPane.YES_NO_OPTION);
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+            if(dialogResult == JOptionPane.YES_OPTION)
+                ai.setPoints(15, this);
         });
     }
 
-    public void dibujarPuntaje() throws IOException {
-        if(termino)
+    public void updatePoints() throws IOException {
+        if(finishedGame)
             return;
-        int jugadorPunt = jugador.getPuntaje();
-        int aiPunt = ai.getPuntaje();
+        int jugadorPunt = player.getPoints();
+        int aiPunt = ai.getPoints();
         if(jugadorPunt > 15)
             jugadorPunt = 15;
         if(aiPunt > 15)
             aiPunt = 15;
 
-        puntajeJugador.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + jugadorPunt + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
-        puntajeAI.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + aiPunt + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
+        pointsPlayer.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + jugadorPunt + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
+        pointsAi.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + aiPunt + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
 
 
         if(jugadorPunt==15){
             JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó el Jugador. Felicidades");
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
             menu.setVisible(true);
-            termino=true;
-            otraPartida();
-            if(!menu.facil.isSelected()) {
-                Truco_Java.ganadasJugador++;
-                Truco_Java.puntajeJugador.setText(Integer.toString(Truco_Java.ganadasJugador));
-                Truco_Java.puntajeFondo.setVisible(true);
+            finishedGame=true;
+            anotherRound();
+            if(!menu.easyCheckBox.isSelected()) {
+                Truco_Java.gamesWonPlayer++;
+                Truco_Java.playerPoints.setText(Integer.toString(Truco_Java.gamesWonPlayer));
+                Truco_Java.pointsBackground.setVisible(true);
             }
 
             // Actualiza los partidos según la sesión
-            if(Truco_Java.posUsuario!=-1){
-                Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).encriptaPuntaje();
-                Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).guardarCambios(false, 0);
+            if(Truco_Java.userIndex!=-1){
+                Truco_Java.userList.get(Truco_Java.userIndex).encryptPoints();
+                Truco_Java.userList.get(Truco_Java.userIndex).saveChanges(false, 0);
             }
 
             dispose();
         }
         if(aiPunt==15){
 
-            JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó " + nombrePersonaje + ". Será la próxima...");
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
+            JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó " + aiName + ". Será la próxima...");
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
             menu.setVisible(true);
-            termino=true;
-            otraPartida();
-            if(!menu.facil.isSelected()) {
-                Truco_Java.ganadasAI++;
-                Truco_Java.puntajeAI.setText(Integer.toString(Truco_Java.ganadasAI));
-                Truco_Java.puntajeFondo.setVisible(true);
+            finishedGame=true;
+            anotherRound();
+            if(!menu.easyCheckBox.isSelected()) {
+                Truco_Java.gamesWonAi++;
+                Truco_Java.AiPoints.setText(Integer.toString(Truco_Java.gamesWonAi));
+                Truco_Java.pointsBackground.setVisible(true);
             }
 
-            // Actualiza los partidos según la sesión
-            if(Truco_Java.posUsuario!=-1){
-                Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).encriptaPuntaje();
-                Truco_Java.listaUsuarios.get(Truco_Java.posUsuario).guardarCambios(false, 0);
+            // If the user is logged in
+            if(Truco_Java.userIndex!=-1){
+                Truco_Java.userList.get(Truco_Java.userIndex).encryptPoints();
+                Truco_Java.userList.get(Truco_Java.userIndex).saveChanges(false, 0);
             }
 
             dispose();
         }
     }
 
-    private void cargarMazo() {
-        mazo.add(new Carta(1, "espada"));
-        mazo.add(new Carta(2, "espada"));
-        mazo.add(new Carta(3, "espada"));
-        mazo.add(new Carta(4, "espada"));
-        mazo.add(new Carta(5, "espada"));
-        mazo.add(new Carta(6, "espada"));
-        mazo.add(new Carta(7, "espada"));
-        mazo.add(new Carta(10, "espada"));
-        mazo.add(new Carta(11, "espada"));
-        mazo.add(new Carta(12, "espada"));
-        mazo.add(new Carta(1, "basto"));
-        mazo.add(new Carta(2, "basto"));
-        mazo.add(new Carta(3, "basto"));
-        mazo.add(new Carta(4, "basto"));
-        mazo.add(new Carta(5, "basto"));
-        mazo.add(new Carta(6, "basto"));
-        mazo.add(new Carta(7, "basto"));
-        mazo.add(new Carta(10, "basto"));
-        mazo.add(new Carta(11, "basto"));
-        mazo.add(new Carta(12, "basto"));
-        mazo.add(new Carta(1, "oro"));
-        mazo.add(new Carta(2, "oro"));
-        mazo.add(new Carta(3, "oro"));
-        mazo.add(new Carta(4, "oro"));
-        mazo.add(new Carta(5, "oro"));
-        mazo.add(new Carta(6, "oro"));
-        mazo.add(new Carta(7, "oro"));
-        mazo.add(new Carta(10, "oro"));
-        mazo.add(new Carta(11, "oro"));
-        mazo.add(new Carta(12, "oro"));
-        mazo.add(new Carta(1, "copa"));
-        mazo.add(new Carta(2, "copa"));
-        mazo.add(new Carta(3, "copa"));
-        mazo.add(new Carta(4, "copa"));
-        mazo.add(new Carta(5, "copa"));
-        mazo.add(new Carta(6, "copa"));
-        mazo.add(new Carta(7, "copa"));
-        mazo.add(new Carta(10, "copa"));
-        mazo.add(new Carta(11, "copa"));
-        mazo.add(new Carta(12, "copa"));
+    private void loadDeck() {
+        deck.add(new Carta(1, "espada"));
+        deck.add(new Carta(2, "espada"));
+        deck.add(new Carta(3, "espada"));
+        deck.add(new Carta(4, "espada"));
+        deck.add(new Carta(5, "espada"));
+        deck.add(new Carta(6, "espada"));
+        deck.add(new Carta(7, "espada"));
+        deck.add(new Carta(10, "espada"));
+        deck.add(new Carta(11, "espada"));
+        deck.add(new Carta(12, "espada"));
+        deck.add(new Carta(1, "basto"));
+        deck.add(new Carta(2, "basto"));
+        deck.add(new Carta(3, "basto"));
+        deck.add(new Carta(4, "basto"));
+        deck.add(new Carta(5, "basto"));
+        deck.add(new Carta(6, "basto"));
+        deck.add(new Carta(7, "basto"));
+        deck.add(new Carta(10, "basto"));
+        deck.add(new Carta(11, "basto"));
+        deck.add(new Carta(12, "basto"));
+        deck.add(new Carta(1, "oro"));
+        deck.add(new Carta(2, "oro"));
+        deck.add(new Carta(3, "oro"));
+        deck.add(new Carta(4, "oro"));
+        deck.add(new Carta(5, "oro"));
+        deck.add(new Carta(6, "oro"));
+        deck.add(new Carta(7, "oro"));
+        deck.add(new Carta(10, "oro"));
+        deck.add(new Carta(11, "oro"));
+        deck.add(new Carta(12, "oro"));
+        deck.add(new Carta(1, "copa"));
+        deck.add(new Carta(2, "copa"));
+        deck.add(new Carta(3, "copa"));
+        deck.add(new Carta(4, "copa"));
+        deck.add(new Carta(5, "copa"));
+        deck.add(new Carta(6, "copa"));
+        deck.add(new Carta(7, "copa"));
+        deck.add(new Carta(10, "copa"));
+        deck.add(new Carta(11, "copa"));
+        deck.add(new Carta(12, "copa"));
     }
 
-    private void mezclarMazo() {
+    private void mixDeck() {
         for (int i = 0; i < 100; i++) {
             Random random = new Random();
-            ArrayList<Carta> mazoTemp = new ArrayList<>();
-            for (int x = 0; x < mazo.size() + mazoTemp.size(); x++) {
-                int posMezcla = random.nextInt(mazo.size());
-                mazoTemp.add(mazo.get(posMezcla));
-                mazo.remove(posMezcla);
+            ArrayList<Carta> tempDeck = new ArrayList<>();
+            for (int x = 0; x < deck.size() + tempDeck.size(); x++) {
+                int posMezcla = random.nextInt(deck.size());
+                tempDeck.add(deck.get(posMezcla));
+                deck.remove(posMezcla);
             }
-            mazo.clear();
-            mazo.addAll(mazoTemp);
+            deck.clear();
+            deck.addAll(tempDeck);
         }
     }
 
-    private void dibujarCartas() throws IOException {
-        AIC1.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
-        AIC2.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
-        AIC3.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+    // TODO: TOMAR ESTA FUNCION Y COLOCARLA EN UNA INTERFÁZ
+    // CONTINUAR MEJORANDO EL CODIGO: REEMPLAZAR SWTICHS CON FOR
+    private void drawCards() throws IOException {
 
-        switch (ai.getMano().size()) {
-            case 0:
-                AIC1.setVisible(false);
-                AIC2.setVisible(false);
-                AIC3.setVisible(false);
-                break;
-            case 1:
-                AIC1.setVisible(true);
-                AIC2.setVisible(false);
-                AIC3.setVisible(false);
-                break;
-            case 2:
-                AIC1.setVisible(true);
-                AIC2.setVisible(true);
-                AIC3.setVisible(false);
-                break;
-            case 3:
-                AIC1.setVisible(true);
-                AIC2.setVisible(true);
-                AIC3.setVisible(true);
-                break;
-        }
+        ArrayList<JLabel> aiHand = new ArrayList<>();
+        aiHand.add(cardAi1);
+        aiHand.add(cardAi2);
+        aiHand.add(cardAi3);
+        for(int i=0;i<ai.getCards().size();i++)
+            aiHand.get(i).setVisible(true);
+        for(int i=ai.getCards().size();i<3;i++)
+            aiHand.get(i).setVisible(false);
 
-        ArrayList<JButton> manos = new ArrayList<>();
-        manos.add(PC1);
-        manos.add(PC2);
-        manos.add(PC3);
+        ArrayList<JButton> playerHand = new ArrayList<>();
+        playerHand.add(cardPlayer1);
+        playerHand.add(cardPlayer2);
+        playerHand.add(cardPlayer3);
 
         for(int i=0;i<3;i++){
-            if(jugador.getPosMano()[i]<0){
-                manos.get(i).setVisible(false);
-                manos.get(i).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+            if(player.getPosCards()[i]<0){
+                playerHand.get(i).setVisible(false);
+                playerHand.get(i).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
             } else {
-                manos.get(i).setVisible(true);
-                manos.get(i).setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(jugador.getPosMano()[i]).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+                playerHand.get(i).setVisible(true);
+                playerHand.get(i).setIcon(new ImageIcon(ImageIO.read(new File(player.getCards().get(player.getPosCards()[i]).linkCard())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
             }
         }
 
-        //switch (jugador.getMano().size()) {
-        //    case 0:
-        //        PC1.setVisible(false);
-        //        PC1.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        PC2.setVisible(false);
-        //        PC1.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        PC3.setVisible(false);
-        //        PC1.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        break;
-        //    case 1:
-        //        PC1.setVisible(true);
-        //        PC1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(0).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        PC2.setVisible(false);
-        //        PC2.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        PC3.setVisible(false);
-        //        PC3.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        break;
-        //    case 2:
-        //        PC1.setVisible(true);
-        //        PC1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(0).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        PC2.setVisible(true);
-        //        PC2.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(1).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        PC3.setVisible(false);
-        //        PC3.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        break;
-        //    case 3:
-        //        PC1.setVisible(true);
-        //        PC1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(0).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        //PC1.setIcon(new ImageIcon(p.getMano().get(0).linkCarta()));
-        //        PC2.setVisible(true);
-        //        PC2.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(1).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        //PC2.setIcon(new ImageIcon(p.getMano().get(1).linkCarta()));
-        //        PC3.setVisible(true);
-        //        PC3.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getMano().get(2).linkCarta())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
-        //        //PC3.setIcon(new ImageIcon(p.getMano().get(2).linkCarta()));
-        //        break;
-        //}
-
-        // Cartas ya tiradas
-        switch (ai.getCartasJugadas().size()) {
+        switch (ai.getPlayedCards().size()) {
             case 3:
-                AICT1.setIcon(new ImageIcon(ImageIO.read(new File(ai.getCartasJugadas().get(0).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                AICT2.setIcon(new ImageIcon(ImageIO.read(new File(ai.getCartasJugadas().get(1).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                AICT3.setIcon(new ImageIcon(ImageIO.read(new File(ai.getCartasJugadas().get(2).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownAi1.setIcon(new ImageIcon(ImageIO.read(new File(ai.getPlayedCards().get(0).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownAi2.setIcon(new ImageIcon(ImageIO.read(new File(ai.getPlayedCards().get(1).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownAi3.setIcon(new ImageIcon(ImageIO.read(new File(ai.getPlayedCards().get(2).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
                 break;
             case 2:
-                AICT1.setIcon(new ImageIcon(ImageIO.read(new File(ai.getCartasJugadas().get(0).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                AICT2.setIcon(new ImageIcon(ImageIO.read(new File(ai.getCartasJugadas().get(1).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                AICT3.setIcon(null);
+                cardThrownAi1.setIcon(new ImageIcon(ImageIO.read(new File(ai.getPlayedCards().get(0).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownAi2.setIcon(new ImageIcon(ImageIO.read(new File(ai.getPlayedCards().get(1).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownAi3.setIcon(null);
                 break;
             case 1:
-                AICT1.setIcon(new ImageIcon(ImageIO.read(new File(ai.getCartasJugadas().get(0).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                AICT2.setIcon(null);
-                AICT3.setIcon(null);
+                cardThrownAi1.setIcon(new ImageIcon(ImageIO.read(new File(ai.getPlayedCards().get(0).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownAi2.setIcon(null);
+                cardThrownAi3.setIcon(null);
                 break;
             case 0:
-                AICT1.setIcon(null);
-                AICT2.setIcon(null);
-                AICT3.setIcon(null);
+                cardThrownAi1.setIcon(null);
+                cardThrownAi2.setIcon(null);
+                cardThrownAi3.setIcon(null);
                 break;
         }
 
-        switch (jugador.getCartasJugadas().size()) {
+        switch (player.getPlayedCards().size()) {
             case 3:
-                PCT1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getCartasJugadas().get(0).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                PCT2.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getCartasJugadas().get(1).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                PCT3.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getCartasJugadas().get(2).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownPlayer1.setIcon(new ImageIcon(ImageIO.read(new File(player.getPlayedCards().get(0).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownPlayer2.setIcon(new ImageIcon(ImageIO.read(new File(player.getPlayedCards().get(1).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownPlayer3.setIcon(new ImageIcon(ImageIO.read(new File(player.getPlayedCards().get(2).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
                 break;
             case 2:
-                PCT1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getCartasJugadas().get(0).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                PCT2.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getCartasJugadas().get(1).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                PCT3.setIcon(null);
+                cardThrownPlayer1.setIcon(new ImageIcon(ImageIO.read(new File(player.getPlayedCards().get(0).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownPlayer2.setIcon(new ImageIcon(ImageIO.read(new File(player.getPlayedCards().get(1).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownPlayer3.setIcon(null);
                 break;
             case 1:
-                PCT1.setIcon(new ImageIcon(ImageIO.read(new File(jugador.getCartasJugadas().get(0).linkCarta())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                PCT2.setIcon(null);
-                PCT3.setIcon(null);
+                cardThrownPlayer1.setIcon(new ImageIcon(ImageIO.read(new File(player.getPlayedCards().get(0).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownPlayer2.setIcon(null);
+                cardThrownPlayer3.setIcon(null);
                 break;
             case 0:
-                PCT1.setIcon(null);
-                PCT2.setIcon(null);
-                PCT3.setIcon(null);
+                cardThrownPlayer1.setIcon(null);
+                cardThrownPlayer2.setIcon(null);
+                cardThrownPlayer3.setIcon(null);
                 break;
         }
     }
 
-    private void dibujarBotones() throws IOException {
-        switch (nivelTruco) {
+    private void drawTrucoButton() throws IOException {
+        switch (trucoLevel) {
             case 0:
                 truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/trucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
                 break;
@@ -920,40 +843,40 @@ public class InterfazJuego extends JFrame {
         }
     }
 
-    private void tirarCarta(int pos) throws IOException {
+    private void throwCard(int pos) throws IOException {
         // Intenta solucionar un bug de diferentes llamados que pueden perjudicar a la mano
-        PC1Enabled=false;
-        PC2Enabled=false;
-        PC3Enabled=false;
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
 
-        if(!menu.movCartas.isSelected()) moverCartaPersona(pos, jugador.getMano().get(jugador.getPosMano()[pos]).linkCarta(), jugador.getCartasJugadas().size());
+        if(!menu.fastModeCheckBox.isSelected()) movePlayerCard(pos, player.getCards().get(player.getPosCards()[pos]).linkCard(), player.getPlayedCards().size());
 
         //Tira la carta
-        jugador.agregarCartaJugada(jugador.getPosMano()[pos]);
+        player.addPlayedCards(player.getPosCards()[pos]);
 
         // Indica que carta no se debbe dibujar
-        int temp[] = jugador.getPosMano();
+        int temp[] = player.getPosCards();
         temp[pos] = -1;
         for(int i=pos+1;i<temp.length;i++)
             temp[i]-=1;
-        jugador.setPosMano(temp);
+        player.setPosCards(temp);
 
-        if(menu.movCartas.isSelected()){ //Si no se quiere movimiento de cartas
+        if(menu.fastModeCheckBox.isSelected()){ //Si no se quiere movimiento de cartas
             try {
-                dibujarCartas();
-                habilitaTurno();
+                drawCards();
+                updatesTurn();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
         }
     }
 
-    private void otraPartida() throws IOException {
-        if(!termino && menu.musica.isSelected() && !menu.movCartas.isSelected()) {
-            efectos.setFile("src/truco_java/musica/otraPartida.wav", 1);
-            efectos.play();
+    private void anotherRound() throws IOException {
+        if(!finishedGame && Truco_Java.musicCheckBox.isSelected() && !menu.fastModeCheckBox.isSelected()) {
+            effects.setFile("src/truco_java/musica/otraPartida.wav", 1);
+            effects.play();
             try {
                 Thread.sleep(1200);
             } catch (InterruptedException ex) {
@@ -961,333 +884,331 @@ public class InterfazJuego extends JFrame {
             }
         }
 
-        // Reinicia variables
-        nivelTruco = 0;
-        envidosCantados = new ArrayList<>();
-        envidoFinalizado = false;
-        habilitadoARetrucar = 0;
-        dibujarBotones();
+        // Restart variables
+        trucoLevel = 0;
+        envidosDeclared = new ArrayList<>();
+        finishedEnvido = false;
+        enabledToRetrucar = 0;
+        drawTrucoButton();
         truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/trucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
         truco.setVisible(true);
-        setFondo(0);
-        ai.setEnvidoJugadorCantado(-1);
+        setBackground(0);
+        ai.setPlayersDeclaredEnvido(-1);
 
-        // Limpia las manos
-        jugador.setMano(new ArrayList<>());
-        ai.setMano(new ArrayList<>());
-        jugador.setCartasJugadas(new ArrayList<>());
-        ai.setCartasJugadas(new ArrayList<>());
+        // Clear hands
+        player.setCards(new ArrayList<>());
+        ai.setCards(new ArrayList<>());
+        player.setPlayedCards(new ArrayList<>());
+        ai.setPlayedCards(new ArrayList<>());
 
-        mezclarMazo();
+        mixDeck();
 
-        // Oculta y resetea botones
-        quieroEnv.setVisible(false);
-        noQuieroEnv.setVisible(false);
-        envido.setEnabled(false);
-        envidoEsp.setVisible(false);
+        // Hides and restarts buttons
+        quieroEnvido.setVisible(false);
+        noQuieroEnvido.setVisible(false);
+        envidoMenu.setEnabled(false);
+        envido.setVisible(false);
         envidoEnvido.setVisible(false);
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
-        imprimeAIEnvido(0, false);
+        printsEnvidoMessage(0, false);
         truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/trucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
         truco.setEnabled(true);
 
-        //Reparte
-        ArrayList<Carta> mano1 = new ArrayList<>();
-        mano1.add(mazo.get(0));
-        mano1.add(mazo.get(2));
-        mano1.add(mazo.get(4));
-        ArrayList<Carta> mano2 = new ArrayList<>();
-        mano2.add(mazo.get(1));
-        mano2.add(mazo.get(3));
-        mano2.add(mazo.get(5));
-        int temp[] = new int[3];
-        temp[0] = 0;
-        temp[1] = 1;
-        temp[2] = 2;
-        jugador.setPosMano(temp);
+        // deals cards
+        ArrayList<Carta> hand1 = new ArrayList<>();
+        hand1.add(deck.get(0));
+        hand1.add(deck.get(2));
+        hand1.add(deck.get(4));
+        ArrayList<Carta> hand2 = new ArrayList<>();
+        hand2.add(deck.get(1));
+        hand2.add(deck.get(3));
+        hand2.add(deck.get(5));
+        int tempPosCards[] = new int[3];
+        tempPosCards[0] = 0;
+        tempPosCards[1] = 1;
+        tempPosCards[2] = 2;
+        player.setPosCards(tempPosCards);
 
-        if (ai.isMano() == true) {
-            ai.setMano(mano1);
-            jugador.setMano(mano2);
-            ai.setEsMano(false);
-            jugador.setEsMano(true);
+        if (ai.isFirstHand() == true) {
+            ai.setCards(hand1);
+            player.setCards(hand2);
+            ai.setFirstHand(false);
+            player.setFirstHand(true);
         } else {
-            ai.setMano(mano2);
-            jugador.setMano(mano1);
-            ai.setEsMano(true);
-            jugador.setEsMano(false);
+            ai.setCards(hand2);
+            player.setCards(hand1);
+            ai.setFirstHand(true);
+            player.setFirstHand(false);
         }
 
-        // Aca no tiene que ir un habilitaTurno() porque sino tira dos veces  la AI
-        // Muestra puntaje
-        dibujarPuntaje();
-        dibujarCartas();
+        updatePoints();
+        drawCards();
 
     }
 
-    private void habilitaTurno() throws IOException {
-        if(termino)
+    private void updatesTurn() throws IOException {
+        if(finishedGame)
             return;
-        if(compruebaSiTerminoPartida()==1) {
+        if(checksWinnerOfGame()==1) {
             JOptionPane.showMessageDialog(null, "Termino la Partida. Ganó el Jugador.");
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
-            // Suma puntos al ganador
-            jugador.setPuntaje(jugador.getPuntaje() + calcularTrucoGanado(), this);
-            otraPartida();
-            habilitaTurno();
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+
+            player.setPoints(player.getPoints() + countPointsWonTruco(), this);
+            anotherRound();
+            updatesTurn();
             return;
         }
-        if(compruebaSiTerminoPartida()==2) {
-            JOptionPane.showMessageDialog(null, "Termino la Partida. Ganó " + nombrePersonaje + ".");
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
-            // Suma puntos al ganador
-            ai.setPuntaje(ai.getPuntaje() + calcularTrucoGanado(), this);
-            otraPartida();
-            habilitaTurno();
+        if(checksWinnerOfGame()==2) {
+            JOptionPane.showMessageDialog(null, "Termino la Partida. Ganó " + aiName + ".");
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+
+            ai.setPoints(ai.getPoints() + countPointsWonTruco(), this);
+            anotherRound();
+            updatesTurn();
             return;
         }
 
-        if (jugador.getCartasJugadas().isEmpty() && ai.getCartasJugadas().isEmpty()) { // No jugo nadie
-            if (jugador.isMano() == true) {
-                if(habilitadoARetrucar < 2) truco.setEnabled(true);
-                if(!envidoFinalizado) envido.setEnabled(true);
+        if (player.getPlayedCards().isEmpty() && ai.getPlayedCards().isEmpty()) {
+            if (player.isFirstHand() == true) {
+                if(enabledToRetrucar < 2) truco.setEnabled(true);
+                if(!finishedEnvido) envidoMenu.setEnabled(true);
                 irAlMazo.setEnabled(true);
-                PC1Enabled=true;
-                PC2Enabled=true;
-                PC3Enabled=true;
+                cardPlayer1Enabled=true;
+                cardPlayer2Enabled=true;
+                cardPlayer3Enabled=true;
             } else {
                 truco.setEnabled(false);
-                envido.setEnabled(false);
+                envidoMenu.setEnabled(false);
                 irAlMazo.setEnabled(false);
-                PC1Enabled=false;
-                PC2Enabled=false;
-                PC3Enabled=false;
-                // No hace falta que se cante envido, porque ya lo verifica dentro de AICantaTruco
-                if (AICantaTruco(false)==0);
+                cardPlayer1Enabled=false;
+                cardPlayer2Enabled=false;
+                cardPlayer3Enabled=false;
+                // Not call askEnvidoToAI, because it's already inside of askTrucoToAI
+                // TODO: Separate Functions
+                if (askAiTruco(false)==0);
                 else return;
-                ai.jugarTurno(jugador, this);
-                moverCartaAI(ai.getMano().size(), ai.getCartasJugadas().size()-1);
+                ai.playTurnAlgorithm(player, this);
+                moveAiCard(ai.getCards().size(), ai.getPlayedCards().size()-1);
             }
-        } else if (jugador.getCartasJugadas().isEmpty() && !ai.getCartasJugadas().isEmpty()) { // Ya Jugó la AI. Turno Jugador
-            if(habilitadoARetrucar < 2) truco.setEnabled(true);
-            if(!envidoFinalizado) envido.setEnabled(true);
+        } else if (player.getPlayedCards().isEmpty() && !ai.getPlayedCards().isEmpty()) {
+            if(enabledToRetrucar < 2) truco.setEnabled(true);
+            if(!finishedEnvido) envidoMenu.setEnabled(true);
             irAlMazo.setEnabled(true);
-            PC1Enabled=true;
-            PC2Enabled=true;
-            PC3Enabled=true;
-        } else if (!jugador.getCartasJugadas().isEmpty() && ai.getCartasJugadas().isEmpty()) { // Ya Jugó el Jugador. Turno AI
+            cardPlayer1Enabled=true;
+            cardPlayer2Enabled=true;
+            cardPlayer3Enabled=true;
+        } else if (!player.getPlayedCards().isEmpty() && ai.getPlayedCards().isEmpty()) {
                 truco.setEnabled(false);
-                envido.setEnabled(false);
+                envidoMenu.setEnabled(false);
                 irAlMazo.setEnabled(false);
-                PC1Enabled=false;
-                PC2Enabled=false;
-                PC3Enabled=false;
-                // No hace falta que se cante envido, porque ya lo verifica dentro de AICantaTruco
-                if (AICantaTruco(false)==0);
+                cardPlayer1Enabled=false;
+                cardPlayer2Enabled=false;
+                cardPlayer3Enabled=false;
+                // Not call askEnvidoToAI, because it's already inside of askTrucoToAI
+                if (askAiTruco(false)==0);
                 else return;
-                ai.jugarTurno(jugador, this);
-                moverCartaAI(ai.getMano().size(), ai.getCartasJugadas().size()-1);
-        } else if (!jugador.getCartasJugadas().isEmpty() && !ai.getCartasJugadas().isEmpty()) { // Rondas 2 y 3
-            if (jugador.getCartasJugadas().size() == ai.getCartasJugadas().size()) { // Si es una ronda en la que nadie jugó
-                int rankingJugador = jugador.getCartasJugadas().get(jugador.getCartasJugadas().size()-1).rankingCarta();
-                int rankingAI = ai.getCartasJugadas().get(ai.getCartasJugadas().size()-1).rankingCarta();
-                envido.setEnabled(false); // Deshabilita el envido en la segunda ronda
+                ai.playTurnAlgorithm(player, this);
+                moveAiCard(ai.getCards().size(), ai.getPlayedCards().size()-1);
+        } else if (!player.getPlayedCards().isEmpty() && !ai.getPlayedCards().isEmpty()) {
+            // If it's a round that nobody has played (start of the round)
+            if (player.getPlayedCards().size() == ai.getPlayedCards().size()) {
+                int playerRankingLastRound = player.getPlayedCards().get(player.getPlayedCards().size()-1).rankingCard();
+                int aiRankingLastRound = ai.getPlayedCards().get(ai.getPlayedCards().size()-1).rankingCard();
+                envidoMenu.setEnabled(false);
 
-                if (rankingJugador > rankingAI) { // Si gano jugador en la anterior ronda
-                    if(habilitadoARetrucar < 2) truco.setEnabled(true); // Si le corresponde retrucar
-                    // Si la ultima carta que le queda al oponente es un 4, no se puede cantar truco
-                    if(ai.getCartasJugadas().size() == 3) if(ai.getCartasJugadas().get(2).rankingCarta()==0) truco.setEnabled(false);
+                if (playerRankingLastRound > aiRankingLastRound) {
+                    if(enabledToRetrucar < 2) truco.setEnabled(true); // If the player can say 'truco'
+                    // If the last card that the AI has thrown is a 4, player can't say 'truco'
+                    if(ai.getPlayedCards().size() == 3) if(ai.getPlayedCards().get(2).rankingCard()==0) truco.setEnabled(false);
                     irAlMazo.setEnabled(true);
-                    PC1Enabled=true;
-                    PC2Enabled=true;
-                    PC3Enabled=true;
-                } else if (rankingAI > rankingJugador) { // si gano AI en la anterior ronda
+                    cardPlayer1Enabled=true;
+                    cardPlayer2Enabled=true;
+                    cardPlayer3Enabled=true;
+                } else if (aiRankingLastRound > playerRankingLastRound) {
                     truco.setEnabled(false);
-                    envido.setEnabled(false);
+                    envidoMenu.setEnabled(false);
                     irAlMazo.setEnabled(false);
-                    PC1Enabled=false;
-                    PC2Enabled=false;
-                    PC3Enabled=false;
-                    if (AICantaTruco(false)==0);
+                    cardPlayer1Enabled=false;
+                    cardPlayer2Enabled=false;
+                    cardPlayer3Enabled=false;
+                    if (askAiTruco(false)==0);
                     else return;
-                    ai.jugarTurno(jugador, this);
-                    moverCartaAI(ai.getMano().size(), ai.getCartasJugadas().size()-1);
-                } else if(rankingJugador == rankingAI){ // Si empatan
-                    if(jugador.isMano()){ // Es mano el jugador
-                        if(habilitadoARetrucar < 2) truco.setEnabled(true);
-                        // Si la ultima carta que le queda al oponente es un 4, no se puede cantar truco
-                        if(ai.getCartasJugadas().size() == 3) if(ai.getCartasJugadas().get(2).rankingCarta()==0) truco.setEnabled(false);
+                    ai.playTurnAlgorithm(player, this);
+                    moveAiCard(ai.getCards().size(), ai.getPlayedCards().size()-1);
+                } else if(playerRankingLastRound == aiRankingLastRound){
+                    if(player.isFirstHand()){
+                        if(enabledToRetrucar < 2) truco.setEnabled(true);
+                        // If the last card that the AI has thrown is a 4, player can't say 'truco'
+                        if(ai.getPlayedCards().size() == 3) if(ai.getPlayedCards().get(2).rankingCard()==0) truco.setEnabled(false);
                         irAlMazo.setEnabled(true);
-                        PC1Enabled=true;
-                        PC2Enabled=true;
-                        PC3Enabled=true;
-                    } else { // Es mano la AI
+                        cardPlayer1Enabled=true;
+                        cardPlayer2Enabled=true;
+                        cardPlayer3Enabled=true;
+                    } else {
                         truco.setEnabled(false);
-                        envido.setEnabled(false);
+                        envidoMenu.setEnabled(false);
                         irAlMazo.setEnabled(false);
-                        PC1Enabled=false;
-                        PC2Enabled=false;
-                        PC3Enabled=false;
-                        if (AICantaTruco(false)==0);
+                        cardPlayer1Enabled=false;
+                        cardPlayer2Enabled=false;
+                        cardPlayer3Enabled=false;
+                        if (askAiTruco(false)==0);
                         else return;
-                        ai.jugarTurno(jugador, this);
-                        moverCartaAI(ai.getMano().size(), ai.getCartasJugadas().size()-1);
+                        ai.playTurnAlgorithm(player, this);
+                        moveAiCard(ai.getCards().size(), ai.getPlayedCards().size()-1);
                     }
                 }
-            } else if (jugador.getCartasJugadas().size() == ai.getCartasJugadas().size() - 1) { // Si ya la AI tiró en esa ronda
-                if(habilitadoARetrucar < 2) truco.setEnabled(true);
-                // Si la ultima carta que le queda al oponente es un 4, no se puede cantar truco
-                if(ai.getCartasJugadas().size() == 3) if(ai.getCartasJugadas().get(2).rankingCarta()==0) truco.setEnabled(false);
+            } else if (player.getPlayedCards().size() == ai.getPlayedCards().size() - 1) {
+                if(enabledToRetrucar < 2) truco.setEnabled(true);
+                // If the last card that the AI has thrown is a 4, player can't say 'truco'
+                if(ai.getPlayedCards().size() == 3) if(ai.getPlayedCards().get(2).rankingCard()==0) truco.setEnabled(false);
                 irAlMazo.setEnabled(true);
-                PC1Enabled=true;
-                PC2Enabled=true;
-                PC3Enabled=true;
-            } else if (jugador.getCartasJugadas().size() - 1 == ai.getCartasJugadas().size()) { // Si ya el jugador tiró en esa ronda
+                cardPlayer1Enabled=true;
+                cardPlayer2Enabled=true;
+                cardPlayer3Enabled=true;
+            } else if (player.getPlayedCards().size() - 1 == ai.getPlayedCards().size()) {
                 truco.setEnabled(false);
-                envido.setEnabled(false);
+                envidoMenu.setEnabled(false);
                 irAlMazo.setEnabled(false);
-                PC1Enabled=false;
-                PC2Enabled=false;
-                PC3Enabled=false;
-                if (AICantaTruco(false)==0);
+                cardPlayer1Enabled=false;
+                cardPlayer2Enabled=false;
+                cardPlayer3Enabled=false;
+                if (askAiTruco(false)==0);
                 else return;
-                ai.jugarTurno(jugador, this);
-                moverCartaAI(ai.getMano().size(), ai.getCartasJugadas().size()-1);
+                ai.playTurnAlgorithm(player, this);
+                moveAiCard(ai.getCards().size(), ai.getPlayedCards().size()-1);
             }
         }
     }
 
-    public int AICantaEnvido() throws IOException {
-        if (envidoFinalizado == true)
+    public int askAiEnvido() throws IOException {
+        if (finishedEnvido == true)
             return 0;
 
-        int desicion;
-        if (envidosCantados.isEmpty())
-            desicion = ai.desidirEnvido(0, jugador, menu);
+        int decision;
+        if (envidosDeclared.isEmpty())
+            decision = ai.envidoAlgorithm(0, player, menu);
 
         else {
-            desicion = ai.desidirEnvido(envidosCantados.get(envidosCantados.size() - 1), jugador, menu);
+            decision = ai.envidoAlgorithm(envidosDeclared.get(envidosDeclared.size() - 1), player, menu);
 
-            if (desicion == envidosCantados.get(envidosCantados.size() - 1)) { // Si la AI Acepta lo cantado
-                cantar.setFile("src/truco_java/cantos/envido/" + numeroPersonaje + "5.wav", 1);
-                cantar.play();
+            // AI Accepts
+            if (decision == envidosDeclared.get(envidosDeclared.size() - 1)) {
+                aiVoice.setFile("src/truco_java/cantos/envido/" + aiNumber + "5.wav", 1);
+                aiVoice.play();
 
-                if (jugador.calcularEnvido() > ai.calcularEnvido()) { //Si gana el jugador
-                    ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
-                    JOptionPane.showMessageDialog(null, "Has ganado. " + nombrePersonaje + " tenía " + ai.calcularEnvido() + " de envido.");
-                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    efectos.play();
-                    jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()), this);
+                if (player.calculateEnvido() > ai.calculateEnvido()) {
+                    ai.setPlayersDeclaredEnvido(player.calculateEnvido());
+                    JOptionPane.showMessageDialog(null, "Has ganado. " + aiName + " tenía " + ai.calculateEnvido() + " de envido.");
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
+                    player.setPoints(player.getPoints() + countPointsWonEnvido(ai.getPoints()), this);
                 }
-                else if (jugador.calcularEnvido() < ai.calcularEnvido()) { // Si gana la AI
-                    ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
-                    JOptionPane.showMessageDialog(null, "Has perdido. " + nombrePersonaje + " tenía " + ai.calcularEnvido() + " de envido.");
-                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    efectos.play();
-                    ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()), this);
+                else if (player.calculateEnvido() < ai.calculateEnvido()) {
+                    ai.setPlayersDeclaredEnvido(player.calculateEnvido());
+                    JOptionPane.showMessageDialog(null, "Has perdido. " + aiName + " tenía " + ai.calculateEnvido() + " de envido.");
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
+                    ai.setPoints(ai.getPoints() + countPointsWonEnvido(player.getPoints()), this);
                 }
-                else if (jugador.calcularEnvido() == ai.calcularEnvido()) { // Si empatan...
-                    if (jugador.isMano() == true) { // .. y el jugador es mano
-                        ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
-                        JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has ganado por mano");
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
-                        jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoGanado(ai.getPuntaje()), this);
-                    } else { // .. y la AI es mano
-                        ai.setEnvidoJugadorCantado(jugador.calcularEnvido());
-                        JOptionPane.showMessageDialog(null, "Empate (" + jugador.calcularEnvido() + " de envido). Has perdido, " + nombrePersonaje + " es mano");
-                        efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        efectos.play();
-                        ai.setPuntaje(ai.getPuntaje() + calcularEnvidoGanado(jugador.getPuntaje()), this);
+                else if (player.calculateEnvido() == ai.calculateEnvido()) {
+                    if (player.isFirstHand() == true) {
+                        ai.setPlayersDeclaredEnvido(player.calculateEnvido());
+                        JOptionPane.showMessageDialog(null, "Empate (" + player.calculateEnvido() + " de envido). Has ganado por mano");
+                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        effects.play();
+                        player.setPoints(player.getPoints() + countPointsWonEnvido(ai.getPoints()), this);
+                    } else {
+                        ai.setPlayersDeclaredEnvido(player.calculateEnvido());
+                        JOptionPane.showMessageDialog(null, "Empate (" + player.calculateEnvido() + " de envido). Has perdido, " + aiName + " es mano");
+                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        effects.play();
+                        ai.setPoints(ai.getPoints() + countPointsWonEnvido(player.getPoints()), this);
                     }
                 }
-                quieroEnv.setVisible(false);
-                noQuieroEnv.setVisible(false);
-                envido.setEnabled(false);
-                envidoEsp.setVisible(false);
+                quieroEnvido.setVisible(false);
+                noQuieroEnvido.setVisible(false);
+                envidoMenu.setEnabled(false);
+                envido.setVisible(false);
                 envidoEnvido.setVisible(false);
                 realEnvido.setVisible(false);
                 faltaEnvido.setVisible(false);
-                PC1Enabled=true;
-                PC2Enabled=true;
-                PC3Enabled=true;
-                if(envidoFinalizado==true) habilitaTurno();
-                dibujarPuntaje();
+                cardPlayer1Enabled=true;
+                cardPlayer2Enabled=true;
+                cardPlayer3Enabled=true;
+                if(finishedEnvido==true) updatesTurn();
+                updatePoints();
                 return 1;
             }
         }
 
-        switch (desicion) {
+        switch (decision) {
             case 0:
-                if(!envidosCantados.isEmpty()){
-                    imprimeAIEnvido(-1, false);
-                    jugador.setPuntaje(jugador.getPuntaje() + calcularEnvidoPerdido(), this);
-                    envidoFinalizado=true;
-                    envido.setEnabled(false);
-                    envidoEsp.setVisible(false);
+                if(!envidosDeclared.isEmpty()){
+                    printsEnvidoMessage(-1, false);
+                    player.setPoints(player.getPoints() + countPointsLoserEnvido(), this);
+                    finishedEnvido=true;
+                    envidoMenu.setEnabled(false);
+                    envido.setVisible(false);
                     envidoEnvido.setVisible(false);
                     realEnvido.setVisible(false);
                     faltaEnvido.setVisible(false);
-                    quieroEnv.setVisible(false);
-                    noQuieroEnv.setVisible(false);
-                    habilitaTurno();
+                    quieroEnvido.setVisible(false);
+                    noQuieroEnvido.setVisible(false);
+                    updatesTurn();
                 }
                 return 0;
             case 1:
-                envido.setEnabled(false);
-                envidoEsp.setVisible(false);
+                envidoMenu.setEnabled(false);
+                envido.setVisible(false);
                 envidoEnvido.setVisible(true);
                 realEnvido.setVisible(true);
                 faltaEnvido.setVisible(true);
                 break;
             case 2:
-                envido.setEnabled(false);
-                envidoEsp.setVisible(false);
+                envidoMenu.setEnabled(false);
+                envido.setVisible(false);
                 envidoEnvido.setVisible(false);
                 realEnvido.setVisible(true);
                 faltaEnvido.setVisible(true);
                 break;
             case 3:
-                envido.setEnabled(false);
-                envidoEsp.setVisible(false);
+                envidoMenu.setEnabled(false);
+                envido.setVisible(false);
                 envidoEnvido.setVisible(false);
                 realEnvido.setVisible(false);
                 faltaEnvido.setVisible(true);
                 break;
             case 4:
-                envido.setEnabled(false);
-                envidoEsp.setVisible(false);
+                envidoMenu.setEnabled(false);
+                envido.setVisible(false);
                 envidoEnvido.setVisible(false);
                 realEnvido.setVisible(false);
                 faltaEnvido.setVisible(false);
                 break;
         }
-        // Agrega el envido que eligio la AI a la lista y lo imprime
-        envidosCantados.add(desicion);
-        imprimeAIEnvido(desicion, false);
 
-        // Boton Quiero Envido
-        quieroEnv.setVisible(true);
+        envidosDeclared.add(decision);
+        printsEnvidoMessage(decision, false);
 
-        // Boton No Quiero Envido
-        noQuieroEnv.setVisible(true);
+        quieroEnvido.setVisible(true);
+        noQuieroEnvido.setVisible(true);
 
-        // No puede tirar cartas mientras este en envido
-        PC1Enabled=false;
-        PC2Enabled=false;
-        PC3Enabled=false;
+        // Cards not available when envido is pending
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
 
         return 1;
     }
 
-    private int calcularEnvidoGanado(int puntajePerdedor) {
+    private int countPointsWonEnvido(int looserPoints) {
         int total = 0;
 
-        for (int i = 0; i < envidosCantados.size(); i++) {
-            switch (envidosCantados.get(i)) {
+        for (int i = 0; i < envidosDeclared.size(); i++) {
+            switch (envidosDeclared.get(i)) {
                 case 1:
                     total += 2;
                     break;
@@ -1298,19 +1219,19 @@ public class InterfazJuego extends JFrame {
                     total += 3;
                     break;
                 case 4:
-                    total = 15 - puntajePerdedor;
+                    total = 15 - looserPoints;
             }
         }
 
-        envidoFinalizado = true;
+        finishedEnvido = true;
         return total;
     }
 
-    private int calcularEnvidoPerdido() {
+    private int countPointsLoserEnvido() {
         int total = 0;
 
-        for (int i = 0; i < envidosCantados.size()-1; i++) {
-            switch (envidosCantados.get(i)) {
+        for (int i = 0; i < envidosDeclared.size()-1; i++) {
+            switch (envidosDeclared.get(i)) {
                 case 1:
                     total += 2;
                     break;
@@ -1323,67 +1244,69 @@ public class InterfazJuego extends JFrame {
             }
         }
 
-        if(envidosCantados.size() == 1) // Si solo se canto un envido, da un punto
+        if(envidosDeclared.size() == 1)
             total+=1;
 
-        envidoFinalizado = true;
+        finishedEnvido = true;
         return total;
     }
 
-    private void imprimeAIEnvido(int envido, boolean esLlamadoDesdeTimer){
-        String texto = " ";
-        fondoEstado.setVisible(true);
-        estado.setFont(new Font("Serif", Font.ITALIC, 30));
-        estado.setVisible(true);
+    private void printsEnvidoMessage(int envido, boolean isCalledFromTimer){
+        String text = " ";
+        statusBackground.setVisible(true);
+        status.setFont(new Font("Serif", Font.ITALIC, 30));
+        status.setVisible(true);
 
-        if(!esLlamadoDesdeTimer && envido!=0) {
-            cantar.setFile("src/truco_java/cantos/envido/" + numeroPersonaje + envido + ".wav", 1);
-            cantar.play();
+        if(!isCalledFromTimer && envido!=0) {
+            aiVoice.setFile("src/truco_java/cantos/envido/" + aiNumber + envido + ".wav", 1);
+            aiVoice.play();
         }
 
         switch(envido){
             case -1:
-                texto = "No quiero!";
-                if(numeroPersonaje==5) texto = "No tea? so No quiero!";
+                text = "No quiero!";
+                if(aiNumber==5) text = "No tea? so No quiero!";
                 break;
             case 0:
-                fondoEstado.setVisible(false);
-                estado.setText("");
-                setFondo(0);
+                statusBackground.setVisible(false);
+                status.setText("");
+                setBackground(0);
                 return;
             case 1:
-                texto = "Envido!";
-                if(numeroPersonaje==5) texto = "Why not? Envido!";
+                text = "Envido!";
+                if(aiNumber==5) text = "Why not? Envido!";
                 break;
             case 2:
-                texto = "Envido!";
-                if(numeroPersonaje==5) {
-                    texto = "What about another Envido?!";
-                    estado.setFont(new Font("Serif", Font.ITALIC, 25));
+                text = "Envido!";
+                if(aiNumber==5) {
+                    text = "What about another Envido?!";
+                    status.setFont(new Font("Serif", Font.ITALIC, 25));
                 }
                 break;
             case 3:
-                texto = "Real Envido!";
-                if(numeroPersonaje==5) texto = "I say Real Envido!";
+                text = "Real Envido!";
+                if(aiNumber==5) text = "I say Real Envido!";
                 break;
             case 4:
-                texto = "Falta Envido!";
-                if(numeroPersonaje==5) texto = "Falta Envido my mate!";
+                text = "Falta Envido!";
+                if(aiNumber==5) text = "Falta Envido my mate!";
                 break;
         }
 
-        estado.setText(texto);
-        setFondo(1);
-        final String textoTimer = texto; // tengo que crear una variable final porque sino el timer no me la acepta
+        status.setText(text);
+        setBackground(1);
 
+        // I have to create a final variable for the timer, otherwise it will complain
+        final String timerText = text;
         new java.util.Timer().schedule(
             new java.util.TimerTask() {
                 @Override
                 public void run() {
-                    if(estado.getText().equals(textoTimer)){ // Si sigue siendo el mismo texto que se puso antes y nada lo cambio (por ejemplo retrucar el envido o un truco
-                        if(quieroEnv.isVisible()) // Si todavia el usuario no se decidió
-                            imprimeAIEnvido(envido, true); // Lo vuelve a imprimir
-                        else imprimeAIEnvido(0, true); // sino lo desaparece
+                    // If no other method changed the text of the panel (for example: 'retrucar' or 'envido')
+                    if(status.getText().equals(timerText)){
+                        if(quieroEnvido.isVisible())
+                            printsEnvidoMessage(envido, true); // Prints again
+                        else printsEnvidoMessage(0, true); // Clears
                     }
                 }
             },
@@ -1391,63 +1314,63 @@ public class InterfazJuego extends JFrame {
             );
     }
 
-    private int compruebaSiTerminoPartida(){
-        if(jugador.getCartasJugadas().size() != ai.getCartasJugadas().size() || ai.getCartasJugadas().isEmpty())
+    private int checksWinnerOfGame(){
+        if(player.getPlayedCards().size() != ai.getPlayedCards().size() || ai.getPlayedCards().isEmpty())
             return 0;
 
-        int ganoJugador=0, ganoAI=0, ganador=0;
-        boolean empateDefine=false;
+        int roundsWonPlayer=0, roundsWonAi=0, winner=0;
+        boolean tieDefines=false;
 
-        for(int i=0;i<jugador.getCartasJugadas().size();i++){ // se fija por cada ronda
-            if(ganador!=0)
+        for(int i=0;i<player.getPlayedCards().size();i++){
+            if(winner!=0)
                 break;
 
             OUTER:
             OUTER_1:
             switch (i) {
                 case 0:
-                    switch (ganaRonda(i)) {
+                    switch (whoWonRound(i)) {
                         case 1:
-                            ganoJugador++;
+                            roundsWonPlayer++;
                             break;
                         case 2:
-                            ganoAI++;
+                            roundsWonAi++;
                             break;
                         case 0:
-                            empateDefine=true;
+                            tieDefines=true;
                             break;
                         default:
                             break;
                     }
                     break;
                 case 1:
-                    switch (ganaRonda(i)) {
+                    switch (whoWonRound(i)) {
                         case 1:
-                            if (empateDefine==true) {
-                                ganador=1;
+                            if (tieDefines==true) {
+                                winner=1;
                                 break OUTER_1;
                             } else {
-                                ganoJugador++;
+                                roundsWonPlayer++;
                             }
                             break;
                         case 2:
-                            if (empateDefine==true) {
-                                ganador=2;
+                            if (tieDefines==true) {
+                                winner=2;
                                 break OUTER_1;
                             } else {
-                                ganoAI++;
+                                roundsWonAi++;
                             }
                             break;
                         case 0:
-                            switch(ganaRonda(0)){
+                            switch(whoWonRound(0)){
                                 case 0:
-                                    empateDefine=true;
+                                    tieDefines=true;
                                     break;
                                 case 1:
-                                    ganador=1;
+                                    winner=1;
                                     break;
                                 case 2:
-                                    ganador=2;
+                                    winner=2;
                                     break;
                             }   break;
                         default:
@@ -1455,32 +1378,32 @@ public class InterfazJuego extends JFrame {
                     }
                     break;
                 case 2:
-                    switch (ganaRonda(i)) {
+                    switch (whoWonRound(i)) {
                         case 1:
-                            if (empateDefine==true) {
-                                ganador=1;
+                            if (tieDefines==true) {
+                                winner=1;
                                 break OUTER;
                             } else {
-                                ganoJugador++;
+                                roundsWonPlayer++;
                             }
                             break;
                         case 2:
-                            if (empateDefine==true) {
-                                ganador=2;
+                            if (tieDefines==true) {
+                                winner=2;
                                 break OUTER;
                             } else {
-                                ganoAI++;
+                                roundsWonAi++;
                             }
                             break;
                         case 0:
-                            switch(ganaRonda(0)){
+                            switch(whoWonRound(0)){
                                 case 0:
-                                    empateDefine=true; break;
+                                    tieDefines=true; break;
                                 case 1:
-                                    ganador=1;
+                                    winner=1;
                                     break;
                                 case 2:
-                                    ganador=2;
+                                    winner=2;
                                     break;
                             }   break;
                         default:
@@ -1490,135 +1413,133 @@ public class InterfazJuego extends JFrame {
             }
         }
 
-        // Si empatan las 3 rondas seguidas, gana el que es mano
-        if( jugador.getCartasJugadas().size() == 3 && ganaRonda(0)==0 && ganaRonda(1)==0 && ganaRonda(2)==0){
-            if(jugador.isMano())
+        // If the 3 rounds are tied, wins the one who is first hand
+        if( player.getPlayedCards().size() == 3 && whoWonRound(0)==0 && whoWonRound(1)==0 && whoWonRound(2)==0){
+            if(player.isFirstHand())
                 return 1;
             else
                 return 2;
         }
 
 
-        if(empateDefine==false && (ganoJugador>=2 || ganoAI>=2)){
-            if(ganoJugador>ganoAI)
-                ganador=1;
+        if(tieDefines==false && (roundsWonPlayer>=2 || roundsWonAi>=2)){
+            if(roundsWonPlayer>roundsWonAi)
+                winner=1;
             else
-                ganador=2;
+                winner=2;
         }
 
-        return ganador;
+        return winner;
     }
 
 
-    private int ganaRonda(int pos){
-        int rankingJugador = jugador.getCartasJugadas().get(pos).rankingCarta(); // carta del jugador
-        int rankingAI = ai.getCartasJugadas().get(pos).rankingCarta(); // carta de la AI
+    private int whoWonRound(int roundNumber){
+        int rankingJugador = player.getPlayedCards().get(roundNumber).rankingCard();
+        int rankingAI = ai.getPlayedCards().get(roundNumber).rankingCard();
 
-        if(rankingJugador > rankingAI) // si gana jugador
+        if(rankingJugador > rankingAI)
             return 1;
-        if(rankingJugador < rankingAI) // si gana AI
+        if(rankingJugador < rankingAI)
             return 2;
-        // Si empata
+
         return 0;
     }
 
-    // Responder es un booleano que indica que si se le canto truco. Sirve para saber si puede rechazar a lo que el usuario le cantó
-    public int AICantaTruco(boolean responder) throws IOException { // El return 0 significa no hacer nada y el return 1 significa que frena la ejecucion en busca de contestacion del usuario
-        if (habilitadoARetrucar == 1)
+    // The argument 'hasToAnswer' is a boolean that indicates if the user sang 'truco', so, that way the AI can say 'No quiero' to what the user said
+    public int askAiTruco(boolean hasToAnswer) throws IOException {
+        // If it returns 0, that means not do anything
+        // If it returns 1, that means that the user has to response (stop normal
+        //  execution of the game till the user responds)
+        if (enabledToRetrucar == 1)
             return 0;
 
-        // Si la ultima carta que le queda al oponente es un 4, no se puede cantar truco
-        if(ai.getCartasJugadas().size() == 3){
-            if(ai.getCartasJugadas().get(2).rankingCarta()==0) {
+        if(ai.getPlayedCards().size() == 3 && ai.getPlayedCards().get(2).rankingCard()==0) {
                 truco.setEnabled(false);
                 return 0;
-            }
         }
-        if(jugador.getCartasJugadas().size() == 3) {
-            if(jugador.getCartasJugadas().get(2).rankingCarta()==0)
+        if(player.getPlayedCards().size() == 3 && player.getPlayedCards().get(2).rankingCard()==0)
                 return 0;
-        }
 
-        // Si no se canto envido y es la primer ronda
-        if(!envidoFinalizado && ai.getCartasJugadas().isEmpty()){
-            if(AICantaEnvido()!=0){ // Se pregunta si quiere cantar envido
-                if(nivelTruco!=0) nivelTruco--;
-                habilitadoARetrucar = 0;
+        if(!finishedEnvido && ai.getPlayedCards().isEmpty()){
+            if(askAiEnvido()!=0){
+                if(trucoLevel!=0) trucoLevel--;
+                enabledToRetrucar = 0;
                 return 1;
             }
         }
 
-        int desicion = ai.desidirTruco(nivelTruco, jugador, menu);
+        int decision = ai.trucoAlgorithm(trucoLevel, player, menu);
 
-        if(desicion == nivelTruco && nivelTruco==0) // Si no se canto nada y no quiere truco
+        // If there is no truco declared and the AI doesn't want
+        if(decision == trucoLevel && trucoLevel==0)
             return 0;
 
-        if(desicion==0){ // si no quiere truco la AI
-            if (habilitadoARetrucar == 2 && responder) { // SI tiene que contestar
-                imprimeAITruco(-1, false);
+        // AI doesn't want truco
+        if(decision==0){
+            if (enabledToRetrucar == 2 && hasToAnswer) {
+                printsTrucoMessage(-1, false);
                 quieroTruco.setVisible(false);
                 noQuieroTruco.setVisible(false);
-                jugador.setPuntaje(jugador.getPuntaje() + calcularTrucoPerdido(), this);
-                JOptionPane.showMessageDialog(null, "" + nombrePersonaje + " ha rechazado el Truco. Repartiendo...");
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
-                otraPartida();
-                habilitaTurno();
+                player.setPoints(player.getPoints() + countPointsLoseTruco(), this);
+                JOptionPane.showMessageDialog(null, "" + aiName + " ha rechazado el Truco. Repartiendo...");
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
+                anotherRound();
+                updatesTurn();
                 return 1;
             } else return 0;
         }
 
-        PC1Enabled=false;
-        PC2Enabled=false;
-        PC3Enabled=false;
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
 
-        if(desicion == nivelTruco && responder){ // Si acepta el truco
-            habilitadoARetrucar=2;
+        // Accepts truco
+        if(decision == trucoLevel && hasToAnswer){
+            enabledToRetrucar=2;
             truco.setEnabled(false);
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
-            // Al aceptar truco se deshabilita el envido
-            envido.setEnabled(false);
-            envidoEsp.setVisible(false);
+            envidoMenu.setEnabled(false);
+            envido.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
-            // Habilita las cartas
-            PC1Enabled=true;
-            PC2Enabled=true;
-            PC3Enabled=true;
-            imprimeAITruco(4, false);
 
-            habilitaTurno();
+            cardPlayer1Enabled=true;
+            cardPlayer2Enabled=true;
+            cardPlayer3Enabled=true;
+            printsTrucoMessage(4, false);
+
+            updatesTurn();
             return 0;
         }
 
-        if(!responder && desicion<(nivelTruco+1)) // Si no estoy respondiendo y quiero menos de la oferta actual (lo cual no se puede), no hacer nada
+        // If AI doesn't have to answer and wants less than the actual offer (this shouldn't be possible)
+        if(!hasToAnswer && decision<(trucoLevel+1))
             return 0;
-        if(responder && desicion<(nivelTruco+1)){ // Si estoy respondiendo y quiero menos de la oferta actual (lo cual no se puede), imprime no quiero
-            imprimeAITruco(-1, false);
+        // If AI has to answer and wants less than the actual offer (this shouldn't be possible)
+        if(hasToAnswer && decision<(trucoLevel+1)){
+            printsTrucoMessage(-1, false);
             quieroTruco.setVisible(false);
             noQuieroTruco.setVisible(false);
-            jugador.setPuntaje(jugador.getPuntaje() + calcularTrucoPerdido(), this);
-            JOptionPane.showMessageDialog(null, "" + nombrePersonaje + " ha rechazado el Truco. Repartiendo...");
-            efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            efectos.play();
-            otraPartida();
-            habilitaTurno();
+            player.setPoints(player.getPoints() + countPointsLoseTruco(), this);
+            JOptionPane.showMessageDialog(null, "" + aiName + " ha rechazado el Truco. Repartiendo...");
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+            anotherRound();
+            updatesTurn();
             return 1;
         }
 
-        // Si retruca, imprime el mensaje y le pasa el mando al jugador a aceptar o aumentar la apuesta
-        habilitadoARetrucar=1;
-        // if(desicion>nivelTruco)
-        nivelTruco++;
-        imprimeAITruco(nivelTruco, false);
+        enabledToRetrucar=1; // user should retrucar or accept
+        trucoLevel++;
+        printsTrucoMessage(trucoLevel, false);
         quieroTruco.setVisible(true);
         noQuieroTruco.setVisible(true);
 
-        // Al cantar truco se deshabilita el truco
-        envido.setEnabled(false);
-        envidoEsp.setVisible(false);
+        envidoMenu.setEnabled(false);
+        envido.setVisible(false);
         envidoEnvido.setVisible(false);
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
@@ -1626,74 +1547,74 @@ public class InterfazJuego extends JFrame {
         return 1;
     }
 
-    private void imprimeAITruco(int trucoMSG, boolean esLlamadoDesdeTimer) throws IOException{
-        setFondo(1);
-        fondoEstado.setVisible(true);
+    private void printsTrucoMessage(int trucoMessage, boolean isCalledFromTimer) throws IOException{
+        setBackground(1);
+        statusBackground.setVisible(true);
 
-        if(!esLlamadoDesdeTimer && trucoMSG!=0) {
-            cantar.setFile("src/truco_java/cantos/truco/" + numeroPersonaje + trucoMSG + ".wav", 1);
-            cantar.play();
+        if(!isCalledFromTimer && trucoMessage!=0) {
+            aiVoice.setFile("src/truco_java/cantos/truco/" + aiNumber + trucoMessage + ".wav", 1);
+            aiVoice.play();
         }
 
-        switch(trucoMSG){
+        // TODO: Put every `status.setText("xxxxxxx")` in a variable `text`, that after the switch calls the status.setText("xxxxxxx"). And update the `timerText` initialization
+        switch(trucoMessage){
             case -1:
-                estado.setText("No quiero!");
-                if(numeroPersonaje==5) estado.setText("This’s a rip-off. No quiero");
+                status.setText("No quiero!");
+                if(aiNumber==5) status.setText("This’s a rip-off. No quiero");
                 break;
             case 0:
-                fondoEstado.setVisible(false);
-                estado.setText("");
-                setFondo(0);
+                statusBackground.setVisible(false);
+                status.setText("");
+                setBackground(0);
                 return;
             case 1:
-                estado.setText("Truco!");
-                if(numeroPersonaje==5) estado.setText("Come on, Truco!");
+                status.setText("Truco!");
+                if(aiNumber==5) status.setText("Come on, Truco!");
                 truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/retrucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
                 truco.setEnabled(true);
                 break;
             case 2:
-                estado.setText("Re truco!");
-                if(numeroPersonaje==5) estado.setText("Re truco if you're brave!");
+                status.setText("Re truco!");
+                if(aiNumber==5) status.setText("Re truco if you're brave!");
                 truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/valeCuatroBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
                 truco.setEnabled(true);
                 break;
             case 3:
-                estado.setText("Quiero vale 4!");
-                if(numeroPersonaje==5) estado.setText("Really? Quiero vale cuatro");
+                status.setText("Quiero vale 4!");
+                if(aiNumber==5) status.setText("Really? Quiero vale cuatro");
                 truco.setVisible(false);
                 break;
             case 4:
-                estado.setText("Quiero!");
-                if(numeroPersonaje==5) estado.setText("Easy peasy. Quiero!");
+                status.setText("Quiero!");
+                if(aiNumber==5) status.setText("Easy peasy. Quiero!");
                 truco.setEnabled(false);
-                // setFondo(0);
                 break;
         }
 
-        envidoFinalizado = true;
-        final String textoTimer = estado.getText();
+        finishedEnvido = true;
+        final String timerText = status.getText();
 
         new java.util.Timer().schedule(
                 new java.util.TimerTask() {
                     @Override
                     public void run() {
-                        if(estado.getText().equals(textoTimer)){
+                        if(status.getText().equals(timerText)){
                             if(quieroTruco.isVisible()){
                                 try {
-                                    imprimeAITruco(trucoMSG, true);
+                                    printsTrucoMessage(trucoMessage, true);
                                 } catch (IOException ex) {
-                                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de escribir el mensaje de " + nombrePersonaje + " en el truco: " + ex.getMessage());
-                                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                                    efectos.play();
+                                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de escribir el mensaje de " + aiName + " en el truco: " + ex.getMessage());
+                                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                                    effects.play();
                                 }
                             }
                             else {
                                 try {
-                                    imprimeAITruco(0, true);
+                                    printsTrucoMessage(0, true);
                                 } catch (IOException ex) {
-                                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de escribir el mensaje de " + nombrePersonaje + " en el truco: " + ex.getMessage());
-                                    efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                                    efectos.play();
+                                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de escribir el mensaje de " + aiName + " en el truco: " + ex.getMessage());
+                                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                                    effects.play();
                                 }
                             }
                         }
@@ -1703,8 +1624,8 @@ public class InterfazJuego extends JFrame {
         );
     }
 
-    private int calcularTrucoGanado() {
-        switch(nivelTruco){
+    private int countPointsWonTruco() {
+        switch(trucoLevel){
             case 0:
                 return 1;
             case 1:
@@ -1717,9 +1638,8 @@ public class InterfazJuego extends JFrame {
         return 0;
     }
 
-    private int calcularTrucoPerdido() {
-
-        switch(nivelTruco-1){
+    private int countPointsLoseTruco() {
+        switch(trucoLevel-1){
             case 0:
                 return 1;
             case 1:
@@ -1733,146 +1653,142 @@ public class InterfazJuego extends JFrame {
         return 0;
     }
 
-    private void setFondo(int estadoPers){
-        char estadoPersChar;
-        if(estadoPers==0) // Fondo persoonaje normal
-            estadoPersChar = 'a'; // Personaje AI normal
-        else
-            estadoPersChar = 'b'; // personaje AI Pregunta (truco, envido, o retrucar cualquiera de las anteriores)
+    private void setBackground(int status){
+        char statusChar = status==0 ? 'a' : 'b';
+        // a ==> Normal Background
+        // b ==> Expression Background
 
-        String imagen = "src/truco_java/fondos/bg" + numeroPersonaje + estadoPersChar + ".png";
-        fondo.setIcon(new ImageIcon(imagen));
+        String image = "src/truco_java/fondos/bg" + aiNumber + statusChar + ".png";
+        background.setIcon(new ImageIcon(image));
     }
 
-    private void moverCartaAI(int origen, int destino) throws IOException{
-        final int origenX, destinoX;
-        final String archivo = ai.getCartasJugadas().get(ai.getCartasJugadas().size()-1).linkCarta();
+    private void moveAiCard(int origin, int destination) throws IOException{
+        final int originX, destinationX;
+        final String file = ai.getPlayedCards().get(ai.getPlayedCards().size()-1).linkCard();
 
-        //Según qué carta sea, la oculta y pone una temporal en reemplazo
-        // PostData: tengo que agarrar la ultima carta jugada para obtener su imagen
-        //  porque antes de llamar a moverCartaAI, tiro la carta desde la clase jugador
-        switch(origen){
+        // Depending on what card is, it hides it and puts a temporal one in replace
+        switch(origin){
             case 0:
-                AIC1.setVisible(false);
-                origenX=100;
+                cardAi1.setVisible(false);
+                originX=100;
                 break;
             case 1:
-                AIC2.setVisible(false);
-                origenX=180;
+                cardAi2.setVisible(false);
+                originX=180;
                 break;
             case 2:
-                AIC3.setVisible(false);
-                origenX=300;
+                cardAi3.setVisible(false);
+                originX=300;
                 break;
             default:
-                origenX=0;
+                originX=0;
                 break;
         }
-        switch(destino){
+        switch(destination){
             case 0:
-                destinoX=130;
+                destinationX=130;
                 break;
             case 1:
-                destinoX=220;
+                destinationX=220;
                 break;
             case 2:
-                destinoX=300;
+                destinationX=300;
                 break;
             default:
-                destinoX=0;
+                destinationX=0;
                 break;
         }
 
-        if(menu.movCartas.isSelected()){ //Si no se quiere movimiento de cartas
+        if(menu.fastModeCheckBox.isSelected()){
             try {
-                dibujarCartas();
-                habilitaTurno();
+                drawCards();
+                updatesTurn();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error: " + ex.getMessage());
-                efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                efectos.play();
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
             }
             return;
         }
 
-        movCarta.setBounds(origenX, 70, 75, 100);
-        movCarta.setVisible(true);
-        fondo.add(movCarta);
+        movingCard.setBounds(originX, 70, 75, 100);
+        movingCard.setVisible(true);
+        background.add(movingCard);
 
-        int porcentajeMov=40;
-        final int movX=(destinoX-origenX)/porcentajeMov, movY=(210-70)/porcentajeMov;
-        final int sizeX = (movCarta.getWidth()-70)/porcentajeMov;
-        final int sizeY = (movCarta.getHeight()-80)/porcentajeMov;
+        int movementPercentage=40;
+        final int moveX=(destinationX-originX)/movementPercentage, movY=(210-70)/movementPercentage;
+        final int sizeX = (movingCard.getWidth()-70)/movementPercentage;
+        final int sizeY = (movingCard.getHeight()-80)/movementPercentage;
 
         Thread thread = new Thread(){
             public void run(){
-                timerMovCarta(movX, movY, origenX, 70, destinoX, 210, sizeX, sizeY, archivo);
+                moveCardTimer(moveX, movY, originX, 70, destinationX, 210, sizeX, sizeY, file);
             }
         };
         thread.start();
     }
 
-    private void moverCartaPersona(int origen, String archivo, int destino) throws IOException{
-        final int origenX, destinoX;
+    private void movePlayerCard(int origin, String file, int destination) throws IOException{
+        final int originX, destinationX;
 
-        //Según qué carta sea, la oculta y pone una temporal en reemplazo
-        switch(origen){
+        // Depending on what card is, it hides it and puts a temporal one in replace
+        switch(origin){
             case 0:
-                PC1.setVisible(false);
-                origenX=10;
+                cardPlayer1.setVisible(false);
+                originX=10;
                 break;
             case 1:
-                PC2.setVisible(false);
-                origenX=170;
+                cardPlayer2.setVisible(false);
+                originX=170;
                 break;
             case 2:
-                PC3.setVisible(false);
-                origenX=330;
+                cardPlayer3.setVisible(false);
+                originX=330;
                 break;
             default:
-                origenX=0;
+                originX=0;
                 break;
         }
-        switch(destino){
+        switch(destination){
             case 0:
-                destinoX=130;
+                destinationX=130;
                 break;
             case 1:
-                destinoX=210;
+                destinationX=210;
                 break;
             case 2:
-                destinoX=290;
+                destinationX=290;
                 break;
             default:
-                destinoX=0;
+                destinationX=0;
                 break;
         }
 
-        movCarta.setBounds(origenX, 400, 155, 200);
-        movCarta.setVisible(true);
-        fondo.add(movCarta);
+        movingCard.setBounds(originX, 400, 155, 200);
+        movingCard.setVisible(true);
+        background.add(movingCard);
 
-        int porcentajeMov=40;
-        final int movX=(destinoX-origenX)/porcentajeMov, movY=(310-400)/porcentajeMov;
-        final int sizeX = (movCarta.getWidth()-70)/porcentajeMov;
-        final int sizeY = (movCarta.getHeight()-80)/porcentajeMov;
+        int movementPorcentage=40;
+        final int moveX=(destinationX-originX)/movementPorcentage, moveY=(310-400)/movementPorcentage;
+        final int sizeX = (movingCard.getWidth()-70)/movementPorcentage;
+        final int sizeY = (movingCard.getHeight()-80)/movementPorcentage;
 
         Thread thread = new Thread(){
             public void run(){
-                timerMovCarta(movX, movY, origenX, 400, destinoX, 310, sizeX, sizeY, archivo);
+                moveCardTimer(moveX, moveY, originX, 400, destinationX, 310, sizeX, sizeY, file);
             }
         };
         thread.start();
     }
 
-  public void timerMovCarta (int movX, int movY, int origenX, int origenY, int destinoX, int destinoY, int ancho, int alto, String archivo) {
+  public void moveCardTimer (int moveX, int moveY, int origenX, int originY, int destinationX, int destinationY, int width, int height, String file) {
       new java.util.Timer().schedule(
             new java.util.TimerTask() {
               @Override
               public void run() {
-                  movCarta.setBounds(origenX+movX,origenY+movY, movCarta.getWidth()-ancho, movCarta.getHeight()-alto);
+                  movingCard.setBounds(origenX+moveX,originY+moveY, movingCard.getWidth()-width, movingCard.getHeight()-height);
                   try {
-                  movCarta.setIcon(new ImageIcon(ImageIO.read(new File(archivo)).getScaledInstance(movCarta.getWidth()-ancho, movCarta.getHeight()-alto, Image.SCALE_SMOOTH)));
+                      movingCard.setIcon(new ImageIcon(ImageIO.read(new File(file)).getScaledInstance(movingCard.getWidth()-width, movingCard.getHeight()-height, Image.SCALE_SMOOTH)));
                   } catch (IOException e) {
                   }
               }
@@ -1885,9 +1801,9 @@ public class InterfazJuego extends JFrame {
       } catch (Exception e) {
       }
 
-      movCarta.repaint();
-      if(origenX-destinoX>5 || origenX-destinoX<-5){
-          timerMovCarta(movX,movY, origenX+movX, origenY+movY, destinoX, destinoY, ancho, alto, archivo);
+      movingCard.repaint();
+      if(origenX-destinationX>5 || origenX-destinationX<-5){
+          moveCardTimer(moveX,moveY, origenX+moveX, originY+moveY, destinationX, destinationY, width, height, file);
           return;
       }
 
@@ -1897,22 +1813,22 @@ public class InterfazJuego extends JFrame {
       }
 
 
-      // Permite jugar
-      movCarta.setVisible(false);
-      fondo.remove(movCarta);
+      // Enables to play
+      movingCard.setVisible(false);
+      background.remove(movingCard);
       try {
-          dibujarCartas();
+          drawCards();
       } catch (IOException ex) {
           JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de dibujar las cartas: " + ex.getMessage());
-          efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-          efectos.play();
+          effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+          effects.play();
       }
       try {
-          habilitaTurno();
+          updatesTurn();
       } catch (IOException ex) {
           JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-          efectos.setFile("src/truco_java/musica/botonMenu.wav", 1);
-          efectos.play();
+          effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+          effects.play();
       }
   }
 }

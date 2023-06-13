@@ -3,24 +3,24 @@ package truco_java;
 import java.util.ArrayList;
 
 public class Persona extends Jugador {
-    public int posMano[] = new int[3];
+    private int posCards[] = new int[3];
 
-    public Persona(ArrayList<Carta> mano, boolean esMano) {
-        super(mano, esMano);
+    public Persona(ArrayList<Carta> cards, boolean firstHand) {
+        super(cards, firstHand);
     }
 
-    public int[] getPosMano(){
-        return posMano;
+    public int[] getPosCards(){
+        return posCards;
     }
 
-    public void setPosMano(int[] p){
-        posMano=p;
+    public void setPosCards(int[] p){
+        posCards=p;
     }
 
-    public Carta tirarCarta(int pos){
-        Carta aTirar = mano.get(pos);
-        mano.remove(pos);
-        cartasJugadas.add(aTirar);
-        return aTirar;
+    public Carta throwCard(int pos){
+        Carta toThrow = cards.get(pos);
+        cards.remove(pos);
+        playedCards.add(toThrow);
+        return toThrow;
     }
 }
