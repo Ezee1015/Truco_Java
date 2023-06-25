@@ -202,7 +202,7 @@ public class PlayMenu extends JFrame{
                     setVisible(false);
                     ServerMultiplayer game;
                     try {
-                          game = new ServerMultiplayer(menu, "localhost", Integer.parseInt(serverPort.getText()), menuJugar);
+                          game = new ServerMultiplayer(menu, Integer.parseInt(serverPort.getText()), menuJugar);
                           game.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
                           game.setResizable(false);
                           game.setTitle("Juego Truco - Servidor");
@@ -266,7 +266,7 @@ public class PlayMenu extends JFrame{
             setVisible(false);
             SinglePlayer game;
             try {
-                game = new SinglePlayer(menu);
+                game = new SinglePlayer(menu, this);
                 game.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
                 game.setResizable(false);
                 game.setTitle("Juego Truco");
