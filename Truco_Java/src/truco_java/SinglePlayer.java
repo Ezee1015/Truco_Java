@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -363,36 +362,6 @@ public class SinglePlayer extends GameManagment{
         }
     }
 
-    protected void throwCard(int pos) throws IOException {
-        // Intenta solucionar un bug de diferentes llamados que pueden perjudicar a la mano
-        cardPlayer1Enabled=false;
-        cardPlayer2Enabled=false;
-        cardPlayer3Enabled=false;
-
-        if(!menu.fastModeCheckBox.isSelected()) moveCardPlayer(pos, player.getCards().get(player.getPosCards()[pos]).linkCard(), player.getPlayedCards().size());
-
-        //Tira la carta
-        player.addPlayedCards(player.getPosCards()[pos]);
-
-        // Indica que carta no se debbe dibujar
-        int temp[] = player.getPosCards();
-        temp[pos] = -1;
-        for(int i=pos+1;i<temp.length;i++)
-            temp[i]-=1;
-        player.setPosCards(temp);
-
-        if(menu.fastModeCheckBox.isSelected()){ //Si no se quiere movimiento de cartas
-            try {
-                drawCards();
-                updatesTurn();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error: " + ex.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
-        }
-    }
-
     protected void anotherRound() throws IOException {
         if(!finishedGame && Truco_Java.musicCheckBox.isSelected() && !menu.fastModeCheckBox.isSelected()) {
             effects.setFile("src/truco_java/musica/otraPartida.wav", 1);
@@ -511,7 +480,7 @@ public class SinglePlayer extends GameManagment{
                 if (askAiTruco(false)==0);
                 else return;
                 opponent = aiAlgorithm.playTurnAlgorithm(opponent, player.getPlayedCards());
-                moveCardOpponent(opponent.getCards().size(), opponent.getPlayedCards().size()-1);
+                moveCard(opponent.getCards().size(), opponent.getPlayedCards().size()-1, opponent, false);
             }
         } else if (player.getPlayedCards().isEmpty() && !opponent.getPlayedCards().isEmpty()) {
             if(enabledToRetrucar < 2) truco.setEnabled(true);
@@ -531,7 +500,7 @@ public class SinglePlayer extends GameManagment{
             if (askAiTruco(false)==0);
             else return;
             opponent = aiAlgorithm.playTurnAlgorithm(opponent, player.getPlayedCards());
-            moveCardOpponent(opponent.getCards().size(), opponent.getPlayedCards().size()-1);
+            moveCard(opponent.getCards().size(), opponent.getPlayedCards().size()-1, opponent, false);
         } else if (!player.getPlayedCards().isEmpty() && !opponent.getPlayedCards().isEmpty()) {
             // If it's a round that nobody has played (start of the round)
             if (player.getPlayedCards().size() == opponent.getPlayedCards().size()) {
@@ -557,7 +526,7 @@ public class SinglePlayer extends GameManagment{
                     if (askAiTruco(false)==0);
                     else return;
                     opponent = aiAlgorithm.playTurnAlgorithm(opponent, player.getPlayedCards());
-                    moveCardOpponent(opponent.getCards().size(), opponent.getPlayedCards().size()-1);
+                    moveCard(opponent.getCards().size(), opponent.getPlayedCards().size()-1, opponent, false);
                 } else if(playerRankingLastRound == aiRankingLastRound){
                     if(player.isFirstHand()){
                         if(enabledToRetrucar < 2) truco.setEnabled(true);
@@ -577,7 +546,7 @@ public class SinglePlayer extends GameManagment{
                         if (askAiTruco(false)==0);
                         else return;
                         opponent = aiAlgorithm.playTurnAlgorithm(opponent, player.getPlayedCards());
-                        moveCardOpponent(opponent.getCards().size(), opponent.getPlayedCards().size()-1);
+                        moveCard(opponent.getCards().size(), opponent.getPlayedCards().size()-1, opponent, false);
                     }
                 }
             } else if (player.getPlayedCards().size() == opponent.getPlayedCards().size() - 1) {
@@ -598,7 +567,7 @@ public class SinglePlayer extends GameManagment{
                 if (askAiTruco(false)==0);
                 else return;
                 opponent = aiAlgorithm.playTurnAlgorithm(opponent, player.getPlayedCards());
-                moveCardOpponent(opponent.getCards().size(), opponent.getPlayedCards().size()-1);
+                moveCard(opponent.getCards().size(), opponent.getPlayedCards().size()-1, opponent, false);
             }
         }
     }
@@ -824,56 +793,5 @@ public class SinglePlayer extends GameManagment{
         faltaEnvido.setVisible(false);
 
         return 1;
-    }
-
-    protected void moveCardTimer (int moveX, int moveY, int origenX, int originY, int destinationX, int destinationY, int width, int height, String file) {
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        movingCard.setBounds(origenX+moveX,originY+moveY, movingCard.getWidth()-width, movingCard.getHeight()-height);
-                        try {
-                            movingCard.setIcon(new ImageIcon(ImageIO.read(new File(file)).getScaledInstance(movingCard.getWidth()-width, movingCard.getHeight()-height, Image.SCALE_SMOOTH)));
-                        } catch (IOException e) {
-                        }
-                    }
-                },
-                1
-                );
-
-        try {
-            TimeUnit.MILLISECONDS.sleep(6);
-        } catch (Exception e) {
-        }
-
-        movingCard.repaint();
-        if(origenX-destinationX>5 || origenX-destinationX<-5){
-            moveCardTimer(moveX,moveY, origenX+moveX, originY+moveY, destinationX, destinationY, width, height, file);
-            return;
-        }
-
-        try {
-            TimeUnit.MILLISECONDS.sleep(20);
-        } catch (Exception e) {
-        }
-
-
-        // Enables to play
-        movingCard.setVisible(false);
-        background.remove(movingCard);
-        try {
-            drawCards();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de dibujar las cartas: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
-        try {
-            updatesTurn();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
     }
 }

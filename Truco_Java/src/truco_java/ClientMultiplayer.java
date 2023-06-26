@@ -3,7 +3,6 @@ package truco_java;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
@@ -457,24 +456,22 @@ public class ClientMultiplayer extends GameInterface {
             setBackground(0);
         }
 
-    protected void throwCard(int pos) throws IOException {
-        cardPlayer1Enabled=false;
-        cardPlayer2Enabled=false;
-        cardPlayer3Enabled=false;
+    protected void actionAfterThrowingCard(boolean isThePlayer, int posCardThrown){
+        try {
+            drawCards();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Ha sucedido un error: " + ex.getMessage());
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+        }
 
-        player.addPlayedCards(player.getPosCards()[pos]);
-
-        // Indicates which card should not be drawn
-        int temp[] = player.getPosCards();
-        temp[pos] = -1;
-        for(int i=pos+1;i<temp.length;i++)
-            temp[i]-=1;
-        player.setPosCards(temp);
+        if(!isThePlayer)
+            return;
 
         Thread thread = new Thread(){
             public void run(){
                 try{
-                    client.throwCard(pos);
+                    client.throwCard(posCardThrown);
                     decodeMessage(client.receiveMessage());
                 } catch(IOException er){
                     connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
@@ -485,17 +482,6 @@ public class ClientMultiplayer extends GameInterface {
             }
         };
         thread.start();
-
-        if(menu.fastModeCheckBox.isSelected()){
-            try {
-                drawCards();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error: " + ex.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
-        } else
-            moveCardPlayer(pos, player.getPlayedCards().get(player.getPlayedCards().size()-1).linkCard(), player.getPlayedCards().size()-1);
     }
 
     protected void updatePoints() throws IOException {
@@ -512,50 +498,6 @@ public class ClientMultiplayer extends GameInterface {
         pointsAi.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + aiPoints + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
 
     }
-
-  public void moveCardTimer (int moveX, int moveY, int originX, int originY, int destinationX, int destinationY, int width, int height, String file) {
-      new java.util.Timer().schedule(
-            new java.util.TimerTask() {
-              @Override
-              public void run() {
-                  movingCard.setBounds(originX+moveX,originY+moveY, movingCard.getWidth()-width, movingCard.getHeight()-height);
-                  try {
-                      movingCard.setIcon(new ImageIcon(ImageIO.read(new File(file)).getScaledInstance(movingCard.getWidth()-width, movingCard.getHeight()-height, Image.SCALE_SMOOTH)));
-                  } catch (IOException e) {
-                  }
-              }
-            },
-            1
-            );
-
-      try {
-          TimeUnit.MILLISECONDS.sleep(6);
-      } catch (Exception e) {
-      }
-
-      movingCard.repaint();
-      if(originX-destinationX>5 || originX-destinationX<-5){
-          moveCardTimer(moveX,moveY, originX+moveX, originY+moveY, destinationX, destinationY, width, height, file);
-          return;
-      }
-
-      try {
-          TimeUnit.MILLISECONDS.sleep(20);
-      } catch (Exception e) {
-      }
-
-
-      // Enables to play
-      movingCard.setVisible(false);
-      background.remove(movingCard);
-      try {
-          drawCards();
-      } catch (IOException ex) {
-          JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de dibujar las cartas: " + ex.getMessage());
-          effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-          effects.play();
-      }
-  }
 
   public void decodeMessage (String message) {
       if(message==""){
@@ -636,7 +578,7 @@ public class ClientMultiplayer extends GameInterface {
 
                 if(moveCardOpponent){
                     try {
-                        moveCardOpponent(newCountCardsOpponent, 2-newCountCardsOpponent);
+                        moveCard(newCountCardsOpponent, 2-newCountCardsOpponent, opponent, false);
                     } catch (Exception e) {
                         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());

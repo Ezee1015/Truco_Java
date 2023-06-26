@@ -3,6 +3,7 @@ package truco_java;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 import java.awt.Image;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -10,6 +11,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextPane;
@@ -66,9 +68,7 @@ public abstract class GameInterface extends JFrame{
     protected abstract void quieroTrucoAction (ActionEvent e);
     protected abstract void noQuieroTrucoAction (ActionEvent e);
 
-    protected abstract void throwCard (int pos) throws IOException;
-    // TODO: make this function not abstract
-    protected abstract void moveCardTimer (int moveX, int moveY, int originX, int originY, int destinationX, int destinationY, int width, int height, String file);
+    protected abstract void actionAfterThrowingCard(boolean isThePlayer, int posCardThrown);
     // TODO: make this function not abstract
     protected abstract void updatePoints() throws IOException;
     protected abstract void loadPlayersName();
@@ -658,123 +658,126 @@ public abstract class GameInterface extends JFrame{
         }
     }
 
-    // TODO: Replace every hard-coded value into its corresponding property
-    protected void moveCardOpponent(int origin, int destination) throws IOException{
-        final int originX, destinationX;
-        final String file = opponent.getPlayedCards().get(opponent.getPlayedCards().size()-1).linkCard();
+    protected void throwCard(int pos) throws IOException {
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
+
+        player.addPlayedCards(player.getPosCards()[pos]);
+
+        // Indicates which card should not be drawn
+        int temp[] = player.getPosCards();
+        temp[pos] = -1;
+        for(int i=pos+1;i<temp.length;i++)
+            temp[i]-=1;
+        player.setPosCards(temp);
+
+        if(menu.fastModeCheckBox.isSelected())
+            actionAfterThrowingCard(true, pos);
+        else
+            moveCard(pos, player.getPlayedCards().size()-1, player, true);
+    }
+
+    protected void moveCard(int origin, int destination, Player playerToMove, boolean isThePlayer) throws IOException{
+        final String file = playerToMove.getPlayedCards().get(playerToMove.getPlayedCards().size()-1).linkCard();
+        final int originY          = isThePlayer ? cardPlayer1.getY() : cardOpponent1.getY();
+        final int destinationY     = isThePlayer ? cardThrownPlayer1.getY() : cardThrownOpponent1.getY();
+        final int movingCardWidth  = isThePlayer ? cardPlayer1.getWidth() : cardOpponent1.getWidth();
+        final int movingCardHeight = isThePlayer ? cardPlayer1.getHeight() : cardOpponent1.getHeight();
+        final int originX;
+        final int destinationX;
 
         // Depending on what card is, it hides it and puts a temporal one in replace
+        JComponent cardOrigin = new JButton();
         switch(origin){
             case 0:
-                cardOpponent1.setVisible(false);
-                originX=100;
+                cardOrigin = isThePlayer ? cardPlayer1 : cardOpponent1;
                 break;
             case 1:
-                cardOpponent2.setVisible(false);
-                originX=180;
+                cardOrigin = isThePlayer ? cardPlayer2 : cardOpponent2;
                 break;
             case 2:
-                cardOpponent3.setVisible(false);
-                originX=300;
+                cardOrigin = isThePlayer ? cardPlayer3 : cardOpponent3;
                 break;
             default:
-                originX=0;
-                break;
+                return;
         }
+        cardOrigin.setVisible(false);
+        originX=cardOrigin.getX();
+
         switch(destination){
             case 0:
-                destinationX=130;
+                destinationX= isThePlayer ? cardThrownPlayer1.getX() : cardThrownOpponent1.getX();
                 break;
             case 1:
-                destinationX=220;
+                destinationX= isThePlayer ? cardThrownPlayer2.getX() : cardThrownOpponent2.getX();
                 break;
             case 2:
-                destinationX=300;
+                destinationX= isThePlayer ? cardThrownPlayer3.getX() : cardThrownOpponent3.getX();
                 break;
             default:
-                destinationX=0;
-                break;
+                return;
         }
 
-        if(menu.fastModeCheckBox.isSelected()){
-            try {
-                drawCards();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error: " + ex.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
-            return;
-        }
-
-        movingCard.setBounds(originX, 70, 75, 100);
+        movingCard.setBounds(originX, originY, movingCardWidth, movingCardHeight);
         movingCard.setVisible(true);
         background.add(movingCard);
 
-        int movementPercentage=40;
-        final int moveX=(destinationX-originX)/movementPercentage, moveY=(210-70)/movementPercentage;
-        final int sizeX = (movingCard.getWidth()-70)/movementPercentage;
-        final int sizeY = (movingCard.getHeight()-80)/movementPercentage;
+        // TODO: Make an slider in the GUI for adjusting the movement percentage
+        int movementPercentage=30;
+        final float moveX=(float)(destinationX-originX)/movementPercentage;
+        final float moveY=(float)(destinationY-originY)/movementPercentage;
+        final float sizeX = (float)(movingCardWidth-cardThrownPlayer1.getWidth()) / movementPercentage;
+        final float sizeY = (float)(movingCardHeight-cardThrownPlayer1.getHeight()) / movementPercentage;
 
         Thread thread = new Thread(){
             public void run(){
-                moveCardTimer(moveX, moveY, originX, 71, destinationX, 210, sizeX, sizeY, file);
+                moveCardTimer(moveX, moveY, sizeX, sizeY, movementPercentage, file);
+                actionAfterThrowingCard(isThePlayer, origin);
             }
         };
         thread.start();
     }
 
-    protected void moveCardPlayer(int origin, String file, int destination) throws IOException{
-        final int originX, destinationX;
+    protected void moveCardTimer (float moveX, float moveY, float widthDecrease, float heightDecrease, int percentageMovement, String file) {
+        final int movingCardWidthOrigin = movingCard.getWidth();
+        final int movingCardHeightOrigin = movingCard.getHeight();
+        final int originX = movingCard.getX();
+        final int originY = movingCard.getY();
 
-        // Depending on what card is, it hides it and puts a temporal one in replace
-        switch(origin){
-            case 0:
-                cardPlayer1.setVisible(false);
-                originX=10;
-                break;
-            case 1:
-                cardPlayer2.setVisible(false);
-                originX=170;
-                break;
-            case 2:
-                cardPlayer3.setVisible(false);
-                originX=330;
-                break;
-            default:
-                originX=0;
-                break;
-        }
-        switch(destination){
-            case 0:
-                destinationX=130;
-                break;
-            case 1:
-                destinationX=210;
-                break;
-            case 2:
-                destinationX=290;
-                break;
-            default:
-                destinationX=0;
-                break;
-        }
+        for(int i=0;i<percentageMovement;i++){
+            final int movingCardX = (int)(originX+moveX*i);
+            final int movingCardY = (int)(originY+moveY*i);
+            final int movingCardWidth  = (int)(movingCardWidthOrigin-(widthDecrease*i));
+            final int movingCardHeight = (int)(movingCardHeightOrigin-(heightDecrease*i));
 
-        movingCard.setBounds(originX, 400, 155, 200);
-        movingCard.setVisible(true);
-        background.add(movingCard);
+            new java.util.Timer().schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            movingCard.setBounds(movingCardX, movingCardY, movingCardWidth, movingCardHeight);
 
-        int porcentajeMov=40;
-        final int moveX=(destinationX-originX)/porcentajeMov, moveY=(310-400)/porcentajeMov;
-        final int sizeX = (movingCard.getWidth()-70)/porcentajeMov;
-        final int sizeY = (movingCard.getHeight()-80)/porcentajeMov;
+                            try {
+                                movingCard.setIcon(new ImageIcon(ImageIO.read(new File(file)).getScaledInstance(movingCardWidth, movingCardHeight, Image.SCALE_SMOOTH)));
+                                movingCard.repaint();
+                            } catch (IOException e) {
+                            }
 
-        Thread thread = new Thread(){
-            public void run(){
-                moveCardTimer(moveX, moveY, originX, 400, destinationX, 310, sizeX, sizeY, file);
+                        }
+                    },
+                    1
+                    );
+
+            try {
+                TimeUnit.MILLISECONDS.sleep(10);
+            } catch (Exception e) {
             }
-        };
-        thread.start();
+        }
+
+        // Enables to play
+        movingCard.setVisible(false);
+        background.remove(movingCard);
+
     }
 
 }

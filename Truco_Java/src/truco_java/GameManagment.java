@@ -306,34 +306,15 @@ public abstract class GameManagment extends GameInterface{
         return 0;
     }
 
-    protected void throwCard(int pos) throws IOException {
-        cardPlayer1Enabled=false;
-        cardPlayer2Enabled=false;
-        cardPlayer3Enabled=false;
-
-        if(!menu.fastModeCheckBox.isSelected())
-            moveCardPlayer(pos, player.getCards().get(player.getPosCards()[pos]).linkCard(), player.getPlayedCards().size());
-
-        player.addPlayedCards(player.getPosCards()[pos]);
-
-        // Indicates which card should not be drawn
-        int temp[] = player.getPosCards();
-        temp[pos] = -1;
-        for(int i=pos+1;i<temp.length;i++)
-            temp[i]-=1;
-        player.setPosCards(temp);
-
-        if(menu.fastModeCheckBox.isSelected()){
-            try {
-                drawCards();
-                updatesTurn();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error: " + ex.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
+    protected void actionAfterThrowingCard(boolean isThePlayer, int posCardThrown){
+        try {
+            drawCards();
+            updatesTurn();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
         }
-
     }
 
 }

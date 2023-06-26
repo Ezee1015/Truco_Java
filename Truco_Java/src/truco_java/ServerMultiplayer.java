@@ -599,36 +599,6 @@ public class ServerMultiplayer extends GameManagment {
         }
     }
 
-    protected void throwCard(int pos) throws IOException {
-        cardPlayer1Enabled=false;
-        cardPlayer2Enabled=false;
-        cardPlayer3Enabled=false;
-
-        if(!menu.fastModeCheckBox.isSelected())
-            moveCardPlayer(pos, player.getCards().get(player.getPosCards()[pos]).linkCard(), player.getPlayedCards().size());
-
-        player.addPlayedCards(player.getPosCards()[pos]);
-
-        // Indicates which card should not be drawn
-        int temp[] = player.getPosCards();
-        temp[pos] = -1;
-        for(int i=pos+1;i<temp.length;i++)
-            temp[i]-=1;
-        player.setPosCards(temp);
-
-        if(menu.fastModeCheckBox.isSelected()){
-            try {
-                drawCards();
-                updatesTurn();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error: " + ex.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
-        }
-
-    }
-
     protected void updatePoints() throws IOException {
         if(finishedGame)
             return;
@@ -958,57 +928,6 @@ public class ServerMultiplayer extends GameManagment {
         }
     }
 
-    protected void moveCardTimer (int moveX, int moveY, int originX, int originY, int destinationX, int destinationY, int width, int height, String file) {
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        movingCard.setBounds(originX+moveX,originY+moveY, movingCard.getWidth()-width, movingCard.getHeight()-height);
-                        try {
-                            movingCard.setIcon(new ImageIcon(ImageIO.read(new File(file)).getScaledInstance(movingCard.getWidth()-width, movingCard.getHeight()-height, Image.SCALE_SMOOTH)));
-                        } catch (IOException e) {
-                        }
-                    }
-                },
-                1
-                );
-
-        try {
-            TimeUnit.MILLISECONDS.sleep(6);
-        } catch (Exception e) {
-        }
-
-        movingCard.repaint();
-        if(originX-destinationX>5 || originX-destinationX<-5){
-            moveCardTimer(moveX,moveY, originX+moveX, originY+moveY, destinationX, destinationY, width, height, file);
-            return;
-        }
-
-        try {
-            TimeUnit.MILLISECONDS.sleep(20);
-        } catch (Exception e) {
-        }
-
-
-        // Enables to play
-        movingCard.setVisible(false);
-        background.remove(movingCard);
-        try {
-            drawCards();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de dibujar las cartas: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
-        try {
-            updatesTurn();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
-    }
-
     public void decodeMessage (String message) {
         message=message.trim();
 
@@ -1028,7 +947,7 @@ public class ServerMultiplayer extends GameManagment {
                     temp[i]-=1;
                 opponent.setPosCards(temp);
                 try {
-                    moveCardOpponent(opponent.getCards().size(), opponent.getPlayedCards().size()-1);
+                    moveCard(opponent.getCards().size(), opponent.getPlayedCards().size()-1, opponent, false);
                 } catch (Exception e) {
                     connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                     JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
