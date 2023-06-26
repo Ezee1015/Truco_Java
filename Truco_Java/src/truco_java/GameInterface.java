@@ -428,7 +428,8 @@ public abstract class GameInterface extends JFrame{
     }
 
     protected void printsTrucoMessage(int trucoMessage, boolean isCalledFromTimer) throws IOException{
-        setBackground(1);
+        final String timerText;
+
         statusBackground.setVisible(true);
 
         if(!isCalledFromTimer && trucoMessage!=0) {
@@ -436,43 +437,41 @@ public abstract class GameInterface extends JFrame{
             opponentVoice.play();
         }
 
-        // TODO: Put every `status.setText("xxxxxxx")` in a variable `text`, that after the switch calls the status.setText("xxxxxxx"). And update the `timerText` initialization
         switch(trucoMessage){
             case -1:
-                status.setText("No quiero!");
-                if(opponentNumber==5) status.setText("This’s a rip-off. No quiero");
+                timerText = opponentNumber==5 ? "This’s a rip-off. No quiero" : "No quiero!";
                 break;
             case 0:
                 statusBackground.setVisible(false);
-                status.setText("");
+                timerText = "";
                 setBackground(0);
                 return;
             case 1:
-                status.setText("Truco!");
-                if(opponentNumber==5) status.setText("Come on, Truco!");
+                timerText = opponentNumber==5 ? "Come on, Truco!" : "Truco!";
                 truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/retrucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
                 truco.setEnabled(true);
                 break;
             case 2:
-                status.setText("Re truco!");
-                if(opponentNumber==5) status.setText("Re truco if you're brave!");
+                timerText = opponentNumber==5 ? "Re truco if you're brave!" : "Re truco!";
                 truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/valeCuatroBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
                 truco.setEnabled(true);
                 break;
             case 3:
-                status.setText("Quiero vale 4!");
-                if(opponentNumber==5) status.setText("Really? Quiero vale cuatro");
+                timerText = opponentNumber==5 ? "Really? Quiero vale cuatro" : "Quiero vale 4!";
                 truco.setEnabled(false);
                 break;
             case 4:
-                status.setText("Quiero!");
-                if(opponentNumber==5) status.setText("Easy peasy. Quiero!");
+                timerText = opponentNumber==5 ? "Easy peasy. Quiero!" : "Quiero!";
                 truco.setEnabled(false);
+                break;
+            default:
+                timerText = "";
                 break;
         }
 
         finishedEnvido = true;
-        final String timerText = status.getText();
+        status.setText(timerText);
+        setBackground(1);
 
         new java.util.Timer().schedule(
                 new java.util.TimerTask() {
@@ -505,7 +504,7 @@ public abstract class GameInterface extends JFrame{
     }
 
     protected void printsEnvidoMessage(int envido, boolean isCalledFromTimer){
-        String text = " ";
+        final String text;
         statusBackground.setVisible(true);
         status.setFont(new Font("Serif", Font.ITALIC, 30));
         status.setVisible(true);
@@ -518,36 +517,31 @@ public abstract class GameInterface extends JFrame{
 
         switch(envido){
             case -1:
-                text = "No quiero!";
-                if(opponentNumber==5) text = "No tea? so No quiero!";
+                text = opponentNumber==5 ? "No tea? so No quiero!" : "No quiero!";
                 break;
             case 0:
                 statusBackground.setVisible(false);
-                status.setText("");
+                text = "";
                 setBackground(0);
                 return;
             case 1:
-                text = "Envido!";
-                if(opponentNumber==5) text = "Why not? Envido!";
+                text = opponentNumber==5 ? "Why not? Envido!" : "Envido!";
                 break;
             case 2:
-                text = "Envido!";
-                if(opponentNumber==5) {
-                    text = "What about another Envido?!";
-                    status.setFont(new Font("Serif", Font.ITALIC, 25));
-                }
+                text = opponentNumber==5 ? "What about another Envido?!" : "Envido!";
+                status.setFont(new Font("Serif", Font.ITALIC, 25));
                 break;
             case 3:
-                text = "Real Envido!";
-                if(opponentNumber==5) text = "I say Real Envido!";
+                text = opponentNumber==5 ? "I say Real Envido!" : "Real Envido!";
                 break;
             case 4:
-                text = "Falta Envido!";
-                if(opponentNumber==5) text = "Falta Envido my mate!";
+                text = opponentNumber==5 ? "Falta Envido my mate!" : "Falta Envido!";
                 break;
             case 5:
-                text = "Quiero!";
-                if(opponentNumber==5) text = "Easy peasy. Quiero!";
+                text = opponentNumber==5 ? "Easy peasy. Quiero!" : "Quiero!";
+                break;
+            default:
+                text="";
                 break;
         }
 
