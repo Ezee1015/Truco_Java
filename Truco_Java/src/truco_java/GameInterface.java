@@ -666,13 +666,15 @@ public abstract class GameInterface extends JFrame{
             temp[i]-=1;
         player.setPosCards(temp);
 
-        if(menu.fastModeCheckBox.isSelected())
-            actionAfterThrowingCard(true, pos);
-        else
-            moveCard(pos, player.getPlayedCards().size()-1, player, true);
+        moveCard(pos, player.getPlayedCards().size()-1, player, true);
     }
 
     protected void moveCard(int origin, int destination, Player playerToMove, boolean isThePlayer) throws IOException{
+        if(menu.fastModeCheckBox.isSelected()){
+            actionAfterThrowingCard(isThePlayer, origin);
+            return;
+        }
+
         final String file = playerToMove.getPlayedCards().get(playerToMove.getPlayedCards().size()-1).linkCard();
         final int originY          = isThePlayer ? cardPlayer1.getY() : cardOpponent1.getY();
         final int destinationY     = isThePlayer ? cardThrownPlayer1.getY() : cardThrownOpponent1.getY();
