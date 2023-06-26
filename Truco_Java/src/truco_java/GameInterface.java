@@ -719,7 +719,10 @@ public abstract class GameInterface extends JFrame{
         movingCard.setVisible(true);
         background.add(movingCard);
 
-        // TODO: Make an slider in the GUI for adjusting the movement percentage
+        // TODO: Make an slider in the GUI for adjusting the movement percentage. But
+        // for that, I need to create a config class, where should live all the
+        // configurations of the game (and the option to delete and change password in a
+        // account)
         int movementPercentage=30;
         final float moveX=(float)(destinationX-originX)/movementPercentage;
         final float moveY=(float)(destinationY-originY)/movementPercentage;
