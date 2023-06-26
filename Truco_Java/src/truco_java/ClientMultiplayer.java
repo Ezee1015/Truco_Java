@@ -1,20 +1,17 @@
 package truco_java;
 
-import java.awt.Image;
 import javax.swing.ImageIcon;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 
 public class ClientMultiplayer extends GameInterface {
     private Client client;
 
-    public ClientMultiplayer(Truco_Java menu, String ip, int port, PlayMenu playMenu) throws IOException {
+    public ClientMultiplayer(Truco_Java menu, String ip, int port, PlayMenu playMenu) throws IOException{
         super(menu, playMenu);
 
         client = new Client(ip,port);
@@ -90,335 +87,295 @@ public class ClientMultiplayer extends GameInterface {
     }
 
     protected void envidoAction (ActionEvent e) {
-            effects.setFile("src/truco_java/musica/boton.wav", 1);
-            effects.play();
-            envidosDeclared.add(1);
-            truco.setEnabled(false);
-            try {
-                trucoLevel=0;
-                drawButtons();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
-            quieroTruco.setVisible(false);
-            noQuieroTruco.setVisible(false);
-            quieroEnvido.setVisible(false);
-            noQuieroEnvido.setVisible(false);
-            irAlMazo.setEnabled(false);
-            quieroEnvido.setVisible(false);
-            noQuieroEnvido.setVisible(false);
-            envidoMenu.setEnabled(false);
-            envido.setVisible(false);
-            envidoEnvido.setVisible(false);
-            realEnvido.setVisible(false);
-            faltaEnvido.setVisible(false);
-            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-            enabledToRetrucar=1;
-
+        effects.setFile("src/truco_java/musica/boton.wav", 1);
+        effects.play();
+        envidosDeclared.add(1);
+        truco.setEnabled(false);
+        try {
             trucoLevel=0;
-            enabledToRetrucar = 0;
-
-            Thread thread = new Thread(){
-                public void run(){
-                    try{
-                        client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar);
-                        decodeMessage(client.receiveMessage());
-                    } catch(IOException er){
-                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        effects.play();
-                    }
-                }
-            };
-            thread.start();
-            printsEnvidoMessage(0,false);
-        }
-
-    protected void envidoEnvidoAction (ActionEvent e) {
-            effects.setFile("src/truco_java/musica/boton.wav", 1);
+            drawButtons();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
             effects.play();
-            envidosDeclared.add(2);
-            truco.setEnabled(false);
-            try {
-                trucoLevel=0;
-                drawButtons();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
-            quieroTruco.setVisible(false);
-            noQuieroTruco.setVisible(false);
-            quieroEnvido.setVisible(false);
-            noQuieroEnvido.setVisible(false);
-            irAlMazo.setEnabled(false);
-            envidoMenu.setEnabled(false);
-            envido.setVisible(false);
-            envidoEnvido.setVisible(false);
-            realEnvido.setVisible(false);
-            faltaEnvido.setVisible(false);
-            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-            enabledToRetrucar=1;
-
-            trucoLevel=0;
-            enabledToRetrucar = 0;
-
-            Thread thread = new Thread(){
-                public void run(){
-                    try{
-                        client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar);
-                        decodeMessage(client.receiveMessage());
-                    } catch(IOException er){
-                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        effects.play();
-                    }
-                }
-            };
-            thread.start();
-            printsEnvidoMessage(0,false);
         }
+        quieroTruco.setVisible(false);
+        noQuieroTruco.setVisible(false);
+        quieroEnvido.setVisible(false);
+        noQuieroEnvido.setVisible(false);
+        irAlMazo.setEnabled(false);
+        quieroEnvido.setVisible(false);
+        noQuieroEnvido.setVisible(false);
+        envidoMenu.setEnabled(false);
+        envido.setVisible(false);
+        envidoEnvido.setVisible(false);
+        realEnvido.setVisible(false);
+        faltaEnvido.setVisible(false);
+        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+        enabledToRetrucar=1;
 
-    protected void realEnvidoAction(ActionEvent e) {
-            effects.setFile("src/truco_java/musica/boton.wav", 1);
-            effects.play();
-            envidosDeclared.add(3);
-            truco.setEnabled(false);
-            try {
-                trucoLevel=0;
-                drawButtons();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
-            quieroTruco.setVisible(false);
-            noQuieroTruco.setVisible(false);
-            irAlMazo.setEnabled(false);
-            quieroEnvido.setVisible(false);
-            noQuieroEnvido.setVisible(false);
-            irAlMazo.setEnabled(false);
-            envidoMenu.setEnabled(false);
-            envido.setVisible(false);
-            envidoEnvido.setVisible(false);
-            realEnvido.setVisible(false);
-            faltaEnvido.setVisible(false);
-            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-            enabledToRetrucar=1;
+        trucoLevel=0;
+        enabledToRetrucar = 0;
 
-            trucoLevel=0;
-            enabledToRetrucar = 0;
-
-            Thread thread = new Thread(){
-                public void run(){
-                    try{
-                        client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar);
-                        decodeMessage(client.receiveMessage());
-                    } catch(IOException er){
-                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        effects.play();
-                    }
-                }
-            };
-            thread.start();
-            printsEnvidoMessage(0,false);
-
-        }
-
-    protected void faltaEnvidoAction (ActionEvent e) {
-            effects.setFile("src/truco_java/musica/boton.wav", 1);
-            effects.play();
-            envidosDeclared.add(4);
-            truco.setEnabled(false);
-            try {
-                trucoLevel=0;
-                drawButtons();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
-            quieroTruco.setVisible(false);
-            noQuieroTruco.setVisible(false);
-            quieroEnvido.setVisible(false);
-            noQuieroEnvido.setVisible(false);
-            irAlMazo.setEnabled(false);
-            envidoMenu.setEnabled(false);
-            envido.setVisible(false);
-            envidoEnvido.setVisible(false);
-            realEnvido.setVisible(false);
-            faltaEnvido.setVisible(false);
-            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-            enabledToRetrucar=1;
-
-            trucoLevel=0;
-            enabledToRetrucar = 0;
-
-            Thread thread = new Thread(){
-                public void run(){
-                    try{
-                        client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar);
-                        decodeMessage(client.receiveMessage());
-                    } catch(IOException er){
-                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        effects.play();
-                    }
-                }
-            };
-            thread.start();
-            printsEnvidoMessage(0,false);
-        }
-
-    protected void quieroEnvidoAction (ActionEvent e) {
-            effects.setFile("src/truco_java/musica/boton.wav", 1);
-            effects.play();
-            // The '5' means 'Quiero'. It's going to be processed in the server
-            envidosDeclared.add(5);
-            truco.setEnabled(false);
-            quieroTruco.setVisible(false);
-            noQuieroTruco.setVisible(false);
-            quieroEnvido.setVisible(false);
-            noQuieroEnvido.setVisible(false);
-            irAlMazo.setEnabled(false);
-            envidoMenu.setEnabled(false);
-            envido.setVisible(false);
-            envidoEnvido.setVisible(false);
-            realEnvido.setVisible(false);
-            faltaEnvido.setVisible(false);
-            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-
-            Thread thread = new Thread(){
-                public void run(){
-                    try{
-                        client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar);
-                        decodeMessage(client.receiveMessage());
-                    } catch(IOException er){
-                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        effects.play();
-                    }
-                }
-            };
-            thread.start();
-            printsEnvidoMessage(0,false);
-        }
-
-    protected void noQuieroEnvidoAction (ActionEvent e) {
-            effects.setFile("src/truco_java/musica/boton.wav", 1);
-            effects.play();
-            envidosDeclared.add(-1);
-            truco.setEnabled(false);
-            try {
-                trucoLevel=0;
-                drawButtons();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
-            quieroTruco.setVisible(false);
-            noQuieroTruco.setVisible(false);
-            quieroEnvido.setVisible(false);
-            noQuieroEnvido.setVisible(false);
-            irAlMazo.setEnabled(false);
-            envidoMenu.setEnabled(false);
-            envido.setVisible(false);
-            envidoEnvido.setVisible(false);
-            realEnvido.setVisible(false);
-            faltaEnvido.setVisible(false);
-            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-
-            Thread thread = new Thread(){
-                public void run(){
-                    try{
-                        client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar);
-                        decodeMessage(client.receiveMessage());
-                    } catch(IOException er){
-                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        effects.play();
-                    }
-                }
-            };
-            thread.start();
-            printsEnvidoMessage(0,false);
-        }
-
-    protected void trucoAction (ActionEvent e) {
-            effects.setFile("src/truco_java/musica/boton.wav", 1);
-            effects.play();
-            if(enabledToRetrucar != 1){
-                finishedEnvido = true;
-                quieroTruco.setVisible(false);
-                noQuieroTruco.setVisible(false);
-                truco.setEnabled(false);
-                envidoMenu.setEnabled(false);
-                envido.setVisible(false);
-                envidoEnvido.setVisible(false);
-                realEnvido.setVisible(false);
-                faltaEnvido.setVisible(false);
-                irAlMazo.setEnabled(false);
-                cardPlayer1Enabled=false;
-                cardPlayer2Enabled=false;
-                cardPlayer3Enabled=false;
-                connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-
-                trucoLevel++;
-                enabledToRetrucar = 1;
-                Thread thread = new Thread(){
-                    public void run(){
-                        try{
-                            client.sendTruco(trucoLevel, enabledToRetrucar);
-                            decodeMessage(client.receiveMessage());
-                        } catch(IOException er){
-                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        effects.play();
-                        }
-                    }
-                };
-                thread.start();
-                try {
-                    printsTrucoMessage(0, false);
-                } catch (Exception ex) {
+        Thread thread = new Thread(){
+            public void run(){
+                try{
+                    client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar);
+                    decodeMessage(client.receiveMessage());
+                } catch(IOException er){
                     connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes o sonidos: " + ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
                     effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
                     effects.play();
                 }
             }
-        }
+        };
+        thread.start();
+        printsEnvidoMessage(0,false);
+    }
 
-    protected void quieroTrucoAction (ActionEvent e) {
-            effects.setFile("src/truco_java/musica/boton.wav", 1);
+    protected void envidoEnvidoAction (ActionEvent e) {
+        effects.setFile("src/truco_java/musica/boton.wav", 1);
+        effects.play();
+        envidosDeclared.add(2);
+        truco.setEnabled(false);
+        try {
+            trucoLevel=0;
+            drawButtons();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
             effects.play();
+        }
+        quieroTruco.setVisible(false);
+        noQuieroTruco.setVisible(false);
+        quieroEnvido.setVisible(false);
+        noQuieroEnvido.setVisible(false);
+        irAlMazo.setEnabled(false);
+        envidoMenu.setEnabled(false);
+        envido.setVisible(false);
+        envidoEnvido.setVisible(false);
+        realEnvido.setVisible(false);
+        faltaEnvido.setVisible(false);
+        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+        enabledToRetrucar=1;
+
+        trucoLevel=0;
+        enabledToRetrucar = 0;
+
+        Thread thread = new Thread(){
+            public void run(){
+                try{
+                    client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar);
+                    decodeMessage(client.receiveMessage());
+                } catch(IOException er){
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
+                }
+            }
+        };
+        thread.start();
+        printsEnvidoMessage(0,false);
+    }
+
+    protected void realEnvidoAction(ActionEvent e) {
+        effects.setFile("src/truco_java/musica/boton.wav", 1);
+        effects.play();
+        envidosDeclared.add(3);
+        truco.setEnabled(false);
+        try {
+            trucoLevel=0;
+            drawButtons();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+        }
+        quieroTruco.setVisible(false);
+        noQuieroTruco.setVisible(false);
+        irAlMazo.setEnabled(false);
+        quieroEnvido.setVisible(false);
+        noQuieroEnvido.setVisible(false);
+        irAlMazo.setEnabled(false);
+        envidoMenu.setEnabled(false);
+        envido.setVisible(false);
+        envidoEnvido.setVisible(false);
+        realEnvido.setVisible(false);
+        faltaEnvido.setVisible(false);
+        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+        enabledToRetrucar=1;
+
+        trucoLevel=0;
+        enabledToRetrucar = 0;
+
+        Thread thread = new Thread(){
+            public void run(){
+                try{
+                    client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar);
+                    decodeMessage(client.receiveMessage());
+                } catch(IOException er){
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
+                }
+            }
+        };
+        thread.start();
+        printsEnvidoMessage(0,false);
+
+    }
+
+    protected void faltaEnvidoAction (ActionEvent e) {
+        effects.setFile("src/truco_java/musica/boton.wav", 1);
+        effects.play();
+        envidosDeclared.add(4);
+        truco.setEnabled(false);
+        try {
+            trucoLevel=0;
+            drawButtons();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+        }
+        quieroTruco.setVisible(false);
+        noQuieroTruco.setVisible(false);
+        quieroEnvido.setVisible(false);
+        noQuieroEnvido.setVisible(false);
+        irAlMazo.setEnabled(false);
+        envidoMenu.setEnabled(false);
+        envido.setVisible(false);
+        envidoEnvido.setVisible(false);
+        realEnvido.setVisible(false);
+        faltaEnvido.setVisible(false);
+        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+        enabledToRetrucar=1;
+
+        trucoLevel=0;
+        enabledToRetrucar = 0;
+
+        Thread thread = new Thread(){
+            public void run(){
+                try{
+                    client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar);
+                    decodeMessage(client.receiveMessage());
+                } catch(IOException er){
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
+                }
+            }
+        };
+        thread.start();
+        printsEnvidoMessage(0,false);
+    }
+
+    protected void quieroEnvidoAction (ActionEvent e) {
+        effects.setFile("src/truco_java/musica/boton.wav", 1);
+        effects.play();
+        // The '5' means 'Quiero'. It's going to be processed in the server
+        envidosDeclared.add(5);
+        truco.setEnabled(false);
+        quieroTruco.setVisible(false);
+        noQuieroTruco.setVisible(false);
+        quieroEnvido.setVisible(false);
+        noQuieroEnvido.setVisible(false);
+        irAlMazo.setEnabled(false);
+        envidoMenu.setEnabled(false);
+        envido.setVisible(false);
+        envidoEnvido.setVisible(false);
+        realEnvido.setVisible(false);
+        faltaEnvido.setVisible(false);
+        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+
+        Thread thread = new Thread(){
+            public void run(){
+                try{
+                    client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar);
+                    decodeMessage(client.receiveMessage());
+                } catch(IOException er){
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
+                }
+            }
+        };
+        thread.start();
+        printsEnvidoMessage(0,false);
+    }
+
+    protected void noQuieroEnvidoAction (ActionEvent e) {
+        effects.setFile("src/truco_java/musica/boton.wav", 1);
+        effects.play();
+        envidosDeclared.add(-1);
+        truco.setEnabled(false);
+        try {
+            trucoLevel=0;
+            drawButtons();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+        }
+        quieroTruco.setVisible(false);
+        noQuieroTruco.setVisible(false);
+        quieroEnvido.setVisible(false);
+        noQuieroEnvido.setVisible(false);
+        irAlMazo.setEnabled(false);
+        envidoMenu.setEnabled(false);
+        envido.setVisible(false);
+        envidoEnvido.setVisible(false);
+        realEnvido.setVisible(false);
+        faltaEnvido.setVisible(false);
+        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+
+        Thread thread = new Thread(){
+            public void run(){
+                try{
+                    client.sendEnvido(envidosDeclared, trucoLevel, enabledToRetrucar);
+                    decodeMessage(client.receiveMessage());
+                } catch(IOException er){
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
+                }
+            }
+        };
+        thread.start();
+        printsEnvidoMessage(0,false);
+    }
+
+    protected void trucoAction (ActionEvent e) {
+        effects.setFile("src/truco_java/musica/boton.wav", 1);
+        effects.play();
+        if(enabledToRetrucar != 1){
+            finishedEnvido = true;
+            quieroTruco.setVisible(false);
+            noQuieroTruco.setVisible(false);
+            truco.setEnabled(false);
             envidoMenu.setEnabled(false);
             envido.setVisible(false);
             envidoEnvido.setVisible(false);
             realEnvido.setVisible(false);
             faltaEnvido.setVisible(false);
-            truco.setEnabled(false);
-            quieroTruco.setVisible(false);
-            noQuieroTruco.setVisible(false);
             irAlMazo.setEnabled(false);
-            finishedEnvido=true;
+            cardPlayer1Enabled=false;
+            cardPlayer2Enabled=false;
+            cardPlayer3Enabled=false;
             connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
 
+            trucoLevel++;
+            enabledToRetrucar = 1;
             Thread thread = new Thread(){
                 public void run(){
                     try{
-                        client.sendTruco(4, enabledToRetrucar);
+                        client.sendTruco(trucoLevel, enabledToRetrucar);
                         decodeMessage(client.receiveMessage());
                     } catch(IOException er){
                         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
@@ -429,41 +386,75 @@ public class ClientMultiplayer extends GameInterface {
                 }
             };
             thread.start();
-            setBackground(0);
+            try {
+                printsTrucoMessage(0, false);
+            } catch (Exception ex) {
+                connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes o sonidos: " + ex.getMessage());
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
+            }
         }
+    }
+
+    protected void quieroTrucoAction (ActionEvent e) {
+        effects.setFile("src/truco_java/musica/boton.wav", 1);
+        effects.play();
+        envidoMenu.setEnabled(false);
+        envido.setVisible(false);
+        envidoEnvido.setVisible(false);
+        realEnvido.setVisible(false);
+        faltaEnvido.setVisible(false);
+        truco.setEnabled(false);
+        quieroTruco.setVisible(false);
+        noQuieroTruco.setVisible(false);
+        irAlMazo.setEnabled(false);
+        finishedEnvido=true;
+        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+
+        Thread thread = new Thread(){
+            public void run(){
+                try{
+                    client.sendTruco(4, enabledToRetrucar);
+                    decodeMessage(client.receiveMessage());
+                } catch(IOException er){
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
+                }
+            }
+        };
+        thread.start();
+        setBackground(0);
+    }
 
     protected void noQuieroTrucoAction (ActionEvent e) {
-            effects.setFile("src/truco_java/musica/boton.wav", 1);
-            effects.play();
-            quieroTruco.setVisible(false);
-            noQuieroTruco.setVisible(false);
-            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
+        effects.setFile("src/truco_java/musica/boton.wav", 1);
+        effects.play();
+        quieroTruco.setVisible(false);
+        noQuieroTruco.setVisible(false);
+        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
 
-            Thread thread = new Thread(){
-                public void run(){
-                    try{
-                        client.sendTruco(-1,enabledToRetrucar);
-                        decodeMessage(client.receiveMessage());
-                    } catch(IOException er){
-                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        effects.play();
-                    }
+        Thread thread = new Thread(){
+            public void run(){
+                try{
+                    client.sendTruco(-1,enabledToRetrucar);
+                    decodeMessage(client.receiveMessage());
+                } catch(IOException er){
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
                 }
-            };
-            thread.start();
-            setBackground(0);
-        }
+            }
+        };
+        thread.start();
+        setBackground(0);
+    }
 
     protected void actionAfterThrowingCard(boolean isThePlayer, int posCardThrown){
-        try {
-            drawCards();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        drawCards();
 
         if(!isThePlayer)
             return;
@@ -484,44 +475,44 @@ public class ClientMultiplayer extends GameInterface {
         thread.start();
     }
 
-    protected void actionWhenPlayerWins() throws IOException {}
-    protected void actionWhenOpponentWins() throws IOException {}
+    protected void actionWhenPlayerWins() {}
+    protected void actionWhenOpponentWins() {}
 
-  public void decodeMessage (String message) {
-      if(message==""){
-          try {
-              decodeMessage(client.receiveMessage());
-          } catch (Exception e) {
-              connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-              JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + e.getMessage());
-              effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-              effects.play();
-          }
-          return;
-      }
-      Scanner scanf = new Scanner(message.trim());
-      String cat="";
-      if(scanf.hasNext()) cat = scanf.next();
-      else {
-          connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-          JOptionPane.showMessageDialog(null, "Ha sucedido un error en la comunicación. Mensaje corrupto");
-          effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-          effects.play();
-          Thread thread = new Thread(){
-              public void run(){
-                  try{
-                      decodeMessage(client.receiveMessage());
-                  } catch(IOException er){
-                      connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                      JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
-                      effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                      effects.play();
-                  }
-              }
-          };
-          thread.start();
-          return;
-      }
+    public void decodeMessage (String message) {
+        if(message==""){
+            try {
+                decodeMessage(client.receiveMessage());
+            } catch (Exception e) {
+                connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + e.getMessage());
+                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                effects.play();
+            }
+            return;
+        }
+        Scanner scanf = new Scanner(message.trim());
+        String cat="";
+        if(scanf.hasNext()) cat = scanf.next();
+        else {
+            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+            JOptionPane.showMessageDialog(null, "Ha sucedido un error en la comunicación. Mensaje corrupto");
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+            Thread thread = new Thread(){
+                public void run(){
+                    try{
+                        decodeMessage(client.receiveMessage());
+                    } catch(IOException er){
+                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                        JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
+                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                        effects.play();
+                    }
+                }
+            };
+            thread.start();
+            return;
+        }
 
         switch(cat){
             case "update":
@@ -607,7 +598,7 @@ public class ClientMultiplayer extends GameInterface {
                         envidoMenu.setEnabled(false);
 
                     irAlMazo.setEnabled(true);
-                // Opponent's turn
+                    // Opponent's turn
                 } else{
                     connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
                     cardPlayer1Enabled=false;
@@ -650,10 +641,10 @@ public class ClientMultiplayer extends GameInterface {
                 try {
                     updatePoints();
                 } catch (Exception e) {
-                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
-                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        effects.play();
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
                 }
                 break;
             case "envido":
@@ -808,10 +799,10 @@ public class ClientMultiplayer extends GameInterface {
                 try {
                     updatePoints();
                 } catch (Exception e) {
-                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
-                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        effects.play();
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
                 }
                 Thread thread3 = new Thread(){
                     public void run(){
@@ -861,14 +852,7 @@ public class ClientMultiplayer extends GameInterface {
                     effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
                     effects.play();
                 }
-                try {
-                    pointsBackground.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg"+ opponentNumber +".png")).getScaledInstance(100, 150, Image.SCALE_SMOOTH)));
-                } catch (Exception e) {
-                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
-                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    effects.play();
-                }
+                pointsBackground.setIcon(getImageIcon("src/truco_java/puntaje/bg"+ opponentNumber +".png", 100, 150, false));
                 break;
             default:
                 // System.out.println("No se detecto la categoria del mensaje: " + cat);
@@ -887,5 +871,5 @@ public class ClientMultiplayer extends GameInterface {
                 break;
         }
         scanf.close();
-  }
+    }
 }

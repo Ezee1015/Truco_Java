@@ -1,13 +1,12 @@
 package truco_java;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Ai {
   private int playersDeclaredEnvido = -1;
 
-  public Player playTurnAlgorithm(Player player, ArrayList<Card> opponentPlayedCards) throws IOException{
+  public Player playTurnAlgorithm(Player player, ArrayList<Card> opponentPlayedCards){
     ArrayList<Card> playerPlayedCards = new ArrayList<>();
     playerPlayedCards.addAll(player.getPlayedCards());
     ArrayList<Card> playerCards = new ArrayList<>();

@@ -1,14 +1,11 @@
 package truco_java;
 
 import java.io.IOException;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -41,7 +38,7 @@ public class ServerMultiplayer extends GameManagment {
                     window.setVisible(true);
                     waitingRoom.dispose();
                     setBackground(0);
-                    pointsBackground.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg"+ opponentNumber +".png")).getScaledInstance(100, 150, Image.SCALE_SMOOTH)));
+                    pointsBackground.setIcon(getImageIcon("src/truco_java/puntaje/bg"+ opponentNumber +".png", 100, 150, false));
                 } catch(IOException er){
                     connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                     JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
@@ -107,13 +104,7 @@ public class ServerMultiplayer extends GameManagment {
         if(!finishedEnvido && opponent.getPlayedCards().isEmpty())
             points++;
         opponent.setPoints(opponent.getPoints()+points+countPointsWonTruco(), this);
-        try {
             anotherRound();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de comenzar otra partida: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
         try {
             updatesTurn();
         } catch (IOException ex) {
@@ -385,15 +376,9 @@ public class ServerMultiplayer extends GameManagment {
         cardPlayer1Enabled=true;
         cardPlayer2Enabled=true;
         cardPlayer3Enabled=true;
-        try {
             trucoLevel=0;
             drawButtons();
             updatePoints();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el dibujar el puntaje: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
         try {
             server.sendPoints(player.getPoints(), opponent.getPoints());
         } catch (Exception ex) {
@@ -441,15 +426,9 @@ public class ServerMultiplayer extends GameManagment {
         };
         thread.start();
         setBackground(0);
-        try {
             trucoLevel=0;
             drawButtons();
             updatePoints();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de dibujar los puntajes: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
         try {
             server.sendPoints(player.getPoints(), opponent.getPoints());
         } catch (Exception ex) {
@@ -559,13 +538,7 @@ public class ServerMultiplayer extends GameManagment {
         opponent.setPoints(opponent.getPoints() + countPointsLoseTruco(), this);
         quieroTruco.setVisible(false);
         noQuieroTruco.setVisible(false);
-        try {
             anotherRound();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de comenzar otra partida: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
         try {
             updatesTurn();
         } catch (IOException ex) {
@@ -598,7 +571,7 @@ public class ServerMultiplayer extends GameManagment {
         }
     }
 
-    protected void actionWhenPlayerWins() throws IOException {
+    protected void actionWhenPlayerWins() {
         try {
             server.printMessage("Termino el Juego. Ganó " + playerName + ". Será la próxima...");
             server.enviaKill();
@@ -618,7 +591,7 @@ public class ServerMultiplayer extends GameManagment {
         server.killServer();
     }
 
-    protected void actionWhenOpponentWins() throws IOException {
+    protected void actionWhenOpponentWins() {
         try {
             server.printMessage("Termino el Juego. Has ganado! Felicidades");
             server.enviaKill();
@@ -638,7 +611,7 @@ public class ServerMultiplayer extends GameManagment {
         server.killServer();
     }
 
-    protected void anotherRound() throws IOException {
+    protected void anotherRound() {
         if(!finishedGame && Truco_Java.musicCheckBox.isSelected() && !menu.fastModeCheckBox.isSelected()) {
             effects.setFile("src/truco_java/musica/otraPartida.wav", 1);
             effects.play();
@@ -655,7 +628,7 @@ public class ServerMultiplayer extends GameManagment {
         finishedEnvido = false;
         enabledToRetrucar = 0;
         drawButtons();
-        truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/trucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
+        truco.setIcon(getImageIcon("src/truco_java/fondos/trucoBoton.png", 155, 60, false));
         truco.setVisible(true);
         setBackground(0);
 
@@ -676,7 +649,7 @@ public class ServerMultiplayer extends GameManagment {
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
         printsEnvidoMessage(0, false);
-        truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/trucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
+        truco.setIcon(getImageIcon("src/truco_java/fondos/trucoBoton.png", 155, 60, false));
         truco.setEnabled(true);
 
         // Deals
@@ -1059,13 +1032,7 @@ public class ServerMultiplayer extends GameManagment {
                     envidoEnvido.setVisible(false);
                     realEnvido.setVisible(false);
                     faltaEnvido.setVisible(false);
-                    try {
                         updatePoints();
-                    } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el dibujar el puntaje: " + ex.getMessage());
-                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        effects.play();
-                    }
                     try {
                         server.sendPoints(player.getPoints(), opponent.getPoints());
                     } catch (Exception e) {
@@ -1179,13 +1146,7 @@ public class ServerMultiplayer extends GameManagment {
                     points++;
                 player.setPoints(player.getPoints() + points + countPointsWonTruco(), this);
                 ThreadOptionPane(opponentName + " se ha ido al mazo. Repartiendo...");
-                try {
                     anotherRound();
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de comenzar otra partida: " + ex.getMessage());
-                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    effects.play();
-                }
                 try {
                     updatesTurn();
                 } catch (IOException ex) {

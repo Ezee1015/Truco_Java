@@ -1,22 +1,24 @@
 package truco_java;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+
 import javax.swing.JOptionPane;
+
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 public abstract class GameManagment extends GameInterface{
 
     protected ArrayList<Card> deck = new ArrayList<>();
 
     // TODO: make this function not abstract
-    protected abstract void anotherRound() throws IOException;
+    protected abstract void anotherRound();
     // TODO: make this function not abstract
     protected abstract void updatesTurn() throws IOException;
 
 
-    public GameManagment(Truco_Java menu, PlayMenu playMenu) throws IOException{
+    public GameManagment(Truco_Java menu, PlayMenu playMenu){
         super(menu, playMenu);
 
         loadDeck();
@@ -24,13 +26,7 @@ public abstract class GameManagment extends GameInterface{
         dealCards.setEnabled(true);
         dealCards.addActionListener((ActionEvent e) -> {
             dealCards.setEnabled(false);
-            try {
-                anotherRound();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de comenzar otra partida: " + ex.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
+            anotherRound();
             try {
                 updatesTurn();
             } catch (IOException ex) {
@@ -127,8 +123,8 @@ public abstract class GameManagment extends GameInterface{
 
         // If there is only one envido declared, gives one point
         if( (envidosDeclared.size() == 1) ||
-            // or if there is an 'envido' and a 'no quiero'
-            (envidosDeclared.size() == 2 && envidosDeclared.get(envidosDeclared.size()-1)==-1))
+                // or if there is an 'envido' and a 'no quiero'
+                (envidosDeclared.size() == 2 && envidosDeclared.get(envidosDeclared.size()-1)==-1))
             return 1;
 
         for (int i = 0; i < envidosDeclared.size()-1; i++) {
@@ -244,8 +240,8 @@ public abstract class GameManagment extends GameInterface{
     }
 
     protected void actionAfterThrowingCard(boolean isThePlayer, int posCardThrown){
+        drawCards();
         try {
-            drawCards();
             updatesTurn();
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());

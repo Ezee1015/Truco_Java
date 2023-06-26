@@ -1,12 +1,14 @@
 package truco_java;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.awt.Image;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 import javax.imageio.ImageIO;
@@ -69,11 +71,11 @@ public abstract class GameInterface extends JFrame{
     protected abstract void noQuieroTrucoAction (ActionEvent e);
 
     protected abstract void actionAfterThrowingCard(boolean isThePlayer, int posCardThrown);
-    protected abstract void actionWhenPlayerWins() throws IOException;
-    protected abstract void actionWhenOpponentWins() throws IOException;
+    protected abstract void actionWhenPlayerWins();
+    protected abstract void actionWhenOpponentWins();
     protected abstract void loadPlayersName();
 
-    protected GameInterface(Truco_Java menu, PlayMenu playMenu) throws IOException{
+    protected GameInterface(Truco_Java menu, PlayMenu playMenu){
         this.menu = menu;
         this.playMenu = playMenu;
 
@@ -88,17 +90,17 @@ public abstract class GameInterface extends JFrame{
         background.setVisible(true);
         add(background);
 
-        cardOpponent1 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+        cardOpponent1 = new JLabel(getImageIcon("src/truco_java/mazo/reverso.png", 75, 100, false));
         cardOpponent1.setBounds(100, 70, 75, 100);
         cardOpponent1.setVisible(false);
         background.add(cardOpponent1);
 
-        cardOpponent2 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+        cardOpponent2 = new JLabel(getImageIcon("src/truco_java/mazo/reverso.png", 75, 100, false));
         cardOpponent2.setBounds(200, 70, 75, 100);
         cardOpponent2.setVisible(false);
         background.add(cardOpponent2);
 
-        cardOpponent3 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(75, 100, Image.SCALE_SMOOTH)));
+        cardOpponent3 = new JLabel(getImageIcon("src/truco_java/mazo/reverso.png", 75, 100, false));
         cardOpponent3.setBounds(300, 70, 75, 100);
         cardOpponent3.setVisible(false);
         background.add(cardOpponent3);
@@ -124,13 +126,7 @@ public abstract class GameInterface extends JFrame{
             connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
             truco.setEnabled(false);
             irAlMazo.setEnabled(false);
-            try {
-                throwCard(0);
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de tirar la primer carta: " + ex.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
+            throwCard(0);
             setBackground(0);
         });
 
@@ -156,13 +152,7 @@ public abstract class GameInterface extends JFrame{
             connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
             truco.setEnabled(false);
             irAlMazo.setEnabled(false);
-            try {
-                throwCard(1);
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de tirar la segunda carta: " + ex.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
+            throwCard(1);
             setBackground(0);
         });
 
@@ -188,17 +178,11 @@ public abstract class GameInterface extends JFrame{
             connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
             truco.setEnabled(false);
             irAlMazo.setEnabled(false);
-            try {
-                throwCard(2);
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de tirar la tercer carta: " + ex.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
+            throwCard(2);
             setBackground(0);
         });
 
-        dealCards = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/cartasMazo.png")).getScaledInstance(80, 80, Image.SCALE_SMOOTH)));
+        dealCards = new JButton(getImageIcon("src/truco_java/fondos/cartasMazo.png", 80, 80, false));
         dealCards.setBounds(365, 280, 80, 80);
         dealCards.setBorderPainted(false);
         dealCards.setOpaque(false);
@@ -257,7 +241,7 @@ public abstract class GameInterface extends JFrame{
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
-        envidoMenu = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/envidoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
+        envidoMenu = new JButton(getImageIcon("src/truco_java/fondos/envidoBoton.png", 155, 60, false));
         envidoMenu.setBounds(170, 660, 155, 60);
         envidoMenu.setVisible(true);
         envidoMenu.setEnabled(false);
@@ -281,7 +265,7 @@ public abstract class GameInterface extends JFrame{
             }
         });
 
-        irAlMazo = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/irAlMazoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
+        irAlMazo = new JButton(getImageIcon("src/truco_java/fondos/irAlMazoBoton.png", 155, 60, false));
         irAlMazo.setBounds(330, 660, 155, 60);
         irAlMazo.setVisible(true);
         irAlMazo.setEnabled(false);
@@ -291,7 +275,7 @@ public abstract class GameInterface extends JFrame{
         background.add(irAlMazo);
         irAlMazo.addActionListener(this::irAlMazoAction);
 
-        envido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/envidoGrandeBoton.png")).getScaledInstance(240, 50, Image.SCALE_SMOOTH)));
+        envido = new JButton(getImageIcon("src/truco_java/fondos/envidoGrandeBoton.png", 240, 50, false));
         envido.setBounds(10, 595, 240, 50);
         envido.setVisible(false);
         envido.setOpaque(false);
@@ -300,7 +284,7 @@ public abstract class GameInterface extends JFrame{
         background.add(envido);
         envido.addActionListener(this::envidoAction);
 
-        envidoEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/envidoGrandeBoton.png")).getScaledInstance(240, 50, Image.SCALE_SMOOTH)));
+        envidoEnvido = new JButton(getImageIcon("src/truco_java/fondos/envidoGrandeBoton.png", 240, 50, false));
         envidoEnvido.setBounds(10, 595, 240, 50);
         envidoEnvido.setVisible(false);
         envidoEnvido.setOpaque(false);
@@ -309,7 +293,7 @@ public abstract class GameInterface extends JFrame{
         background.add(envidoEnvido);
         envidoEnvido.addActionListener(this::envidoEnvidoAction);
 
-        realEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/realEnvidoBoton.png")).getScaledInstance(117, 50, Image.SCALE_SMOOTH)));
+        realEnvido = new JButton(getImageIcon("src/truco_java/fondos/realEnvidoBoton.png", 117, 50, false));
         realEnvido.setBounds(252, 595, 117, 50);
         realEnvido.setVisible(false);
         realEnvido.setOpaque(false);
@@ -318,7 +302,7 @@ public abstract class GameInterface extends JFrame{
         background.add(realEnvido);
         realEnvido.addActionListener(this::realEnvidoAction);
 
-        faltaEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/faltaEnvidoBoton.png")).getScaledInstance(117, 50, Image.SCALE_SMOOTH)));
+        faltaEnvido = new JButton(getImageIcon("src/truco_java/fondos/faltaEnvidoBoton.png", 117, 50, false));
         faltaEnvido.setBounds(373, 595, 117, 50);
         faltaEnvido.setVisible(false);
         faltaEnvido.setOpaque(false);
@@ -327,7 +311,7 @@ public abstract class GameInterface extends JFrame{
         background.add(faltaEnvido);
         faltaEnvido.addActionListener(this::faltaEnvidoAction);
 
-        quieroEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/quieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
+        quieroEnvido = new JButton(getImageIcon("src/truco_java/fondos/quieroBoton.png", 110, 40, false));
         quieroEnvido.setBounds(10, 250, 110, 40);
         quieroEnvido.setVisible(false);
         quieroEnvido.setOpaque(false);
@@ -336,7 +320,7 @@ public abstract class GameInterface extends JFrame{
         background.add(quieroEnvido);
         quieroEnvido.addActionListener(this::quieroEnvidoAction);
 
-        noQuieroEnvido = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/noQuieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
+        noQuieroEnvido = new JButton(getImageIcon("src/truco_java/fondos/noQuieroBoton.png", 110, 40, false));
         noQuieroEnvido.setBounds(10, 300, 110, 40);
         noQuieroEnvido.setVisible(false);
         noQuieroEnvido.setOpaque(false);
@@ -345,7 +329,7 @@ public abstract class GameInterface extends JFrame{
         background.add(noQuieroEnvido);
         noQuieroEnvido.addActionListener(this::noQuieroEnvidoAction);
 
-        truco = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/trucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
+        truco = new JButton(getImageIcon("src/truco_java/fondos/trucoBoton.png", 155, 60, false));
         truco.setBounds(10, 660, 155, 60);
         truco.setVisible(true);
         truco.setEnabled(false);
@@ -355,7 +339,7 @@ public abstract class GameInterface extends JFrame{
         background.add(truco);
         truco.addActionListener(this::trucoAction);
 
-        quieroTruco = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/quieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
+        quieroTruco = new JButton(getImageIcon("src/truco_java/fondos/quieroBoton.png", 110, 40, false));
         quieroTruco.setBounds(10, 250, 110, 40);
         quieroTruco.setVisible(false);
         quieroTruco.setOpaque(false);
@@ -365,7 +349,7 @@ public abstract class GameInterface extends JFrame{
         quieroTruco.addActionListener(this::quieroTrucoAction);
 
 
-        noQuieroTruco = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/noQuieroBoton.png")).getScaledInstance(110, 40, Image.SCALE_SMOOTH)));
+        noQuieroTruco = new JButton(getImageIcon("src/truco_java/fondos/noQuieroBoton.png", 110, 40, false));
         noQuieroTruco.setBounds(10, 300, 110, 40);
         noQuieroTruco.setVisible(false);
         noQuieroTruco.setOpaque(false);
@@ -374,7 +358,7 @@ public abstract class GameInterface extends JFrame{
         background.add(noQuieroTruco);
         noQuieroTruco.addActionListener(this::noQuieroTrucoAction);
 
-        pointsBackground = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/bg"+ opponentNumber +".png")).getScaledInstance(100, 150, Image.SCALE_SMOOTH)));
+        pointsBackground = new JLabel(getImageIcon("src/truco_java/puntaje/bg"+ opponentNumber +".png", 100, 150, false));
         pointsBackground.setBounds(390, 10, 100, 150);
         pointsBackground.setVisible(true);
         background.add(pointsBackground);
@@ -387,7 +371,7 @@ public abstract class GameInterface extends JFrame{
         pointsAi.setVisible(true);
         pointsBackground.add(pointsAi);
 
-        JButton back = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+        JButton back = new JButton(getImageIcon("src/truco_java/fondos/atras.png", 50, 50, false));
         back.setOpaque(false);
         back.setContentAreaFilled(false);
         back.setBorderPainted(false);
@@ -404,16 +388,16 @@ public abstract class GameInterface extends JFrame{
     }
 
 
-    protected void drawButtons() throws IOException {
+    protected void drawButtons(){
         switch (trucoLevel) {
             case 0:
-                truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/trucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
+                truco.setIcon(getImageIcon("src/truco_java/fondos/trucoBoton.png", 155, 60, false));
                 break;
             case 1:
-                truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/retrucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
+                truco.setIcon(getImageIcon("src/truco_java/fondos/retrucoBoton.png", 155, 60, false));
                 break;
             case 2:
-                truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/valeCuatroBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
+                truco.setIcon(getImageIcon("src/truco_java/fondos/valeCuatroBoton.png", 155, 60, false));
                 break;
         }
     }
@@ -427,7 +411,7 @@ public abstract class GameInterface extends JFrame{
         background.setIcon(new ImageIcon(image));
     }
 
-    protected void printsTrucoMessage(int trucoMessage, boolean isCalledFromTimer) throws IOException{
+    protected void printsTrucoMessage(int trucoMessage, boolean isCalledFromTimer){
         final String timerText;
 
         statusBackground.setVisible(true);
@@ -448,12 +432,12 @@ public abstract class GameInterface extends JFrame{
                 return;
             case 1:
                 timerText = opponentNumber==5 ? "Come on, Truco!" : "Truco!";
-                truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/retrucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
+                truco.setIcon(getImageIcon("src/truco_java/fondos/retrucoBoton.png", 155, 60, false));
                 truco.setEnabled(true);
                 break;
             case 2:
                 timerText = opponentNumber==5 ? "Re truco if you're brave!" : "Re truco!";
-                truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/valeCuatroBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
+                truco.setIcon(getImageIcon("src/truco_java/fondos/valeCuatroBoton.png", 155, 60, false));
                 truco.setEnabled(true);
                 break;
             case 3:
@@ -479,28 +463,16 @@ public abstract class GameInterface extends JFrame{
                     public void run() {
                         if(status.getText().equals(timerText)){
                             if(quieroTruco.isVisible()){
-                                try {
-                                    printsTrucoMessage(trucoMessage, true);
-                                } catch (IOException ex) {
-                                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de escribir el mensaje de " + opponentName + " en el truco: " + ex.getMessage());
-                                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                                    effects.play();
-                                }
+                                printsTrucoMessage(trucoMessage, true);
                             }
                             else {
-                                try {
-                                    printsTrucoMessage(0, true);
-                                } catch (IOException ex) {
-                                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de escribir el mensaje de " + opponentName + " en el truco: " + ex.getMessage());
-                                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                                    effects.play();
-                                }
+                                printsTrucoMessage(0, true);
                             }
                         }
                     }
                 },
                 2000
-        );
+                );
     }
 
     protected void printsEnvidoMessage(int envido, boolean isCalledFromTimer){
@@ -551,22 +523,97 @@ public abstract class GameInterface extends JFrame{
         // I have to create a final variable for the timer, otherwise it will complain
         final String timerText = text;
         new java.util.Timer().schedule(
-            new java.util.TimerTask() {
-                @Override
-                public void run() {
-                    // If no other method changed the text of the panel (for example: 'retrucar' or 'envido')
-                    if(status.getText().equals(timerText)){
-                        if(quieroEnvido.isVisible())
-                            printsEnvidoMessage(envido, true); // Prints again
-                        else printsEnvidoMessage(0, true); // Clears
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        // If no other method changed the text of the panel (for example: 'retrucar' or 'envido')
+                        if(status.getText().equals(timerText)){
+                            if(quieroEnvido.isVisible())
+                                printsEnvidoMessage(envido, true); // Prints again
+                            else printsEnvidoMessage(0, true); // Clears
+                        }
                     }
-                }
-            },
-            2000
-            );
+                },
+                2000
+                );
     }
 
-    protected void drawCards() throws IOException {
+    protected ImageIcon getImageIcon(String url, int resizeX, int resizeY, boolean mirror){
+        try{
+            if(!mirror)
+                return new ImageIcon(ImageIO.read(new File(url)).getScaledInstance(resizeX, resizeY, Image.SCALE_SMOOTH));
+
+            ImageIcon originalIcon = new ImageIcon("src/truco_java/fondos/cartasMazo.png");
+            Image originalImage = originalIcon.getImage();
+
+            int width = originalImage.getWidth(null);
+            int height = originalImage.getHeight(null);
+
+            BufferedImage flippedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = flippedImage.createGraphics();
+            AffineTransform transform = AffineTransform.getScaleInstance(-1, 1);
+            transform.translate(-width, 0);
+            g2d.drawImage(originalImage, transform, null);
+            g2d.dispose();
+
+            Image scaledFlippedImage = flippedImage.getScaledInstance(resizeX, resizeY, Image.SCALE_SMOOTH);
+            return new ImageIcon(scaledFlippedImage);
+        } catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Ha sucedido un error: " + e.getMessage());
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+            return null;
+        }
+    }
+
+    protected ImageIcon getImageIcon(String url, boolean mirror){
+        try{
+            if(!mirror)
+                return new ImageIcon(ImageIO.read(new File(url)));
+
+            ImageIcon originalIcon = new ImageIcon("src/truco_java/fondos/cartasMazo.png");
+            Image originalImage = originalIcon.getImage();
+
+            int width = originalImage.getWidth(null);
+            int height = originalImage.getHeight(null);
+
+            BufferedImage flippedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = flippedImage.createGraphics();
+            AffineTransform transform = AffineTransform.getScaleInstance(-1, 1);
+            transform.translate(-width, 0);
+            g2d.drawImage(originalImage, transform, null);
+            g2d.dispose();
+            return new ImageIcon(flippedImage);
+        } catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Ha sucedido un error: " + e.getMessage());
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+            return null;
+        }
+    }
+
+    protected void drawCards() {
+
+        if(player.getCards().size()==3){
+            if(player.isFirstHand()){
+                dealCards.setLocation(365,280);
+                dealCards.setIcon(getImageIcon("src/truco_java/fondos/cartasMazo.png", 80, 80, false));
+
+                quieroTruco.setBounds(10, 250, 110, 40);
+                noQuieroTruco.setBounds(10, 300, 110, 40);
+                quieroEnvido.setBounds(10, 250, 110, 40);
+                noQuieroEnvido.setBounds(10, 300, 110, 40);
+            } else {
+                dealCards.setLocation(36,280);
+                dealCards.setIcon(getImageIcon("src/truco_java/fondos/cartasMazo.png", 80, 80, true));
+
+                   quieroTruco.setBounds(375, 250, 110, 40);
+                 noQuieroTruco.setBounds(375, 300, 110, 40);
+                  quieroEnvido.setBounds(375, 250, 110, 40);
+                noQuieroEnvido.setBounds(375, 300, 110, 40);
+            }
+        }
+
         switch (opponent.getCards().size()) {
             case 0:
                 cardOpponent1.setVisible(false);
@@ -598,26 +645,26 @@ public abstract class GameInterface extends JFrame{
         for(int i=0;i<3;i++){
             if(player.getPosCards()[i]<0){
                 manos.get(i).setVisible(false);
-                manos.get(i).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/mazo/reverso.png")).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+                manos.get(i).setIcon(getImageIcon("src/truco_java/mazo/reverso.png", 155, 200, false));
             } else {
                 manos.get(i).setVisible(true);
-                manos.get(i).setIcon(new ImageIcon(ImageIO.read(new File(player.getCards().get(player.getPosCards()[i]).linkCard())).getScaledInstance(155, 200, Image.SCALE_SMOOTH)));
+                manos.get(i).setIcon(getImageIcon(player.getCards().get(player.getPosCards()[i]).linkCard(), 155, 200, false));
             }
         }
 
         switch (opponent.getPlayedCards().size()) {
             case 3:
-                cardThrownOpponent1.setIcon(new ImageIcon(ImageIO.read(new File(opponent.getPlayedCards().get(0).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                cardThrownOpponent2.setIcon(new ImageIcon(ImageIO.read(new File(opponent.getPlayedCards().get(1).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                cardThrownOpponent3.setIcon(new ImageIcon(ImageIO.read(new File(opponent.getPlayedCards().get(2).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownOpponent1.setIcon(getImageIcon(opponent.getPlayedCards().get(0).linkCard(), 70, 80, false));
+                cardThrownOpponent2.setIcon(getImageIcon(opponent.getPlayedCards().get(1).linkCard(), 70, 80, false));
+                cardThrownOpponent3.setIcon(getImageIcon(opponent.getPlayedCards().get(2).linkCard(), 70, 80, false));
                 break;
             case 2:
-                cardThrownOpponent1.setIcon(new ImageIcon(ImageIO.read(new File(opponent.getPlayedCards().get(0).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                cardThrownOpponent2.setIcon(new ImageIcon(ImageIO.read(new File(opponent.getPlayedCards().get(1).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownOpponent1.setIcon(getImageIcon(opponent.getPlayedCards().get(0).linkCard(), 70, 80, false));
+                cardThrownOpponent2.setIcon(getImageIcon(opponent.getPlayedCards().get(1).linkCard(), 70, 80, false));
                 cardThrownOpponent3.setIcon(null);
                 break;
             case 1:
-                cardThrownOpponent1.setIcon(new ImageIcon(ImageIO.read(new File(opponent.getPlayedCards().get(0).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownOpponent1.setIcon(getImageIcon(opponent.getPlayedCards().get(0).linkCard(), 70, 80, false));
                 cardThrownOpponent2.setIcon(null);
                 cardThrownOpponent3.setIcon(null);
                 break;
@@ -630,17 +677,17 @@ public abstract class GameInterface extends JFrame{
 
         switch (player.getPlayedCards().size()) {
             case 3:
-                cardThrownPlayer1.setIcon(new ImageIcon(ImageIO.read(new File(player.getPlayedCards().get(0).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                cardThrownPlayer2.setIcon(new ImageIcon(ImageIO.read(new File(player.getPlayedCards().get(1).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                cardThrownPlayer3.setIcon(new ImageIcon(ImageIO.read(new File(player.getPlayedCards().get(2).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownPlayer1.setIcon(getImageIcon(player.getPlayedCards().get(0).linkCard(), 70, 80, false));
+                cardThrownPlayer2.setIcon(getImageIcon(player.getPlayedCards().get(1).linkCard(), 70, 80, false));
+                cardThrownPlayer3.setIcon(getImageIcon(player.getPlayedCards().get(2).linkCard(), 70, 80, false));
                 break;
             case 2:
-                cardThrownPlayer1.setIcon(new ImageIcon(ImageIO.read(new File(player.getPlayedCards().get(0).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
-                cardThrownPlayer2.setIcon(new ImageIcon(ImageIO.read(new File(player.getPlayedCards().get(1).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownPlayer1.setIcon(getImageIcon(player.getPlayedCards().get(0).linkCard(), 70, 80, false));
+                cardThrownPlayer2.setIcon(getImageIcon(player.getPlayedCards().get(1).linkCard(), 70, 80, false));
                 cardThrownPlayer3.setIcon(null);
                 break;
             case 1:
-                cardThrownPlayer1.setIcon(new ImageIcon(ImageIO.read(new File(player.getPlayedCards().get(0).linkCard())).getScaledInstance(70, 80, Image.SCALE_SMOOTH)));
+                cardThrownPlayer1.setIcon(getImageIcon(player.getPlayedCards().get(0).linkCard(), 70, 80, false));
                 cardThrownPlayer2.setIcon(null);
                 cardThrownPlayer3.setIcon(null);
                 break;
@@ -652,7 +699,7 @@ public abstract class GameInterface extends JFrame{
         }
     }
 
-    protected void throwCard(int pos) throws IOException {
+    protected void throwCard(int pos){
         cardPlayer1Enabled=false;
         cardPlayer2Enabled=false;
         cardPlayer3Enabled=false;
@@ -669,7 +716,7 @@ public abstract class GameInterface extends JFrame{
         moveCard(pos, player.getPlayedCards().size()-1, player, true);
     }
 
-    protected void moveCard(int origin, int destination, Player playerToMove, boolean isThePlayer) throws IOException{
+    protected void moveCard(int origin, int destination, Player playerToMove, boolean isThePlayer){
         if(menu.fastModeCheckBox.isSelected()){
             actionAfterThrowingCard(isThePlayer, origin);
             return;
@@ -756,11 +803,8 @@ public abstract class GameInterface extends JFrame{
                         public void run() {
                             movingCard.setBounds(movingCardX, movingCardY, movingCardWidth, movingCardHeight);
 
-                            try {
-                                movingCard.setIcon(new ImageIcon(ImageIO.read(new File(file)).getScaledInstance(movingCardWidth, movingCardHeight, Image.SCALE_SMOOTH)));
-                                movingCard.repaint();
-                            } catch (IOException e) {
-                            }
+                            movingCard.setIcon(getImageIcon(file, movingCardWidth, movingCardHeight, false));
+                            movingCard.repaint();
 
                         }
                     },
@@ -779,7 +823,7 @@ public abstract class GameInterface extends JFrame{
 
     }
 
-    protected void updatePoints() throws IOException{
+    protected void updatePoints(){
         if(finishedGame)
             return;
         int playerPoints = player.getPoints();
@@ -790,8 +834,8 @@ public abstract class GameInterface extends JFrame{
         if(opponentPoints > 15)
             opponentPoints = 15;
 
-        pointsPlayer.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + playerPoints + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
-        pointsAi.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + opponentPoints + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
+        pointsPlayer.setIcon(getImageIcon("src/truco_java/puntaje/" + playerPoints + ".png", 50, 85, false));
+        pointsAi.setIcon(getImageIcon("src/truco_java/puntaje/" + opponentPoints + ".png", 50, 85, false));
 
 
         if(playerPoints==15)

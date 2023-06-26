@@ -1,20 +1,15 @@
 package truco_java;
 
-import java.awt.Image;
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class SinglePlayer extends GameManagment{
     private Ai aiAlgorithm = new Ai();
 
-    public SinglePlayer(Truco_Java menu, PlayMenu playMenu) throws IOException {
+    public SinglePlayer(Truco_Java menu, PlayMenu playMenu) {
         super(menu, playMenu);
 
         opponentNumber = PlayMenu.playerNumber+1;
@@ -46,40 +41,16 @@ public class SinglePlayer extends GameManagment{
         if(!finishedEnvido && opponent.getPlayedCards().isEmpty())
             points++;
         opponent.setPoints(opponent.getPoints()+points+countPointsWonTruco(), this);
-        try {
-            updatePoints();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de dibujar el puntaje: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
-        try {
-            anotherRound();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de comenzar otra partida: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
-        try {
-            updatesTurn();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        updatePoints();
+        anotherRound();
+        updatesTurn();
     }
 
     protected void envidoAction (ActionEvent e) {
         effects.setFile("src/truco_java/musica/boton.wav", 1);
         effects.play();
         envidosDeclared.add(1);
-        try {
-            askAiEnvido();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de " + opponentName + ": " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        askAiEnvido();
     }
 
     protected void envidoEnvidoAction (ActionEvent e) {
@@ -88,13 +59,7 @@ public class SinglePlayer extends GameManagment{
         envidosDeclared.add(2);
         envido.setVisible(false);
         envidoEnvido.setVisible(false);
-        try {
-            askAiEnvido();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de " + opponentName + ": " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        askAiEnvido();
     }
 
     protected void realEnvidoAction (ActionEvent e) {
@@ -104,13 +69,7 @@ public class SinglePlayer extends GameManagment{
         envido.setVisible(false);
         envidoEnvido.setVisible(false);
         realEnvido.setVisible(false);
-        try {
-            askAiEnvido();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de " + opponentName + ": " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        askAiEnvido();
     }
 
     protected void faltaEnvidoAction (ActionEvent e) {
@@ -121,13 +80,7 @@ public class SinglePlayer extends GameManagment{
         envidoEnvido.setVisible(false);
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
-        try {
-            askAiEnvido();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el envido de " + opponentName + ": " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        askAiEnvido();
     }
 
     protected void quieroEnvidoAction (ActionEvent e) {
@@ -172,22 +125,9 @@ public class SinglePlayer extends GameManagment{
         cardPlayer1Enabled=true;
         cardPlayer2Enabled=true;
         cardPlayer3Enabled=true;
-        try {
-            updatePoints();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el dibujar el puntaje: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        updatePoints();
         setBackground(0);
-
-        try {
-            updatesTurn();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        updatesTurn();
     }
 
     protected void noQuieroEnvidoAction (ActionEvent e) {
@@ -203,21 +143,9 @@ public class SinglePlayer extends GameManagment{
         quieroEnvido.setVisible(false);
         noQuieroEnvido.setVisible(false);
         setBackground(0);
-        try {
-            updatePoints();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de dibujar los puntajes: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        updatePoints();
 
-        try {
-            updatesTurn();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        updatesTurn();
     }
 
     protected void trucoAction (ActionEvent e) {
@@ -227,13 +155,7 @@ public class SinglePlayer extends GameManagment{
         if(enabledToRetrucar != 2){
             trucoLevel++;
             enabledToRetrucar = 2;
-            try {
-                askAiTruco(true);
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar el truco de " + opponentName + ": " + ex.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
+            askAiTruco(true);
         }
     }
 
@@ -248,13 +170,7 @@ public class SinglePlayer extends GameManagment{
             truco.setEnabled(false);
         quieroTruco.setVisible(false);
         noQuieroTruco.setVisible(false);
-        try {
-            updatesTurn();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        updatesTurn();
         setBackground(0);
     }
 
@@ -264,20 +180,8 @@ public class SinglePlayer extends GameManagment{
         opponent.setPoints(opponent.getPoints() + countPointsLoseTruco(), this);
         quieroTruco.setVisible(false);
         noQuieroTruco.setVisible(false);
-        try {
-            anotherRound();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de comenzar otra partida: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
-        try {
-            updatesTurn();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        anotherRound();
+        updatesTurn();
         setBackground(0);
     }
 
@@ -301,7 +205,7 @@ public class SinglePlayer extends GameManagment{
             opponent.setPoints(15, this);
     }
 
-    protected void actionWhenPlayerWins() throws IOException {
+    protected void actionWhenPlayerWins() {
         JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó el Jugador. Felicidades");
         effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
         effects.play();
@@ -323,7 +227,7 @@ public class SinglePlayer extends GameManagment{
         dispose();
     }
 
-    protected void actionWhenOpponentWins() throws IOException {
+    protected void actionWhenOpponentWins(){
         JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó " + opponentName + ". Será la próxima...");
         effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
         effects.play();
@@ -345,7 +249,7 @@ public class SinglePlayer extends GameManagment{
         dispose();
     }
 
-    protected void anotherRound() throws IOException {
+    protected void anotherRound(){
         if(!finishedGame && Truco_Java.musicCheckBox.isSelected() && !menu.fastModeCheckBox.isSelected()) {
             effects.setFile("src/truco_java/musica/otraPartida.wav", 1);
             effects.play();
@@ -362,7 +266,7 @@ public class SinglePlayer extends GameManagment{
         finishedEnvido = false;
         enabledToRetrucar = 0;
         drawButtons();
-        truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/trucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
+        truco.setIcon(getImageIcon("src/truco_java/fondos/trucoBoton.png", 155, 60, false));
         truco.setVisible(true);
         setBackground(0);
         aiAlgorithm.setPlayersDeclaredEnvido(-1);
@@ -384,7 +288,7 @@ public class SinglePlayer extends GameManagment{
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
         printsEnvidoMessage(0, false);
-        truco.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/trucoBoton.png")).getScaledInstance(155, 60, Image.SCALE_SMOOTH)));
+        truco.setIcon(getImageIcon("src/truco_java/fondos/trucoBoton.png", 155, 60, false));
         truco.setEnabled(true);
 
         // deals cards
@@ -419,7 +323,7 @@ public class SinglePlayer extends GameManagment{
 
     }
 
-    protected void updatesTurn() throws IOException {
+    protected void updatesTurn(){
         if(finishedGame)
             return;
         if(checksWinnerOfGame()==1) {
@@ -555,7 +459,7 @@ public class SinglePlayer extends GameManagment{
         }
     }
 
-    private int askAiEnvido() throws IOException {
+    private int askAiEnvido() {
         if (finishedEnvido == true)
             return 0;
 
@@ -677,7 +581,7 @@ public class SinglePlayer extends GameManagment{
     }
 
     // The argument 'hasToAnswer' is a boolean that indicates if the user sang 'truco', so, that way the AI can say 'No quiero' to what the user said
-    private int askAiTruco(boolean hasToAnswer) throws IOException {
+    private int askAiTruco(boolean hasToAnswer){
         // If it returns 0, that means not do anything
         // If it returns 1, that means that the user has to response (stop normal
         //  execution of the game till the user responds)
