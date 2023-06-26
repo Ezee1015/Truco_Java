@@ -148,106 +148,43 @@ public abstract class GameManagment extends GameInterface{
     }
 
     protected int checksWinnerOfGame(){
-        if(player.getPlayedCards().size() != opponent.getPlayedCards().size() || opponent.getPlayedCards().isEmpty())
+        if(player.getPlayedCards().size() != opponent.getPlayedCards().size() || player.getPlayedCards().isEmpty())
             return 0;
 
-        int roundsWonPlayer=0, roundsWonAi=0, winner=0;
+        int roundsWonPlayer=0, roundsWonOpponent=0, winner=0;
         boolean tieDefines=false;
 
-        for(int i=0;i<player.getPlayedCards().size();i++){ // se fija por cada ronda
+        for(int i=0;i<player.getPlayedCards().size();i++){
             if(winner!=0)
                 break;
 
-            OUTER:
-            OUTER_1:
-            switch (i) {
-                case 0:
-                    switch (whoWonRound(i)) {
-                        case 1:
-                            roundsWonPlayer++;
-                            break;
-                        case 2:
-                            roundsWonAi++;
-                            break;
-                        case 0:
-                            tieDefines=true;
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
+            switch (whoWonRound(i)) {
                 case 1:
-                    switch (whoWonRound(i)) {
-                        case 1:
-                            if (tieDefines==true) {
-                                winner=1;
-                                break OUTER_1;
-                            } else {
-                                roundsWonPlayer++;
-                            }
-                            break;
-                        case 2:
-                            if (tieDefines==true) {
-                                winner=2;
-                                break OUTER_1;
-                            } else {
-                                roundsWonAi++;
-                            }
-                            break;
-                        case 0:
-                            switch(whoWonRound(0)){
-                                case 0:
-                                    tieDefines=true;
-                                    break;
-                                case 1:
-                                    winner=1;
-                                    break;
-                                case 2:
-                                    winner=2;
-                                    break;
-                            }   break;
-                        default:
-                            break;
-                    }
+                    if(tieDefines)
+                        winner=1;
+                    else
+                        roundsWonPlayer++;
                     break;
                 case 2:
-                    switch (whoWonRound(i)) {
-                        case 1:
-                            if (tieDefines==true) {
-                                winner=1;
-                                break OUTER;
-                            } else {
-                                roundsWonPlayer++;
-                            }
-                            break;
-                        case 2:
-                            if (tieDefines==true) {
-                                winner=2;
-                                break OUTER;
-                            } else {
-                                roundsWonAi++;
-                            }
-                            break;
-                        case 0:
-                            switch(whoWonRound(0)){
-                                case 0:
-                                    tieDefines=true; break;
-                                case 1:
-                                    winner=1;
-                                    break;
-                                case 2:
-                                    winner=2;
-                                    break;
-                            }   break;
-                        default:
-                            break;
+                    if(tieDefines)
+                        winner=2;
+                    else
+                        roundsWonOpponent++;
+                    break;
+                case 0:
+                    tieDefines=true;
+
+                    // Finds who won in the round before
+                    for(int z=i;z>0;z--){
+                        if(whoWonRound(z-1)==1) { winner=1; break; }
+                        if(whoWonRound(z-1)==2) { winner=2; break; }
                     }
                     break;
             }
         }
 
-        // If the 3 rounds are tied, wins the one who is first hand
-        if( player.getPlayedCards().size() == 3 && whoWonRound(0)==0 && whoWonRound(1)==0 && whoWonRound(2)==0){
+        // If the 3 rounds are tied, the one who is first hand wins the game
+        if(player.getPlayedCards().size() == 3 && winner==0 && tieDefines){
             if(player.isFirstHand())
                 return 1;
             else
@@ -255,10 +192,10 @@ public abstract class GameManagment extends GameInterface{
         }
 
 
-        if(tieDefines==false && (roundsWonPlayer>=2 || roundsWonAi>=2)){
-            if(roundsWonPlayer>roundsWonAi)
+        if(!tieDefines){
+            if(roundsWonPlayer>=2)
                 winner=1;
-            else
+            if(roundsWonOpponent>=2)
                 winner=2;
         }
 
