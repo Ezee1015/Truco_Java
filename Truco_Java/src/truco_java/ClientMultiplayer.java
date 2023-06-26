@@ -77,7 +77,7 @@ public class ClientMultiplayer extends GameInterface {
         effects.play();
         if(dialogResult == JOptionPane.YES_OPTION){
             try {
-                client.sendMessage("retira");
+                client.sendWithdraw();
             } catch (Exception ex) {
                 connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + ex.getMessage());
@@ -711,7 +711,7 @@ public class ClientMultiplayer extends GameInterface {
                 quieroEnvido.setVisible(true);
                 noQuieroEnvido.setVisible(true);
                 break;
-            case "imprimir":
+            case "print":
                 String textToPrint="";
                 while(scanf.hasNext()){
                     String temp = scanf.next() + " ";
@@ -802,7 +802,7 @@ public class ClientMultiplayer extends GameInterface {
                     thread1.start();
                 }
                 break;
-            case "puntaje":
+            case "points":
                 opponent.setPoints(Integer.parseInt(scanf.next()), this);
                 player.setPoints(Integer.parseInt(scanf.next()), this);
                 try {
@@ -827,13 +827,13 @@ public class ClientMultiplayer extends GameInterface {
                 };
                 thread3.start();
                 break;
-            case "retira":
+            case "withdraw":
                 opponent.setPoints(15, this);
                 JOptionPane.showMessageDialog(null, "El oponente " + opponentName + " se ha retirado. Has ganado!");
                 playMenu.setVisible(true);
                 dispose();
                 break;
-            case "persona":
+            case "player":
                 opponentNumber = Integer.parseInt(scanf.next());
                 opponentName="";
                 while(scanf.hasNext()){

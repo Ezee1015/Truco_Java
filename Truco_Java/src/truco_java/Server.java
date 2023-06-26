@@ -15,7 +15,7 @@ public class Server extends Connection{
     }
 
     public void sendPoints(int playerPoints, int oponentPoints) throws IOException{
-        sendMessage("puntaje " + playerPoints + " " + oponentPoints);
+        sendMessage("points " + playerPoints + " " + oponentPoints);
     }
 
     public void updateInfo(int sizePlayerCards, ArrayList<Card> playedPlayerCards,ArrayList<Card> oponentCards, int[] posOponentCards, ArrayList<Card> playedOponentCards, int trucoLevel, boolean envidoEnded, int enabledToRetrucar, boolean oponentTurn, int playerPoints, int oponentPoints) throws IOException{
@@ -41,5 +41,9 @@ public class Server extends Connection{
         message+=String.valueOf(trucoLevel)+" "+String.valueOf(envidoEnded)+" "+String.valueOf(enabledToRetrucar)+" "+oponentTurn + " " + playerPoints + " " + oponentPoints;
 
         sendMessage(message);
+    }
+
+    public void printMessage(String message) throws IOException{
+        sendMessage("print " + message);
     }
 }

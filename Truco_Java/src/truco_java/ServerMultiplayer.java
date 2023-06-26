@@ -95,7 +95,7 @@ public class ServerMultiplayer extends GameManagment {
         effects.play();
         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
         try{
-            server.sendMessage("imprimir " + playerName + " se ha ido al mazo. Repartiendo...");
+            server.printMessage(playerName + " se ha ido al mazo. Repartiendo...");
         } catch(IOException er){
             connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
             JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + er.getMessage());
@@ -324,7 +324,7 @@ public class ServerMultiplayer extends GameManagment {
 
         if (player.calculateEnvido() > opponent.calculateEnvido()) {
             try{
-                server.sendMessage("imprimir Has Perdido. " + playerName + " tenía " + player.calculateEnvido() + " de envido.");
+                server.printMessage("Has Perdido. " + playerName + " tenía " + player.calculateEnvido() + " de envido.");
             } catch(IOException er){
                 connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + er.getMessage());
@@ -337,7 +337,7 @@ public class ServerMultiplayer extends GameManagment {
         }
         else if (player.calculateEnvido() < opponent.calculateEnvido()) {
             try{
-                server.sendMessage("imprimir Has Ganado. " + playerName + " tenía " + player.calculateEnvido() + " de envido.");
+                server.printMessage("Has Ganado. " + playerName + " tenía " + player.calculateEnvido() + " de envido.");
             } catch(IOException er){
                 connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + er.getMessage());
@@ -351,7 +351,7 @@ public class ServerMultiplayer extends GameManagment {
         else if (player.calculateEnvido() == opponent.calculateEnvido()) {
             if (player.isFirstHand() == true) {
                 try{
-                    server.sendMessage("imprimir Empate (" + player.calculateEnvido() + " de envido). Has perdido, " + playerName + " es mano");
+                    server.printMessage("Empate (" + player.calculateEnvido() + " de envido). Has perdido, " + playerName + " es mano");
                 } catch(IOException er){
                     connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                     JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + er.getMessage());
@@ -363,7 +363,7 @@ public class ServerMultiplayer extends GameManagment {
                 player.setPoints(player.getPoints() + countPointsWonEnvido(opponent.getPoints()), this);
             } else {
                 try{
-                    server.sendMessage("imprimir Empate (" + player.calculateEnvido() + " de envido). Has ganado por mano");
+                    server.printMessage("Empate (" + player.calculateEnvido() + " de envido). Has ganado por mano");
                 } catch(IOException er){
                     connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                     JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + er.getMessage());
@@ -585,7 +585,7 @@ public class ServerMultiplayer extends GameManagment {
         effects.play();
         if(dialogResult == JOptionPane.YES_OPTION){
             try {
-                server.sendMessage("retira");
+                server.sendWithdraw();
             } catch (Exception ex) {
                 connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + ex.getMessage());
@@ -600,7 +600,7 @@ public class ServerMultiplayer extends GameManagment {
 
     protected void actionWhenPlayerWins() throws IOException {
         try {
-            server.sendMessage("imprimir Termino el Juego. Ganó " + playerName + ". Será la próxima...");
+            server.printMessage("Termino el Juego. Ganó " + playerName + ". Será la próxima...");
             server.enviaKill();
         } catch (Exception e) {
             connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
@@ -620,7 +620,7 @@ public class ServerMultiplayer extends GameManagment {
 
     protected void actionWhenOpponentWins() throws IOException {
         try {
-            server.sendMessage("imprimir Termino el Juego. Has ganado! Felicidades");
+            server.printMessage("Termino el Juego. Has ganado! Felicidades");
             server.enviaKill();
         } catch (Exception e) {
             connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
@@ -718,7 +718,7 @@ public class ServerMultiplayer extends GameManagment {
         if(finishedGame)
             return;
         if(checksWinnerOfGame()==1) {
-            server.sendMessage("imprimir Termino la Partida. Ha ganado " + playerName);
+            server.printMessage("Termino la Partida. Ha ganado " + playerName);
             connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
             ThreadOptionPane("Termino la Partida. Ganaste!");
 
@@ -728,7 +728,7 @@ public class ServerMultiplayer extends GameManagment {
             return;
         }
         if(checksWinnerOfGame()==2) {
-            server.sendMessage("imprimir Termino la Partida. Ganaste!");
+            server.printMessage("Termino la Partida. Ganaste!");
             connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
             ThreadOptionPane("Termino la Partida. Ha ganado " + opponentName + ".");
 
@@ -921,7 +921,7 @@ public class ServerMultiplayer extends GameManagment {
         String tag = scanner.next();
 
         switch(tag){
-            case "tira":
+            case "throw":
                 int pos = Integer.parseInt(scanner.next());
                 opponent.addPlayedCards(opponent.getPosCards()[pos]);
                 // Array that indicates that the card should be drawn or not
@@ -1001,7 +1001,7 @@ public class ServerMultiplayer extends GameManagment {
                     finishedEnvido=true;
                     if (player.calculateEnvido() > opponent.calculateEnvido()) {
                         try{
-                            server.sendMessage("imprimir Has Perdido. " + playerName + " tenía " + player.calculateEnvido() + " de envido.");
+                            server.printMessage("Has Perdido. " + playerName + " tenía " + player.calculateEnvido() + " de envido.");
                         } catch(IOException er){
                             connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                             JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + er.getMessage());
@@ -1014,7 +1014,7 @@ public class ServerMultiplayer extends GameManagment {
                     }
                     else if (player.calculateEnvido() < opponent.calculateEnvido()) {
                         try{
-                            server.sendMessage("imprimir Has Ganado. " + playerName + " tenía " + player.calculateEnvido() + " de envido.");
+                            server.printMessage("Has Ganado. " + playerName + " tenía " + player.calculateEnvido() + " de envido.");
                         } catch(IOException er){
                             connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                             JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + er.getMessage());
@@ -1028,7 +1028,7 @@ public class ServerMultiplayer extends GameManagment {
                     else if (player.calculateEnvido() == opponent.calculateEnvido()) {
                         if (player.isFirstHand() == true) {
                             try{
-                                server.sendMessage("imprimir Empate (" + player.calculateEnvido() + " de envido). Has perdido, " + playerName + " es mano");
+                                server.printMessage("Empate (" + player.calculateEnvido() + " de envido). Has perdido, " + playerName + " es mano");
                             } catch(IOException er){
                                 connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + er.getMessage());
@@ -1040,7 +1040,7 @@ public class ServerMultiplayer extends GameManagment {
                             player.setPoints(player.getPoints() + countPointsWonEnvido(opponent.getPoints()), this);
                         } else {
                             try{
-                                server.sendMessage("imprimir Empate (" + player.calculateEnvido() + " de envido). Has ganado por mano");
+                                server.printMessage("Empate (" + player.calculateEnvido() + " de envido). Has ganado por mano");
                             } catch(IOException er){
                                 connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                                 JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + er.getMessage());
@@ -1086,7 +1086,7 @@ public class ServerMultiplayer extends GameManagment {
                 }
                 scanner.close();
                 return;
-            case "retira":
+            case "withdraw":
                 opponent.setPoints(15, this);
                 JOptionPane.showMessageDialog(null, "El oponente " + opponentName + " se ha retirado. Has ganado!");
                 dispose();
@@ -1150,7 +1150,7 @@ public class ServerMultiplayer extends GameManagment {
                     }
                 }
                 break;
-            case "persona":
+            case "player":
                 opponentNumber = Integer.parseInt(scanner.next());
                 opponentName="";
                 while(scanner.hasNext()){
@@ -1173,7 +1173,7 @@ public class ServerMultiplayer extends GameManagment {
 
                 ThreadOptionPane("Has entrado a la sala de " + opponentName + ".\n Aprete el mazo para repartir y comenzar a jugar...");
                 break;
-            case "mazo":
+            case "deck":
                 int points=0;
                 if(!finishedEnvido && player.getPlayedCards().isEmpty())
                     points++;

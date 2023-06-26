@@ -9,11 +9,11 @@ public class Client extends Connection {
     }
 
     public String sendIrAlMazo () throws IOException {
-        sendMessage("mazo");
+        sendMessage("deck");
         return receiveMessage();
     }
 
     public void throwCard(int posCard) throws IOException{
-        sendMessage("tira " + String.valueOf(posCard));
+        sendMessage("throw " + String.valueOf(posCard));
     }
 }

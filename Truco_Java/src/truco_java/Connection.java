@@ -76,7 +76,7 @@ public class Connection {
         return "";
     }
 
-    public void sendMessage(String message) throws IOException{
+    protected void sendMessage(String message) throws IOException{
         try {
             outputServer = new DataOutputStream(cs.getOutputStream());
             outputServer.writeUTF(message + " ç");
@@ -98,7 +98,11 @@ public class Connection {
     }
 
     public void sendPerson(int number, String name) throws IOException{
-        sendMessage("persona " + number + " " + name);
+        sendMessage("player " + number + " " + name);
+    }
+
+    public void sendWithdraw() throws IOException{
+        sendMessage("withdraw");
     }
 
 }
