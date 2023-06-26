@@ -21,8 +21,6 @@ public class SinglePlayer extends GameManagment{
         loadPlayersName();
         setBackground(0);
 
-        loadDeck();
-
         setLayout(null);
         setDefaultCloseOperation(3);
     }
