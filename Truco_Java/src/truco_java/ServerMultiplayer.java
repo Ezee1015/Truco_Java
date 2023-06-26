@@ -599,59 +599,44 @@ public class ServerMultiplayer extends GameManagment {
         }
     }
 
-    protected void updatePoints() throws IOException {
-        if(finishedGame)
-            return;
-        int playerPoints = player.getPoints();
-        int opponentPoints = opponent.getPoints();
-
-        if(playerPoints > 15)
-            playerPoints = 15;
-        if(opponentPoints > 15)
-            opponentPoints = 15;
-
-        pointsPlayer.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + playerPoints + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
-        pointsAi.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + opponentPoints + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
-
-
-        if(playerPoints==15){
-            try {
-                server.sendMessage("imprimir Termino el Juego. Ganó " + playerName + ". Será la próxima...");
-                server.enviaKill();
-            } catch (Exception e) {
-                connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + e.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
-            JOptionPane.showMessageDialog(null, "Termino el Juego. Has ganado! Felicidades");
+    protected void actionWhenPlayerWins() throws IOException {
+        try {
+            server.sendMessage("imprimir Termino el Juego. Ganó " + playerName + ". Será la próxima...");
+            server.enviaKill();
+        } catch (Exception e) {
+            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+            JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + e.getMessage());
             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
             effects.play();
-            playMenu.setVisible(true);
-            finishedGame=true;
-            anotherRound();
-            dispose();
-            server.killServer();
         }
-        if(opponentPoints==15){
-            try {
-                server.sendMessage("imprimir Termino el Juego. Has ganado! Felicidades");
-                server.enviaKill();
-            } catch (Exception e) {
-                connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + e.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
-            JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó " + opponentName + ". Será la próxima...");
+        JOptionPane.showMessageDialog(null, "Termino el Juego. Has ganado! Felicidades");
+        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+        effects.play();
+        playMenu.setVisible(true);
+        finishedGame=true;
+        anotherRound();
+        dispose();
+        server.killServer();
+    }
+
+    protected void actionWhenOpponentWins() throws IOException {
+        try {
+            server.sendMessage("imprimir Termino el Juego. Has ganado! Felicidades");
+            server.enviaKill();
+        } catch (Exception e) {
+            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+            JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + e.getMessage());
             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
             effects.play();
-            playMenu.setVisible(true);
-            finishedGame=true;
-            anotherRound();
-            dispose();
-            server.killServer();
         }
+        JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó " + opponentName + ". Será la próxima...");
+        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+        effects.play();
+        playMenu.setVisible(true);
+        finishedGame=true;
+        anotherRound();
+        dispose();
+        server.killServer();
     }
 
     protected void anotherRound() throws IOException {

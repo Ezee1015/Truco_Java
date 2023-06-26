@@ -69,8 +69,8 @@ public abstract class GameInterface extends JFrame{
     protected abstract void noQuieroTrucoAction (ActionEvent e);
 
     protected abstract void actionAfterThrowingCard(boolean isThePlayer, int posCardThrown);
-    // TODO: make this function not abstract
-    protected abstract void updatePoints() throws IOException;
+    protected abstract void actionWhenPlayerWins() throws IOException;
+    protected abstract void actionWhenOpponentWins() throws IOException;
     protected abstract void loadPlayersName();
 
     protected GameInterface(Truco_Java menu, PlayMenu playMenu) throws IOException{
@@ -778,6 +778,27 @@ public abstract class GameInterface extends JFrame{
         movingCard.setVisible(false);
         background.remove(movingCard);
 
+    }
+
+    protected void updatePoints() throws IOException{
+        if(finishedGame)
+            return;
+        int playerPoints = player.getPoints();
+        int opponentPoints = opponent.getPoints();
+
+        if(playerPoints > 15)
+            playerPoints = 15;
+        if(opponentPoints > 15)
+            opponentPoints = 15;
+
+        pointsPlayer.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + playerPoints + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
+        pointsAi.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + opponentPoints + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
+
+
+        if(playerPoints==15)
+            actionWhenPlayerWins();
+        else if(opponentPoints==15)
+            actionWhenOpponentWins();
     }
 
 }

@@ -484,20 +484,8 @@ public class ClientMultiplayer extends GameInterface {
         thread.start();
     }
 
-    protected void updatePoints() throws IOException {
-        if(finishedGame)
-            return;
-        int playerPoints = player.getPoints();
-        int aiPoints = opponent.getPoints();
-        if(playerPoints > 15)
-            playerPoints = 15;
-        if(aiPoints > 15)
-            aiPoints = 15;
-
-        pointsPlayer.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + playerPoints + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
-        pointsAi.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + aiPoints + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
-
-    }
+    protected void actionWhenPlayerWins() throws IOException {}
+    protected void actionWhenOpponentWins() throws IOException {}
 
   public void decodeMessage (String message) {
       if(message==""){

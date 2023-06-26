@@ -303,63 +303,48 @@ public class SinglePlayer extends GameManagment{
             opponent.setPoints(15, this);
     }
 
-    public void updatePoints() throws IOException {
-        if(finishedGame)
-            return;
-        int jugadorPunt = player.getPoints();
-        int aiPunt = opponent.getPoints();
-        if(jugadorPunt > 15)
-            jugadorPunt = 15;
-        if(aiPunt > 15)
-            aiPunt = 15;
-
-        pointsPlayer.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + jugadorPunt + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
-        pointsAi.setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/puntaje/" + aiPunt + ".png")).getScaledInstance(50, 85, Image.SCALE_SMOOTH)));
-
-
-        if(jugadorPunt==15){
-            JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó el Jugador. Felicidades");
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-            menu.setVisible(true);
-            finishedGame=true;
-            anotherRound();
-            if(!menu.easyCheckBox.isSelected()) {
-                Truco_Java.gamesWonPlayer++;
-                Truco_Java.playerPoints.setText(Integer.toString(Truco_Java.gamesWonPlayer));
-                Truco_Java.pointsBackground.setVisible(true);
-            }
-
-            // Actualiza los partidos según la sesión
-            if(Truco_Java.userIndex!=-1){
-                Truco_Java.userList.get(Truco_Java.userIndex).encryptPoints();
-                Truco_Java.userList.get(Truco_Java.userIndex).saveChanges(false, 0);
-            }
-
-            dispose();
+    protected void actionWhenPlayerWins() throws IOException {
+        JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó el Jugador. Felicidades");
+        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+        effects.play();
+        menu.setVisible(true);
+        finishedGame=true;
+        anotherRound();
+        if(!menu.easyCheckBox.isSelected()) {
+            Truco_Java.gamesWonPlayer++;
+            Truco_Java.playerPoints.setText(Integer.toString(Truco_Java.gamesWonPlayer));
+            Truco_Java.pointsBackground.setVisible(true);
         }
-        if(aiPunt==15){
 
-            JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó " + opponentName + ". Será la próxima...");
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-            menu.setVisible(true);
-            finishedGame=true;
-            anotherRound();
-            if(!menu.easyCheckBox.isSelected()) {
-                Truco_Java.gamesWonAi++;
-                Truco_Java.AiPoints.setText(Integer.toString(Truco_Java.gamesWonAi));
-                Truco_Java.pointsBackground.setVisible(true);
-            }
-
-            // If the user is logged in
-            if(Truco_Java.userIndex!=-1){
-                Truco_Java.userList.get(Truco_Java.userIndex).encryptPoints();
-                Truco_Java.userList.get(Truco_Java.userIndex).saveChanges(false, 0);
-            }
-
-            dispose();
+        // Actualiza los partidos según la sesión
+        if(Truco_Java.userIndex!=-1){
+            Truco_Java.userList.get(Truco_Java.userIndex).encryptPoints();
+            Truco_Java.userList.get(Truco_Java.userIndex).saveChanges(false, 0);
         }
+
+        dispose();
+    }
+
+    protected void actionWhenOpponentWins() throws IOException {
+        JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó " + opponentName + ". Será la próxima...");
+        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+        effects.play();
+        menu.setVisible(true);
+        finishedGame=true;
+        anotherRound();
+        if(!menu.easyCheckBox.isSelected()) {
+            Truco_Java.gamesWonAi++;
+            Truco_Java.AiPoints.setText(Integer.toString(Truco_Java.gamesWonAi));
+            Truco_Java.pointsBackground.setVisible(true);
+        }
+
+        // If the user is logged in
+        if(Truco_Java.userIndex!=-1){
+            Truco_Java.userList.get(Truco_Java.userIndex).encryptPoints();
+            Truco_Java.userList.get(Truco_Java.userIndex).saveChanges(false, 0);
+        }
+
+        dispose();
     }
 
     protected void anotherRound() throws IOException {
