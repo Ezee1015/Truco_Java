@@ -30,7 +30,7 @@ public class WaitingRoom extends JFrame {
     private boolean local = true;
     private String publicIP;
 
-  public WaitingRoom (PlayMenu menu, int port, ServerMultiplayer server) throws IOException {
+  public WaitingRoom (PlayMenu menu, int port, ServerMultiplayer serverInterface) throws IOException {
         setLayout(null);
         setDefaultCloseOperation(3);
 
@@ -58,8 +58,8 @@ public class WaitingRoom extends JFrame {
             try {
                   // Closes the server
                   new Client("127.0.0.1", port);
-                  while(server.server==null);
-                  server.server.killServer();
+                  while(serverInterface.server==null);
+                  serverInterface.server.killServer();
 
                   // Closes the windows and shows the menu
                   menu.setVisible(true);

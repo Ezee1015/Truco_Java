@@ -11,7 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 public class ServerMultiplayer extends GameManagment {
-    private Server server;
+    public Server server;
     private int port;
 
     protected void loadPlayersName(){
