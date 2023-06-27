@@ -18,7 +18,7 @@ public class Server extends Connection{
         sendMessage("points " + playerPoints + " " + oponentPoints);
     }
 
-    public void updateInfo(int sizePlayerCards, ArrayList<Card> playedPlayerCards,ArrayList<Card> oponentCards, int[] posOponentCards, ArrayList<Card> playedOponentCards, int trucoLevel, boolean envidoEnded, int enabledToRetrucar, boolean oponentTurn, int playerPoints, int oponentPoints) throws IOException{
+    public void updateInfo(int sizePlayerCards, ArrayList<Card> playedPlayerCards,ArrayList<Card> oponentCards, int[] posOponentCards, ArrayList<Card> playedOponentCards, int trucoLevel, boolean envidoEnded, int enabledToRetrucar, boolean oponentTurn, int playerPoints, int oponentPoints, boolean isPlayerFirstHand) throws IOException{
 
         String message = "update " + String.valueOf(sizePlayerCards)+" ";
         for(int i=0;i<3-sizePlayerCards;i++){
@@ -38,7 +38,7 @@ public class Server extends Connection{
             message+=playedOponentCards.get(i).getStick()+" ";
         }
 
-        message+=String.valueOf(trucoLevel)+" "+String.valueOf(envidoEnded)+" "+String.valueOf(enabledToRetrucar)+" "+oponentTurn + " " + playerPoints + " " + oponentPoints;
+        message+=String.valueOf(trucoLevel)+" "+String.valueOf(envidoEnded)+" "+String.valueOf(enabledToRetrucar)+" "+oponentTurn + " " + playerPoints + " " + oponentPoints + " " + isPlayerFirstHand;
 
         sendMessage(message);
     }

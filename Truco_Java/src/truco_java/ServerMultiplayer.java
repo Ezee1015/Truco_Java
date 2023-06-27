@@ -1177,13 +1177,13 @@ public class ServerMultiplayer extends GameManagment {
 
     private void syncWithClient(boolean opponentTurn){
         try {
-            server.updateInfo(player.getCards().size(), player.getPlayedCards(), opponent.getCards(), opponent.getPosCards(), opponent.getPlayedCards(),trucoLevel, finishedEnvido, enabledToRetrucar, opponentTurn, player.getPoints(), opponent.getPoints());
+            server.updateInfo(player.getCards().size(), player.getPlayedCards(), opponent.getCards(), opponent.getPosCards(), opponent.getPlayedCards(),trucoLevel, finishedEnvido, enabledToRetrucar, opponentTurn, player.getPoints(), opponent.getPoints(), player.isFirstHand());
         } catch (IOException e) {
             for(int i=0;i<30;i++){
                 try {
                     Thread.sleep(500);
                     connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                    server.updateInfo(player.getCards().size(), player.getCards(), opponent.getCards(), opponent.getPosCards(), opponent.getPlayedCards(), trucoLevel, finishedEnvido, enabledToRetrucar, opponentTurn, player.getPoints(), opponent.getPoints());
+                    server.updateInfo(player.getCards().size(), player.getCards(), opponent.getCards(), opponent.getPosCards(), opponent.getPlayedCards(), trucoLevel, finishedEnvido, enabledToRetrucar, opponentTurn, player.getPoints(), opponent.getPoints(), player.isFirstHand());
                     break;
                 } catch (Exception er) {}
             }

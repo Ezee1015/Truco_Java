@@ -624,19 +624,15 @@ public class ClientMultiplayer extends GameInterface {
                     thread.start();
                 }
 
-                if(!moveCardOpponent){
-                    try {
-                        drawCards();
-                    } catch (Exception e) {
-                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
-                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        effects.play();
-                    }
-                }
-
                 opponent.setPoints(Integer.parseInt(scanf.next()), this);
                 player.setPoints(Integer.parseInt(scanf.next()), this);
+
+                boolean isOpponentFirstHand = scanf.nextBoolean();
+                opponent.setFirstHand(isOpponentFirstHand);
+                player.setFirstHand(!isOpponentFirstHand);
+
+                if(!moveCardOpponent)
+                        drawCards();
 
                 try {
                     updatePoints();
