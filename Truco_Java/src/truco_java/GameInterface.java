@@ -789,7 +789,7 @@ public abstract class GameInterface extends JFrame{
         thread.start();
     }
 
-    protected void moveCardTimer (float moveX, float moveY, float widthDecrease, float heightDecrease, int frames, int sleepPerFrame, String file) {
+    private void moveCardTimer (float moveX, float moveY, float widthDecrease, float heightDecrease, int frames, int sleepPerFrame, String file) {
         final int movingCardWidthOrigin = movingCard.getWidth();
         final int movingCardHeightOrigin = movingCard.getHeight();
         final int originX = movingCard.getX();
