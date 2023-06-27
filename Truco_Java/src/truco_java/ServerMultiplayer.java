@@ -104,7 +104,7 @@ public class ServerMultiplayer extends GameManagment {
         if(!finishedEnvido && opponent.getPlayedCards().isEmpty())
             points++;
         opponent.setPoints(opponent.getPoints()+points+countPointsWonTruco(), this);
-            anotherRound();
+        anotherRound();
         try {
             updatesTurn();
         } catch (IOException ex) {
@@ -538,7 +538,7 @@ public class ServerMultiplayer extends GameManagment {
         opponent.setPoints(opponent.getPoints() + countPointsLoseTruco(), this);
         quieroTruco.setVisible(false);
         noQuieroTruco.setVisible(false);
-            anotherRound();
+        anotherRound();
         try {
             updatesTurn();
         } catch (IOException ex) {
@@ -611,80 +611,10 @@ public class ServerMultiplayer extends GameManagment {
         server.killServer();
     }
 
-    protected void anotherRound() {
-        if(!finishedGame && Truco_Java.musicCheckBox.isSelected() && !menu.fastModeCheckBox.isSelected()) {
-            effects.setFile("src/truco_java/musica/otraPartida.wav", 1);
-            effects.play();
-            try {
-                Thread.sleep(1200);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(ServerMultiplayer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
 
-        // Reloads variables
-        trucoLevel = 0;
-        envidosDeclared = new ArrayList<>();
-        finishedEnvido = false;
-        enabledToRetrucar = 0;
-        drawButtons();
-        truco.setIcon(getImageIcon("src/truco_java/fondos/trucoBoton.png", 155, 60, false));
-        truco.setVisible(true);
-        setBackground(0);
-
-        // Cleans hands
-        player.setCards(new ArrayList<>());
-        opponent.setCards(new ArrayList<>());
-        player.setPlayedCards(new ArrayList<>());
-        opponent.setPlayedCards(new ArrayList<>());
-
-        mixDeck();
-
-        // Hides and resets buttons
-        quieroEnvido.setVisible(false);
-        noQuieroEnvido.setVisible(false);
-        envidoMenu.setEnabled(false);
-        envido.setVisible(false);
-        envidoEnvido.setVisible(false);
-        realEnvido.setVisible(false);
-        faltaEnvido.setVisible(false);
-        printsEnvidoMessage(0, false);
-        truco.setIcon(getImageIcon("src/truco_java/fondos/trucoBoton.png", 155, 60, false));
-        truco.setEnabled(true);
-
-        // Deals
-        ArrayList<Card> cards1 = new ArrayList<>();
-        cards1.add(deck.get(0));
-        cards1.add(deck.get(2));
-        cards1.add(deck.get(4));
-        ArrayList<Card> cards2 = new ArrayList<>();
-        cards2.add(deck.get(1));
-        cards2.add(deck.get(3));
-        cards2.add(deck.get(5));
-        for(int i=0;i<2;i++){
-            int temp[] = new int[3];
-            temp[0] = 0;
-            temp[1] = 1;
-            temp[2] = 2;
-            if(i==0) player.setPosCards(temp);
-            else opponent.setPosCards(temp);
-        }
-
-        if (opponent.isFirstHand() == true) {
-            opponent.setCards(cards1);
-            player.setCards(cards2);
-            opponent.setFirstHand(false);
-            player.setFirstHand(true);
+    protected void aditionalActionsInAnotherRound(){
+        if(opponent.isFirstHand() == true)
             syncWithClient(false);
-        } else {
-            opponent.setCards(cards2);
-            player.setCards(cards1);
-            opponent.setFirstHand(true);
-            player.setFirstHand(false);
-        }
-
-        updatePoints();
-        drawCards();
     }
 
     protected void updatesTurn() throws IOException {
@@ -1146,7 +1076,7 @@ public class ServerMultiplayer extends GameManagment {
                     points++;
                 player.setPoints(player.getPoints() + points + countPointsWonTruco(), this);
                 ThreadOptionPane(opponentName + " se ha ido al mazo. Repartiendo...");
-                    anotherRound();
+                anotherRound();
                 try {
                     updatesTurn();
                 } catch (IOException ex) {

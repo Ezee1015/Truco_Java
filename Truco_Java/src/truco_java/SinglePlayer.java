@@ -249,78 +249,8 @@ public class SinglePlayer extends GameManagment{
         dispose();
     }
 
-    protected void anotherRound(){
-        if(!finishedGame && Truco_Java.musicCheckBox.isSelected() && !menu.fastModeCheckBox.isSelected()) {
-            effects.setFile("src/truco_java/musica/otraPartida.wav", 1);
-            effects.play();
-            try {
-                Thread.sleep(1200);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(SinglePlayer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        // Restart variables
-        trucoLevel = 0;
-        envidosDeclared = new ArrayList<>();
-        finishedEnvido = false;
-        enabledToRetrucar = 0;
-        drawButtons();
-        truco.setIcon(getImageIcon("src/truco_java/fondos/trucoBoton.png", 155, 60, false));
-        truco.setVisible(true);
-        setBackground(0);
+    protected void aditionalActionsInAnotherRound(){
         aiAlgorithm.setPlayersDeclaredEnvido(-1);
-
-        // Clear hands
-        player.setCards(new ArrayList<>());
-        opponent.setCards(new ArrayList<>());
-        player.setPlayedCards(new ArrayList<>());
-        opponent.setPlayedCards(new ArrayList<>());
-
-        mixDeck();
-
-        // Hides and restarts buttons
-        quieroEnvido.setVisible(false);
-        noQuieroEnvido.setVisible(false);
-        envidoMenu.setEnabled(false);
-        envido.setVisible(false);
-        envidoEnvido.setVisible(false);
-        realEnvido.setVisible(false);
-        faltaEnvido.setVisible(false);
-        printsEnvidoMessage(0, false);
-        truco.setIcon(getImageIcon("src/truco_java/fondos/trucoBoton.png", 155, 60, false));
-        truco.setEnabled(true);
-
-        // deals cards
-        ArrayList<Card> hand1 = new ArrayList<>();
-        hand1.add(deck.get(0));
-        hand1.add(deck.get(2));
-        hand1.add(deck.get(4));
-        ArrayList<Card> hand2 = new ArrayList<>();
-        hand2.add(deck.get(1));
-        hand2.add(deck.get(3));
-        hand2.add(deck.get(5));
-        int tempPosCards[] = new int[3];
-        tempPosCards[0] = 0;
-        tempPosCards[1] = 1;
-        tempPosCards[2] = 2;
-        player.setPosCards(tempPosCards);
-
-        if (opponent.isFirstHand() == true) {
-            opponent.setCards(hand1);
-            player.setCards(hand2);
-            opponent.setFirstHand(false);
-            player.setFirstHand(true);
-        } else {
-            opponent.setCards(hand2);
-            player.setCards(hand1);
-            opponent.setFirstHand(true);
-            player.setFirstHand(false);
-        }
-
-        updatePoints();
-        drawCards();
-
     }
 
     protected void updatesTurn(){
