@@ -1109,14 +1109,10 @@ public class ServerMultiplayer extends GameManagment {
         try {
             server.updateInfo(player.getCards().size(), player.getPlayedCards(), opponent.getCards(), opponent.getPosCards(), opponent.getPlayedCards(),trucoLevel, finishedEnvido, enabledToRetrucar, opponentTurn, player.getPoints(), opponent.getPoints(), player.isFirstHand());
         } catch (IOException e) {
-            for(int i=0;i<30;i++){
-                try {
-                    Thread.sleep(500);
-                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                    server.updateInfo(player.getCards().size(), player.getCards(), opponent.getCards(), opponent.getPosCards(), opponent.getPlayedCards(), trucoLevel, finishedEnvido, enabledToRetrucar, opponentTurn, player.getPoints(), opponent.getPoints(), player.isFirstHand());
-                    break;
-                } catch (Exception er) {}
-            }
+            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+            JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar la actualización al cliente: " + e.getMessage());
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
         }
     }
 
