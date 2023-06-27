@@ -721,12 +721,21 @@ public abstract class GameInterface extends JFrame{
             actionAfterThrowingCard(isThePlayer, origin);
             return;
         }
+        //
+        // TODO: Make an slider in the GUI for adjusting the movement percentage. But
+        // for that, I need to create a config class, where should live all the
+        // configurations of the game (and the option to delete and change password in a
+        // account)
+        final int frames=30;
+        final int sleepPerFrame=10;
 
         final String file = playerToMove.getPlayedCards().get(playerToMove.getPlayedCards().size()-1).linkCard();
         final int originY          = isThePlayer ? cardPlayer1.getY() : cardOpponent1.getY();
         final int destinationY     = isThePlayer ? cardThrownPlayer1.getY() : cardThrownOpponent1.getY();
         final int movingCardWidth  = isThePlayer ? cardPlayer1.getWidth() : cardOpponent1.getWidth();
         final int movingCardHeight = isThePlayer ? cardPlayer1.getHeight() : cardOpponent1.getHeight();
+        final int thrownCardHeight = cardThrownPlayer1.getHeight();
+        final int thrownCardWidth = cardThrownPlayer1.getHeight();
         final int originX;
         final int destinationX;
 
@@ -766,32 +775,27 @@ public abstract class GameInterface extends JFrame{
         movingCard.setVisible(true);
         background.add(movingCard);
 
-        // TODO: Make an slider in the GUI for adjusting the movement percentage. But
-        // for that, I need to create a config class, where should live all the
-        // configurations of the game (and the option to delete and change password in a
-        // account)
-        int movementPercentage=30;
-        final float moveX=(float)(destinationX-originX)/movementPercentage;
-        final float moveY=(float)(destinationY-originY)/movementPercentage;
-        final float sizeX = (float)(movingCardWidth-cardThrownPlayer1.getWidth()) / movementPercentage;
-        final float sizeY = (float)(movingCardHeight-cardThrownPlayer1.getHeight()) / movementPercentage;
+        final float movementStepX=(float)(destinationX-originX) / frames;
+        final float movementStepY=(float)(destinationY-originY) / frames;
+        final float sizeStepX = (float)(movingCardWidth-thrownCardWidth)   / frames;
+        final float sizeStepY = (float)(movingCardHeight-thrownCardHeight) / frames;
 
         Thread thread = new Thread(){
             public void run(){
-                moveCardTimer(moveX, moveY, sizeX, sizeY, movementPercentage, file);
+                moveCardTimer(movementStepX, movementStepY, sizeStepX, sizeStepY, frames, sleepPerFrame, file);
                 actionAfterThrowingCard(isThePlayer, origin);
             }
         };
         thread.start();
     }
 
-    protected void moveCardTimer (float moveX, float moveY, float widthDecrease, float heightDecrease, int percentageMovement, String file) {
+    protected void moveCardTimer (float moveX, float moveY, float widthDecrease, float heightDecrease, int frames, int sleepPerFrame, String file) {
         final int movingCardWidthOrigin = movingCard.getWidth();
         final int movingCardHeightOrigin = movingCard.getHeight();
         final int originX = movingCard.getX();
         final int originY = movingCard.getY();
 
-        for(int i=0;i<percentageMovement;i++){
+        for(int i=0;i<frames;i++){
             final int movingCardX = (int)(originX+moveX*i);
             final int movingCardY = (int)(originY+moveY*i);
             final int movingCardWidth  = (int)(movingCardWidthOrigin-(widthDecrease*i));
@@ -812,7 +816,7 @@ public abstract class GameInterface extends JFrame{
                     );
 
             try {
-                TimeUnit.MILLISECONDS.sleep(10);
+                TimeUnit.MILLISECONDS.sleep(sleepPerFrame);
             } catch (Exception e) {
             }
         }
@@ -820,7 +824,6 @@ public abstract class GameInterface extends JFrame{
         // Enables to play
         movingCard.setVisible(false);
         background.remove(movingCard);
-
     }
 
     protected void updatePoints(){
