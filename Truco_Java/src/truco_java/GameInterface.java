@@ -596,6 +596,14 @@ public abstract class GameInterface extends JFrame{
 
         if(player.getCards().size()==3){
             if(player.isFirstHand()){
+                dealCards.setLocation(36,280);
+                dealCards.setIcon(getImageIcon("src/truco_java/fondos/cartasMazo.png", 80, 80, true));
+
+                quieroTruco.setBounds(375, 250, 110, 40);
+                noQuieroTruco.setBounds(375, 300, 110, 40);
+                quieroEnvido.setBounds(375, 250, 110, 40);
+                noQuieroEnvido.setBounds(375, 300, 110, 40);
+            } else {
                 dealCards.setLocation(365,280);
                 dealCards.setIcon(getImageIcon("src/truco_java/fondos/cartasMazo.png", 80, 80, false));
 
@@ -603,14 +611,6 @@ public abstract class GameInterface extends JFrame{
                 noQuieroTruco.setBounds(10, 300, 110, 40);
                 quieroEnvido.setBounds(10, 250, 110, 40);
                 noQuieroEnvido.setBounds(10, 300, 110, 40);
-            } else {
-                dealCards.setLocation(36,280);
-                dealCards.setIcon(getImageIcon("src/truco_java/fondos/cartasMazo.png", 80, 80, true));
-
-                   quieroTruco.setBounds(375, 250, 110, 40);
-                 noQuieroTruco.setBounds(375, 300, 110, 40);
-                  quieroEnvido.setBounds(375, 250, 110, 40);
-                noQuieroEnvido.setBounds(375, 300, 110, 40);
             }
         }
 
