@@ -376,9 +376,9 @@ public class ServerMultiplayer extends GameManagment {
         cardPlayer1Enabled=true;
         cardPlayer2Enabled=true;
         cardPlayer3Enabled=true;
-            trucoLevel=0;
-            drawButtons();
-            updatePoints();
+        trucoLevel=0;
+        drawButtons();
+        updatePoints();
         try {
             server.sendPoints(player.getPoints(), opponent.getPoints());
         } catch (Exception ex) {
@@ -426,9 +426,9 @@ public class ServerMultiplayer extends GameManagment {
         };
         thread.start();
         setBackground(0);
-            trucoLevel=0;
-            drawButtons();
-            updatePoints();
+        trucoLevel=0;
+        drawButtons();
+        updatePoints();
         try {
             server.sendPoints(player.getPoints(), opponent.getPoints());
         } catch (Exception ex) {
@@ -962,7 +962,7 @@ public class ServerMultiplayer extends GameManagment {
                     envidoEnvido.setVisible(false);
                     realEnvido.setVisible(false);
                     faltaEnvido.setVisible(false);
-                        updatePoints();
+                    updatePoints();
                     try {
                         server.sendPoints(player.getPoints(), opponent.getPoints());
                     } catch (Exception e) {
