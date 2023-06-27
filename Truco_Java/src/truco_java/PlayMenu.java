@@ -264,23 +264,17 @@ public class PlayMenu extends JFrame{
             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
             effects.play();
             setVisible(false);
-            SinglePlayer game;
-            try {
-                game = new SinglePlayer(menu, this);
-                game.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
-                game.setResizable(false);
-                game.setTitle("Juego Truco");
-                game.setBounds(0,0,505,800);
-                game.setLocationRelativeTo(null);
-                game.setVisible(true);
-                JOptionPane.showMessageDialog(null, "Aprete el mazo de cartas para comenzar el juego...");
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar el juego: " + ex.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
+
+            SinglePlayer game = new SinglePlayer(menu, this);
+            game.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
+            game.setResizable(false);
+            game.setTitle("Juego Truco");
+            game.setBounds(0,0,505,800);
+            game.setLocationRelativeTo(null);
+            JOptionPane.showMessageDialog(null, "Aprete el mazo de cartas para comenzar el juego...");
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            game.setVisible(true);
+            effects.play();
         });
 
         ArrayList<JLabel> playersBackground = new ArrayList<>();

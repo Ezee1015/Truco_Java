@@ -1,15 +1,12 @@
 package truco_java;
 
 import java.util.ArrayList;
-import java.io.IOException;
-import javax.swing.JOptionPane;
 
 public class Player {
   private ArrayList<Card> cards = new ArrayList<>();
   private ArrayList<Card> playedCards = new ArrayList<>();
   private int points=0;
   private boolean firstHand;
-  private static final Music effects = new Music();
   private int posCards[] = new int[3];
 
   public Player() {
@@ -26,35 +23,17 @@ public class Player {
 
   public void setPoints(int points, SinglePlayer interfaceGame) {
     this.points = points;
-    try {
-      interfaceGame.updatePoints();
-    } catch (IOException ex) {
-      JOptionPane.showMessageDialog(null, "Ha sucedido un error en el dibujado del puntaje: " + ex.getMessage());
-      effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-      effects.play();
-    }
+    interfaceGame.updatePoints();
   }
 
   public void setPoints(int points, ServerMultiplayer interfaceGame) {
     this.points = points;
-    try {
-      interfaceGame.updatePoints();
-    } catch (IOException ex) {
-      JOptionPane.showMessageDialog(null, "Ha sucedido un error en el dibujado del puntaje: " + ex.getMessage());
-      effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-      effects.play();
-    }
+    interfaceGame.updatePoints();
   }
 
   public void setPoints(int points, ClientMultiplayer interfaceGame) {
     this.points = points;
-    try {
-      interfaceGame.updatePoints();
-    } catch (IOException ex) {
-      JOptionPane.showMessageDialog(null, "Ha sucedido un error en el dibujado del puntaje: " + ex.getMessage());
-      effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-      effects.play();
-    }
+    interfaceGame.updatePoints();
   }
 
   public ArrayList<Card> getCards() {
