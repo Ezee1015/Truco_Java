@@ -71,8 +71,8 @@ public abstract class GameInterface extends JFrame{
     protected abstract void noQuieroTrucoAction (ActionEvent e);
 
     protected abstract void actionAfterThrowingCard(boolean isThePlayer, int posCardThrown);
-    protected abstract void actionWhenPlayerWins();
-    protected abstract void actionWhenOpponentWins();
+    protected abstract void actionWhenPlayerWinsGame();
+    protected abstract void actionWhenOpponentWinsGame();
     protected abstract void loadPlayersName();
 
     protected GameInterface(Truco_Java menu, PlayMenu playMenu){
@@ -842,9 +842,9 @@ public abstract class GameInterface extends JFrame{
 
 
         if(playerPoints==15)
-            actionWhenPlayerWins();
+            actionWhenPlayerWinsGame();
         else if(opponentPoints==15)
-            actionWhenOpponentWins();
+            actionWhenOpponentWinsGame();
     }
 
 }

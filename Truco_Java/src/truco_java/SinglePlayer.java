@@ -205,7 +205,7 @@ public class SinglePlayer extends GameManagment{
             opponent.setPoints(15, this);
     }
 
-    protected void actionWhenPlayerWins() {
+    protected void actionWhenPlayerWinsGame() {
         JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó el Jugador. Felicidades");
         effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
         effects.play();
@@ -227,7 +227,7 @@ public class SinglePlayer extends GameManagment{
         dispose();
     }
 
-    protected void actionWhenOpponentWins(){
+    protected void actionWhenOpponentWinsGame(){
         JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó " + opponentName + ". Será la próxima...");
         effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
         effects.play();

@@ -475,8 +475,8 @@ public class ClientMultiplayer extends GameInterface {
         thread.start();
     }
 
-    protected void actionWhenPlayerWins() {}
-    protected void actionWhenOpponentWins() {}
+    protected void actionWhenPlayerWinsGame() {}
+    protected void actionWhenOpponentWinsGame() {}
 
     public void decodeMessage (String message) {
         if(message==""){

@@ -571,7 +571,7 @@ public class ServerMultiplayer extends GameManagment {
         }
     }
 
-    protected void actionWhenPlayerWins() {
+    protected void actionWhenPlayerWinsGame() {
         try {
             server.printMessage("Termino el Juego. Ganó " + playerName + ". Será la próxima...");
             server.enviaKill();
@@ -591,7 +591,7 @@ public class ServerMultiplayer extends GameManagment {
         server.killServer();
     }
 
-    protected void actionWhenOpponentWins() {
+    protected void actionWhenOpponentWinsGame() {
         try {
             server.printMessage("Termino el Juego. Has ganado! Felicidades");
             server.enviaKill();
