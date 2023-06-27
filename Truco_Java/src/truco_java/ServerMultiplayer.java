@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -105,13 +103,7 @@ public class ServerMultiplayer extends GameManagment {
             points++;
         opponent.setPoints(opponent.getPoints()+points+countPointsWonTruco(), this);
         anotherRound();
-        try {
-            updatesTurn();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        updatesTurn();
     }
 
     protected void envidoAction (ActionEvent e) {
@@ -388,14 +380,7 @@ public class ServerMultiplayer extends GameManagment {
             effects.play();
         }
         setBackground(0);
-
-        try {
-            updatesTurn();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        updatesTurn();
         printsEnvidoMessage(0,false);
     }
 
@@ -437,13 +422,7 @@ public class ServerMultiplayer extends GameManagment {
             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
             effects.play();
         }
-        try {
-            updatesTurn();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        updatesTurn();
         printsEnvidoMessage(0,false);
     }
 
@@ -522,13 +501,7 @@ public class ServerMultiplayer extends GameManagment {
             truco.setEnabled(false);
         quieroTruco.setVisible(false);
         noQuieroTruco.setVisible(false);
-        try {
-            updatesTurn();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        updatesTurn();
         setBackground(0);
     }
 
@@ -539,13 +512,7 @@ public class ServerMultiplayer extends GameManagment {
         quieroTruco.setVisible(false);
         noQuieroTruco.setVisible(false);
         anotherRound();
-        try {
-            updatesTurn();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        updatesTurn();
         setBackground(0);
     }
 
@@ -617,202 +584,53 @@ public class ServerMultiplayer extends GameManagment {
             syncWithClient(false);
     }
 
-    protected void updatesTurn() throws IOException {
-        if(finishedGame)
-            return;
-        if(checksWinnerOfGame()==1) {
+    protected void aditionalActionsInPlayersTurn(){
+        syncWithClient(false);
+    }
+
+    protected void actionsIfPlayerWinsRound(){
+        ThreadOptionPane("Termino la Partida. Ganaste!");
+        try{
             server.printMessage("Termino la Partida. Ha ganado " + playerName);
-            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
-            ThreadOptionPane("Termino la Partida. Ganaste!");
-
-            player.setPoints(player.getPoints() + countPointsWonTruco(), this);
-            anotherRound();
-            updatesTurn();
-            return;
+        } catch(IOException er){
+            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+            JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + er.getMessage());
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
         }
-        if(checksWinnerOfGame()==2) {
+        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
+        player.setPoints(player.getPoints() + countPointsWonTruco(), this);
+    }
+
+    protected void actionsIfOpponentWinsRound(){
+        ThreadOptionPane("Termino la Partida. Ha ganado " + opponentName + ".");
+        try{
             server.printMessage("Termino la Partida. Ganaste!");
-            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
-            ThreadOptionPane("Termino la Partida. Ha ganado " + opponentName + ".");
-
-            opponent.setPoints(opponent.getPoints() + countPointsWonTruco(), this);
-            anotherRound();
-            updatesTurn();
-            return;
+        } catch(IOException er){
+            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+            JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + er.getMessage());
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
         }
+        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
+        opponent.setPoints(opponent.getPoints() + countPointsWonTruco(), this);
+    }
 
-        if (player.getPlayedCards().isEmpty() && opponent.getPlayedCards().isEmpty()) {
-            if (player.isFirstHand() == true) {
-                if(enabledToRetrucar < 2) truco.setEnabled(true);
-                if(!finishedEnvido) envidoMenu.setEnabled(true);
-                irAlMazo.setEnabled(true);
-                cardPlayer1Enabled=true;
-                cardPlayer2Enabled=true;
-                cardPlayer3Enabled=true;
-                connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoJugador.png"));
-            } else {
-                truco.setEnabled(false);
-                envidoMenu.setEnabled(false);
-                irAlMazo.setEnabled(false);
-                cardPlayer1Enabled=false;
-                cardPlayer2Enabled=false;
-                cardPlayer3Enabled=false;
-                syncWithClient(true);
-                connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-                Thread thread = new Thread(){
-                    public void run(){
-                        try{
-                            decodeMessage(server.receiveMessage());
-                        } catch(IOException er){
-                            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                            JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar o recibir el mensaje: " + er.getMessage());
-                            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                            effects.play();
-                        }
-                    }
-                };
-                thread.start();
-            }
-        } else if (player.getPlayedCards().isEmpty() && !opponent.getPlayedCards().isEmpty()) {
-            if(enabledToRetrucar < 2) truco.setEnabled(true);
-            if(!finishedEnvido) envidoMenu.setEnabled(true);
-            irAlMazo.setEnabled(true);
-            cardPlayer1Enabled=true;
-            cardPlayer2Enabled=true;
-            cardPlayer3Enabled=true;
-            syncWithClient(false);
-            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoJugador.png"));
-        } else if (!player.getPlayedCards().isEmpty() && opponent.getPlayedCards().isEmpty()) {
-            truco.setEnabled(false);
-            envidoMenu.setEnabled(false);
-            irAlMazo.setEnabled(false);
-            cardPlayer1Enabled=false;
-            cardPlayer2Enabled=false;
-            cardPlayer3Enabled=false;
-            syncWithClient(true);
-            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-            Thread thread = new Thread(){
-                public void run(){
-                    try{
-                        decodeMessage(server.receiveMessage());
-                    } catch(IOException er){
-                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar o recibir el mensaje: " + er.getMessage());
-                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        effects.play();
-                    }
+    protected void aditionalActionsInOpponentsTurn(){
+        syncWithClient(true);
+        Thread thread = new Thread(){
+            public void run(){
+                try{
+                    decodeMessage(server.receiveMessage());
+                } catch(IOException er){
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar o recibir el mensaje: " + er.getMessage());
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
                 }
-            };
-            thread.start();
-        } else if (!player.getPlayedCards().isEmpty() && !opponent.getPlayedCards().isEmpty()) {
-            // If it's a round that nobody played
-            if (player.getPlayedCards().size() == opponent.getPlayedCards().size()) {
-                int rankingJugador = player.getPlayedCards().get(player.getPlayedCards().size()-1).rankingCard();
-                int rankingAI = opponent.getPlayedCards().get(opponent.getPlayedCards().size()-1).rankingCard();
-                envidoMenu.setEnabled(false);
-
-                if (rankingJugador > rankingAI) {
-                    if(enabledToRetrucar < 2) truco.setEnabled(true);  // If the player can say 'truco'
-                                                                       // If the last card that the AI has thrown is a 4, player can't say 'truco'
-                    if(opponent.getPlayedCards().size() == 3) if(opponent.getPlayedCards().get(2).rankingCard()==0) truco.setEnabled(false);
-                    irAlMazo.setEnabled(true);
-                    cardPlayer1Enabled=true;
-                    cardPlayer2Enabled=true;
-                    cardPlayer3Enabled=true;
-                    syncWithClient(false);
-                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoJugador.png"));
-                } else if (rankingAI > rankingJugador) {
-                    truco.setEnabled(false);
-                    envidoMenu.setEnabled(false);
-                    irAlMazo.setEnabled(false);
-                    cardPlayer1Enabled=false;
-                    cardPlayer2Enabled=false;
-                    cardPlayer3Enabled=false;
-                    syncWithClient(true);
-                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-                    Thread thread = new Thread(){
-                        public void run(){
-                            try{
-                                decodeMessage(server.receiveMessage());
-                            } catch(IOException er){
-                                connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                                JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar o recibir el mensaje: " + er.getMessage());
-                                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                                effects.play();
-                            }
-                        }
-                    };
-                    thread.start();
-                } else if(rankingJugador == rankingAI){
-                    if(player.isFirstHand()){
-                        if(enabledToRetrucar < 2) truco.setEnabled(true);
-                        // If the last card that the AI has thrown is a 4, player can't say 'truco'
-                        if(opponent.getPlayedCards().size() == 3) if(opponent.getPlayedCards().get(2).rankingCard()==0) truco.setEnabled(false);
-                        irAlMazo.setEnabled(true);
-                        cardPlayer1Enabled=true;
-                        cardPlayer2Enabled=true;
-                        cardPlayer3Enabled=true;
-                        syncWithClient(false);
-                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoJugador.png"));
-                    } else {
-                        truco.setEnabled(false);
-                        envidoMenu.setEnabled(false);
-                        irAlMazo.setEnabled(false);
-                        cardPlayer1Enabled=false;
-                        cardPlayer2Enabled=false;
-                        cardPlayer3Enabled=false;
-                        syncWithClient(true);
-                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-                        Thread thread = new Thread(){
-                            public void run(){
-                                try{
-                                    decodeMessage(server.receiveMessage());
-                                } catch(IOException er){
-                                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar o recibir el mensaje: " + er.getMessage());
-                                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                                    effects.play();
-                                }
-                            }
-                        };
-                        thread.start();
-                    }
-                }
-            } else if (player.getPlayedCards().size() == opponent.getPlayedCards().size() - 1) {
-                if(enabledToRetrucar < 2) truco.setEnabled(true);
-                // If the last card that the AI has thrown is a 4, player can't say 'truco'
-                if(opponent.getPlayedCards().size() == 3) if(opponent.getPlayedCards().get(2).rankingCard()==0) truco.setEnabled(false);
-                irAlMazo.setEnabled(true);
-                cardPlayer1Enabled=true;
-                cardPlayer2Enabled=true;
-                cardPlayer3Enabled=true;
-                syncWithClient(false);
-                connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoJugador.png"));
-            } else if (player.getPlayedCards().size() - 1 == opponent.getPlayedCards().size()) { // Si ya el jugador tiró en esa ronda
-                truco.setEnabled(false);
-                envidoMenu.setEnabled(false);
-                irAlMazo.setEnabled(false);
-                cardPlayer1Enabled=false;
-                cardPlayer2Enabled=false;
-                cardPlayer3Enabled=false;
-                syncWithClient(true);
-                connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-                Thread thread = new Thread(){
-                    public void run(){
-                        try{
-                            decodeMessage(server.receiveMessage());
-                        } catch(IOException er){
-                            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                            JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar o recibir el mensaje: " + er.getMessage());
-                            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                            effects.play();
-                        }
-                    }
-                };
-                thread.start();
-                connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
             }
-        }
+        };
+        thread.start();
     }
 
     public void decodeMessage (String message) {
@@ -868,13 +686,7 @@ public class ServerMultiplayer extends GameManagment {
                         effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
                         effects.play();
                     }
-                    try {
-                        updatesTurn();
-                    } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        effects.play();
-                    }
+                    updatesTurn();
                 } else if(level<5){
                     envidosDeclared.add(level);
                     cardPlayer1Enabled=false;
@@ -973,13 +785,7 @@ public class ServerMultiplayer extends GameManagment {
                     }
                     setBackground(0);
 
-                    try {
-                        updatesTurn();
-                    } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        effects.play();
-                    }
+                    updatesTurn();
                 }
                 scanner.close();
                 return;
@@ -1077,13 +883,7 @@ public class ServerMultiplayer extends GameManagment {
                 player.setPoints(player.getPoints() + points + countPointsWonTruco(), this);
                 ThreadOptionPane(opponentName + " se ha ido al mazo. Repartiendo...");
                 anotherRound();
-                try {
-                    updatesTurn();
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    effects.play();
-                }
+                updatesTurn();
                 break;
             default:
                 // System.out.println("No se detecto la categoria del mensaje: " + cat);

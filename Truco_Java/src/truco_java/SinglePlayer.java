@@ -1,9 +1,6 @@
 package truco_java;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class SinglePlayer extends GameManagment{
@@ -253,140 +250,31 @@ public class SinglePlayer extends GameManagment{
         aiAlgorithm.setPlayersDeclaredEnvido(-1);
     }
 
-    protected void updatesTurn(){
-        if(finishedGame)
-            return;
-        if(checksWinnerOfGame()==1) {
-            JOptionPane.showMessageDialog(null, "Termino la Partida. Ganó el Jugador.");
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
+    protected void actionsIfPlayerWinsRound(){
+        JOptionPane.showMessageDialog(null, "Termino la Partida. Ganó el Jugador.");
+        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+        effects.play();
 
-            player.setPoints(player.getPoints() + countPointsWonTruco(), this);
-            anotherRound();
-            updatesTurn();
-            return;
-        }
-        if(checksWinnerOfGame()==2) {
-            JOptionPane.showMessageDialog(null, "Termino la Partida. Ganó " + opponentName + ".");
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
+        player.setPoints(player.getPoints() + countPointsWonTruco(), this);
+    }
 
-            opponent.setPoints(opponent.getPoints() + countPointsWonTruco(), this);
-            anotherRound();
-            updatesTurn();
-            return;
-        }
+    protected void aditionalActionsInPlayersTurn() { }
 
-        if (player.getPlayedCards().isEmpty() && opponent.getPlayedCards().isEmpty()) {
-            if (player.isFirstHand() == true) {
-                if(enabledToRetrucar < 2) truco.setEnabled(true);
-                if(!finishedEnvido) envidoMenu.setEnabled(true);
-                irAlMazo.setEnabled(true);
-                cardPlayer1Enabled=true;
-                cardPlayer2Enabled=true;
-                cardPlayer3Enabled=true;
-            } else {
-                truco.setEnabled(false);
-                envidoMenu.setEnabled(false);
-                irAlMazo.setEnabled(false);
-                cardPlayer1Enabled=false;
-                cardPlayer2Enabled=false;
-                cardPlayer3Enabled=false;
-                // Not call askEnvidoToAI, because it's already inside of askTrucoToAI
-                // TODO: Separate Functions
-                if (askAiTruco(false)==0);
-                else return;
-                opponent = aiAlgorithm.playTurnAlgorithm(opponent, player.getPlayedCards());
-                moveCard(opponent.getCards().size(), opponent.getPlayedCards().size()-1, opponent, false);
-            }
-        } else if (player.getPlayedCards().isEmpty() && !opponent.getPlayedCards().isEmpty()) {
-            if(enabledToRetrucar < 2) truco.setEnabled(true);
-            if(!finishedEnvido) envidoMenu.setEnabled(true);
-            irAlMazo.setEnabled(true);
-            cardPlayer1Enabled=true;
-            cardPlayer2Enabled=true;
-            cardPlayer3Enabled=true;
-        } else if (!player.getPlayedCards().isEmpty() && opponent.getPlayedCards().isEmpty()) {
-            truco.setEnabled(false);
-            envidoMenu.setEnabled(false);
-            irAlMazo.setEnabled(false);
-            cardPlayer1Enabled=false;
-            cardPlayer2Enabled=false;
-            cardPlayer3Enabled=false;
-            // Not call askEnvidoToAI, because it's already inside of askTrucoToAI
-            if (askAiTruco(false)==0);
-            else return;
-            opponent = aiAlgorithm.playTurnAlgorithm(opponent, player.getPlayedCards());
-            moveCard(opponent.getCards().size(), opponent.getPlayedCards().size()-1, opponent, false);
-        } else if (!player.getPlayedCards().isEmpty() && !opponent.getPlayedCards().isEmpty()) {
-            // If it's a round that nobody has played (start of the round)
-            if (player.getPlayedCards().size() == opponent.getPlayedCards().size()) {
-                int playerRankingLastRound = player.getPlayedCards().get(player.getPlayedCards().size()-1).rankingCard();
-                int aiRankingLastRound = opponent.getPlayedCards().get(opponent.getPlayedCards().size()-1).rankingCard();
-                envidoMenu.setEnabled(false);
+    protected void aditionalActionsInOpponentsTurn(){
+        // Not call askEnvidoToAI, because it's already inside of askTrucoToAI
+        // TODO: Separate Functions Truco and Envido of askAiTruco
+        if (askAiTruco(false)==0);
+        else return;
+        opponent = aiAlgorithm.playTurnAlgorithm(opponent, player.getPlayedCards());
+        moveCard(opponent.getCards().size(), opponent.getPlayedCards().size()-1, opponent, false);
+    }
 
-                if (playerRankingLastRound > aiRankingLastRound) {
-                    if(enabledToRetrucar < 2) truco.setEnabled(true); // If the player can say 'truco'
-                                                                      // If the last card that the AI has thrown is a 4, player can't say 'truco'
-                    if(opponent.getPlayedCards().size() == 3) if(opponent.getPlayedCards().get(2).rankingCard()==0) truco.setEnabled(false);
-                    irAlMazo.setEnabled(true);
-                    cardPlayer1Enabled=true;
-                    cardPlayer2Enabled=true;
-                    cardPlayer3Enabled=true;
-                } else if (aiRankingLastRound > playerRankingLastRound) {
-                    truco.setEnabled(false);
-                    envidoMenu.setEnabled(false);
-                    irAlMazo.setEnabled(false);
-                    cardPlayer1Enabled=false;
-                    cardPlayer2Enabled=false;
-                    cardPlayer3Enabled=false;
-                    if (askAiTruco(false)==0);
-                    else return;
-                    opponent = aiAlgorithm.playTurnAlgorithm(opponent, player.getPlayedCards());
-                    moveCard(opponent.getCards().size(), opponent.getPlayedCards().size()-1, opponent, false);
-                } else if(playerRankingLastRound == aiRankingLastRound){
-                    if(player.isFirstHand()){
-                        if(enabledToRetrucar < 2) truco.setEnabled(true);
-                        // If the last card that the AI has thrown is a 4, player can't say 'truco'
-                        if(opponent.getPlayedCards().size() == 3) if(opponent.getPlayedCards().get(2).rankingCard()==0) truco.setEnabled(false);
-                        irAlMazo.setEnabled(true);
-                        cardPlayer1Enabled=true;
-                        cardPlayer2Enabled=true;
-                        cardPlayer3Enabled=true;
-                    } else {
-                        truco.setEnabled(false);
-                        envidoMenu.setEnabled(false);
-                        irAlMazo.setEnabled(false);
-                        cardPlayer1Enabled=false;
-                        cardPlayer2Enabled=false;
-                        cardPlayer3Enabled=false;
-                        if (askAiTruco(false)==0);
-                        else return;
-                        opponent = aiAlgorithm.playTurnAlgorithm(opponent, player.getPlayedCards());
-                        moveCard(opponent.getCards().size(), opponent.getPlayedCards().size()-1, opponent, false);
-                    }
-                }
-            } else if (player.getPlayedCards().size() == opponent.getPlayedCards().size() - 1) {
-                if(enabledToRetrucar < 2) truco.setEnabled(true);
-                // If the last card that the AI has thrown is a 4, player can't say 'truco'
-                if(opponent.getPlayedCards().size() == 3) if(opponent.getPlayedCards().get(2).rankingCard()==0) truco.setEnabled(false);
-                irAlMazo.setEnabled(true);
-                cardPlayer1Enabled=true;
-                cardPlayer2Enabled=true;
-                cardPlayer3Enabled=true;
-            } else if (player.getPlayedCards().size() - 1 == opponent.getPlayedCards().size()) {
-                truco.setEnabled(false);
-                envidoMenu.setEnabled(false);
-                irAlMazo.setEnabled(false);
-                cardPlayer1Enabled=false;
-                cardPlayer2Enabled=false;
-                cardPlayer3Enabled=false;
-                if (askAiTruco(false)==0);
-                else return;
-                opponent = aiAlgorithm.playTurnAlgorithm(opponent, player.getPlayedCards());
-                moveCard(opponent.getCards().size(), opponent.getPlayedCards().size()-1, opponent, false);
-            }
-        }
+    protected void actionsIfOpponentWinsRound(){
+        JOptionPane.showMessageDialog(null, "Termino la Partida. Ganó " + opponentName + ".");
+        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+        effects.play();
+
+        opponent.setPoints(opponent.getPoints() + countPointsWonTruco(), this);
     }
 
     private int askAiEnvido() {

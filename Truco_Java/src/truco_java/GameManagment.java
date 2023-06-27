@@ -3,18 +3,17 @@ package truco_java;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.swing.JOptionPane;
-
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 
 public abstract class GameManagment extends GameInterface{
 
     protected ArrayList<Card> deck = new ArrayList<>();
 
-    // TODO: make this function not abstract
-    protected abstract void updatesTurn() throws IOException;
     protected abstract void aditionalActionsInAnotherRound();
+    protected abstract void actionsIfPlayerWinsRound();
+    protected abstract void actionsIfOpponentWinsRound();
+    protected abstract void aditionalActionsInPlayersTurn();
+    protected abstract void aditionalActionsInOpponentsTurn();
 
 
     public GameManagment(Truco_Java menu, PlayMenu playMenu){
@@ -26,13 +25,7 @@ public abstract class GameManagment extends GameInterface{
         dealCards.addActionListener((ActionEvent e) -> {
             dealCards.setEnabled(false);
             anotherRound();
-            try {
-                updatesTurn();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
+            updatesTurn();
         });
     }
 
@@ -240,12 +233,7 @@ public abstract class GameManagment extends GameInterface{
 
     protected void actionAfterThrowingCard(boolean isThePlayer, int posCardThrown){
         drawCards();
-        try {
-            updatesTurn();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al momento de habilitar los turnos: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-        }
+        updatesTurn();
     }
 
     protected void anotherRound() {
@@ -321,6 +309,95 @@ public abstract class GameManagment extends GameInterface{
         aditionalActionsInAnotherRound();
         updatePoints();
         drawCards();
+    }
+
+    protected void updatesTurn(){
+        if(finishedGame)
+            return;
+        if(checksWinnerOfGame()==1) {
+            actionsIfPlayerWinsRound();
+
+            anotherRound();
+            updatesTurn();
+            return;
+        }
+        if(checksWinnerOfGame()==2) {
+            actionsIfOpponentWinsRound();
+
+            anotherRound();
+            updatesTurn();
+            return;
+        }
+
+        if (player.getPlayedCards().isEmpty() && opponent.getPlayedCards().isEmpty()) {
+            if (player.isFirstHand() == true) {
+                if(!finishedEnvido) envidoMenu.setEnabled(true);
+                actionsInPlayersTurn();
+            } else
+                actionsInOpponentTurn();
+
+        } else if (player.getPlayedCards().isEmpty() && !opponent.getPlayedCards().isEmpty()) {
+            if(!finishedEnvido) envidoMenu.setEnabled(true);
+            actionsInPlayersTurn();
+
+        } else if (!player.getPlayedCards().isEmpty() && opponent.getPlayedCards().isEmpty())
+            actionsInOpponentTurn();
+
+        else if (!player.getPlayedCards().isEmpty() && !opponent.getPlayedCards().isEmpty()) {
+            // If it's a round that no one has played yet
+            if (player.getPlayedCards().size() == opponent.getPlayedCards().size()) {
+                int rankingJugador = player.getPlayedCards().get(player.getPlayedCards().size()-1).rankingCard();
+                int rankingAI = opponent.getPlayedCards().get(opponent.getPlayedCards().size()-1).rankingCard();
+                envidoMenu.setEnabled(false);
+
+                if (rankingJugador > rankingAI)
+                    actionsInPlayersTurn();
+
+                else if (rankingAI > rankingJugador)
+                    actionsInOpponentTurn();
+
+                else if(rankingJugador == rankingAI){
+                    if(player.isFirstHand())
+                        actionsInPlayersTurn();
+
+                    else
+                        actionsInOpponentTurn();
+
+                }
+            } else if (player.getPlayedCards().size() == opponent.getPlayedCards().size() - 1)
+                actionsInPlayersTurn();
+
+            else if (player.getPlayedCards().size() - 1 == opponent.getPlayedCards().size())
+                actionsInOpponentTurn();
+
+        }
+    }
+
+    private void actionsInPlayersTurn(){
+        if(enabledToRetrucar < 2) truco.setEnabled(true);
+
+        // If the last card that the AI has thrown is a 4, player can't say 'truco'
+        if(opponent.getPlayedCards().size() == 3) if(opponent.getPlayedCards().get(2).rankingCard()==0) truco.setEnabled(false);
+
+        irAlMazo.setEnabled(true);
+        cardPlayer1Enabled=true;
+        cardPlayer2Enabled=true;
+        cardPlayer3Enabled=true;
+        connectionBackground.setIcon(getImageIcon("src/truco_java/fondos/turnoJugador.png", false));
+
+        aditionalActionsInPlayersTurn();
+    }
+
+    private void actionsInOpponentTurn(){
+        truco.setEnabled(false);
+        envidoMenu.setEnabled(false);
+        irAlMazo.setEnabled(false);
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
+        connectionBackground.setIcon(getImageIcon("src/truco_java/fondos/turnoOponente.png", false));
+
+        aditionalActionsInOpponentsTurn();
     }
 
 }
