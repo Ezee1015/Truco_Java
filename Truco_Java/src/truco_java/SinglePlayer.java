@@ -15,6 +15,15 @@ public class SinglePlayer extends GameManagment{
 
         setLayout(null);
         setDefaultCloseOperation(3);
+
+        Thread thread = new Thread(){
+            public void run(){
+                JOptionPane.showMessageDialog(null, "Aprete el mazo para repartir y comenzar a jugar...");
+                effects.setFile("src/truco_java/musica/boton.wav", 1);
+                effects.play();
+            }
+        };
+        thread.start();
     }
 
     protected void loadPlayersName(){

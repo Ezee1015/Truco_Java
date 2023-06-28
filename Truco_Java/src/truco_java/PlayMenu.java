@@ -271,10 +271,7 @@ public class PlayMenu extends JFrame{
             game.setTitle("Juego Truco");
             game.setBounds(0,0,505,800);
             game.setLocationRelativeTo(null);
-            JOptionPane.showMessageDialog(null, "Aprete el mazo de cartas para comenzar el juego...");
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
             game.setVisible(true);
-            effects.play();
         });
 
         ArrayList<JLabel> playersBackground = new ArrayList<>();
