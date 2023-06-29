@@ -162,11 +162,10 @@ public abstract class GameManagment extends GameInterface{
                 case 0:
                     tieDefines=true;
 
-                    // Finds who won in the round before
-                    for(int z=i;z>0;z--){
-                        if(whoWonRound(z-1)==1) { winner=1; break; }
-                        if(whoWonRound(z-1)==2) { winner=2; break; }
-                    }
+                    // Finds who won in the first round
+                    if(i!=0 && whoWonRound(0)==1) { winner=1; break; }
+                    if(i!=0 && whoWonRound(0)==2) { winner=2; break; }
+
                     break;
             }
         }
