@@ -197,7 +197,7 @@ public class SinglePlayer extends GameManagment{
 
         // If the game hasn't started
         if(dealCards.isEnabled()){
-            menu.setVisible(true);
+            playMenu.setVisible(true);
             finishedGame=true;
             dispose();
             return;
@@ -215,7 +215,7 @@ public class SinglePlayer extends GameManagment{
         JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó el Jugador. Felicidades");
         effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
         effects.play();
-        menu.setVisible(true);
+        playMenu.setVisible(true);
         finishedGame=true;
         anotherRound();
         if(!menu.easyCheckBox.isSelected()) {
@@ -237,7 +237,7 @@ public class SinglePlayer extends GameManagment{
         JOptionPane.showMessageDialog(null, "Termino el Juego. Ganó " + opponentName + ". Será la próxima...");
         effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
         effects.play();
-        menu.setVisible(true);
+        playMenu.setVisible(true);
         finishedGame=true;
         anotherRound();
         if(!menu.easyCheckBox.isSelected()) {
