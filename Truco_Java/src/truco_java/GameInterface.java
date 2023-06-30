@@ -189,7 +189,7 @@ public abstract class GameInterface extends JFrame{
         dealCards.setContentAreaFilled(false);
         dealCards.setBorderPainted(false);
         dealCards.setVisible(true);
-        dealCards.setEnabled(false);
+        dealCards.setEnabled(true);
         background.add(dealCards);
 
         cardThrownOpponent1 = new JLabel();

@@ -21,9 +21,11 @@ public abstract class GameManagment extends GameInterface{
 
         loadDeck();
 
-        dealCards.setEnabled(true);
         dealCards.addActionListener((ActionEvent e) -> {
-            dealCards.setEnabled(false);
+            // Remove ActionListener of dealCards
+            for(int i=0;i<dealCards.getActionListeners().length;i++)
+                dealCards.removeActionListener(dealCards.getActionListeners()[i]);
+
             anotherRound();
             updatesTurn();
         });
