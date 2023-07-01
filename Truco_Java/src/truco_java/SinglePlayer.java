@@ -196,7 +196,7 @@ public class SinglePlayer extends GameManagment{
         effects.play();
 
         // If the game hasn't started
-        if(dealCards.isEnabled()){
+        if(dealCards.getActionListeners().length!=0){
             playMenu.setVisible(true);
             finishedGame=true;
             dispose();
