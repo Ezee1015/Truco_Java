@@ -17,6 +17,9 @@ public class ClientMultiplayer extends GameInterface {
         client = new Client(ip,port);
 
         loadPlayersName();
+
+        dealCards.setLocation(36,280);
+        dealCards.setIcon(getImageIcon("src/truco_java/fondos/cartasMazo.png", 80, 80, true));
     }
 
     protected void loadPlayersName(){
