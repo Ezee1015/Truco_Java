@@ -3,16 +3,15 @@ package truco_java;
 import java.util.ArrayList;
 
 public class Player {
-  private ArrayList<Card> cards = new ArrayList<>();
-  private ArrayList<Card> playedCards = new ArrayList<>();
+  private SetOfCards cards = new SetOfCards();
+  private SetOfCards playedCards = new SetOfCards();
   private int points=0;
   private boolean firstHand;
-  private int posCards[] = new int[3];
 
   public Player() {
   }
 
-  public Player(ArrayList<Card> cards, boolean firstHand) {
+  public Player(SetOfCards cards, boolean firstHand) {
     this.cards = cards;
     this.firstHand = firstHand;
   }
@@ -36,37 +35,19 @@ public class Player {
     interfaceGame.updatePoints();
   }
 
-  public ArrayList<Card> getCards() {
+  public SetOfCards getCards() {
     return cards;
   }
 
-  public void setCards(ArrayList<Card> cards) {
+  public void setCards(SetOfCards cards) {
     this.cards = cards;
-    sortCards();
   }
 
-  public void sortCards(){
-    ArrayList<Card> temp = new ArrayList<>();
-
-    for(int x=0;x<cards.size()+temp.size();x++){
-      int posMin=0;
-      for(int i=1;i<cards.size();i++){
-        if(cards.get(i).rankingCard()<cards.get(posMin).rankingCard()){
-          posMin=i;
-        }
-      }
-      temp.add(cards.get(posMin));
-      cards.remove(posMin);
-    }
-
-    cards.addAll(temp);
-  }
-
-  public ArrayList<Card> getPlayedCards() {
+  public SetOfCards getPlayedCards() {
     return playedCards;
   }
 
-  public void setPlayedCards(ArrayList<Card> playedCards) {
+  public void setPlayedCards(SetOfCards playedCards) {
     this.playedCards = playedCards;
   }
 
@@ -81,8 +62,8 @@ public class Player {
   protected int calculateEnvido(){
     int envido=0;
     ArrayList<Card> cardsOriginal = new ArrayList<>();
-    cardsOriginal.addAll(cards);
-    cardsOriginal.addAll(playedCards);
+    cardsOriginal.addAll(cards.toArrayList());
+    cardsOriginal.addAll(playedCards.toArrayList());
 
     // Looks for pairs in order to find an envido of 20
     for(int i=0; i<cardsOriginal.size();i++){
@@ -114,16 +95,8 @@ public class Player {
   }
 
   public void addPlayedCards(int pos){
-    playedCards.add(cards.get(pos));
-    cards.remove(pos);
-  }
-
-  public int[] getPosCards(){
-    return posCards;
-  }
-
-  public void setPosCards(int[] p){
-    posCards=p;
+    playedCards.add(cards.getPosAtVector(pos));
+    cards.removeAtVector(pos);
   }
 
 }

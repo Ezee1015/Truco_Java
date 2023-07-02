@@ -1,6 +1,5 @@
 package truco_java;
 
-import java.util.ArrayList;
 import java.io.IOException;
 
 public class Server extends Connection{
@@ -18,24 +17,31 @@ public class Server extends Connection{
         sendMessage("points " + playerPoints + " " + oponentPoints);
     }
 
-    public void updateInfo(int sizePlayerCards, ArrayList<Card> playedPlayerCards,ArrayList<Card> oponentCards, int[] posOponentCards, ArrayList<Card> playedOponentCards, int trucoLevel, boolean envidoEnded, int enabledToRetrucar, boolean oponentTurn, int playerPoints, int oponentPoints, boolean isPlayerFirstHand) throws IOException{
+    public void updateInfo(int sizePlayerCards, SetOfCards playedPlayerCards,SetOfCards opponentCards, SetOfCards playedOpponentCards, int trucoLevel, boolean envidoEnded, int enabledToRetrucar, boolean oponentTurn, int playerPoints, int oponentPoints, boolean isPlayerFirstHand) throws IOException{
 
         String message = "update " + String.valueOf(sizePlayerCards)+" ";
         for(int i=0;i<3-sizePlayerCards;i++){
-            message+=playedPlayerCards.get(i).getNumber()+" ";
-            message+=playedPlayerCards.get(i).getStick()+" ";
+            message+=playedPlayerCards.getNotNullCards(i).getNumber()+" ";
+            message+=playedPlayerCards.getNotNullCards(i).getStick()+" ";
         }
 
-        message+=oponentCards.size()+" ";
-        for(int i=0;i<oponentCards.size();i++){
-            message+=oponentCards.get(i).getNumber()+" ";
-            message+=oponentCards.get(i).getStick()+" ";
+        for(int i=0;i<3;i++){
+            Card tempCard = opponentCards.getPosAtVector(i);
+            if (tempCard == null)
+                message+="null null ";
+            else {
+                message+=tempCard.getNumber()+" ";
+                message+=tempCard.getStick()+" ";
+            }
         }
-        for(int i=0;i<3;i++)
-            message+=posOponentCards[i]+" ";
-        for(int i=0;i<playedOponentCards.size();i++){
-            message+=playedOponentCards.get(i).getNumber()+" ";
-            message+=playedOponentCards.get(i).getStick()+" ";
+        for(int i=0;i<3;i++){
+            Card tempCard = playedOpponentCards.getPosAtVector(i);
+            if (tempCard == null)
+                message+="null null ";
+            else {
+                message+=tempCard.getNumber()+" ";
+                message+=tempCard.getStick()+" ";
+            }
         }
 
         message+=String.valueOf(trucoLevel)+" "+String.valueOf(envidoEnded)+" "+String.valueOf(enabledToRetrucar)+" "+oponentTurn + " " + playerPoints + " " + oponentPoints + " " + isPlayerFirstHand;

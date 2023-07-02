@@ -517,54 +517,58 @@ public class ClientMultiplayer extends GameInterface {
         switch(cat){
             case "update":
                 boolean moveCardOpponent=false;
-                int opponentCardsCount = opponent.getCards().size();
-
-                int newCountCardsOpponent=Integer.parseInt(scanf.next());
-                if(newCountCardsOpponent < opponentCardsCount)
+                int opponentCardsCount = scanf.nextInt();
+                if(opponentCardsCount < opponent.getCards().size())
                     moveCardOpponent = true;
-                opponentCardsCount=newCountCardsOpponent;
 
                 // Fills 'cards' of the opponent with empty cards of the amount given
-                ArrayList<Card> cardsOpponent = new ArrayList<>();
+                SetOfCards cardsOpponent = new SetOfCards();
                 for(int i=0; i<opponentCardsCount; i++)
                     cardsOpponent.add(new Card(0, ""));
                 opponent.setCards(cardsOpponent);
 
-                ArrayList<Card> playedCardsOpponent = new ArrayList<>();
-                for(int i=0;i<3-opponentCardsCount;i++)
-                    playedCardsOpponent.add(new Card(Integer.parseInt(scanf.next()), scanf.next()));
+                SetOfCards playedCardsOpponent = new SetOfCards();
+                for(int i=0;i<3-opponentCardsCount;i++){
+                    try{
+                        String number = scanf.next();
+                        String stick = scanf.next();
+                        playedCardsOpponent.add(i, new Card(Integer.parseInt(number), stick));
+                    } catch(NumberFormatException e){
+                        playedCardsOpponent.add(i, null);
+                    }
+                }
                 opponent.setPlayedCards(playedCardsOpponent);
 
-                ArrayList<Card> cards = new ArrayList<>();
-                int sizeCards = Integer.parseInt(scanf.next());
-                for(int i=0;i<sizeCards;i++)
-                    cards.add(new Card(Integer.parseInt(scanf.next()), scanf.next()));
+                SetOfCards cards = new SetOfCards();
+                for(int i=0;i<3;i++){
+                    try{
+                        String number = scanf.next();
+                        String stick = scanf.next();
+                        cards.add(i, new Card(Integer.parseInt(number), stick));
+                    } catch(NumberFormatException e){
+                        cards.add(i, null);
+                    }
+                }
                 player.setCards(cards);
 
-                int[] positionCards = new int[3];
-                for(int i=0;i<3;i++)
-                    positionCards[i]=Integer.parseInt(scanf.next());
-                player.setPosCards(positionCards);
-
-                ArrayList<Card> playedCards = new ArrayList<>();
-                for(int i=0;i<3-sizeCards;i++)
-                    playedCards.add(new Card(Integer.parseInt(scanf.next()), scanf.next()));
+                SetOfCards playedCards = new SetOfCards();
+                for(int i=0;i<3;i++){
+                    try {
+                        String number = scanf.next();
+                        String stick = scanf.next();
+                        playedCards.add(i, new Card(Integer.parseInt(number), stick));
+                    } catch(NumberFormatException e){
+                        playedCards.add(i, null);
+                    }
+                }
                 player.setPlayedCards(playedCards);
 
                 trucoLevel=Integer.parseInt(scanf.next());
                 finishedEnvido=Boolean.parseBoolean(scanf.next());
                 enabledToRetrucar=Integer.parseInt(scanf.next());
 
-                if(moveCardOpponent){
-                    try {
-                        moveCard(newCountCardsOpponent, 2-newCountCardsOpponent, opponent, false);
-                    } catch (Exception e) {
-                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
-                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        effects.play();
-                    }
-                }
+                if(moveCardOpponent)
+                    moveCard(opponent.getCards().size(), opponent.getPlayedCards().size()-1, opponent, false);
 
                 // It's player's turn
                 if(Boolean.parseBoolean(scanf.next())){
@@ -587,7 +591,7 @@ public class ClientMultiplayer extends GameInterface {
                         truco.setEnabled(false);
                     // If the last card is 4, disable 'truco'
                     if(opponent.getPlayedCards().size() == 3){
-                        if(opponent.getPlayedCards().get(2).rankingCard()==0) {
+                        if(opponent.getPlayedCards().getNotNullCards(2).rankingCard()==0) {
                             truco.setEnabled(false);
                         }
                     }

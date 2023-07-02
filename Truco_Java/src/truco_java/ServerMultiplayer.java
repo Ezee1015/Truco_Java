@@ -643,22 +643,8 @@ public class ServerMultiplayer extends GameManagment {
 
         switch(tag){
             case "throw":
-                int pos = Integer.parseInt(scanner.next());
-                opponent.addPlayedCards(opponent.getPosCards()[pos]);
-                // Array that indicates that the card should be drawn or not
-                int temp[] = opponent.getPosCards();
-                temp[pos] = -1;
-                for(int i=pos+1;i<temp.length;i++)
-                    temp[i]-=1;
-                opponent.setPosCards(temp);
-                try {
-                    moveCard(opponent.getCards().size(), opponent.getPlayedCards().size()-1, opponent, false);
-                } catch (Exception e) {
-                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + e.getMessage());
-                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    effects.play();
-                }
+                opponent.addPlayedCards(scanner.nextInt());
+                moveCard(opponent.getCards().size(), opponent.getPlayedCards().size()-1, opponent, false);
                 break;
             case "envido":
                 int level = Integer.parseInt(scanner.next());
@@ -907,7 +893,7 @@ public class ServerMultiplayer extends GameManagment {
 
     private void syncWithClient(boolean opponentTurn){
         try {
-            server.updateInfo(player.getCards().size(), player.getPlayedCards(), opponent.getCards(), opponent.getPosCards(), opponent.getPlayedCards(),trucoLevel, finishedEnvido, enabledToRetrucar, opponentTurn, player.getPoints(), opponent.getPoints(), player.isFirstHand());
+            server.updateInfo(player.getCards().size(), player.getPlayedCards(), opponent.getCards(), opponent.getPlayedCards(),trucoLevel, finishedEnvido, enabledToRetrucar, opponentTurn, player.getPoints(), opponent.getPoints(), player.isFirstHand());
         } catch (IOException e) {
             connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
             JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar la actualización al cliente: " + e.getMessage());

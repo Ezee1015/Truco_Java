@@ -6,11 +6,9 @@ import java.util.Random;
 public class Ai {
   private int playersDeclaredEnvido = -1;
 
-  public Player playTurnAlgorithm(Player player, ArrayList<Card> opponentPlayedCards){
-    ArrayList<Card> playerPlayedCards = new ArrayList<>();
-    playerPlayedCards.addAll(player.getPlayedCards());
-    ArrayList<Card> playerCards = new ArrayList<>();
-    playerCards.addAll(player.getCards());
+  public Player playTurnAlgorithm(Player player, SetOfCards opponentPlayedCards){
+    SetOfCards playerPlayedCards = player.getPlayedCards();
+    SetOfCards playerCards = player.getCards();
 
     // If it's the first round and the player didn't play
     if(opponentPlayedCards.isEmpty())
@@ -22,12 +20,12 @@ public class Ai {
       for(int i=0;i<playerCards.size();i++) {
         // If there is a card that ties the one thrown by the player, and I won the first round. Throw it
         if( opponentPlayedCards.size()>1 &&
-            opponentPlayedCards.get(opponentPlayedCards.size()-1).rankingCard() == playerCards.get(i).rankingCard() &&
-            opponentPlayedCards.get(0).rankingCard() <= playerCards.get(0).rankingCard()
+            opponentPlayedCards.getNotNullCards(opponentPlayedCards.size()-1).rankingCard() == playerCards.getNotNullCards(i).rankingCard() &&
+            opponentPlayedCards.getNotNullCards(0).rankingCard() <= playerCards.getNotNullCards(0).rankingCard()
           )
           return throwCardAtPos(player, i);
         // Looks for the worst card that can win
-        if(opponentPlayedCards.get(opponentPlayedCards.size()-1).rankingCard() < playerCards.get(i).rankingCard())
+        if(opponentPlayedCards.getNotNullCards(opponentPlayedCards.size()-1).rankingCard() < playerCards.getNotNullCards(i).rankingCard())
           return throwCardAtPos(player, i);
       }
       // If I can't win that card, throw the worst one
@@ -35,25 +33,25 @@ public class Ai {
     }
 
     if(playerPlayedCards.size()>=1){
-      if(opponentPlayedCards.get(0).rankingCard() == playerPlayedCards.get(0).rankingCard())
+      if(opponentPlayedCards.getNotNullCards(0).rankingCard() == playerPlayedCards.getNotNullCards(0).rankingCard())
         return throwBestCard(player);
-      if(opponentPlayedCards.get(0).rankingCard() > playerPlayedCards.get(0).rankingCard()){
+      if(opponentPlayedCards.getNotNullCards(0).rankingCard() > playerPlayedCards.getNotNullCards(0).rankingCard()){
         // From the worst to the best card (already sorted)
         for(int i=0;i<playerCards.size();i++) {
           // If there is a card that ties the one thrown by the player, and I won/tie the first round. Throw it
           if(
               opponentPlayedCards.size()>=2 &&
-              opponentPlayedCards.get(opponentPlayedCards.size()-1).rankingCard() == playerCards.get(i).rankingCard() &&
-              opponentPlayedCards.get(0).rankingCard() <= playerCards.get(0).rankingCard()
+              opponentPlayedCards.getNotNullCards(opponentPlayedCards.size()-1).rankingCard() == playerCards.getNotNullCards(i).rankingCard() &&
+              opponentPlayedCards.getNotNullCards(0).rankingCard() <= playerCards.getNotNullCards(0).rankingCard()
             )
             return throwCardAtPos(player, i);
           // Looks for the worst card that can win
-          if(opponentPlayedCards.get(opponentPlayedCards.size()-1).rankingCard() < playerCards.get(i).rankingCard())
+          if(opponentPlayedCards.getNotNullCards(opponentPlayedCards.size()-1).rankingCard() < playerCards.getNotNullCards(i).rankingCard())
             return throwCardAtPos(player, i);
         }
         return throwBestCard(player);
       }
-      if(opponentPlayedCards.get(0).rankingCard() < playerPlayedCards.get(0).rankingCard())
+      if(opponentPlayedCards.getNotNullCards(0).rankingCard() < playerPlayedCards.getNotNullCards(0).rankingCard())
         return throwWorstCard(player);
     }
 
@@ -61,19 +59,16 @@ public class Ai {
   }
 
   public Player throwRandomCard(Player player){
-    ArrayList<Card> playerCards = new ArrayList<>();
-    playerCards.addAll(player.getCards());
+    SetOfCards playerCards = player.getCards();
     return throwCardAtPos(player, new Random().nextInt(playerCards.size()));
   }
 
   public Player throwCardAtPos (Player player, int pos){
-    ArrayList<Card> playerCards = new ArrayList<>();
-    playerCards.addAll(player.getCards());
-    ArrayList<Card> playerPlayedCards = new ArrayList<>();
-    playerPlayedCards.addAll(player.getPlayedCards());
+    SetOfCards playerPlayedCards = player.getPlayedCards();
+    SetOfCards playerCards = player.getCards();
 
-    Card toThrow = playerCards.get(pos);
-    playerCards.remove(pos);
+    Card toThrow = playerCards.getNotNullCards(pos);
+    playerCards.removeNotNull(pos);
     playerPlayedCards.add(toThrow);
 
     player.setCards(playerCards);
@@ -82,13 +77,12 @@ public class Ai {
   }
 
   public Player throwBestCard (Player player){
-    ArrayList<Card> playerCards = new ArrayList<>();
-    playerCards.addAll(player.getCards());
+    SetOfCards playerCards = player.getCards();
     if(playerCards.isEmpty()) return null;
 
     int bestCardPos = 0;
     for(int i=1; i<playerCards.size(); i++){
-      if(playerCards.get(bestCardPos).rankingCard() < playerCards.get(i).rankingCard())
+      if(playerCards.getNotNullCards(bestCardPos).rankingCard() < playerCards.getNotNullCards(i).rankingCard())
         bestCardPos = i;
     }
 
@@ -96,13 +90,12 @@ public class Ai {
   }
 
   public Player throwWorstCard (Player player){
-    ArrayList<Card> playerCards = new ArrayList<>();
-    playerCards.addAll(player.getCards());
+    SetOfCards playerCards = player.getCards();
     if(playerCards.isEmpty()) return null;
 
     int worstCardPos = 0;
     for(int i=1; i<playerCards.size(); i++){
-      if(playerCards.get(worstCardPos).rankingCard() > playerCards.get(i).rankingCard())
+      if(playerCards.getNotNullCards(worstCardPos).rankingCard() > playerCards.getNotNullCards(i).rankingCard())
         worstCardPos = i;
     }
 
@@ -217,24 +210,22 @@ States:
   }
 
   private int goodCardsCount (Player player) {
-    ArrayList<Card> playerCards = new ArrayList<>();
-    playerCards.addAll(player.getCards());
+    SetOfCards playerCards = player.getCards();
     int cant=0;
 
     for (int i = 0; i < playerCards.size(); i++)
-      if(playerCards.get(i).rankingCard()>7)
+      if(playerCards.getNotNullCards(i).rankingCard()>7)
         cant++;
 
     return cant;
   }
 
   private int mediumCardCount (Player player) {
-    ArrayList<Card> playerCards = new ArrayList<>();
-    playerCards.addAll(player.getCards());
+    SetOfCards playerCards = player.getCards();
     int cant=0;
 
     for (int i = 0; i < playerCards.size(); i++)
-      if(playerCards.get(i).rankingCard()>4 && playerCards.get(i).rankingCard()<8)
+      if(playerCards.getNotNullCards(i).rankingCard()>4 && playerCards.getNotNullCards(i).rankingCard()<8)
         cant++;
 
     return cant;
@@ -249,10 +240,8 @@ States:
 3 --> Vale 4
      ** If it returns the same number that was given to the function, that's interpreted as 'quiero'
      */
-    ArrayList<Card> playerCards = new ArrayList<>();
-    playerCards.addAll(player.getCards());
-    ArrayList<Card> playerPlayedCards = new ArrayList<>();
-    playerPlayedCards.addAll(player.getPlayedCards());
+    SetOfCards playerPlayedCards = player.getPlayedCards();
+    SetOfCards playerCards = player.getCards();
 
     if(menu.easyCheckBox.isSelected())
       return easyTrucoAlgorithm(player, trucoLevel, opponent);
@@ -306,23 +295,23 @@ States:
         }
         // If it's in the last round and AI is the last one to throw
         if(opponent.getPlayedCards().size()-1 == playerPlayedCards.size()){
-          if(playerCards.get(0).rankingCard() > opponent.getPlayedCards().get(2).rankingCard()) // If AI wins, declare
+          if(playerCards.getNotNullCards(0).rankingCard() > opponent.getPlayedCards().getNotNullCards(2).rankingCard()) // If AI wins, declare
             return trucoLevel+random.nextInt(4-trucoLevel);
           // if it's a tie, but AI won the first
           else if(
-              playerCards.get(0).rankingCard() > opponent.getPlayedCards().get(2).rankingCard() &&
-              opponent.getPlayedCards().get(0).rankingCard() == playerCards.get(0).rankingCard()
+              playerCards.getNotNullCards(0).rankingCard() > opponent.getPlayedCards().getNotNullCards(2).rankingCard() &&
+              opponent.getPlayedCards().getNotNullCards(0).rankingCard() == playerCards.getNotNullCards(0).rankingCard()
               )
             return trucoLevel+random.nextInt(4-trucoLevel);
           // If AI looses: It can randomly reply (only if it isn't 'vale 4') and the card
           // that the player has thrown is worse than an 'ancho falso'
           else if(
               random.nextInt(3)==1 && trucoLevel!=3 &&
-              opponent.getPlayedCards().get(2).rankingCard()<8
+              opponent.getPlayedCards().getNotNullCards(2).rankingCard()<8
               )
             return trucoLevel+random.nextInt(3-trucoLevel)+1;
           // If the last card is a good one
-        } else if(playerPlayedCards.size() == 3 && playerPlayedCards.get(2).rankingCard()>9) {
+        } else if(playerPlayedCards.size() == 3 && playerPlayedCards.getNotNullCards(2).rankingCard()>9) {
           if(trucoLevel == 3)
             return 3;
           return trucoLevel+random.nextInt(3-trucoLevel);
@@ -331,14 +320,14 @@ States:
         // If its in the last round and the only thing left is the opponent to throw
         if(playerPlayedCards.size()-1 == opponent.getPlayedCards().size()){
           // If it's good, declare
-          if(playerPlayedCards.get(2).rankingCard() > 6){
+          if(playerPlayedCards.getNotNullCards(2).rankingCard() > 6){
             if(trucoLevel == 3)
               return 3;
             // Go all in
             return trucoLevel+random.nextInt(3-trucoLevel);
           }
           // Go all in
-          if(playerPlayedCards.get(2).rankingCard() > 1 && playerPlayedCards.get(2).rankingCard() < 6 && random.nextInt(3)==1){ // Apuesto todo
+          if(playerPlayedCards.getNotNullCards(2).rankingCard() > 1 && playerPlayedCards.getNotNullCards(2).rankingCard() < 6 && random.nextInt(3)==1){
             if(trucoLevel == 3)
               return 3;
             return trucoLevel+random.nextInt(3-trucoLevel);
@@ -366,7 +355,7 @@ States:
           return trucoLevel;
 
         // If I tie the previous round
-        if(opponent.getPlayedCards().get(opponent.getPlayedCards().size()-1).rankingCard() == playerPlayedCards.get(playerPlayedCards.size()-1).rankingCard()){
+        if(opponent.getPlayedCards().getNotNullCards(opponent.getPlayedCards().size()-1).rankingCard() == playerPlayedCards.getNotNullCards(playerPlayedCards.size()-1).rankingCard()){
           if(goodCardsCount(player)>=1){
             if(trucoLevel==3)
               return 3;
@@ -377,13 +366,13 @@ States:
         }
         // If AI has already thrown but is the turn of the player, and the cards left to play are no good because AI already played
         if(opponent.getPlayedCards().size()+1==playerPlayedCards.size()){
-          if(playerPlayedCards.get(playerPlayedCards.size()-1).rankingCard()>7) {
+          if(playerPlayedCards.getNotNullCards(playerPlayedCards.size()-1).rankingCard()>7) {
             if(trucoLevel==3)
               return 3;
             return trucoLevel+random.nextInt(3-trucoLevel);
           }
           // If the card throwed was not a good card, but else, a medium one
-          if(playerPlayedCards.get(playerPlayedCards.size()-1).rankingCard()>5) {
+          if(playerPlayedCards.getNotNullCards(playerPlayedCards.size()-1).rankingCard()>5) {
             if(trucoLevel==3)
               return 3;
             return trucoLevel+random.nextInt(3-trucoLevel);
@@ -407,10 +396,8 @@ States:
 3 --> Vale 4
      ** If it returns the same number that was given to the function, that's interpreted as 'quiero'
      */
-    ArrayList<Card> playerCards = new ArrayList<>();
-    playerCards.addAll(player.getCards());
-    ArrayList<Card> playerPlayedCards = new ArrayList<>();
-    playerPlayedCards.addAll(player.getPlayedCards());
+    SetOfCards playerPlayedCards = player.getPlayedCards();
+    SetOfCards playerCards = player.getCards();
 
     Random random = new Random();
 
@@ -430,13 +417,13 @@ States:
       case 5: // Third round
               // If it's in the last round and AI is the last one to throw
         if(opponent.getPlayedCards().size()-1 == playerPlayedCards.size()){
-          if(playerCards.get(0).rankingCard() > opponent.getPlayedCards().get(2).rankingCard()) // If AI wins, declare
+          if(playerCards.getNotNullCards(0).rankingCard() > opponent.getPlayedCards().getNotNullCards(2).rankingCard()) // If AI wins, declare
             return trucoLevel+random.nextInt(4-trucoLevel);
           // if it's a tie, but AI won the first
-          else if(playerCards.get(0).rankingCard() > opponent.getPlayedCards().get(2).rankingCard() && opponent.getPlayedCards().get(0).rankingCard() == playerCards.get(0).rankingCard())
+          else if(playerCards.getNotNullCards(0).rankingCard() > opponent.getPlayedCards().getNotNullCards(2).rankingCard() && opponent.getPlayedCards().getNotNullCards(0).rankingCard() == playerCards.getNotNullCards(0).rankingCard())
             return trucoLevel+random.nextInt(4-trucoLevel);
           // If the last card is a good one
-        } else if(playerPlayedCards.size() == 3 && playerPlayedCards.get(2).rankingCard()>9) {
+        } else if(playerPlayedCards.size() == 3 && playerPlayedCards.getNotNullCards(2).rankingCard()>9) {
           // Go all in
           if(trucoLevel == 3)
             return 3;
@@ -452,7 +439,7 @@ States:
           return trucoLevel+random.nextInt(3-trucoLevel);
         }
         // If I tie the previous round
-        if(opponent.getPlayedCards().get(opponent.getPlayedCards().size()-1).rankingCard() == playerPlayedCards.get(playerPlayedCards.size()-1).rankingCard()){
+        if(opponent.getPlayedCards().getNotNullCards(opponent.getPlayedCards().size()-1).rankingCard() == playerPlayedCards.getNotNullCards(playerPlayedCards.size()-1).rankingCard()){
           if(goodCardsCount(player)>=1){
             if(trucoLevel==3)
               return 3;
@@ -476,11 +463,9 @@ States:
   // This function is only called when the player and the AI have already thrown 2
   // cards each and the 'envido' was played.
   // Calculates tries to predict the card left of the player with the 'envido' declared
-  private int predictCardWithEnvido(Player player, ArrayList<Card> opponentPlayedCards) {
-    ArrayList<Card> playerCards = new ArrayList<>();
-    playerCards.addAll(player.getCards());
-    ArrayList<Card> playerPlayedCards = new ArrayList<>();
-    playerPlayedCards.addAll(player.getPlayedCards());
+  private int predictCardWithEnvido(Player player, SetOfCards opponentPlayedCards) {
+    SetOfCards playerPlayedCards = player.getPlayedCards();
+    SetOfCards playerCards = player.getCards();
     if((opponentPlayedCards.size()!=2 && playerPlayedCards.size()>=2) || playersDeclaredEnvido==-1)
       return 0;
     /*
@@ -492,16 +477,16 @@ Returns:
 */
     ArrayList<String> thrownSticks = new ArrayList<>(); // Variable to store thrown sticks
     for(int i=0;i<2;i++)
-      thrownSticks.add(opponentPlayedCards.get(i).getStick());
+      thrownSticks.add(opponentPlayedCards.getNotNullCards(i).getStick());
     ArrayList<Integer> thrownNumbers = new ArrayList<>(); // Variable to store thrown numbers
     for(int i=0;i<2;i++)
-      thrownNumbers.add(opponentPlayedCards.get(i).getNumber());
+      thrownNumbers.add(opponentPlayedCards.getNotNullCards(i).getNumber());
 
     Card aiLastCard;
     if(playerPlayedCards.size()==2)
-      aiLastCard=playerCards.get(0);
+      aiLastCard=playerCards.getNotNullCards(0);
     else
-      aiLastCard=playerPlayedCards.get(2);
+      aiLastCard=playerPlayedCards.getNotNullCards(2);
 
     if(playersDeclaredEnvido==0){ // two jacks, horses or kings
       if(aiLastCard.rankingCard()<4)
@@ -601,13 +586,13 @@ Returns:
       // Deletes from the remaining card possibilities, all the cards I have or had
       for (int i = 0; i < possibilities.size(); i++) {
         for (int x = 0; x < playerCards.size(); x++)
-          if(possibilities.get(i).equals(playerCards.get(x)))
+          if(possibilities.get(i).equals(playerCards.getNotNullCards(x)))
             possibilities.remove(i);
         for (int x = 0; x < playerPlayedCards.size(); x++)
-          if(possibilities.get(i).equals(playerPlayedCards.get(x)))
+          if(possibilities.get(i).equals(playerPlayedCards.getNotNullCards(x)))
             possibilities.remove(i);
         for (int x = 0; x < opponentPlayedCards.size(); x++)
-          if(possibilities.get(i).equals(opponentPlayedCards.get(x)))
+          if(possibilities.get(i).equals(opponentPlayedCards.getNotNullCards(x)))
             possibilities.remove(i);
       }
 

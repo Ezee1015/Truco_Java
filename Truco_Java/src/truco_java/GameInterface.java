@@ -90,19 +90,19 @@ public abstract class GameInterface extends JFrame{
         background.setVisible(true);
         add(background);
 
-        cardOpponent1 = new JLabel(getImageIcon("src/truco_java/mazo/reverso.png", 75, 100, false));
+        cardOpponent1 = new JLabel();
         cardOpponent1.setBounds(100, 70, 75, 100);
-        cardOpponent1.setVisible(false);
+        cardOpponent1.setVisible(true);
         background.add(cardOpponent1);
 
-        cardOpponent2 = new JLabel(getImageIcon("src/truco_java/mazo/reverso.png", 75, 100, false));
+        cardOpponent2 = new JLabel();
         cardOpponent2.setBounds(200, 70, 75, 100);
-        cardOpponent2.setVisible(false);
+        cardOpponent2.setVisible(true);
         background.add(cardOpponent2);
 
-        cardOpponent3 = new JLabel(getImageIcon("src/truco_java/mazo/reverso.png", 75, 100, false));
+        cardOpponent3 = new JLabel();
         cardOpponent3.setBounds(300, 70, 75, 100);
-        cardOpponent3.setVisible(false);
+        cardOpponent3.setVisible(true);
         background.add(cardOpponent3);
 
         cardPlayer1 = new JButton();
@@ -614,88 +614,46 @@ public abstract class GameInterface extends JFrame{
             }
         }
 
-        switch (opponent.getCards().size()) {
-            case 0:
-                cardOpponent1.setVisible(false);
-                cardOpponent2.setVisible(false);
-                cardOpponent3.setVisible(false);
-                break;
-            case 1:
-                cardOpponent1.setVisible(true);
-                cardOpponent2.setVisible(false);
-                cardOpponent3.setVisible(false);
-                break;
-            case 2:
-                cardOpponent1.setVisible(true);
-                cardOpponent2.setVisible(true);
-                cardOpponent3.setVisible(false);
-                break;
-            case 3:
-                cardOpponent1.setVisible(true);
-                cardOpponent2.setVisible(true);
-                cardOpponent3.setVisible(true);
-                break;
-        }
+        ArrayList<JLabel> opponentCards = new ArrayList<>();
+        opponentCards.add(cardOpponent1);
+        opponentCards.add(cardOpponent2);
+        opponentCards.add(cardOpponent3);
 
-        ArrayList<JButton> manos = new ArrayList<>();
-        manos.add(cardPlayer1);
-        manos.add(cardPlayer2);
-        manos.add(cardPlayer3);
+        ArrayList<JLabel> opponentThrownCards = new ArrayList<>();
+        opponentThrownCards.add(cardThrownOpponent1);
+        opponentThrownCards.add(cardThrownOpponent2);
+        opponentThrownCards.add(cardThrownOpponent3);
+
+        ArrayList<JButton> playerCards = new ArrayList<>();
+        playerCards.add(cardPlayer1);
+        playerCards.add(cardPlayer2);
+        playerCards.add(cardPlayer3);
+
+        ArrayList<JLabel> playerThrownCards = new ArrayList<>();
+        playerThrownCards.add(cardThrownPlayer1);
+        playerThrownCards.add(cardThrownPlayer2);
+        playerThrownCards.add(cardThrownPlayer3);
 
         for(int i=0;i<3;i++){
-            if(player.getPosCards()[i]<0){
-                manos.get(i).setVisible(false);
-                manos.get(i).setIcon(getImageIcon("src/truco_java/mazo/reverso.png", 155, 200, false));
-            } else {
-                manos.get(i).setVisible(true);
-                manos.get(i).setIcon(getImageIcon(player.getCards().get(player.getPosCards()[i]).linkCard(), 155, 200, false));
-            }
-        }
+            if(player.getCards().getPosAtVector(i) != null)
+                playerCards.get(i).setIcon(getImageIcon(player.getCards().getPosAtVector(i).linkCard(), 155, 200, false));
+            else
+                playerCards.get(i).setIcon(null);
 
-        switch (opponent.getPlayedCards().size()) {
-            case 3:
-                cardThrownOpponent1.setIcon(getImageIcon(opponent.getPlayedCards().get(0).linkCard(), 70, 80, false));
-                cardThrownOpponent2.setIcon(getImageIcon(opponent.getPlayedCards().get(1).linkCard(), 70, 80, false));
-                cardThrownOpponent3.setIcon(getImageIcon(opponent.getPlayedCards().get(2).linkCard(), 70, 80, false));
-                break;
-            case 2:
-                cardThrownOpponent1.setIcon(getImageIcon(opponent.getPlayedCards().get(0).linkCard(), 70, 80, false));
-                cardThrownOpponent2.setIcon(getImageIcon(opponent.getPlayedCards().get(1).linkCard(), 70, 80, false));
-                cardThrownOpponent3.setIcon(null);
-                break;
-            case 1:
-                cardThrownOpponent1.setIcon(getImageIcon(opponent.getPlayedCards().get(0).linkCard(), 70, 80, false));
-                cardThrownOpponent2.setIcon(null);
-                cardThrownOpponent3.setIcon(null);
-                break;
-            case 0:
-                cardThrownOpponent1.setIcon(null);
-                cardThrownOpponent2.setIcon(null);
-                cardThrownOpponent3.setIcon(null);
-                break;
-        }
+            if(player.getPlayedCards().getPosAtVector(i) != null)
+                playerThrownCards.get(i).setIcon(getImageIcon(player.getPlayedCards().getPosAtVector(i).linkCard(), 70, 80, false));
+            else
+                playerThrownCards.get(i).setIcon(null);
 
-        switch (player.getPlayedCards().size()) {
-            case 3:
-                cardThrownPlayer1.setIcon(getImageIcon(player.getPlayedCards().get(0).linkCard(), 70, 80, false));
-                cardThrownPlayer2.setIcon(getImageIcon(player.getPlayedCards().get(1).linkCard(), 70, 80, false));
-                cardThrownPlayer3.setIcon(getImageIcon(player.getPlayedCards().get(2).linkCard(), 70, 80, false));
-                break;
-            case 2:
-                cardThrownPlayer1.setIcon(getImageIcon(player.getPlayedCards().get(0).linkCard(), 70, 80, false));
-                cardThrownPlayer2.setIcon(getImageIcon(player.getPlayedCards().get(1).linkCard(), 70, 80, false));
-                cardThrownPlayer3.setIcon(null);
-                break;
-            case 1:
-                cardThrownPlayer1.setIcon(getImageIcon(player.getPlayedCards().get(0).linkCard(), 70, 80, false));
-                cardThrownPlayer2.setIcon(null);
-                cardThrownPlayer3.setIcon(null);
-                break;
-            case 0:
-                cardThrownPlayer1.setIcon(null);
-                cardThrownPlayer2.setIcon(null);
-                cardThrownPlayer3.setIcon(null);
-                break;
+            if(i<opponent.getCards().size())
+                opponentCards.get(i).setIcon(getImageIcon("src/truco_java/mazo/reverso.png", 70, 80, false));
+            else
+                opponentCards.get(i).setIcon(null);
+
+            if(i<opponent.getPlayedCards().size())
+                opponentThrownCards.get(i).setIcon(getImageIcon(opponent.getPlayedCards().getNotNullCards(i).linkCard(), 70, 80, false));
+            else
+                opponentThrownCards.get(i).setIcon(null);
         }
     }
 
@@ -704,14 +662,7 @@ public abstract class GameInterface extends JFrame{
         cardPlayer2Enabled=false;
         cardPlayer3Enabled=false;
 
-        player.addPlayedCards(player.getPosCards()[pos]);
-
-        // Indicates which card should not be drawn
-        int temp[] = player.getPosCards();
-        temp[pos] = -1;
-        for(int i=pos+1;i<temp.length;i++)
-            temp[i]-=1;
-        player.setPosCards(temp);
+        player.addPlayedCards(pos);
 
         moveCard(pos, player.getPlayedCards().size()-1, player, true);
     }
@@ -729,7 +680,7 @@ public abstract class GameInterface extends JFrame{
         final int frames=30;
         final int sleepPerFrame=10;
 
-        final String file = playerToMove.getPlayedCards().get(playerToMove.getPlayedCards().size()-1).linkCard();
+        final String file = playerToMove.getPlayedCards().getNotNullCards(playerToMove.getPlayedCards().size()-1).linkCard();
         final int originY          = isThePlayer ? cardPlayer1.getY() : cardOpponent1.getY();
         final int destinationY     = isThePlayer ? cardThrownPlayer1.getY() : cardThrownOpponent1.getY();
         final int movingCardWidth  = isThePlayer ? cardPlayer1.getWidth() : cardOpponent1.getWidth();
@@ -740,7 +691,7 @@ public abstract class GameInterface extends JFrame{
         final int destinationX;
 
         // Depending on what card is, it hides it and puts a temporal one in replace
-        JComponent cardOrigin = new JButton();
+        final JComponent cardOrigin;
         switch(origin){
             case 0:
                 cardOrigin = isThePlayer ? cardPlayer1 : cardOpponent1;
@@ -784,6 +735,7 @@ public abstract class GameInterface extends JFrame{
             public void run(){
                 moveCardTimer(movementStepX, movementStepY, sizeStepX, sizeStepY, frames, sleepPerFrame, file);
                 actionAfterThrowingCard(isThePlayer, origin);
+                cardOrigin.setVisible(true);
             }
         };
         thread.start();

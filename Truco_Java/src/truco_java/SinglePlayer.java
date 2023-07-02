@@ -415,11 +415,11 @@ public class SinglePlayer extends GameManagment{
         if (enabledToRetrucar == 1)
             return 0;
 
-        if(opponent.getPlayedCards().size() == 3 && opponent.getPlayedCards().get(2).rankingCard()==0) {
+        if(opponent.getPlayedCards().size() == 3 && opponent.getPlayedCards().getNotNullCards(2).rankingCard()==0) {
             truco.setEnabled(false);
             return 0;
         }
-        if(player.getPlayedCards().size() == 3 && player.getPlayedCards().get(2).rankingCard()==0)
+        if(player.getPlayedCards().size() == 3 && player.getPlayedCards().getNotNullCards(2).rankingCard()==0)
             return 0;
 
         if(!finishedEnvido && opponent.getPlayedCards().isEmpty()){

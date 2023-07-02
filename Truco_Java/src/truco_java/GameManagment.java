@@ -192,8 +192,8 @@ public abstract class GameManagment extends GameInterface{
     }
 
     private int whoWonRound(int roundNumber){
-        int rankingJugador = player.getPlayedCards().get(roundNumber).rankingCard();
-        int rankingAI = opponent.getPlayedCards().get(roundNumber).rankingCard();
+        int rankingJugador = player.getPlayedCards().getNotNullCards(roundNumber).rankingCard();
+        int rankingAI = opponent.getPlayedCards().getNotNullCards(roundNumber).rankingCard();
 
         if(rankingJugador > rankingAI)
             return 1;
@@ -258,10 +258,10 @@ public abstract class GameManagment extends GameInterface{
         setBackground(0);
 
         // Cleans hands
-        player.setCards(new ArrayList<>());
-        opponent.setCards(new ArrayList<>());
-        player.setPlayedCards(new ArrayList<>());
-        opponent.setPlayedCards(new ArrayList<>());
+        player.setCards(new SetOfCards());
+        opponent.setCards(new SetOfCards());
+        player.setPlayedCards(new SetOfCards());
+        opponent.setPlayedCards(new SetOfCards());
 
         mixDeck();
 
@@ -278,22 +278,14 @@ public abstract class GameManagment extends GameInterface{
         truco.setEnabled(true);
 
         // Deals
-        ArrayList<Card> cards1 = new ArrayList<>();
+        SetOfCards cards1 = new SetOfCards();
         cards1.add(deck.get(0));
         cards1.add(deck.get(2));
         cards1.add(deck.get(4));
-        ArrayList<Card> cards2 = new ArrayList<>();
+        SetOfCards cards2 = new SetOfCards();
         cards2.add(deck.get(1));
         cards2.add(deck.get(3));
         cards2.add(deck.get(5));
-        for(int i=0;i<2;i++){
-            int temp[] = new int[3];
-            temp[0] = 0;
-            temp[1] = 1;
-            temp[2] = 2;
-            if(i==0) player.setPosCards(temp);
-            else opponent.setPosCards(temp);
-        }
 
         if (opponent.isFirstHand() == true) {
             opponent.setCards(cards1);
@@ -347,8 +339,8 @@ public abstract class GameManagment extends GameInterface{
         else if (!player.getPlayedCards().isEmpty() && !opponent.getPlayedCards().isEmpty()) {
             // If it's a round that no one has played yet
             if (player.getPlayedCards().size() == opponent.getPlayedCards().size()) {
-                int rankingJugador = player.getPlayedCards().get(player.getPlayedCards().size()-1).rankingCard();
-                int rankingAI = opponent.getPlayedCards().get(opponent.getPlayedCards().size()-1).rankingCard();
+                int rankingJugador = player.getPlayedCards().getNotNullCards(player.getPlayedCards().size()-1).rankingCard();
+                int rankingAI = opponent.getPlayedCards().getNotNullCards(opponent.getPlayedCards().size()-1).rankingCard();
                 envidoMenu.setEnabled(false);
 
                 if (rankingJugador > rankingAI)
@@ -378,7 +370,7 @@ public abstract class GameManagment extends GameInterface{
         if(enabledToRetrucar < 2) truco.setEnabled(true);
 
         // If the last card that the AI has thrown is a 4, player can't say 'truco'
-        if(opponent.getPlayedCards().size() == 3) if(opponent.getPlayedCards().get(2).rankingCard()==0) truco.setEnabled(false);
+        if(opponent.getPlayedCards().size() == 3) if(opponent.getPlayedCards().getNotNullCards(2).rankingCard()==0) truco.setEnabled(false);
 
         irAlMazo.setEnabled(true);
         cardPlayer1Enabled=true;
