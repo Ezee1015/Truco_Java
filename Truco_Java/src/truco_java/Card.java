@@ -58,7 +58,7 @@ public class Card {
   }
 
   public String linkCard(){
-      return "src/truco_java/mazo/" + number + " de " + stick + ".png";
+    return "src/truco_java/mazo/" + number + " de " + stick + ".png";
   }
 
   public String text(){
