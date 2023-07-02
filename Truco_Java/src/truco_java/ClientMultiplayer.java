@@ -636,7 +636,7 @@ public class ClientMultiplayer extends GameInterface {
                 player.setFirstHand(!isOpponentFirstHand);
 
                 if(!moveCardOpponent)
-                        drawCards();
+                    drawCards();
 
                 try {
                     updatePoints();
