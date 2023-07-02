@@ -111,14 +111,8 @@ public class ServerMultiplayer extends GameManagment {
         effects.play();
         envidosDeclared.add(1);
         truco.setEnabled(false);
-        try {
-            trucoLevel=0;
-            drawButtons();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        trucoLevel=0;
+        drawButtons();
         quieroTruco.setVisible(false);
         noQuieroTruco.setVisible(false);
         quieroEnvido.setVisible(false);
@@ -156,14 +150,8 @@ public class ServerMultiplayer extends GameManagment {
         effects.play();
         envidosDeclared.add(2);
         truco.setEnabled(false);
-        try {
-            trucoLevel=0;
-            drawButtons();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        trucoLevel=0;
+        drawButtons();
         quieroTruco.setVisible(false);
         noQuieroTruco.setVisible(false);
         quieroEnvido.setVisible(false);
@@ -201,14 +189,8 @@ public class ServerMultiplayer extends GameManagment {
         effects.play();
         envidosDeclared.add(3);
         truco.setEnabled(false);
-        try {
-            trucoLevel=0;
-            drawButtons();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        trucoLevel=0;
+        drawButtons();
         quieroTruco.setVisible(false);
         noQuieroTruco.setVisible(false);
         quieroEnvido.setVisible(false);
@@ -246,14 +228,8 @@ public class ServerMultiplayer extends GameManagment {
         effects.play();
         envidosDeclared.add(4);
         truco.setEnabled(false);
-        try {
-            trucoLevel=0;
-            drawButtons();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        trucoLevel=0;
+        drawButtons();
         quieroTruco.setVisible(false);
         noQuieroTruco.setVisible(false);
         quieroEnvido.setVisible(false);
@@ -461,14 +437,7 @@ public class ServerMultiplayer extends GameManagment {
             };
             thread.start();
             connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-            try {
-                printsTrucoMessage(0,false);
-            } catch (Exception ex) {
-                connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes o sonidos: " + ex.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
+            printsTrucoMessage(0,false);
         }
     }
 
@@ -790,14 +759,7 @@ public class ServerMultiplayer extends GameManagment {
                 if(!finishedEnvido && player.getPlayedCards().isEmpty())
                     envidoMenu.setEnabled(true);
 
-                try {
-                    printsTrucoMessage(nivelTrucoTemp, false);
-                } catch (Exception e) {
-                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes o sonidos: " + e.getMessage());
-                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    effects.play();
-                }
+                printsTrucoMessage(nivelTrucoTemp, false);
                 if(nivelTrucoTemp!=4 && nivelTrucoTemp!=-1){
                     quieroTruco.setVisible(true);
                     noQuieroTruco.setVisible(true);
@@ -805,13 +767,7 @@ public class ServerMultiplayer extends GameManagment {
                     if(nivelTrucoTemp==3) truco.setEnabled(false);
                     else truco.setEnabled(true);
                     connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
-                    try {
-                        drawButtons();
-                    } catch (Exception e) {
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes o sonidos: " + e.getMessage());
-                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        effects.play();
-                    }
+                    drawButtons();
                 } else {
                     truco.setEnabled(false);
                     quieroTruco.setVisible(false);
