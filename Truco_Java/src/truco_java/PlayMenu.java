@@ -285,14 +285,14 @@ public class PlayMenu extends JFrame{
               player.setBorderPainted(false);
               player.addActionListener((ActionEvent e) -> {
                     try {
-                          playersBackground.get(playerNumber).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugadores/fondoInactivo.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
+                          playersBackground.get(playerNumber).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugadores/backgroundInactive.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
                     } catch (Exception ex) {
                           JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar la imagen de fondo: " + ex.getMessage());
                           effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
                           effects.play();
                     }
                     try {
-                          playersBackground.get(pos).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugadores/fondo.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
+                          playersBackground.get(pos).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugadores/backgroundActive.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar la imagen de fondo: " + ex.getMessage());
                         effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
@@ -310,9 +310,9 @@ public class PlayMenu extends JFrame{
         }
         // Puts the inactive background
         for(int x=0;x<playersBackground.size();x++)
-              playersBackground.get(x).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugadores/fondoInactivo.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
+              playersBackground.get(x).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugadores/backgroundInactive.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
         // Actives the first player (selected by default at creating the window)
-        playersBackground.get(0).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugadores/fondo.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
+        playersBackground.get(0).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugadores/backgroundActive.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
         playerNumber=0;
 
         // Dividing lines
