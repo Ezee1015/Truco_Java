@@ -90,4 +90,4 @@ Muchas gracias por haberse interesado en este juego. No se pretende ni se tiene 
 
 ## Agregadecimientos
 Gracias a [ReadLoud](https://readloud.net/)  y a [TTSFree](https://ttsfree.com/) por permitir que este juego tuviera sonido de voces cuando la computadora canta truco, envido, etc..
-También agradecer a [Pixabay](pixabay.com) por los efectos de sonido.
+También agradecer a [Pixabay](pixabay.com) por los efectos de sonido y [la imagen de la cabaña](https://pixabay.com/es/illustrations/cabina-casa-caba%C3%B1a-casa-de-madera-5701374/).

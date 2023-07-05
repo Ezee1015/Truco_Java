@@ -28,9 +28,9 @@ public class About extends JFrame {
         setLayout(null);
         setDefaultCloseOperation(3);
 
-        paragraph.add("     Te despiertas en un sofá, te levantas y miras a tu alrededor: estaba Messi hablando con Maradona compartiendo unos mates, Boris Johnson hablando por celular, Guido Kaczka sentado en una silla admirando la vista y la Roca acariciando a un carpincho.");
+        paragraph.add("     Te despiertas en un sofá, te levantas y miras a tu alrededor. Estaba Boris Johnson hablando por celular. Entras a las casa y ves a Messi hablando con Maradona y compartiendo unos mates, Guido Kaczka mirando la tele y la Roca acariciando a un carpincho.");
         paragraph.add("     Intentas recordar qué pasó, pero nada se te viene a la mente. Boris deja el celular en la mesa y viene a hablar con vos. En su mejor esfuerzo de hablar en Español, dice que están en su quinta privada secreta en Mendoza: están perseguidos por fuerzas nazis en su último intento de regreso al poder, y este es su único lugar de escondite. Por suerte, los nazis ya están casi derrotados. Las fuerzas armadas vienen al rescate, pero tardaran 12 horas en llegar. Afortunadamente, Zelenski está volando los alrededores en un avión de emergencia de la residencia de Boris, para protegernos ante cualquier ataque enemigo.");
-        paragraph.add("     Al término de la explicación le preguntas: ¿Cómo esto puede ser verdad? ¿Cómo carajo sabés español? ¿Y no era que Maradona se la dio contra el canterito? Maradona se levanta y te dice: “Demasiadas preguntas. Acá todos sabemos hablar en Español. Si eso te parece extraño, esperá a que el carpincho te gane al truco.” Te quedás helado, quieto. Maradona te grita: “¿No vas a venir a jugar? ¿Tenés miedo?” Así que te sientas en la silla y te preparas a jugar unas rondas de truco...");
+        paragraph.add("     Al término de la explicación le preguntas: ¿Cómo esto puede ser verdad? ¿Cómo carajo sabés español? ¿Y no era que Maradona se la dio contra el canterito? Maradona se levanta y te dice: “Demasiadas preguntas. Acá todos sabemos hablar en Español. Si eso te parece extraño, esperá a que el carpincho te gane al truco.” Te quedás helado, quieto. Maradona te grita desde afuera: “¿No vas a venir a jugar? ¿Tenés miedo?” Así que te sientas en la silla de la mesa y te preparas a jugar unas rondas de truco...");
 
         JLabel backgound = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondo_acerca.png")).getScaledInstance(500, 500, Image.SCALE_SMOOTH)));
         backgound.setBounds(0, 0, 500, 500);
@@ -43,7 +43,7 @@ public class About extends JFrame {
         backgound.add(logo);
 
         description = new JTextPane();
-        description.setText("     Te despiertas en un sofá, te levantas y miras a tu alrededor: estaba Messi hablando con Maradona compartiendo unos mates, Boris Johnson hablando por celular, Guido Kaczka sentado en una silla admirando la vista y la Roca acariciando a un carpincho.");
+        description.setText(paragraph.get(0));
         description.setForeground(Color.WHITE);
         description.setBounds(20,130,450,275);
         description.setFont(new Font("Serif", Font.BOLD, 18));
