@@ -21,7 +21,7 @@ public class SetOfCards {
   // Quantity of cards that are not null
   public int size(){
     int size=0;
-    for(int i=0;i<3;i++)
+    for(int i=0;i<cards.length;i++)
       if(cards[i]!=null) size++;
     return size;
   }
@@ -29,12 +29,13 @@ public class SetOfCards {
   // Add to the last position that is free
   public void add(Card card){
     try {
-      if(size()==3)
+      if(size()==cards.length)
         new RuntimeException("[Error] No se pudo añadir la carta. No hay más espacio");
       if(cards[size()]!=null)
         new RuntimeException("[Error] No se pudo añadir la carta. En la posición " + size() + " ya existe una carta" );
 
       cards[size()]=card;
+      sort();
     } catch (Exception e) {
       System.out.println(e.getMessage());
       System.out.println(e.getStackTrace());
@@ -44,7 +45,7 @@ public class SetOfCards {
   // Add to the last position that is free
   public void add(int pos, Card card){
     try {
-      if(pos>=3 || pos<0)
+      if(pos>=cards.length || pos<0)
         new RuntimeException("[Error] No se pudo añadir la carta. No hay más espacio");
       if(cards[pos]!=null)
         new RuntimeException("[Error] No se pudo añadir la carta. En la posición " + pos + " ya existe una carta" );
@@ -62,7 +63,7 @@ public class SetOfCards {
       if(pos>=size() || pos<0)
         new RuntimeException("[Error] No se pudo obtener la carta. Supero el tamaño del Array");
 
-      for(int i=0;i<3;i++) {
+      for(int i=0;i<cards.length;i++) {
         if(getPosAtVector(i)!=null){
           if(pos==0)
             return getPosAtVector(i);
@@ -83,7 +84,7 @@ public class SetOfCards {
   // is the card in that place
   public Card getPosAtVector(int pos){
     try {
-      if(pos>=3 || pos<0)
+      if(pos>=cards.length || pos<0)
         new RuntimeException("[Error] No se pudo obtener la carta: La posicion " + pos + " no se puede obtener");
 
       return cards[pos];
@@ -115,7 +116,7 @@ public class SetOfCards {
       if(pos>=size() || pos<0)
         new RuntimeException("[Error] No se pudo obtener la carta. Supero el tamaño del Array");
 
-      for(int i=0;i<3;i++) {
+      for(int i=0;i<cards.length;i++) {
         if(getPosAtVector(i)!=null){
           if(pos==0){
             cards[i]=null;
@@ -134,19 +135,19 @@ public class SetOfCards {
 
   public ArrayList<Card> toArrayList(){
     ArrayList<Card> cardList = new ArrayList<>();
-    for (int i=0;i<3; i++)
+    for (int i=0;i<cards.length; i++)
         if(getNotNullCards(i)!=null) cardList.add(getNotNullCards(i));
     return cardList;
   }
 
   public void addAll(ArrayList<Card> array){
     try {
-      if(array.size()!=3)
-        new RuntimeException("[Error] No se agregar las cartas: El tamaño del array no es de 3");
+      if(array.size()!=cards.length)
+        new RuntimeException("[Error] No se agregar las cartas: El tamaño del array no es de " + cards.length);
 
       replaceAllCards(null, null, null);
 
-      for(int i=0;i<3;i++)
+      for(int i=0;i<cards.length;i++)
         cards[i]=array.get(i);
 
       new RuntimeException("[Error] No se pudo eliminar la carta: No se encontró");
