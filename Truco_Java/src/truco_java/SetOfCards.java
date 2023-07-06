@@ -15,7 +15,6 @@ public class SetOfCards {
     cards[0]=card1;
     cards[1]=card2;
     cards[2]=card3;
-    sort();
   }
 
   // Quantity of cards that are not null
@@ -35,7 +34,6 @@ public class SetOfCards {
         new RuntimeException("[Error] No se pudo añadir la carta. En la posición " + size() + " ya existe una carta" );
 
       cards[size()]=card;
-      sort();
     } catch (Exception e) {
       System.out.println(e.getMessage());
       System.out.println(e.getStackTrace());
@@ -159,10 +157,6 @@ public class SetOfCards {
 
   public boolean isEmpty(){
     return size()==0 ? true : false;
-  }
-
-  public void sort(){
-    // ...
   }
 
 }
