@@ -843,7 +843,7 @@ public class ClientMultiplayer extends GameInterface {
 
                 Thread thread1 = new Thread(){
                     public void run(){
-                        JOptionPane.showMessageDialog(null, opponentName + " ha entrado en la sala. Esperando a que el oponente reparta...");
+                        JOptionPane.showMessageDialog(null, "Has entrado a la sala de " + opponentName + ".\n Aprete el mazo para repartir y comenzar a jugar...");
                         effects.setFile("src/truco_java/musica/boton.wav", 1);
                         effects.play();
                     }
