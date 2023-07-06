@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class ServerMultiplayer extends GameManagment {
@@ -60,6 +61,8 @@ public class ServerMultiplayer extends GameManagment {
         setDefaultCloseOperation(3);
 
         loadPlayersName();
+        setBackground(0);
+        pointsBackground = new JLabel(getImageIcon("src/truco_java/puntaje/bg"+ opponentNumber +".png", 100, 150, false));
     }
 
     private void exchangePlayersName() throws IOException{
