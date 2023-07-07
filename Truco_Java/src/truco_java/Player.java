@@ -61,6 +61,7 @@ public class Player {
 
   protected int calculateEnvido(){
     int envido=0;
+    // TODO: Replace the following line of code with SetOfCards
     ArrayList<Card> cardsOriginal = new ArrayList<>();
     cardsOriginal.addAll(cards.toArrayList());
     cardsOriginal.addAll(playedCards.toArrayList());
