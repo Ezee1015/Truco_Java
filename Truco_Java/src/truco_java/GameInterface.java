@@ -114,7 +114,7 @@ public abstract class GameInterface extends JFrame{
         cardPlayer1.setBorderPainted(false);
         background.add(cardPlayer1);
         cardPlayer1.addActionListener((ActionEvent e) -> {
-            if(!cardPlayer1Enabled)
+            if(!cardPlayer1Enabled || player.getCards().getPosAtVector(0) == null)
                 return;
             effects.setFile("src/truco_java/musica/tirarCarta.wav", 1);
             effects.play();
@@ -140,7 +140,7 @@ public abstract class GameInterface extends JFrame{
         cardPlayer2.setBorderPainted(false);
         background.add(cardPlayer2);
         cardPlayer2.addActionListener((ActionEvent e) -> {
-            if(!cardPlayer2Enabled)
+            if(!cardPlayer2Enabled || player.getCards().getPosAtVector(1) == null)
                 return;
             effects.setFile("src/truco_java/musica/tirarCarta.wav", 1);
             effects.play();
@@ -166,7 +166,7 @@ public abstract class GameInterface extends JFrame{
         cardPlayer3.setBorderPainted(false);
         background.add(cardPlayer3);
         cardPlayer3.addActionListener((ActionEvent e) -> {
-            if(!cardPlayer3Enabled)
+            if(!cardPlayer3Enabled || player.getCards().getPosAtVector(2) == null)
                 return;
             effects.setFile("src/truco_java/musica/tirarCarta.wav", 1);
             effects.play();
