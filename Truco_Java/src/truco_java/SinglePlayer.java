@@ -11,7 +11,6 @@ public class SinglePlayer extends GameManagment{
     public SinglePlayer(Truco_Java menu, PlayMenu playMenu) {
         super(menu, playMenu);
 
-        opponentNumber = PlayMenu.playerNumber+1;
         loadPlayersName();
         setBackground(0);
         pointsBackground = new JLabel(getImageIcon("src/truco_java/puntaje/bg"+ opponentNumber +".png", 100, 150, false));
@@ -30,6 +29,8 @@ public class SinglePlayer extends GameManagment{
     }
 
     protected void loadPlayersName(){
+        opponentNumber = PlayMenu.playerNumber+1;
+
         switch(opponentNumber){
             case 1: opponentName="El Carpincho"; break;
             case 2: opponentName="La Roca"; break;
