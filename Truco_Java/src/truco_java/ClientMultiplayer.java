@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 
 public class ClientMultiplayer extends GameInterface {
     private Client client;
@@ -35,7 +34,7 @@ public class ClientMultiplayer extends GameInterface {
                     effects.play();
                 }
                 setBackground(0);
-                pointsBackground = new JLabel(getImageIcon("src/truco_java/puntaje/bg"+ opponentNumber +".png", 100, 150, false));
+                pointsBackground.setIcon(getImageIcon("src/truco_java/puntaje/bg"+ opponentNumber +".png", 100, 150, false));
                 try{
                     decodeMessage(client.receiveMessage());
                 } catch (Exception e) {

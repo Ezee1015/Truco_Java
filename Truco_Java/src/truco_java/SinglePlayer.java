@@ -2,7 +2,6 @@ package truco_java;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class SinglePlayer extends GameManagment{
@@ -13,7 +12,7 @@ public class SinglePlayer extends GameManagment{
 
         loadPlayersName();
         setBackground(0);
-        pointsBackground = new JLabel(getImageIcon("src/truco_java/puntaje/bg"+ opponentNumber +".png", 100, 150, false));
+        pointsBackground.setIcon(getImageIcon("src/truco_java/puntaje/bg"+ opponentNumber +".png", 100, 150, false));
 
         setLayout(null);
         setDefaultCloseOperation(3);
