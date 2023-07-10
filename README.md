@@ -89,5 +89,6 @@ Este es un problema con la configuración por defecto configurada para la apertu
 Muchas gracias por haberse interesado en este juego. No se pretende ni se tiene la intención de ofender, insultar ni discriminar a nadie. Esta aplicación fue diseñada en forma humorística para divertir a sus jugadores. No es nuestra intensión perjudicar a ninguna persona y pedimos disculpas de antemano.
 
 ## Agregadecimientos
-Gracias a [ReadLoud](https://readloud.net/)  y a [TTSFree](https://ttsfree.com/) por permitir que este juego tuviera sonido de voces cuando la computadora canta truco, envido, etc..
-También agradecer a [Pixabay](pixabay.com) por los efectos de sonido y [la imagen de la cabaña](https://pixabay.com/es/illustrations/cabina-casa-caba%C3%B1a-casa-de-madera-5701374/).
+- Gracias a [ReadLoud](https://readloud.net/)  y a [TTSFree](https://ttsfree.com/) por permitir que este juego tuviera sonido de voces cuando la computadora canta truco, envido, etc..
+- También agradecer a [Pixabay](pixabay.com) por los efectos de sonido y [la imagen de la cabaña](https://pixabay.com/es/illustrations/cabina-casa-caba%C3%B1a-casa-de-madera-5701374/).
+- Las imágenes de la baraja de cartas son de Basquetteur - Trabajo propio, CC BY-SA 3.0, [Ver fuente](https://commons.wikimedia.org/w/index.php?curid=32842304)
