@@ -91,22 +91,22 @@ public abstract class GameInterface extends JFrame{
         add(background);
 
         cardOpponent1 = new JLabel();
-        cardOpponent1.setBounds(100, 70, 75, 100);
+        cardOpponent1.setBounds(120, 65, 70, 85);
         cardOpponent1.setVisible(true);
         background.add(cardOpponent1);
 
         cardOpponent2 = new JLabel();
-        cardOpponent2.setBounds(200, 70, 75, 100);
+        cardOpponent2.setBounds(200, 65, 70, 85);
         cardOpponent2.setVisible(true);
         background.add(cardOpponent2);
 
         cardOpponent3 = new JLabel();
-        cardOpponent3.setBounds(300, 70, 75, 100);
+        cardOpponent3.setBounds(280, 65, 70, 85);
         cardOpponent3.setVisible(true);
         background.add(cardOpponent3);
 
         cardPlayer1 = new JButton();
-        cardPlayer1.setBounds(10, 400, 155, 200);
+        cardPlayer1.setBounds(25, 400, 135, 190);
         cardPlayer1.setVisible(true);
         cardPlayer1Enabled=false;
         cardPlayer1.setOpaque(false);
@@ -131,7 +131,7 @@ public abstract class GameInterface extends JFrame{
         });
 
         cardPlayer2 = new JButton();
-        cardPlayer2.setBounds(170, 400, 155, 200);
+        cardPlayer2.setBounds(180, 400, 135, 190);
         cardPlayer2.setVisible(true);
         cardPlayer2Enabled=false;
         cardPlayer2.setBorderPainted(false);
@@ -157,7 +157,7 @@ public abstract class GameInterface extends JFrame{
         });
 
         cardPlayer3 = new JButton();
-        cardPlayer3.setBounds(330, 400, 155, 200);
+        cardPlayer3.setBounds(335, 400, 135, 190);
         cardPlayer3.setVisible(true);
         cardPlayer3Enabled=false;
         cardPlayer3.setBorderPainted(false);
@@ -193,37 +193,37 @@ public abstract class GameInterface extends JFrame{
         background.add(dealCards);
 
         cardThrownOpponent1 = new JLabel();
-        cardThrownOpponent1.setBounds(120, 210, 70, 80);
+        cardThrownOpponent1.setBounds(120, 210, 70, 85);
         cardThrownOpponent1.setVisible(true);
         background.add(cardThrownOpponent1);
 
         cardThrownOpponent2 = new JLabel();
-        cardThrownOpponent2.setBounds(200, 210, 70, 80);
+        cardThrownOpponent2.setBounds(200, 210, 70, 85);
         cardThrownOpponent2.setVisible(true);
         background.add(cardThrownOpponent2);
 
         cardThrownOpponent3 = new JLabel();
-        cardThrownOpponent3.setBounds(280, 210, 70, 80);
+        cardThrownOpponent3.setBounds(280, 210, 70, 85);
         cardThrownOpponent3.setVisible(true);
         background.add(cardThrownOpponent3);
 
         cardThrownPlayer1 = new JLabel();
-        cardThrownPlayer1.setBounds(120, 310, 70, 80);
+        cardThrownPlayer1.setBounds(120, 310, 70, 85);
         cardThrownPlayer1.setVisible(true);
         background.add(cardThrownPlayer1);
 
         cardThrownPlayer2 = new JLabel();
-        cardThrownPlayer2.setBounds(200, 310, 70, 80);
+        cardThrownPlayer2.setBounds(200, 310, 70, 85);
         cardThrownPlayer2.setVisible(true);
         background.add(cardThrownPlayer2);
 
         cardThrownPlayer3 = new JLabel();
-        cardThrownPlayer3.setBounds(280, 310, 70, 80);
+        cardThrownPlayer3.setBounds(280, 310, 70, 85);
         cardThrownPlayer3.setVisible(true);
         background.add(cardThrownPlayer3);
 
         statusBackground = new JLabel(new ImageIcon("src/truco_java/fondos/burbuja.png"));
-        statusBackground.setBounds(50,170,400,45);
+        statusBackground.setBounds(50,155,400,45);
         statusBackground.setOpaque(false);
         statusBackground.setVisible(false);
         background.add(statusBackground);
@@ -636,22 +636,22 @@ public abstract class GameInterface extends JFrame{
 
         for(int i=0;i<3;i++){
             if(player.getCards().getPosAtVector(i) != null)
-                playerCards.get(i).setIcon(getImageIcon(player.getCards().getPosAtVector(i).linkCard(), 155, 200, false));
+                playerCards.get(i).setIcon(getImageIcon(player.getCards().getPosAtVector(i).linkCard(), playerCards.get(i).getWidth(), playerCards.get(i).getHeight(), false));
             else
                 playerCards.get(i).setIcon(null);
 
             if(player.getPlayedCards().getPosAtVector(i) != null)
-                playerThrownCards.get(i).setIcon(getImageIcon(player.getPlayedCards().getPosAtVector(i).linkCard(), 70, 80, false));
+                playerThrownCards.get(i).setIcon(getImageIcon(player.getPlayedCards().getPosAtVector(i).linkCard(), playerThrownCards.get(i).getWidth(), playerThrownCards.get(i).getHeight(), false));
             else
                 playerThrownCards.get(i).setIcon(null);
 
             if(i<opponent.getCards().size())
-                opponentCards.get(i).setIcon(getImageIcon("src/truco_java/mazo/reverso.png", 70, 80, false));
+                opponentCards.get(i).setIcon(getImageIcon("src/truco_java/mazo/reverso.png", opponentCards.get(i).getWidth(), opponentCards.get(i).getHeight(), false));
             else
                 opponentCards.get(i).setIcon(null);
 
             if(i<opponent.getPlayedCards().size())
-                opponentThrownCards.get(i).setIcon(getImageIcon(opponent.getPlayedCards().getNotNullCards(i).linkCard(), 70, 80, false));
+                opponentThrownCards.get(i).setIcon(getImageIcon(opponent.getPlayedCards().getNotNullCards(i).linkCard(), opponentThrownCards.get(i).getWidth(), opponentThrownCards.get(i).getHeight(), false));
             else
                 opponentThrownCards.get(i).setIcon(null);
         }
