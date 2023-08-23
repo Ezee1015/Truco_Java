@@ -686,7 +686,7 @@ public abstract class GameInterface extends JFrame{
         final int movingCardWidth  = isThePlayer ? cardPlayer1.getWidth() : cardOpponent1.getWidth();
         final int movingCardHeight = isThePlayer ? cardPlayer1.getHeight() : cardOpponent1.getHeight();
         final int thrownCardHeight = cardThrownPlayer1.getHeight();
-        final int thrownCardWidth = cardThrownPlayer1.getHeight();
+        final int thrownCardWidth = cardThrownPlayer1.getWidth();
         final int originX;
         final int destinationX;
 
