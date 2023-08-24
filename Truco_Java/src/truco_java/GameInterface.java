@@ -193,32 +193,32 @@ public abstract class GameInterface extends JFrame{
         background.add(dealCards);
 
         cardThrownOpponent1 = new JLabel();
-        cardThrownOpponent1.setBounds(120, 210, 70, 85);
+        cardThrownOpponent1.setBounds(122, 210, 65, 85);
         cardThrownOpponent1.setVisible(true);
         background.add(cardThrownOpponent1);
 
         cardThrownOpponent2 = new JLabel();
-        cardThrownOpponent2.setBounds(200, 210, 70, 85);
+        cardThrownOpponent2.setBounds(202, 210, 65, 85);
         cardThrownOpponent2.setVisible(true);
         background.add(cardThrownOpponent2);
 
         cardThrownOpponent3 = new JLabel();
-        cardThrownOpponent3.setBounds(280, 210, 70, 85);
+        cardThrownOpponent3.setBounds(282, 210, 65, 85);
         cardThrownOpponent3.setVisible(true);
         background.add(cardThrownOpponent3);
 
         cardThrownPlayer1 = new JLabel();
-        cardThrownPlayer1.setBounds(120, 310, 70, 85);
+        cardThrownPlayer1.setBounds(122, 310, 65, 85);
         cardThrownPlayer1.setVisible(true);
         background.add(cardThrownPlayer1);
 
         cardThrownPlayer2 = new JLabel();
-        cardThrownPlayer2.setBounds(200, 310, 70, 85);
+        cardThrownPlayer2.setBounds(202, 310, 65, 85);
         cardThrownPlayer2.setVisible(true);
         background.add(cardThrownPlayer2);
 
         cardThrownPlayer3 = new JLabel();
-        cardThrownPlayer3.setBounds(280, 310, 70, 85);
+        cardThrownPlayer3.setBounds(282, 310, 65, 85);
         cardThrownPlayer3.setVisible(true);
         background.add(cardThrownPlayer3);
 
