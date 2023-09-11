@@ -37,6 +37,7 @@ public class ServerMultiplayer extends GameManagment {
                     waitingRoom.dispose();
                     setBackground(0);
                     pointsBackground.setIcon(getImageIcon("src/truco_java/puntaje/bg"+ opponentNumber +".png", 100, 150, false));
+                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
                 } catch(IOException er){
                     connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
                     JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + er.getMessage());
