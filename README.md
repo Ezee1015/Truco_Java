@@ -69,8 +69,6 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ezee1015/Truco_Java/main
   <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/juego2.png" alt="Menu" style="width: 380px;">
   <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/juego3.png" alt="Menu" style="width: 380px;">
   <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/juego4.png" alt="Menu" style="width: 380px;">
-  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/juego5.png" alt="Menu" style="width: 380px;">
-  <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/juego6.png" alt="Menu" style="width: 380px;">
 <div>
 
 ## ¿Por qué este juego no tiene flor?
