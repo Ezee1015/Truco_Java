@@ -15,7 +15,7 @@
 * [¿Qué hago si no funciona el audio y no funciona correctamente el juego? :-(](#qué-hago-si-no-funciona-el-audio-y-no-funciona-correctamente-el-juego--)
 * [¿Qué hago si en Windows se abre como un archivo comprimido? :-(](#qué-hago-si-en-windows-se-abre-como-un-archivo-comprimido--)
 * [Disclaimer](#disclaimer)
-* [Agregadecimientos](#agregadecimientos)
+* [Agradecimientos](#agradecimientos)
 
 <!-- vim-markdown-toc -->
 
@@ -63,7 +63,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ezee1015/Truco_Java/main
   <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/servidor3.png" alt="Menu" style="width: 380px;">
 <div>
 <hr>
-<h3>Partida Rapida</h3>
+<h3>Partida Rápida</h3>
 <div style=" display:flex; flex-direction: row">
   <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/juego1.png" alt="Menu" style="width: 380px;">
   <img src="https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/screenshots/juego2.png" alt="Menu" style="width: 380px;">
@@ -75,10 +75,10 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ezee1015/Truco_Java/main
 1. Por un motivo de simplificación del código del juego.
 2. Personalmente no juego con flor.
 
-Por lo que por ambas razones anteriores, dicidí no incluirlo.
+Por lo que por ambas razones anteriores, decidí no incluirlo.
 
 ## ¿Qué hago si no funciona el audio y no funciona correctamente el juego? :-(
-Si no funciona el audio a través de la solución multimedia que incluye Java por defecto, se puede optar por instalar mpv para hacer funcionar el audio por esa alternativa. En caso que el juego no puede reproducir audio por ninguna de esas vías, se corrompe, por lo tanto, para poder hacer que el juego funcione correctamente, se puede desactivar el sonido desde el menú principal. Con esto el juego no reproducirá ningún sonido, y por ende no se romperá.
+Si no funciona el audio a través de la solución multimedia que incluye Java por defecto, se puede optar por instalar MPV para hacer funcionar el audio por esa alternativa. En caso que el juego no puede reproducir audio por ninguna de esas vías, se corrompe, por lo tanto, para poder hacer que el juego funcione correctamente, se puede desactivar el sonido desde el menú principal. Con esto el juego no reproducirá ningún sonido, y por ende no se romperá.
 
 ## ¿Qué hago si en Windows se abre como un archivo comprimido? :-(
 Este es un problema con la configuración por defecto configurada para la apertura de archivos .jar. [Puede solucionarlo siguiendo estas instrucciones](https://stackoverflow.com/questions/57699084/how-to-open-a-jar-file-by-default-on-windows-10-64-bit) o [estas instrucciones](https://stackoverflow.com/questions/394616/running-jar-file-on-windows). El juego se instala en la carpeta del usuario.
@@ -86,7 +86,7 @@ Este es un problema con la configuración por defecto configurada para la apertu
 ## Disclaimer
 Muchas gracias por haberse interesado en este juego. No se pretende ni se tiene la intención de ofender, insultar ni discriminar a nadie. Esta aplicación fue diseñada en forma humorística para divertir a sus jugadores. No es nuestra intensión perjudicar a ninguna persona y pedimos disculpas de antemano.
 
-## Agregadecimientos
+## Agradecimientos
 - Gracias a [ReadLoud](https://readloud.net/)  y a [TTSFree](https://ttsfree.com/) por permitir que este juego tuviera sonido de voces cuando la computadora canta truco, envido, etc..
 - También agradecer a [Pixabay](pixabay.com) por los efectos de sonido y [la imagen de la cabaña](https://pixabay.com/es/illustrations/cabina-casa-caba%C3%B1a-casa-de-madera-5701374/).
 - Las imágenes de la baraja de cartas son de Basquetteur - Trabajo propio, CC BY-SA 3.0, [Ver fuente](https://commons.wikimedia.org/w/index.php?curid=32842304)
