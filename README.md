@@ -46,7 +46,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ezee1015/Truco_Java/main
 ```
 
 ### Compilación
-> [Warning]
+> [!WARNING]
 > Para poder ejecutar el código fuente se necesitará las siguientes aplicaciones...
 >   - `ant`
 >   - `java`
