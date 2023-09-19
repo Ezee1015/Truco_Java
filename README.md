@@ -2,14 +2,15 @@
 
 ![Logo](Truco_Java/src/truco_java/fondos/logo.png)
 
-# Índice
+## Índice
 <!-- vim-markdown-toc GFM -->
 
 * [¿Qué es?](#qué-es)
-* [¿El modo Multijugador es por LAN o por Internet?](#el-modo-multijugador-es-por-lan-o-por-internet)
-* [¿Cómo se juega el Truco argentino?](#cómo-se-juega-el-truco-argentino)
+    * [¿El modo Multijugador es por LAN o por Internet?](#el-modo-multijugador-es-por-lan-o-por-internet)
+    * [¿Cómo se juega el Truco argentino?](#cómo-se-juega-el-truco-argentino)
 * [Dependencias](#dependencias)
-* [¿Cómo puedo jugar al juego (la aplicación)?](#cómo-puedo-jugar-al-juego-la-aplicación)
+* [Instalación - ¿Cómo puedo jugar?](#instalación---cómo-puedo-jugar)
+    * [Compilación](#compilación)
 * [Screenshots](#screenshots)
 * [¿Por qué este juego no tiene flor?](#por-qué-este-juego-no-tiene-flor)
 * [¿Qué hago si no funciona el audio y no funciona correctamente el juego? :-(](#qué-hago-si-no-funciona-el-audio-y-no-funciona-correctamente-el-juego--)
@@ -26,16 +27,16 @@ Esta aplicación es un [juego de *truco argentino*](https://es.wikipedia.org/wik
 
 Ah, por cierto, esta versión [no contiene la opción de cantar 'flor'](https://github.com/Ezee1015/Truco_Java#por-qu%C3%A9-este-juego-no-tiene-flor).
 
-## ¿El modo Multijugador es por LAN o por Internet?
+### ¿El modo Multijugador es por LAN o por Internet?
 Este juego, además de ofrecer la posibilidad de jugar contra la aplicación (algoritmo), dispone de un modo multijugador en el cual podrás jugar con tus amigos en una partida de 1 vs 1 dentro de la misma red local (dados los permisos correspondientes en el firewall de quien cree la sala de juego). Estos últimos dos modos NO requieren de acceso a internet, aunque, otra opción (con Internet), gracias a la implementación P2P, permite jugar a dos personas en diferentes redes. Esta última opción requerirá de abrir un puerto en el router (que apunte al puerto correspondiente de la PC del servidor) en la red de la persona que cree la sala, para que la computadora cliente pueda comunicarse.
 
-## ¿Cómo se juega el Truco argentino?
+### ¿Cómo se juega el Truco argentino?
 [En este link de Wikipedia](https://es.wikipedia.org/wiki/Truco_argentino) hay una interesante guía sobre la historia del truco.
 
 ## Dependencias
 La única dependencia del juego es una versión de Java reciente y un servidor gráfico (generalmente incluido en los sistemas por defecto). Una dependencia opcional: MPV (en caso que no funcione el sonido a través del reproductor de java).
 
-## ¿Cómo puedo jugar al juego (la aplicación)?
+## Instalación - ¿Cómo puedo jugar?
 Puedes descargar un binario según su sistema operativo [desde este link](https://github.com/Ezee1015/Truco_Java/releases).
 
 ### Windows
@@ -49,6 +50,20 @@ Si es **Windows**, puede descargar el instalador "Truco_Java_Windows.zip". Deber
 ```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/instalarTermux.sh)"
 ```
+
+### Compilación
+> [!WARNING]
+> Para poder ejecutar el código fuente se necesitará las siguientes aplicaciones...
+>   - `ant`
+>   - `java`
+>   - Un entorno gráfico (X11 por ejemplo)
+
+Si eres valiente, puedes compilar el código fuente de la siguiente manera:
+
+Puedes clonar el repositorio de git con `git clone https://github.com/Ezee1015/Truco_Java` y una vez dentro de la carpeta se puede ejecutar...
+- `make run` que ejecutará la aplicación
+- `make jar` que creará un archivo jar con sus recursos (imágenes, audios, etc.) en `./Truco_Java/dist/`
+- `make clean` que limpiará la carpeta `./Truco_Java/dist/`
 
 ## Screenshots
 <h3>Menus</h3>
