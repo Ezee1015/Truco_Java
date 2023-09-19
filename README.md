@@ -42,7 +42,7 @@ Puedes descargar un binario según su sistema operativo [desde este link](https:
 ### Windows
 Si es **Windows**, puede descargar el instalador "Truco_Java_Windows.zip". Deberá descomprimir el archivo descargado y ejecutar el archivo `INSTALL.bat`. Esto instalará el juego en la carpeta del usuario, y creará un link en el escritorio. A partir de ahí, ejecutando el enlace, podrá disfrutar del juego.
 
-### Para todos los Sistemas operatívos (incluyendo windows)
+### Para todos los Sistemas operativos (incluyendo windows)
 * Sino para **cualquier sistema**, puede descargar la versión portable `Truco_Java_MultiOS.zip`. Esta versión es multisistema, por lo tanto se ejecutara sin problemas en Windows, Linux, etc. Una vez descargado y extraído este archivo comprimido, se puede ejecutar el archivo .jar para iniciar el juego. A partir de ahí, podrá disfrutar del juego de manera portable.
 
 ### Android
