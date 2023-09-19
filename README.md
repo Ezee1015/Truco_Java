@@ -50,7 +50,6 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ezee1015/Truco_Java/main
 > Para poder ejecutar el código fuente se necesitará las siguientes aplicaciones...
 >   - `ant`
 >   - `java`
->   - `java`
 >   - Un entorno gráfico (X11 por ejemplo)
 
 Si eres valiente, puedes compilar el código fuente de la siguiente manera:
