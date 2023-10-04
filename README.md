@@ -40,16 +40,41 @@ La única dependencia del juego es una versión de Java reciente y un servidor g
 Puedes descargar un binario según su sistema operativo [desde este link](https://github.com/Ezee1015/Truco_Java/releases).
 
 ### Windows
-Si es **Windows**, puede descargar el instalador "Truco_Java_Windows.zip". Deberá descomprimir el archivo descargado y ejecutar el archivo `INSTALL.bat`. Esto instalará el juego en la carpeta del usuario, y creará un link en el escritorio. A partir de ahí, ejecutando el enlace, podrá disfrutar del juego.
+Puede descargar el instalador `Truco_Java_Windows.zip`. Deberá descomprimir el archivo descargado y ejecutar el archivo `INSTALL.bat`. Esto instalará el juego en la carpeta del usuario, y creará un link en el escritorio. A partir de ahí, ejecutando el link en el escritorio, podrá disfrutar del juego.
 
 ### Para todos los Sistemas operativos (incluyendo windows)
-* Sino para **cualquier sistema**, puede descargar la versión portable `Truco_Java_MultiOS.zip`. Esta versión es multisistema, por lo tanto se ejecutara sin problemas en Windows, Linux, etc. Una vez descargado y extraído este archivo comprimido, se puede ejecutar el archivo .jar para iniciar el juego. A partir de ahí, podrá disfrutar del juego de manera portable.
+Sino para **cualquier sistema**, puede descargar la versión portable `Truco_Java_MultiOS.zip`. Esta versión es multisistema, por lo tanto se ejecutara sin problemas en Windows, Linux, etc. Una vez descargado y extraído este archivo comprimido, se puede ejecutar el archivo .jar para iniciar el juego. A partir de ahí, podrá disfrutar del juego de manera portable.
 
 ### Android
-* Si usas un celular **Android**, con [Termux](https://f-droid.org/en/packages/com.termux/) a través de la tienda de [F-Droid](https://f-droid.org/es/) (la cual tiene que ser instalada también), puedes usar un script para jugar desde el celular con dicha aplicación. Para descargar y ejecutar el script, ejecute la línea de código que se encuentra debajo de este párrafo (deberá tener instalado curl, verifique con el siguiente comando `apt install curl`). Luego de ejecutar el script y reiniciar la sesión en Termux, se debe instalar un visualizador de VNC en el celular (NO en Termux), como por ejemplo [AVNC](https://play.google.com/store/apps/details?id=com.gaurav.avnc&gl=US). Así, dentro del visualizador se debe de agregar la siguiente conexión IP: `127.0.0.1`, el siguiente Puerto: `5901` para poder jugar al truco, el usuario se dejará vacío y una contraseña (la cual tendrá que crear, y debe ser mayor a 6 dígitos). La configuración de la interacción con el escritorio remoto (conexión VNC) puede ser configurada desde los ajustes del visualizador de VNC. Cuando arranque por primera vez el juego, se le preguntara EN TERMUX la contraseña que creó anteriormente en la otra aplicación, por lo que deberá ingresarla para poder continuar. Vuelvo a resaltar que esto es únicamente en la primera vez que se juega.
+Si usas un celular **Android**, con [Termux](https://f-droid.org/en/packages/com.termux/) a través de la tienda de [F-Droid](https://f-droid.org/es/) (la cual tiene que ser instalada también).
+
+- Para descargar y ejecutar el script, primero verifique con el siguiente comando que curl está instalado:
+```bash
+apt install curl
 ```
+- Ahora ejecute esta linea de código que preparará el juego en su celular:
+```bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ezee1015/Truco_Java/main/instalarTermux.sh)"
 ```
+
+- Una vez finalizado, puede cerrar la terminal ingresando...
+```bash
+exit
+```
+
+- Luego de ejecutar el script y reiniciar la sesión en Termux, se debe instalar un visualizador de VNC en el celular (NO en Termux), como por ejemplo [AVNC](https://play.google.com/store/apps/details?id=com.gaurav.avnc&gl=US).
+
+- Dentro de dicho visualizador se debe de agregar una nueva conexión con la siguiente información
+    - conexión IP: `127.0.0.1`
+    - Puerto: `5901`
+    - el usuario se dejará vacío
+    - como contraseña, **tendrá que crear una**, y debe ser mayor a 6 dígitos
+
+- La configuración de la interacción con el escritorio remoto (conexión VNC) puede ser configurada desde los ajustes del visualizador de VNC
+
+- Cuando arranque por primera vez el juego (ejecutando el comando `truco` en la pantalla de Termux), se le preguntará **EN TERMUX** la contraseña que creó anteriormente en el visualizador VNC, por lo que deberá ingresarla para poder continuar.
+
+> Deberá ingresar la contraseña únicamente la primera vez que se juega. Luego de eso, quedará almacenada en la configuración y no le volverá a pedirla
 
 ### Compilación
 > [!WARNING]
@@ -62,8 +87,8 @@ Si eres valiente, puedes compilar el código fuente de la siguiente manera:
 
 Puedes clonar el repositorio de git con `git clone https://github.com/Ezee1015/Truco_Java` y una vez dentro de la carpeta se puede ejecutar...
 - `make run` que ejecutará la aplicación
-- `make jar` que creará un archivo jar con sus recursos (imágenes, audios, etc.) en `./Truco_Java/dist/`
-- `make clean` que limpiará la carpeta `./Truco_Java/dist/`
+- `make jar` que creará un archivo jar con sus recursos (imágenes, audios, etc.) en `/Truco_Java/dist/`
+- `make clean` que limpiará la carpeta `/Truco_Java/dist/`
 
 ## Screenshots
 <h3>Menus</h3>
