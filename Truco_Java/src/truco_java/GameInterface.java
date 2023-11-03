@@ -677,8 +677,8 @@ public abstract class GameInterface extends JFrame{
         // for that, I need to create a config class, where should live all the
         // configurations of the game (and the option to delete and change password in a
         // account)
-        final int frames=30;
-        final int sleepPerFrame=10;
+        final int frames=60; // 30
+        final int sleepPerFrame=5; // 10
 
         final String file = playerToMove.getPlayedCards().getNotNullCards(playerToMove.getPlayedCards().size()-1).linkCard();
         final int originY          = isThePlayer ? cardPlayer1.getY() : cardOpponent1.getY();
