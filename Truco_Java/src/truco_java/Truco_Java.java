@@ -34,7 +34,7 @@ public class Truco_Java extends JFrame{
     public static JCheckBox musicCheckBox = new JCheckBox("Musica y Sonido", true);
     public JCheckBox easyCheckBox = new JCheckBox("Modo Fácil", false);
     public JCheckBox fastModeCheckBox = new JCheckBox("Modo Rápido", false);
-    public JCheckBox suicideCheckBox = new JCheckBox("Modo Suicida", false);
+    public static JCheckBox suicideCheckBox = new JCheckBox("Modo Suicida", false);
     public static JTextPane AiPoints, playerPoints;
     public static JLabel pointsBackground;
     private static JButton sessionButton, registerButton, passwordButton;

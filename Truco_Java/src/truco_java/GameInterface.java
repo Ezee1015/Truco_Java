@@ -1,6 +1,7 @@
 package truco_java;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.awt.Image;
@@ -81,6 +82,23 @@ public abstract class GameInterface extends JFrame{
 
         setLayout(null);
         setDefaultCloseOperation(3);
+
+        // Turns off the computer if the user closes the game in suicide mode
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+          public void run() {
+            if( !Truco_Java.suicideCheckBox.isSelected() )
+              return;
+
+            try {
+              shutdownPc();
+            } catch (IOException ex) {
+              System.out.println("Ha sucedido un error en el modo suicida: " + ex.getMessage());
+              JOptionPane.showMessageDialog(null, "Ha sucedido un error en el modo suicida: " + ex.getMessage());
+              effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+              effects.play();
+            }
+          }
+        }));
 
         movingCard.setOpaque(false);
         movingCard.setContentAreaFilled(false);
@@ -794,9 +812,48 @@ public abstract class GameInterface extends JFrame{
 
 
         if(playerPoints==15)
-            actionWhenPlayerWinsGame();
-        else if(opponentPoints==15)
-            actionWhenOpponentWinsGame();
+          actionWhenPlayerWinsGame();
+
+        else if(opponentPoints==15){
+          if( Truco_Java.suicideCheckBox.isSelected() ){
+            try {
+              shutdownPc();
+            } catch (IOException ex) {
+              JOptionPane.showMessageDialog(null, "Ha sucedido un error en el modo suicida: " + ex.getMessage());
+              effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+              effects.play();
+            }
+          }
+
+          actionWhenOpponentWinsGame();
+        }
+    }
+
+    public void shutdownPc() throws IOException {
+      String shutdownCommand;
+      String operatingSystem = System.getProperty("os.name");
+      System.out.println(operatingSystem);
+
+      switch (operatingSystem) {
+        case "Linux":
+          shutdownCommand = "shutdown now";
+          break;
+        case "Mac OS X":
+          shutdownCommand = "osascript -e 'tell app \"System Events\" to shut down'";
+          break;
+        case "Windows":
+          shutdownCommand = "shutdown.exe -s -t 0";
+          break;
+        default:
+          if(operatingSystem.toLowerCase().contains("windows"))  // Checks again for Windows
+            shutdownCommand = "shutdown.exe -s -t 0";
+          else
+            throw new RuntimeException("Unsupported operating system.");
+          break;
+      }
+
+      Runtime runtime = Runtime.getRuntime();
+      runtime.exec(shutdownCommand);
     }
 
 }
