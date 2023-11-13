@@ -830,30 +830,29 @@ public abstract class GameInterface extends JFrame{
     }
 
     public void shutdownPc() throws IOException {
-      String shutdownCommand;
+      String shutdownCommand[];
       String operatingSystem = System.getProperty("os.name");
       System.out.println(operatingSystem);
 
       switch (operatingSystem) {
         case "Linux":
-          shutdownCommand = "shutdown now";
+          shutdownCommand = new String[]{"shutdown", "now"};
           break;
         case "Mac OS X":
-          shutdownCommand = "osascript -e 'tell app \"System Events\" to shut down'";
+          shutdownCommand = new String[]{"osascript", "-e", "tell app \"System Events\" to shut down"};
           break;
         case "Windows":
-          shutdownCommand = "shutdown.exe -s -t 0";
+          shutdownCommand = new String[]{"shutdown.exe", "-s", "-t", "0"};
           break;
         default:
           if(operatingSystem.toLowerCase().contains("windows"))  // Checks again for Windows
-            shutdownCommand = "shutdown.exe -s -t 0";
+            shutdownCommand = new String[]{"shutdown.exe", "-s", "-t", "0"};
           else
             throw new RuntimeException("Unsupported operating system.");
           break;
       }
 
-      Runtime runtime = Runtime.getRuntime();
-      runtime.exec(shutdownCommand);
+      Runtime.getRuntime().exec(shutdownCommand);
     }
 
 }
