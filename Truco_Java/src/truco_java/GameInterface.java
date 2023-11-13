@@ -832,7 +832,6 @@ public abstract class GameInterface extends JFrame{
     public void shutdownPc() throws IOException {
       String shutdownCommand[];
       String operatingSystem = System.getProperty("os.name");
-      System.out.println(operatingSystem);
 
       switch (operatingSystem) {
         case "Linux":
@@ -848,7 +847,7 @@ public abstract class GameInterface extends JFrame{
           if(operatingSystem.toLowerCase().contains("windows"))  // Checks again for Windows
             shutdownCommand = new String[]{"shutdown.exe", "-s", "-t", "0"};
           else
-            throw new RuntimeException("Unsupported operating system.");
+            throw new RuntimeException("Sistema operativo no soportado para el modo Suicida: " + operatingSystem);
           break;
       }
 
