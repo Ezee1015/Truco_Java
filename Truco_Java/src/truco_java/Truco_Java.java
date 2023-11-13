@@ -271,7 +271,7 @@ public class Truco_Java extends JFrame{
             }
         });
 
-        easyCheckBox.setBounds(280, 290, 250, 40);
+        easyCheckBox.setBounds(280, 300, 140, 20);
         easyCheckBox.setOpaque(false);
         background.add(easyCheckBox);
         easyCheckBox.addItemListener((ItemEvent e) -> {
@@ -290,7 +290,7 @@ public class Truco_Java extends JFrame{
             }
         });
 
-        fastModeCheckBox.setBounds(100, 270, 250, 40);
+        fastModeCheckBox.setBounds(100, 270, 140, 40);
         fastModeCheckBox.setOpaque(false);
         background.add(fastModeCheckBox);
 
