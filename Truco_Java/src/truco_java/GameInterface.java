@@ -92,7 +92,6 @@ public abstract class GameInterface extends JFrame{
             try {
               shutdownPc();
             } catch (IOException ex) {
-              System.out.println("Ha sucedido un error en el modo suicida: " + ex.getMessage());
               JOptionPane.showMessageDialog(null, "Ha sucedido un error en el modo suicida: " + ex.getMessage());
               effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
               effects.play();
@@ -847,7 +846,7 @@ public abstract class GameInterface extends JFrame{
           if(operatingSystem.toLowerCase().contains("windows"))  // Checks again for Windows
             shutdownCommand = new String[]{"shutdown.exe", "-s", "-t", "0"};
           else
-            throw new RuntimeException("Sistema operativo no soportado para el modo Suicida: " + operatingSystem);
+            throw new RuntimeException("Sistema operativo no soportado para el modo Suicida (" + operatingSystem + ")");
           break;
       }
 
