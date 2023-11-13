@@ -202,6 +202,7 @@ public class SinglePlayer extends GameManagment{
         if(dealCards.getActionListeners().length!=0){
             playMenu.setVisible(true);
             finishedGame=true;
+            Runtime.getRuntime().removeShutdownHook(shutdownTask);
             dispose();
             return;
         }

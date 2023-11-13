@@ -45,6 +45,7 @@ public abstract class GameInterface extends JFrame{
 
     protected Truco_Java menu;
     protected PlayMenu playMenu;
+    protected Thread shutdownTask;
     protected final Music opponentVoice = new Music();
     protected static final Music effects = new Music();
     protected boolean finishedGame = false;
@@ -84,7 +85,7 @@ public abstract class GameInterface extends JFrame{
         setDefaultCloseOperation(3);
 
         // Turns off the computer if the user closes the game in suicide mode
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+        shutdownTask = new Thread(new Runnable() {
           public void run() {
             if( !Truco_Java.suicideCheckBox.isSelected() )
               return;
@@ -97,7 +98,8 @@ public abstract class GameInterface extends JFrame{
               effects.play();
             }
           }
-        }));
+        });
+        Runtime.getRuntime().addShutdownHook(shutdownTask);
 
         movingCard.setOpaque(false);
         movingCard.setContentAreaFilled(false);
@@ -810,8 +812,10 @@ public abstract class GameInterface extends JFrame{
         pointsAi.setIcon(getImageIcon("src/truco_java/puntaje/" + opponentPoints + ".png", 50, 85, false));
 
 
-        if(playerPoints==15)
-          actionWhenPlayerWinsGame();
+        if(playerPoints==15){
+            Runtime.getRuntime().removeShutdownHook(shutdownTask);
+            actionWhenPlayerWinsGame();
+        }
 
         else if(opponentPoints==15){
           if( Truco_Java.suicideCheckBox.isSelected() ){
