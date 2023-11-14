@@ -299,7 +299,7 @@ public class Truco_Java extends JFrame{
         suicideCheckBox.setOpaque(false);
         background.add(suicideCheckBox);
 
-        JLabel creditsLabel = new JLabel("    Versión 4.1 | Creado por Leonardo D.S. - Licencia GPL");
+        JLabel creditsLabel = new JLabel("    Versión 4.2 | Creado por Leonardo D.S. - Licencia GPL");
         creditsLabel.setBounds(0, 445, 500, 30);
         creditsLabel.setFont(new Font("Arial", Font.BOLD, 14));
         creditsLabel.setForeground(Color.WHITE);
