@@ -25,7 +25,7 @@ public class Music {
             sound = AudioSystem.getAudioInputStream(file);
             clip = AudioSystem.getClip();
             clip.open(sound);
-            clip.loop(50);
+            clip.loop(100);
             android = false;
         } catch (IOException | LineUnavailableException | UnsupportedAudioFileException l) {
             JOptionPane.showMessageDialog(null, "Error con el música: " + l.getMessage());

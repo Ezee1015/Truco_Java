@@ -298,6 +298,24 @@ public class Truco_Java extends JFrame{
         suicideCheckBox.setBounds(280, 270, 140, 40);
         suicideCheckBox.setOpaque(false);
         background.add(suicideCheckBox);
+        suicideCheckBox.addItemListener((ItemEvent e) -> {
+          String musicFile;
+          if(e.getStateChange()==1){
+            musicFile="src/truco_java/musica/smode.wav";
+          } else {
+            musicFile="src/truco_java/musica/fondo.wav";
+          }
+
+          try {
+            music.stop();
+            music.setFile(musicFile);
+            music.play();
+          } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Ha sucedido un error al modificar la musica de fondo: " + ex.getMessage());
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+          }
+        });
 
         JLabel creditsLabel = new JLabel("    Versión 4.2 | Creado por Leonardo D.S. - Licencia GPL");
         creditsLabel.setBounds(0, 445, 500, 30);
