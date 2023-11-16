@@ -511,7 +511,7 @@ public class ServerMultiplayer extends GameManagment {
     protected void actionWhenPlayerWinsGame() {
         try {
             server.printMessage("Termino el Juego. Ganó " + playerName + ". Será la próxima...");
-            server.enviaKill();
+            server.sendKill(false);
         } catch (Exception e) {
             connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
             JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + e.getMessage());
@@ -531,7 +531,7 @@ public class ServerMultiplayer extends GameManagment {
     protected void actionWhenOpponentWinsGame() {
         try {
             server.printMessage("Termino el Juego. Has ganado! Felicidades");
-            server.enviaKill();
+            server.sendKill(true);
         } catch (Exception e) {
             connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
             JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + e.getMessage());

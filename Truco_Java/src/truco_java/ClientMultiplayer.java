@@ -738,6 +738,12 @@ public class ClientMultiplayer extends GameInterface {
                 thread.start();
                 break;
             case "kill":
+                if (scanf.nextBoolean()) //true when the player won
+                  player.setPoints(15, this);
+                else
+                  opponent.setPoints(15, this);
+                updatePoints();
+
                 playMenu.setVisible(true);
                 dispose();
                 break;

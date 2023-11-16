@@ -9,8 +9,8 @@ public class Server extends Connection{
         cs = ss.accept();
     }
 
-    public void enviaKill() throws IOException{
-        sendMessage("kill");
+    public void sendKill(boolean oponentWins) throws IOException{
+        sendMessage("kill " + oponentWins);
     }
 
     public void sendPoints(int playerPoints, int oponentPoints) throws IOException{
