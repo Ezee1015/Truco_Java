@@ -37,7 +37,8 @@ Este juego, además de ofrecer la posibilidad de jugar contra la aplicación (al
 La única dependencia del juego es una versión de Java reciente y un servidor gráfico (generalmente incluido en los sistemas por defecto). Una dependencia opcional: MPV (en caso que no funcione el sonido a través del reproductor de java).
 
 ## Instalación - ¿Cómo puedo jugar?
-> Necesitarás tener Java instalado. Personalmente recomiendo [OpenJDK](https://openjdk.org/). Aunque se puede usar [Java Oracle](https://www.java.com/es/)
+> [!WARNING]
+> Necesitarás tener Java instalado. Personalmente recomiendo y uso [OpenJDK](https://openjdk.org/install/). No recomiendo usar [Java Oracle](https://www.java.com/es/) por que me ha dado problemas en la ejecución
 
 Puedes descargar un binario según su sistema operativo [desde este link](https://github.com/Ezee1015/Truco_Java/releases).
 
