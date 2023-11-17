@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
@@ -15,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JCheckBox;
 
 public class Chat extends JFrame {
     private static final Music effects = new Music();
@@ -36,6 +38,12 @@ public class Chat extends JFrame {
         logo.setBounds(100, 10, 200, 50);
         logo.setVisible(true);
         background.add(logo);
+
+        JCheckBox notifications = new JCheckBox("Notificaciones", false);
+        notifications.setBounds(300, 10, 100, 50);
+        notifications.setOpaque(false);
+        notifications.setSelected(true);
+        background.add(notifications);
         
         history = new JTextArea("** Se han unido al Chat **");
         history.setBounds(10,70,380,280);
@@ -76,7 +84,7 @@ public class Chat extends JFrame {
 
         JButton exit = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
         exit.setBounds(10, 10, 50, 50);
-        exit.setVisible(false);
+        exit.setVisible(true);
         exit.setOpaque(false);
         exit.setContentAreaFilled(false);
         exit.setBorderPainted(false);
@@ -93,6 +101,10 @@ public class Chat extends JFrame {
                 while(true){
                     try {
                         decodeMessage(socket.receiveMessage());
+                        if( notifications.isSelected() ) {
+                            effects.setFile("src/truco_java/musica/pop.wav", 1);
+                            effects.play();
+                        }
                     } catch (IOException ex) {
                         JOptionPane.showMessageDialog(null, "Ha sucedido un error al checkear la recepción de mensajes: " + ex.getMessage());
                         effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
