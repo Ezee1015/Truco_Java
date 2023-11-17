@@ -42,14 +42,6 @@ public class ServerMultiplayer extends GameManagment {
                     }
                     window.setVisible(true);
                     waitingRoom.dispose();
-        
-                    chat = new Chat(chat_socket, server_class);
-                    chat.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
-                    chat.setResizable(false);
-                    chat.setTitle("Mensajes - Juego Truco");
-                    chat.setBounds(0,0,400,500);
-                    chat.setLocationRelativeTo(null);
-                    chat.setVisible(false);
                     
                     setBackground(0);
                     pointsBackground.setIcon(getImageIcon("src/truco_java/puntaje/bg"+ opponentNumber +".png", 100, 150, false));
@@ -88,6 +80,21 @@ public class ServerMultiplayer extends GameManagment {
         chatButton.addActionListener((ActionEvent e) -> {
             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
             effects.play();
+            if ( chat == null ) {
+                try {
+                    chat = new Chat(chat_socket, opponentName);
+                    chat.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
+                    chat.setResizable(false);
+                    chat.setTitle("Mensajes - Juego Truco");
+                    chat.setBounds(0,0,400,500);
+                    chat.setLocationRelativeTo(null);
+                    chat.setVisible(false);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al inicializar el menu de chat: " + ex.getMessage());
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
+                }
+            }
             chat.setVisible(true);
         });
     }

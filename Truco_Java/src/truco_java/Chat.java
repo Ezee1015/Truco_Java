@@ -17,13 +17,13 @@ import javax.swing.JOptionPane;
 public class Chat extends JFrame {
     private static final Music effects = new Music();
     private final JTextArea history;
-    private final GameInterface game;
+    private final String opponentName;
 
-  public Chat (Connection socket, GameInterface game) throws IOException {
+  public Chat (Connection socket, String opponentName) throws IOException {
         setLayout(null);
         setDefaultCloseOperation(2);
         
-        this.game = game;
+        this.opponentName = opponentName;
 
         JLabel background = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondo_acerca.png")).getScaledInstance(500, 500, Image.SCALE_SMOOTH)));
         background.setBounds(0, 0, 500, 500);
@@ -113,7 +113,7 @@ public class Chat extends JFrame {
         switch(tag){
             case "msg":
                 String msg_chat;
-                msg_chat="\n"+game.playerName+": ";
+                msg_chat="\n"+opponentName+": ";
                 while( scanner.hasNext() ){
                     msg_chat += scanner.next() + " ";
                 }
