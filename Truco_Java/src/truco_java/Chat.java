@@ -64,6 +64,7 @@ public class Chat extends JFrame {
         JTextArea messageArea = new JTextArea();
         messageArea.setText("Mensaje");
         messageArea.setBounds(10,360,320,100);
+        messageArea.setLineWrap(true);
         messageArea.setFont(new Font("Serif", Font.BOLD, 18));
         messageArea.setVisible(true);
         background.add(messageArea);
