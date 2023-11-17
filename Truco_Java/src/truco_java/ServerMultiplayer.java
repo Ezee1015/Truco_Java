@@ -1,18 +1,24 @@
 package truco_java;
 
+import java.awt.Image;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 public class ServerMultiplayer extends GameManagment {
     public Server server;
+    public Server chat_socket;
     private int port;
+    private Chat chat;
 
     protected void loadPlayersName(){
+        ServerMultiplayer server_class = this;
         Thread waitingRoomThread = new Thread(){
             public void run(){
                 // Creates the server and waits to receive the information about the opponent
@@ -26,6 +32,7 @@ public class ServerMultiplayer extends GameManagment {
                     waitingRoom.setVisible(true);
 
                     server = new Server("localhost", port);
+                    chat_socket = new Server("localhost", port+1);
                     try {
                         exchangePlayersName();
                     } catch (Exception e) {
@@ -35,6 +42,15 @@ public class ServerMultiplayer extends GameManagment {
                     }
                     window.setVisible(true);
                     waitingRoom.dispose();
+        
+                    chat = new Chat(chat_socket, server_class);
+                    chat.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
+                    chat.setResizable(false);
+                    chat.setTitle("Mensajes - Juego Truco");
+                    chat.setBounds(0,0,400,500);
+                    chat.setLocationRelativeTo(null);
+                    chat.setVisible(false);
+                    
                     setBackground(0);
                     pointsBackground.setIcon(getImageIcon("src/truco_java/puntaje/bg"+ opponentNumber +".png", 100, 150, false));
                     connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
@@ -61,6 +77,19 @@ public class ServerMultiplayer extends GameManagment {
         setDefaultCloseOperation(3);
 
         loadPlayersName();
+        
+        JButton chatButton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugarBoton.png")).getScaledInstance(300, 60, Image.SCALE_SMOOTH)));
+        chatButton.setBounds(100, 130, 300, 60);
+        chatButton.setVisible(true);
+        chatButton.setOpaque(false);
+        chatButton.setContentAreaFilled(false);
+        chatButton.setBorderPainted(false);
+        background.add(chatButton);
+        chatButton.addActionListener((ActionEvent e) -> {
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+            chat.setVisible(true);
+        });
     }
 
     private void exchangePlayersName() throws IOException{

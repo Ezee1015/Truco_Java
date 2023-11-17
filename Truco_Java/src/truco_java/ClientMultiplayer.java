@@ -1,25 +1,52 @@
 package truco_java;
 
+import java.awt.Image;
 import javax.swing.ImageIcon;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 
 public class ClientMultiplayer extends GameInterface {
     private Client client;
+    private Client chat_socket;
 
     public ClientMultiplayer(Truco_Java menu, String ip, int port, PlayMenu playMenu) throws IOException{
         super(menu, playMenu);
 
-        client = new Client(ip,port);
+        client = new Client(ip, port);
+        chat_socket = new Client(ip, port+1);
 
         loadPlayersName();
 
         dealCards.setLocation(36,280);
         dealCards.setIcon(getImageIcon("src/truco_java/fondos/cartasMazo.png", 80, 80, true));
+        
+        ClientMultiplayer client_class = this;
+        Chat chat = new Chat(chat_socket, client_class);
+        chat.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
+        chat.setResizable(false);
+        chat.setTitle("Mensajes - Juego Truco");
+        chat.setBounds(0,0,400,500);
+        chat.setLocationRelativeTo(null);
+        chat.setVisible(false);
+        
+        JButton chatButton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugarBoton.png")).getScaledInstance(300, 60, Image.SCALE_SMOOTH)));
+        chatButton.setBounds(100, 130, 300, 60);
+        chatButton.setVisible(true);
+        chatButton.setOpaque(false);
+        chatButton.setContentAreaFilled(false);
+        chatButton.setBorderPainted(false);
+        background.add(chatButton);
+        chatButton.addActionListener((ActionEvent e) -> {
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+            chat.setVisible(true);
+        });
     }
 
     protected void loadPlayersName(){
