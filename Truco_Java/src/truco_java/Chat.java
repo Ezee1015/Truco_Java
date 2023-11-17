@@ -107,6 +107,7 @@ public class Chat extends JFrame {
     public void sendMessage(Connection socket, String message){
         try {
             socket.sendMessage("msg " + message);
+            history.setText(history.getText() + "\nVos: "+message);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + ex.getMessage());
             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
