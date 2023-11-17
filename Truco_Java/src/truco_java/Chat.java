@@ -1,5 +1,6 @@
 package truco_java;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 public class Chat extends JFrame {
     private static final Music effects = new Music();
@@ -35,11 +37,21 @@ public class Chat extends JFrame {
         logo.setVisible(true);
         background.add(logo);
         
-        history = new JTextArea("Historial");
+        history = new JTextArea("** Se han unido al Chat **");
         history.setBounds(10,70,380,280);
         history.setFont(new Font("Serif", Font.BOLD, 18));
         history.setVisible(true);
+        history.setEditable(false);
         background.add(history);
+        JScrollPane scroll = new JScrollPane(history);
+        scroll.setVisible(true);
+        scroll.setOpaque(false);
+        scroll.getViewport().setOpaque(false);
+        scroll.setForeground(Color.WHITE);
+        scroll.setBorder(null);
+        scroll.setViewportBorder(null);
+        scroll.setBounds(10,70,380,280);
+        background.add(scroll);
         
         JTextArea messageArea = new JTextArea();
         messageArea.setText("Mensaje");
