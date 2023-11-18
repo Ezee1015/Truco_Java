@@ -107,7 +107,7 @@ public class Chat extends JFrame {
         scrollMessage.setBounds(10, 10, backgroundMessage.getWidth()-20, backgroundMessage.getHeight()-20);
         backgroundMessage.add(scrollMessage);
 
-        JButton send = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugarBoton.png")).getScaledInstance(60, 100, Image.SCALE_SMOOTH)));
+        JButton send = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/enviarBoton.png")).getScaledInstance(50, 100, Image.SCALE_SMOOTH)));
         send.setBounds(340, 360, 50, 100);
         send.setVisible(true);
         send.setOpaque(false);

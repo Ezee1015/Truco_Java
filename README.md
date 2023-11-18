@@ -139,3 +139,4 @@ Muchas gracias por haberse interesado en este juego. No se pretende ni se tiene 
 - También agradecer a [Pixabay](https://pixabay.com) por los efectos de sonido y [la imagen de la cabaña](https://pixabay.com/es/illustrations/cabina-casa-caba%C3%B1a-casa-de-madera-5701374/).
 - Las imágenes de la baraja de cartas son de Basquetteur - Trabajo propio, CC BY-SA 3.0, [Ver fuente](https://commons.wikimedia.org/w/index.php?curid=32842304)
 - Background Music: [Into The Light - Chill Acoustic Guitar](https://www.youtube.com/watch?v=lOg6U1brY0w)
+- [Icono enviar](https://commons.wikimedia.org/wiki/File:Message_%28Send%29.png)
