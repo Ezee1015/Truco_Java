@@ -38,7 +38,7 @@ public class Chat extends JFrame {
         logo.setVisible(true);
         background.add(logo);
 
-        JCheckBox notifications = new JCheckBox("Notificaciones", false);
+        JCheckBox notifications = new JCheckBox("Sonido", false);
         notifications.setBounds(300, 10, 100, 50);
         notifications.setOpaque(false);
         notifications.setSelected(true);
