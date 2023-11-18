@@ -69,8 +69,8 @@ public class ServerMultiplayer extends GameManagment {
 
         loadPlayersName();
 
-        JButton chatButton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugarBoton.png")).getScaledInstance(300, 60, Image.SCALE_SMOOTH)));
-        chatButton.setBounds(100, 130, 300, 60);
+        JButton chatButton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/msgBoton.png")).getScaledInstance(80, 50, Image.SCALE_SMOOTH)));
+        chatButton.setBounds(400, 170, 80, 50);
         chatButton.setVisible(true);
         chatButton.setOpaque(false);
         chatButton.setContentAreaFilled(false);
