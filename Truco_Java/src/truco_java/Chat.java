@@ -50,7 +50,8 @@ public class Chat extends JFrame {
         JCheckBox notifications = new JCheckBox("Sonido", false);
         notifications.setBounds(300, 10, 100, 50);
         notifications.setOpaque(false);
-        notifications.setSelected(true);
+        notifications.setSelected(Truco_Java.musicCheckBox.isSelected());
+        notifications.setEnabled(Truco_Java.musicCheckBox.isSelected());
         background.add(notifications);
 
         JLabel backgroundHistory = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondoChat.png")).getScaledInstance(380, 280, Image.SCALE_SMOOTH)));
