@@ -148,6 +148,7 @@ public class ServerMultiplayer extends GameManagment {
         envidosDeclared.add(1);
         truco.setEnabled(false);
         trucoLevel=0;
+        enabledToRetrucar = 0;
         drawButtons();
         quieroTruco.setVisible(false);
         noQuieroTruco.setVisible(false);
@@ -160,9 +161,9 @@ public class ServerMultiplayer extends GameManagment {
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-
-        trucoLevel=0;
-        enabledToRetrucar = 0;
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
 
         Thread thread = new Thread(){
             public void run(){
@@ -187,6 +188,7 @@ public class ServerMultiplayer extends GameManagment {
         envidosDeclared.add(2);
         truco.setEnabled(false);
         trucoLevel=0;
+        enabledToRetrucar = 0;
         drawButtons();
         quieroTruco.setVisible(false);
         noQuieroTruco.setVisible(false);
@@ -199,9 +201,9 @@ public class ServerMultiplayer extends GameManagment {
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-
-        trucoLevel=0;
-        enabledToRetrucar = 0;
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
 
         Thread thread = new Thread(){
             public void run(){
@@ -226,6 +228,7 @@ public class ServerMultiplayer extends GameManagment {
         envidosDeclared.add(3);
         truco.setEnabled(false);
         trucoLevel=0;
+        enabledToRetrucar = 0;
         drawButtons();
         quieroTruco.setVisible(false);
         noQuieroTruco.setVisible(false);
@@ -238,9 +241,9 @@ public class ServerMultiplayer extends GameManagment {
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-
-        trucoLevel=0;
-        enabledToRetrucar = 0;
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
 
         Thread thread = new Thread(){
             public void run(){
@@ -265,6 +268,7 @@ public class ServerMultiplayer extends GameManagment {
         envidosDeclared.add(4);
         truco.setEnabled(false);
         trucoLevel=0;
+        enabledToRetrucar = 0;
         drawButtons();
         quieroTruco.setVisible(false);
         noQuieroTruco.setVisible(false);
@@ -277,9 +281,9 @@ public class ServerMultiplayer extends GameManagment {
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-
-        trucoLevel=0;
-        enabledToRetrucar = 0;
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
 
         Thread thread = new Thread(){
             public void run(){
