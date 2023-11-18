@@ -231,7 +231,7 @@ public class PlayMenu extends JFrame{
         serverPort.addActionListener(roomAction);
 
         JButton roomButton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/crearSalaBoton.png")).getScaledInstance(140, 40, Image.SCALE_SMOOTH)));
-        roomButton.setBounds(317, 340, 140, 40);
+        roomButton.setBounds(310, 340, 140, 40);
         roomButton.setVisible(true);
         roomButton.setOpaque(false);
         roomButton.setContentAreaFilled(false);
