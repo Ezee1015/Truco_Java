@@ -34,7 +34,7 @@ public class PlayMenu extends JFrame{
         setDefaultCloseOperation(3);
         menu.setVisible(false);
 
-        JLabel background = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondo_acerca.png")).getScaledInstance(500, 500, Image.SCALE_SMOOTH)));
+        JLabel background = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondo_juego.png")).getScaledInstance(500, 500, Image.SCALE_SMOOTH)));
         background.setBounds(0, 0, 500, 500);
         background.setVisible(true);
         add(background);
@@ -59,14 +59,6 @@ public class PlayMenu extends JFrame{
             setVisible(false);
             dispose();
         });
-
-        JLabel multiplayerLabel = new JLabel("Multijugador");
-        multiplayerLabel.setBounds(198, 180, 150, 40);
-        multiplayerLabel.setFont(new Font("Arial", Font.BOLD, 19));
-        multiplayerLabel.setForeground(Color.WHITE);
-        multiplayerLabel.setVisible(true);
-        background.add(multiplayerLabel);
-
 
         PlayMenu menuJugar = this;
         JTextField clientIp = new JTextField();
@@ -109,13 +101,13 @@ public class PlayMenu extends JFrame{
               }
         };
 
-        JLabel ipLabel = new JLabel("Direccion IP");
-        ipLabel.setBounds(80, 215, 90, 15);
-        ipLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        ipLabel.setForeground(Color.WHITE);
-        ipLabel.setVisible(true);
-        background.add(ipLabel);
-        clientIp.setBounds(20,230,200,30);
+        JLabel clientIpLabel = new JLabel("Direccion IP");
+        clientIpLabel.setBounds(80, 235, 90, 15);
+        clientIpLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        clientIpLabel.setForeground(Color.WHITE);
+        clientIpLabel.setVisible(true);
+        background.add(clientIpLabel);
+        clientIp.setBounds(20,250,200,30);
         clientIp.setOpaque(false);
         clientIp.setBorder(null);
         clientIp.setHorizontalAlignment(JTextField.CENTER);
@@ -140,12 +132,12 @@ public class PlayMenu extends JFrame{
           });
 
         JLabel clientPortLabel = new JLabel("Puerto");
-        clientPortLabel.setBounds(95, 265, 90, 15);
+        clientPortLabel.setBounds(95, 285, 90, 15);
         clientPortLabel.setFont(new Font("Arial", Font.BOLD, 15));
         clientPortLabel.setForeground(Color.WHITE);
         clientPortLabel.setVisible(true);
         background.add(clientPortLabel);
-        clientPort.setBounds(20,280,200,30);
+        clientPort.setBounds(20,300,200,30);
         clientPort.setText("1234");
         clientPort.setOpaque(false);
         clientPort.setBorder(null);
@@ -177,7 +169,7 @@ public class PlayMenu extends JFrame{
 
 
         JButton connect = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/conectarBoton.png")).getScaledInstance(140, 40, Image.SCALE_SMOOTH)));
-        connect.setBounds(50, 325, 140, 40);
+        connect.setBounds(50, 340, 140, 40);
         connect.setVisible(true);
         connect.setOpaque(false);
         connect.setContentAreaFilled(false);
@@ -219,12 +211,12 @@ public class PlayMenu extends JFrame{
 
 
         JLabel serverPortLabel = new JLabel("Puerto");
-        serverPortLabel.setBounds(355, 245, 90, 15);
+        serverPortLabel.setBounds(355, 260, 90, 15);
         serverPortLabel.setFont(new Font("Arial", Font.BOLD, 15));
         serverPortLabel.setForeground(Color.WHITE);
         serverPortLabel.setVisible(true);
         background.add(serverPortLabel);
-        serverPort.setBounds(280,260,200,30);
+        serverPort.setBounds(280,275,200,30);
         serverPort.setText("1234");
         serverPort.setOpaque(false);
         serverPort.setBorder(null);
@@ -239,7 +231,7 @@ public class PlayMenu extends JFrame{
         serverPort.addActionListener(roomAction);
 
         JButton roomButton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/crearSalaBoton.png")).getScaledInstance(140, 40, Image.SCALE_SMOOTH)));
-        roomButton.setBounds(317, 325, 140, 40);
+        roomButton.setBounds(317, 340, 140, 40);
         roomButton.setVisible(true);
         roomButton.setOpaque(false);
         roomButton.setContentAreaFilled(false);
@@ -247,14 +239,8 @@ public class PlayMenu extends JFrame{
         background.add(roomButton);
         roomButton.addActionListener(roomAction);
 
-        JLabel quickGameLabel = new JLabel("Partida Rápida");
-        quickGameLabel.setBounds(187, 370, 150, 40);
-        quickGameLabel.setFont(new Font("Arial", Font.BOLD, 19));
-        quickGameLabel.setForeground(Color.WHITE);
-        quickGameLabel.setVisible(true);
-        background.add(quickGameLabel);
-        JButton quickGameButton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugarBoton.png")).getScaledInstance(300, 50, Image.SCALE_SMOOTH)));
-        quickGameButton.setBounds(110, 410, 300, 50);
+        JButton quickGameButton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugarBoton.png")).getScaledInstance(140, 40, Image.SCALE_SMOOTH)));
+        quickGameButton.setBounds(317, 420, 140, 40);
         quickGameButton.setVisible(true);
         quickGameButton.setOpaque(false);
         quickGameButton.setContentAreaFilled(false);
@@ -314,23 +300,5 @@ public class PlayMenu extends JFrame{
         // Actives the first player (selected by default at creating the window)
         playersBackground.get(0).setIcon(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugadores/backgroundActive.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
         playerNumber=0;
-
-        // Dividing lines
-        JLabel line1 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/division.png")).getScaledInstance(188, 4, Image.SCALE_SMOOTH)));
-        line1.setBounds(5, 200, 188, 4);
-        line1.setVisible(true);
-        background.add(line1);
-        JLabel line2 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/division.png")).getScaledInstance(168, 4, Image.SCALE_SMOOTH)));
-        line2.setBounds(325, 200, 168, 4);
-        line2.setVisible(true);
-        background.add(line2);
-        JLabel line3 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/division.png")).getScaledInstance(178, 4, Image.SCALE_SMOOTH)));
-        line3.setBounds(5, 388, 178, 4);
-        line3.setVisible(true);
-        background.add(line3);
-        JLabel line4 = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/division.png")).getScaledInstance(165, 4, Image.SCALE_SMOOTH)));
-        line4.setBounds(330, 388, 165, 4);
-        line4.setVisible(true);
-        background.add(line4);
   }
 }
