@@ -18,7 +18,6 @@ public class ServerMultiplayer extends GameManagment {
     private Chat chat;
 
     protected void loadPlayersName(){
-        ServerMultiplayer server_class = this;
         Thread waitingRoomThread = new Thread(){
             public void run(){
                 // Creates the server and waits to receive the information about the opponent
@@ -42,7 +41,7 @@ public class ServerMultiplayer extends GameManagment {
                     }
                     window.setVisible(true);
                     waitingRoom.dispose();
-                    
+
                     setBackground(0);
                     pointsBackground.setIcon(getImageIcon("src/truco_java/puntaje/bg"+ opponentNumber +".png", 100, 150, false));
                     connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
@@ -69,7 +68,7 @@ public class ServerMultiplayer extends GameManagment {
         setDefaultCloseOperation(3);
 
         loadPlayersName();
-        
+
         JButton chatButton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugarBoton.png")).getScaledInstance(300, 60, Image.SCALE_SMOOTH)));
         chatButton.setBounds(100, 130, 300, 60);
         chatButton.setVisible(true);
