@@ -129,8 +129,9 @@ public class ClientMultiplayer extends GameInterface {
         effects.play();
         envidosDeclared.add(1);
         truco.setEnabled(false);
+        trucoLevel=0;
+        enabledToRetrucar = 0;
         try {
-            trucoLevel=0;
             drawButtons();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
@@ -150,10 +151,9 @@ public class ClientMultiplayer extends GameInterface {
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-        enabledToRetrucar=1;
-
-        trucoLevel=0;
-        enabledToRetrucar = 0;
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
 
         Thread thread = new Thread(){
             public void run(){
@@ -177,8 +177,9 @@ public class ClientMultiplayer extends GameInterface {
         effects.play();
         envidosDeclared.add(2);
         truco.setEnabled(false);
+        trucoLevel=0;
+        enabledToRetrucar = 0;
         try {
-            trucoLevel=0;
             drawButtons();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
@@ -196,10 +197,9 @@ public class ClientMultiplayer extends GameInterface {
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-        enabledToRetrucar=1;
-
-        trucoLevel=0;
-        enabledToRetrucar = 0;
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
 
         Thread thread = new Thread(){
             public void run(){
@@ -223,8 +223,9 @@ public class ClientMultiplayer extends GameInterface {
         effects.play();
         envidosDeclared.add(3);
         truco.setEnabled(false);
+        trucoLevel=0;
+        enabledToRetrucar = 0;
         try {
-            trucoLevel=0;
             drawButtons();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
@@ -243,10 +244,9 @@ public class ClientMultiplayer extends GameInterface {
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-        enabledToRetrucar=1;
-
-        trucoLevel=0;
-        enabledToRetrucar = 0;
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
 
         Thread thread = new Thread(){
             public void run(){
@@ -271,8 +271,9 @@ public class ClientMultiplayer extends GameInterface {
         effects.play();
         envidosDeclared.add(4);
         truco.setEnabled(false);
+        trucoLevel=0;
+        enabledToRetrucar = 0;
         try {
-            trucoLevel=0;
             drawButtons();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
@@ -290,10 +291,9 @@ public class ClientMultiplayer extends GameInterface {
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-        enabledToRetrucar=1;
-
-        trucoLevel=0;
-        enabledToRetrucar = 0;
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
 
         Thread thread = new Thread(){
             public void run(){
