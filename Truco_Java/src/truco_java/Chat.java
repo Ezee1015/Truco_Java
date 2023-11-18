@@ -8,19 +8,28 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
+import javax.swing.Action;
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
+import javax.swing.KeyStroke;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JCheckBox;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 
 public class Chat extends JFrame {
     private static final Music effects = new Music();
-    private final JTextArea history;
+    private final JTextPane history;
     private final String opponentName;
+    private final JTextArea messageArea;
 
   public Chat (Connection socket, String opponentName) throws IOException {
         setLayout(null);
@@ -48,14 +57,12 @@ public class Chat extends JFrame {
         backgroundHistory.setBounds(10,70,380,280);
         backgroundHistory.setVisible(true);
         background.add(backgroundHistory);
-        history = new JTextArea("** Se han unido al Chat **");
+        history = new JTextPane();
         history.setBounds(10, 10, backgroundHistory.getWidth()-20, backgroundHistory.getHeight()-20);
-        history.setBounds(10,70,380,280);
         history.setFont(new Font("Serif", Font.BOLD, 18));
         history.setVisible(true);
-        history.setForeground(Color.white);
         history.setOpaque(false);
-        history.setEditable(false);
+        history.setFocusable(false);
         backgroundHistory.add(history);
         JScrollPane scrollHistory = new JScrollPane(history);
         scrollHistory.setVisible(true);
@@ -67,11 +74,18 @@ public class Chat extends JFrame {
         scrollHistory.setBounds(10, 10, backgroundHistory.getWidth()-20, backgroundHistory.getHeight()-20);
         backgroundHistory.add(scrollHistory);
 
+        Action sendAction = new AbstractAction() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                sendMessage(socket);
+              }
+        };
+
         JLabel backgroundMessage = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondoChat.png")).getScaledInstance(320, 100, Image.SCALE_SMOOTH)));
         backgroundMessage.setBounds(10,360,320,100);
         backgroundMessage.setVisible(true);
         background.add(backgroundMessage);
-        JTextArea messageArea = new JTextArea();
+        messageArea = new JTextArea();
         messageArea.setText("Mensaje");
         messageArea.setBounds(10, 10, backgroundMessage.getWidth()-20, backgroundMessage.getHeight()-20);
         messageArea.setLineWrap(true);
@@ -80,6 +94,9 @@ public class Chat extends JFrame {
         messageArea.setForeground(Color.white);
         messageArea.setOpaque(false);
         backgroundMessage.add(messageArea);
+        messageArea.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), sendAction);
+
+
         JScrollPane scrollMessage = new JScrollPane(messageArea);
         scrollMessage.setVisible(true);
         scrollMessage.setOpaque(false);
@@ -97,12 +114,7 @@ public class Chat extends JFrame {
         send.setContentAreaFilled(false);
         send.setBorderPainted(false);
         background.add(send);
-        send.addActionListener((ActionEvent e) -> {
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-
-            sendMessage(socket, messageArea.getText());
-        });
+        send.addActionListener(sendAction);
 
         JButton exit = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/atras.png")).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
         exit.setBounds(10, 10, 50, 50);
@@ -117,6 +129,9 @@ public class Chat extends JFrame {
             setVisible(false);
             dispose();
         });
+
+        appendToPane(history, "** Te has unido al chat **", Color.YELLOW);
+        socket.sendMessage("opened");
 
         Thread thread = new Thread(){
             public void run(){
@@ -138,10 +153,19 @@ public class Chat extends JFrame {
         thread.start();
   }
 
-    public void sendMessage(Connection socket, String message){
+    public void sendMessage(Connection socket){
         try {
+            String message = messageArea.getText();
+            if (message.isEmpty())
+              return;
+
+
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+            appendToPane(history, "\nVos: ", Color.blue);
+            appendToPane(history, message, Color.white);
             socket.sendMessage("msg " + message);
-            history.setText(history.getText() + "\nVos: "+message);
+            messageArea.setText("");
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + ex.getMessage());
             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
@@ -159,12 +183,15 @@ public class Chat extends JFrame {
 
         switch(tag){
             case "msg":
-                String msg_chat;
-                msg_chat="\n"+opponentName+": ";
+                String msg_chat = new String();
                 while( scanner.hasNext() ){
                     msg_chat += scanner.next() + " ";
                 }
-                history.setText(history.getText() + msg_chat);
+                appendToPane(history, "\n"+opponentName+": ", Color.red);
+                appendToPane(history, msg_chat, Color.white);
+                break;
+            case "opened":
+                appendToPane(history, "\n** " + opponentName + " se ha unido al chat **", Color.yellow);
                 break;
             default:
                 // System.out.println("No se detecto la categoria del mensaje: " + cat);
@@ -184,5 +211,18 @@ public class Chat extends JFrame {
         }
 
         scanner.close();
+    }
+
+    private void appendToPane(JTextPane tp, String msg, Color c) {
+      StyleContext sc = StyleContext.getDefaultStyleContext();
+      AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+
+      aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
+      aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+
+      int len = tp.getDocument().getLength();
+      tp.setCaretPosition(len);
+      tp.setCharacterAttributes(aset, false);
+      tp.replaceSelection(msg);
     }
 }
