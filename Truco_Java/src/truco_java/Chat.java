@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
-import java.awt.event.ItemEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
@@ -26,7 +25,7 @@ public class Chat extends JFrame {
   public Chat (Connection socket, String opponentName) throws IOException {
         setLayout(null);
         setDefaultCloseOperation(2);
-        
+
         this.opponentName = opponentName;
 
         JLabel background = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondo_acerca.png")).getScaledInstance(500, 500, Image.SCALE_SMOOTH)));
@@ -44,7 +43,7 @@ public class Chat extends JFrame {
         notifications.setOpaque(false);
         notifications.setSelected(true);
         background.add(notifications);
-        
+
         history = new JTextArea("** Se han unido al Chat **");
         history.setBounds(10,70,380,280);
         history.setFont(new Font("Serif", Font.BOLD, 18));
@@ -60,7 +59,7 @@ public class Chat extends JFrame {
         scrollHistory.setViewportBorder(null);
         scrollHistory.setBounds(10,70,380,280);
         background.add(scrollHistory);
-        
+
         JTextArea messageArea = new JTextArea();
         messageArea.setText("Mensaje");
         messageArea.setBounds(10,360,320,100);
@@ -77,7 +76,7 @@ public class Chat extends JFrame {
         scrollMessage.setViewportBorder(null);
         scrollMessage.setBounds(10,360,320,100);
         background.add(scrollMessage);
-        
+
         JButton send = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugarBoton.png")).getScaledInstance(60, 100, Image.SCALE_SMOOTH)));
         send.setBounds(340, 360, 50, 100);
         send.setVisible(true);
@@ -88,7 +87,7 @@ public class Chat extends JFrame {
         send.addActionListener((ActionEvent e) -> {
             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
             effects.play();
-            
+
             sendMessage(socket, messageArea.getText());
         });
 
@@ -105,7 +104,7 @@ public class Chat extends JFrame {
             setVisible(false);
             dispose();
         });
-        
+
         Thread thread = new Thread(){
             public void run(){
                 while(true){
@@ -125,7 +124,7 @@ public class Chat extends JFrame {
         };
         thread.start();
   }
-  
+
     public void sendMessage(Connection socket, String message){
         try {
             socket.sendMessage("msg " + message);
@@ -136,7 +135,7 @@ public class Chat extends JFrame {
             effects.play();
         }
     }
-    
+
     public void decodeMessage (String message) {
         message=message.trim();
 
