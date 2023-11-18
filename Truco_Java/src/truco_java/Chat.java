@@ -44,12 +44,19 @@ public class Chat extends JFrame {
         notifications.setSelected(true);
         background.add(notifications);
 
+        JLabel backgroundHistory = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondoChat.png")).getScaledInstance(380, 280, Image.SCALE_SMOOTH)));
+        backgroundHistory.setBounds(10,70,380,280);
+        backgroundHistory.setVisible(true);
+        background.add(backgroundHistory);
         history = new JTextArea("** Se han unido al Chat **");
+        history.setBounds(10, 10, backgroundHistory.getWidth()-20, backgroundHistory.getHeight()-20);
         history.setBounds(10,70,380,280);
         history.setFont(new Font("Serif", Font.BOLD, 18));
         history.setVisible(true);
+        history.setForeground(Color.white);
+        history.setOpaque(false);
         history.setEditable(false);
-        background.add(history);
+        backgroundHistory.add(history);
         JScrollPane scrollHistory = new JScrollPane(history);
         scrollHistory.setVisible(true);
         scrollHistory.setOpaque(false);
@@ -57,16 +64,22 @@ public class Chat extends JFrame {
         scrollHistory.setForeground(Color.WHITE);
         scrollHistory.setBorder(null);
         scrollHistory.setViewportBorder(null);
-        scrollHistory.setBounds(10,70,380,280);
-        background.add(scrollHistory);
+        scrollHistory.setBounds(10, 10, backgroundHistory.getWidth()-20, backgroundHistory.getHeight()-20);
+        backgroundHistory.add(scrollHistory);
 
+        JLabel backgroundMessage = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondoChat.png")).getScaledInstance(320, 100, Image.SCALE_SMOOTH)));
+        backgroundMessage.setBounds(10,360,320,100);
+        backgroundMessage.setVisible(true);
+        background.add(backgroundMessage);
         JTextArea messageArea = new JTextArea();
         messageArea.setText("Mensaje");
-        messageArea.setBounds(10,360,320,100);
+        messageArea.setBounds(10, 10, backgroundMessage.getWidth()-20, backgroundMessage.getHeight()-20);
         messageArea.setLineWrap(true);
         messageArea.setFont(new Font("Serif", Font.BOLD, 18));
         messageArea.setVisible(true);
-        background.add(messageArea);
+        messageArea.setForeground(Color.white);
+        messageArea.setOpaque(false);
+        backgroundMessage.add(messageArea);
         JScrollPane scrollMessage = new JScrollPane(messageArea);
         scrollMessage.setVisible(true);
         scrollMessage.setOpaque(false);
@@ -74,8 +87,8 @@ public class Chat extends JFrame {
         scrollMessage.setForeground(Color.WHITE);
         scrollMessage.setBorder(null);
         scrollMessage.setViewportBorder(null);
-        scrollMessage.setBounds(10,360,320,100);
-        background.add(scrollMessage);
+        scrollMessage.setBounds(10, 10, backgroundMessage.getWidth()-20, backgroundMessage.getHeight()-20);
+        backgroundMessage.add(scrollMessage);
 
         JButton send = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/jugarBoton.png")).getScaledInstance(60, 100, Image.SCALE_SMOOTH)));
         send.setBounds(340, 360, 50, 100);
