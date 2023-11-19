@@ -30,6 +30,9 @@ public class Chat extends JFrame {
     private final JTextPane history;
     private final String opponentName;
     private final JTextArea messageArea;
+    private final Color playerColor   = Color.decode("#010a9");
+    private final Color opponentColor = Color.decode("#9c0000");
+    private final Color statusColor   = Color.decode("#FFC300");
 
   public Chat (Connection socket, String opponentName) throws IOException {
         setLayout(null);
@@ -131,7 +134,7 @@ public class Chat extends JFrame {
             dispose();
         });
 
-        appendToPane(history, "** Te has unido al chat **", Color.YELLOW);
+        appendToPane(history, "** Te has unido al chat **", statusColor);
         socket.sendMessage("opened");
 
         Thread thread = new Thread(){
@@ -163,7 +166,7 @@ public class Chat extends JFrame {
 
             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
             effects.play();
-            appendToPane(history, "\nVos: ", Color.blue);
+            appendToPane(history, "\nVos: ", playerColor);
             appendToPane(history, message, Color.white);
             socket.sendMessage("msg " + message);
             messageArea.setText("");
@@ -188,11 +191,11 @@ public class Chat extends JFrame {
                 while( scanner.hasNext() ){
                     msg_chat += scanner.next() + " ";
                 }
-                appendToPane(history, "\n"+opponentName+": ", Color.red);
+                appendToPane(history, "\n"+opponentName+": ", opponentColor);
                 appendToPane(history, msg_chat, Color.white);
                 break;
             case "opened":
-                appendToPane(history, "\n** " + opponentName + " se ha unido al chat **", Color.yellow);
+                appendToPane(history, "\n** " + opponentName + " se ha unido al chat **", statusColor);
                 break;
             default:
                 // System.out.println("No se detecto la categoria del mensaje: " + cat);
