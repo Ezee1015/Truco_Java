@@ -843,8 +843,7 @@ public class ServerMultiplayer extends GameManagment {
                 opponentNumber = Integer.parseInt(scanner.next());
                 opponentName="";
                 while(scanner.hasNext()){
-                    String nombreTemp = scanner.next();
-                    if(!nombreTemp.equals("ç")) opponentName += nombreTemp;
+                    opponentName += scanner.next();
                     if(scanner.hasNext()) opponentName+=" ";
                 }
 

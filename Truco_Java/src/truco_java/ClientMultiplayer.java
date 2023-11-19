@@ -743,10 +743,8 @@ public class ClientMultiplayer extends GameInterface {
             case "print":
                 String textToPrint="";
                 while(scanf.hasNext()){
-                    String temp = scanf.next() + " ";
-                    if(!temp.equals("ç "))
-                        textToPrint+=temp;
-                    else break;
+                    textToPrint+=scanf.next();
+                    if(scanf.hasNext()) textToPrint+= " ";
                 }
                 final String imprime = textToPrint;
                 Thread thread2 = new Thread(){
@@ -872,8 +870,7 @@ public class ClientMultiplayer extends GameInterface {
                 opponentNumber = Integer.parseInt(scanf.next());
                 opponentName="";
                 while(scanf.hasNext()){
-                    String nombreTemp = scanf.next();
-                    if(!nombreTemp.equals("ç")) opponentName += nombreTemp;
+                    opponentName += scanf.next();
                     if(scanf.hasNext()) opponentName+=" ";
                 }
                 String nombre = "";
