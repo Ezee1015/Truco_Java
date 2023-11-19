@@ -544,6 +544,7 @@ public class ServerMultiplayer extends GameManagment {
             playMenu.setVisible(true);
             dispose();
             server.killServer();
+            chat_socket.killServer();
         }
     }
 
@@ -565,6 +566,7 @@ public class ServerMultiplayer extends GameManagment {
         anotherRound();
         dispose();
         server.killServer();
+        chat_socket.killServer();
     }
 
     protected void actionWhenOpponentWinsGame() {
@@ -585,6 +587,7 @@ public class ServerMultiplayer extends GameManagment {
         anotherRound();
         dispose();
         server.killServer();
+        chat_socket.killServer();
     }
 
 
@@ -790,6 +793,7 @@ public class ServerMultiplayer extends GameManagment {
                 dispose();
                 playMenu.setVisible(true);
                 server.killServer();
+                chat_socket.killServer();
                 break;
             case "truco":
                 int nivelTrucoTemp = Integer.parseInt(scanner.next());
