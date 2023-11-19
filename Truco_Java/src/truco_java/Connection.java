@@ -17,6 +17,7 @@ public class Connection {
     protected Socket cs;
     protected DataOutputStream outputServer, salidaCliente;
     private String tipo;
+    private char endOfCommand = '\n';
 
     public Connection(String tipo, String ip, int puerto) throws IOException {
         HOST = ip;
@@ -61,10 +62,16 @@ public class Connection {
             while(!input.ready());
             while(input.ready()){
                 char char_msg = (char) input.read();
-                if( char_msg == 'ç' )
+                if( char_msg == endOfCommand )
                     break;
                 message += char_msg;
             }
+
+            // Just in case. This can happen if the 'endOfCommand' gets sent twice
+            // or there's an error in some communication and puts a \n in the beginning
+            if (message.isEmpty())
+              return receiveMessage();
+
             return message;
         } catch (Exception e) {
             if(e.getMessage().equalsIgnoreCase("Socket is closed")){
@@ -79,7 +86,7 @@ public class Connection {
     protected void sendMessage(String message) throws IOException{
         try {
             outputServer = new DataOutputStream(cs.getOutputStream());
-            outputServer.writeUTF(message + " ç");
+            outputServer.writeUTF(message + " " + endOfCommand);
         } catch (Exception e) {
             if(e.getMessage().equalsIgnoreCase("Socket is closed")){
                 reconnect();
