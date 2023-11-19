@@ -1,25 +1,59 @@
 package truco_java;
 
+import java.awt.Image;
 import javax.swing.ImageIcon;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 
 public class ClientMultiplayer extends GameInterface {
     private Client client;
+    private Client chat_socket;
+    private Chat chat;
 
     public ClientMultiplayer(Truco_Java menu, String ip, int port, PlayMenu playMenu) throws IOException{
         super(menu, playMenu);
 
-        client = new Client(ip,port);
+        client = new Client(ip, port);
+        chat_socket = new Client(ip, port+1);
 
         loadPlayersName();
 
         dealCards.setLocation(36,280);
         dealCards.setIcon(getImageIcon("src/truco_java/fondos/cartasMazo.png", 80, 80, true));
+
+        JButton chatButton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/msgBoton.png")).getScaledInstance(80, 50, Image.SCALE_SMOOTH)));
+        chatButton.setBounds(400, 170, 80, 50);
+        chatButton.setVisible(true);
+        chatButton.setOpaque(false);
+        chatButton.setContentAreaFilled(false);
+        chatButton.setBorderPainted(false);
+        background.add(chatButton);
+        chatButton.addActionListener((ActionEvent e) -> {
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+            if ( chat == null ) {
+                try {
+                    chat = new Chat(chat_socket, opponentName);
+                    chat.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
+                    chat.setResizable(false);
+                    chat.setTitle("Mensajes - Juego Truco");
+                    chat.setBounds(0,0,400,500);
+                    chat.setLocationRelativeTo(null);
+                    chat.setVisible(false);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al inicializar el menu de chat: " + ex.getMessage());
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
+                }
+            }
+            chat.setVisible(true);
+        });
     }
 
     protected void loadPlayersName(){
@@ -95,8 +129,9 @@ public class ClientMultiplayer extends GameInterface {
         effects.play();
         envidosDeclared.add(1);
         truco.setEnabled(false);
+        trucoLevel=0;
+        enabledToRetrucar = 0;
         try {
-            trucoLevel=0;
             drawButtons();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
@@ -116,10 +151,9 @@ public class ClientMultiplayer extends GameInterface {
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-        enabledToRetrucar=1;
-
-        trucoLevel=0;
-        enabledToRetrucar = 0;
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
 
         Thread thread = new Thread(){
             public void run(){
@@ -143,8 +177,9 @@ public class ClientMultiplayer extends GameInterface {
         effects.play();
         envidosDeclared.add(2);
         truco.setEnabled(false);
+        trucoLevel=0;
+        enabledToRetrucar = 0;
         try {
-            trucoLevel=0;
             drawButtons();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
@@ -162,10 +197,9 @@ public class ClientMultiplayer extends GameInterface {
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-        enabledToRetrucar=1;
-
-        trucoLevel=0;
-        enabledToRetrucar = 0;
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
 
         Thread thread = new Thread(){
             public void run(){
@@ -189,8 +223,9 @@ public class ClientMultiplayer extends GameInterface {
         effects.play();
         envidosDeclared.add(3);
         truco.setEnabled(false);
+        trucoLevel=0;
+        enabledToRetrucar = 0;
         try {
-            trucoLevel=0;
             drawButtons();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
@@ -209,10 +244,9 @@ public class ClientMultiplayer extends GameInterface {
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-        enabledToRetrucar=1;
-
-        trucoLevel=0;
-        enabledToRetrucar = 0;
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
 
         Thread thread = new Thread(){
             public void run(){
@@ -237,8 +271,9 @@ public class ClientMultiplayer extends GameInterface {
         effects.play();
         envidosDeclared.add(4);
         truco.setEnabled(false);
+        trucoLevel=0;
+        enabledToRetrucar = 0;
         try {
-            trucoLevel=0;
             drawButtons();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Ha sucedido un error al cargar imágenes: " + ex.getMessage());
@@ -256,10 +291,9 @@ public class ClientMultiplayer extends GameInterface {
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-        enabledToRetrucar=1;
-
-        trucoLevel=0;
-        enabledToRetrucar = 0;
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
 
         Thread thread = new Thread(){
             public void run(){

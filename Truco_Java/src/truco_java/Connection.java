@@ -60,10 +60,10 @@ public class Connection {
 
             while(!input.ready());
             while(input.ready()){
-                message+=(char) input.read();
-                if(message.charAt(message.length()-1)=='ç'){
+                char char_msg = (char) input.read();
+                if( char_msg == 'ç' )
                     break;
-                }
+                message += char_msg;
             }
             return message;
         } catch (Exception e) {

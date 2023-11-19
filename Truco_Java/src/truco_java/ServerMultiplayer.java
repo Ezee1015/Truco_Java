@@ -1,16 +1,21 @@
 package truco_java;
 
+import java.awt.Image;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 public class ServerMultiplayer extends GameManagment {
     public Server server;
+    public Server chat_socket;
     private int port;
+    private Chat chat;
 
     protected void loadPlayersName(){
         Thread waitingRoomThread = new Thread(){
@@ -26,6 +31,7 @@ public class ServerMultiplayer extends GameManagment {
                     waitingRoom.setVisible(true);
 
                     server = new Server("localhost", port);
+                    chat_socket = new Server("localhost", port+1);
                     try {
                         exchangePlayersName();
                     } catch (Exception e) {
@@ -35,6 +41,7 @@ public class ServerMultiplayer extends GameManagment {
                     }
                     window.setVisible(true);
                     waitingRoom.dispose();
+
                     setBackground(0);
                     pointsBackground.setIcon(getImageIcon("src/truco_java/puntaje/bg"+ opponentNumber +".png", 100, 150, false));
                     connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoAtencion.png"));
@@ -61,6 +68,34 @@ public class ServerMultiplayer extends GameManagment {
         setDefaultCloseOperation(3);
 
         loadPlayersName();
+
+        JButton chatButton = new JButton(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/msgBoton.png")).getScaledInstance(80, 50, Image.SCALE_SMOOTH)));
+        chatButton.setBounds(400, 170, 80, 50);
+        chatButton.setVisible(true);
+        chatButton.setOpaque(false);
+        chatButton.setContentAreaFilled(false);
+        chatButton.setBorderPainted(false);
+        background.add(chatButton);
+        chatButton.addActionListener((ActionEvent e) -> {
+            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            effects.play();
+            if ( chat == null ) {
+                try {
+                    chat = new Chat(chat_socket, opponentName);
+                    chat.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
+                    chat.setResizable(false);
+                    chat.setTitle("Mensajes - Juego Truco");
+                    chat.setBounds(0,0,400,500);
+                    chat.setLocationRelativeTo(null);
+                    chat.setVisible(false);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Ha sucedido un error al inicializar el menu de chat: " + ex.getMessage());
+                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+                    effects.play();
+                }
+            }
+            chat.setVisible(true);
+        });
     }
 
     private void exchangePlayersName() throws IOException{
@@ -113,6 +148,7 @@ public class ServerMultiplayer extends GameManagment {
         envidosDeclared.add(1);
         truco.setEnabled(false);
         trucoLevel=0;
+        enabledToRetrucar = 0;
         drawButtons();
         quieroTruco.setVisible(false);
         noQuieroTruco.setVisible(false);
@@ -125,9 +161,9 @@ public class ServerMultiplayer extends GameManagment {
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-
-        trucoLevel=0;
-        enabledToRetrucar = 0;
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
 
         Thread thread = new Thread(){
             public void run(){
@@ -152,6 +188,7 @@ public class ServerMultiplayer extends GameManagment {
         envidosDeclared.add(2);
         truco.setEnabled(false);
         trucoLevel=0;
+        enabledToRetrucar = 0;
         drawButtons();
         quieroTruco.setVisible(false);
         noQuieroTruco.setVisible(false);
@@ -164,9 +201,9 @@ public class ServerMultiplayer extends GameManagment {
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-
-        trucoLevel=0;
-        enabledToRetrucar = 0;
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
 
         Thread thread = new Thread(){
             public void run(){
@@ -191,6 +228,7 @@ public class ServerMultiplayer extends GameManagment {
         envidosDeclared.add(3);
         truco.setEnabled(false);
         trucoLevel=0;
+        enabledToRetrucar = 0;
         drawButtons();
         quieroTruco.setVisible(false);
         noQuieroTruco.setVisible(false);
@@ -203,9 +241,9 @@ public class ServerMultiplayer extends GameManagment {
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-
-        trucoLevel=0;
-        enabledToRetrucar = 0;
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
 
         Thread thread = new Thread(){
             public void run(){
@@ -230,6 +268,7 @@ public class ServerMultiplayer extends GameManagment {
         envidosDeclared.add(4);
         truco.setEnabled(false);
         trucoLevel=0;
+        enabledToRetrucar = 0;
         drawButtons();
         quieroTruco.setVisible(false);
         noQuieroTruco.setVisible(false);
@@ -242,9 +281,9 @@ public class ServerMultiplayer extends GameManagment {
         realEnvido.setVisible(false);
         faltaEnvido.setVisible(false);
         connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoOponente.png"));
-
-        trucoLevel=0;
-        enabledToRetrucar = 0;
+        cardPlayer1Enabled=false;
+        cardPlayer2Enabled=false;
+        cardPlayer3Enabled=false;
 
         Thread thread = new Thread(){
             public void run(){
