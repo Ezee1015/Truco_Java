@@ -58,8 +58,11 @@ public class WaitingRoom extends JFrame {
             try {
                   // Closes the server
                   new Client("127.0.0.1", port);
+                  new Client("127.0.0.1", port+1);
                   while(serverInterface.server==null);
+                  while(serverInterface.chat_socket==null);
                   serverInterface.server.killServer();
+                  serverInterface.chat_socket.killServer();
 
                   // Closes the windows and shows the menu
                   menu.setVisible(true);
