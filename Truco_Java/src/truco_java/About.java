@@ -32,15 +32,15 @@ public class About extends JFrame {
         paragraph.add("     Intentas recordar qué pasó, pero nada se te viene a la mente. Boris deja el celular en la mesa y viene a hablar con vos. En su mejor esfuerzo de hablar en Español, dice que están en su quinta privada secreta en Mendoza: están perseguidos por fuerzas nazis en su último intento de regreso al poder, y este es su único lugar de escondite. Por suerte, los nazis ya están casi derrotados. Las fuerzas armadas vienen al rescate, pero tardaran 12 horas en llegar. Afortunadamente, Zelenski está volando los alrededores en un avión de emergencia de la residencia de Boris, para protegernos ante cualquier ataque enemigo.");
         paragraph.add("     Al término de la explicación le preguntas: ¿Cómo esto puede ser verdad? ¿Cómo carajo sabés español? ¿Y no era que Maradona se la dio contra el canterito? Maradona se levanta y te dice: “Demasiadas preguntas. Acá todos sabemos hablar en Español. Si eso te parece extraño, esperá a que el carpincho te gane al truco.” Te quedás helado, quieto. Maradona te grita desde afuera: “¿No vas a venir a jugar? ¿Tenés miedo?” Así que te sientas en la silla de la mesa y te preparas a jugar unas rondas de truco...");
 
-        JLabel backgound = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondo_acerca.png")).getScaledInstance(500, 500, Image.SCALE_SMOOTH)));
-        backgound.setBounds(0, 0, 500, 500);
-        backgound.setVisible(true);
-        add(backgound);
+        JLabel background = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondo_acerca.png")).getScaledInstance(500, 500, Image.SCALE_SMOOTH)));
+        background.setBounds(0, 0, 500, 500);
+        background.setVisible(true);
+        add(background);
 
         JLabel logo = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/logo.png")).getScaledInstance(300, 100, Image.SCALE_SMOOTH)));
         logo.setBounds(100, 20, 300, 100);
         logo.setVisible(true);
-        backgound.add(logo);
+        background.add(logo);
 
         description = new JTextPane();
         description.setText(paragraph.get(0));
@@ -58,7 +58,7 @@ public class About extends JFrame {
         scroll.setBorder(null);
         scroll.setViewportBorder(null);
         scroll.setBounds(20,130,450,275);
-        backgound.add(scroll);
+        background.add(scroll);
 
         back.setOpaque(false);
         back.setContentAreaFilled(false);
@@ -66,7 +66,7 @@ public class About extends JFrame {
         back.setBounds(20, 410, 50, 50);
         back.setVisible(true);
         back.setEnabled(false);
-        backgound.add(back);
+        background.add(back);
         back.addActionListener((ActionEvent e) -> {
             effects.setFile("src/truco_java/musica/tirarCarta.wav", 1);
             effects.play();
@@ -79,7 +79,7 @@ public class About extends JFrame {
         next.setBounds(430, 410, 50, 50);
         next.setVisible(true);
         next.setEnabled(true);
-        backgound.add(next);
+        background.add(next);
         next.addActionListener((ActionEvent e) -> {
             effects.setFile("src/truco_java/musica/tirarCarta.wav", 1);
             effects.play();
@@ -91,7 +91,7 @@ public class About extends JFrame {
         exit.setOpaque(false);
         exit.setContentAreaFilled(false);
         exit.setBorderPainted(false);
-        backgound.add(exit);
+        background.add(exit);
         exit.addActionListener((ActionEvent e) -> {
             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
             effects.play();
