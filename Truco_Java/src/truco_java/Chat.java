@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JScrollBar;
 import javax.swing.JCheckBox;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
@@ -28,6 +29,7 @@ import javax.swing.text.StyleContext;
 public class Chat extends JFrame {
     private static final Music effects = new Music();
     private final JTextPane history;
+    private final JScrollBar verticalHistory;
     private final String opponentName;
     private final JTextArea messageArea;
     private final Color playerColor   = Color.decode("#010a9");
@@ -77,6 +79,7 @@ public class Chat extends JFrame {
         scrollHistory.setViewportBorder(null);
         scrollHistory.setBounds(10, 10, backgroundHistory.getWidth()-20, backgroundHistory.getHeight()-20);
         backgroundHistory.add(scrollHistory);
+        verticalHistory = scrollHistory.getVerticalScrollBar();
 
         Action sendAction = new AbstractAction() {
               @Override
@@ -227,6 +230,9 @@ public class Chat extends JFrame {
       tp.setCaretPosition(len);
       tp.setCharacterAttributes(aset, false);
       tp.replaceSelection(msg);
+
+      // Scroll history to the bottom
+      verticalHistory.setValue( verticalHistory.getMaximum() );
     }
 
     private void receiveMessage (Connection socket, boolean soundNotification){
