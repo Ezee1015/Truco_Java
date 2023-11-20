@@ -64,12 +64,13 @@ public class Connection {
                 char char_msg = (char) input.read();
                 if( char_msg == endOfCommand )
                     break;
-                message += char_msg;
+                if ( char_msg != 0 )
+                  message += char_msg;
             }
 
             // Just in case. This can happen if the 'endOfCommand' gets sent twice
             // or there's an error in some communication and puts a \n in the beginning
-            if (message.isEmpty())
+            if ( message.isEmpty() || message.isBlank() )
               return receiveMessage();
 
             return message;
