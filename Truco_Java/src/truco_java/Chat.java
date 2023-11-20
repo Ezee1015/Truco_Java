@@ -247,6 +247,8 @@ public class Chat extends JFrame {
     }
 
     private void statusChat (String text){
-      appendToPane(history, "\n** " + text + " **", statusColor);
+      if(!history.getText().isEmpty())
+        appendToPane(history, "\n", Color.white);
+      appendToPane(history, "** " + text + " **", statusColor);
     }
 }
