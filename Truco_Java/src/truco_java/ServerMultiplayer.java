@@ -604,6 +604,7 @@ public class ServerMultiplayer extends GameManagment {
     }
 
     protected void actionsIfPlayerWinsRound(){
+        syncWithClient(false);
         ThreadOptionPane("Termino la Partida. Ganaste!");
         try{
             server.printMessage("Termino la Partida. Ha ganado " + playerName);
@@ -618,6 +619,7 @@ public class ServerMultiplayer extends GameManagment {
     }
 
     protected void actionsIfOpponentWinsRound(){
+        syncWithClient(false);
         ThreadOptionPane("Termino la Partida. Ha ganado " + opponentName + ".");
         try{
             server.printMessage("Termino la Partida. Ganaste!");
