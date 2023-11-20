@@ -134,24 +134,23 @@ public class Chat extends JFrame {
             dispose();
         });
 
-        appendToPane(history, "** Te has unido al chat **", statusColor);
+        statusChat("Te has unido al chat");
         socket.sendMessage("opened");
 
         Thread thread = new Thread(){
             public void run(){
-                while(true){
-                    try {
-                        decodeMessage(socket.receiveMessage());
-                        if( notifications.isSelected() ) {
-                            effects.setFile("src/truco_java/musica/pop.wav", 1);
-                            effects.play();
-                        }
-                    } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al checkear la recepción de mensajes: " + ex.getMessage());
-                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        effects.play();
-                    }
-                }
+              // Receive initial message of connection
+              receiveMessage(socket, false);
+              try { // Not sound when receiving other messages
+                while(socket.input.ready())
+                  receiveMessage(socket, false);
+              } catch (Exception e) {
+                statusChat("Error recibiendo los mensaje iniciales");
+              }
+
+              while(true){
+                receiveMessage(socket, notifications.isSelected());
+              }
             }
         };
         thread.start();
@@ -195,7 +194,7 @@ public class Chat extends JFrame {
                 appendToPane(history, msg_chat, Color.white);
                 break;
             case "opened":
-                appendToPane(history, "\n** " + opponentName + " se ha unido al chat **", statusColor);
+                statusChat(opponentName + " se ha unido al chat");
                 break;
             default:
                 // System.out.println("No se detecto la categoria del mensaje: " + cat);
@@ -228,5 +227,21 @@ public class Chat extends JFrame {
       tp.setCaretPosition(len);
       tp.setCharacterAttributes(aset, false);
       tp.replaceSelection(msg);
+    }
+
+    private void receiveMessage (Connection socket, boolean soundNotification){
+      try {
+        decodeMessage(socket.receiveMessage());
+        if( soundNotification ) {
+          effects.setFile("src/truco_java/musica/pop.wav", 1);
+          effects.play();
+        }
+      } catch (IOException ex) {
+        statusChat("Ha sucedido un error al recibir los mensajes **");
+      }
+    }
+
+    private void statusChat (String text){
+      appendToPane(history, "\n** " + text + " **", statusColor);
     }
 }
