@@ -121,6 +121,7 @@ public class ClientMultiplayer extends GameInterface {
             }
             playMenu.setVisible(true);
             window.dispose();
+            if(chat!=null) chat.dispose();
         }
     }
 
@@ -778,6 +779,7 @@ public class ClientMultiplayer extends GameInterface {
 
                 playMenu.setVisible(true);
                 dispose();
+                if(chat!=null) chat.dispose();
                 break;
             case "truco":
                 int newTrucoLevel = Integer.parseInt(scanf.next());
@@ -864,6 +866,7 @@ public class ClientMultiplayer extends GameInterface {
                 JOptionPane.showMessageDialog(null, "El oponente " + opponentName + " se ha retirado. Has ganado!");
                 playMenu.setVisible(true);
                 dispose();
+                if(chat!=null) chat.dispose();
                 break;
             case "player":
                 opponentNumber = Integer.parseInt(scanf.next());

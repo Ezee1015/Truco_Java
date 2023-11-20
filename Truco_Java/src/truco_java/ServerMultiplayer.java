@@ -542,9 +542,10 @@ public class ServerMultiplayer extends GameManagment {
                 effects.play();
             }
             playMenu.setVisible(true);
-            dispose();
-            server.killServer();
             chat_socket.killServer();
+            server.killServer();
+            if(chat!=null) chat.dispose();
+            dispose();
         }
     }
 
@@ -564,9 +565,10 @@ public class ServerMultiplayer extends GameManagment {
         playMenu.setVisible(true);
         finishedGame=true;
         anotherRound();
-        dispose();
         server.killServer();
         chat_socket.killServer();
+        if(chat!=null) chat.dispose();
+        dispose();
     }
 
     protected void actionWhenOpponentWinsGame() {
@@ -585,9 +587,10 @@ public class ServerMultiplayer extends GameManagment {
         playMenu.setVisible(true);
         finishedGame=true;
         anotherRound();
-        dispose();
         server.killServer();
         chat_socket.killServer();
+        if(chat!=null) chat.dispose();
+        dispose();
     }
 
 
@@ -789,10 +792,11 @@ public class ServerMultiplayer extends GameManagment {
                 return;
             case "withdraw":
                 JOptionPane.showMessageDialog(null, "El oponente " + opponentName + " se ha retirado. Has ganado!");
-                dispose();
                 playMenu.setVisible(true);
                 server.killServer();
                 chat_socket.killServer();
+                dispose();
+                if(chat!=null) chat.dispose();
                 break;
             case "truco":
                 int nivelTrucoTemp = Integer.parseInt(scanner.next());
