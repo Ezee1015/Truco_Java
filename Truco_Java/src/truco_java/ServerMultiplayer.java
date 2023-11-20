@@ -788,7 +788,6 @@ public class ServerMultiplayer extends GameManagment {
                 scanner.close();
                 return;
             case "withdraw":
-                opponent.setPoints(15, this);
                 JOptionPane.showMessageDialog(null, "El oponente " + opponentName + " se ha retirado. Has ganado!");
                 dispose();
                 playMenu.setVisible(true);

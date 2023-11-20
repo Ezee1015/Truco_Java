@@ -861,7 +861,6 @@ public class ClientMultiplayer extends GameInterface {
                 thread3.start();
                 break;
             case "withdraw":
-                opponent.setPoints(15, this);
                 JOptionPane.showMessageDialog(null, "El oponente " + opponentName + " se ha retirado. Has ganado!");
                 playMenu.setVisible(true);
                 dispose();
