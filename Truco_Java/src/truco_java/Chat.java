@@ -165,7 +165,6 @@ public class Chat extends JFrame {
             if (message.isEmpty())
               return;
 
-
             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
             effects.play();
             appendToPane(history, "\nVos: ", playerColor);
@@ -190,9 +189,9 @@ public class Chat extends JFrame {
         switch(tag){
             case "msg":
                 String msg_chat = new String();
-                while( scanner.hasNext() ){
+                while( scanner.hasNext() )
                     msg_chat += scanner.next() + " ";
-                }
+
                 appendToPane(history, "\n"+opponentName+": ", opponentColor);
                 appendToPane(history, msg_chat, Color.white);
                 break;
