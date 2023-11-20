@@ -137,7 +137,8 @@ public abstract class GameManagment extends GameInterface{
         return total;
     }
 
-    protected int checksWinnerOfGame(){
+    // In a GAME, there is multiple ROUNDS, which inside have 1, 2 or 3 MATCHES
+    protected int checksWinnerOfRound(){
         if(player.getPlayedCards().size() != opponent.getPlayedCards().size() || player.getPlayedCards().isEmpty())
             return 0;
 
@@ -148,7 +149,7 @@ public abstract class GameManagment extends GameInterface{
             if(winner!=0)
                 break;
 
-            switch (whoWonRound(i)) {
+            switch (whoWonMatch(i)) {
                 case 1:
                     if(tieDefines)
                         winner=1;
@@ -164,15 +165,15 @@ public abstract class GameManagment extends GameInterface{
                 case 0:
                     tieDefines=true;
 
-                    // Finds who won in the first round
-                    if(i!=0 && whoWonRound(0)==1) { winner=1; break; }
-                    if(i!=0 && whoWonRound(0)==2) { winner=2; break; }
+                    // Finds who won in the first match
+                    if(i!=0 && whoWonMatch(0)==1) { winner=1; break; }
+                    if(i!=0 && whoWonMatch(0)==2) { winner=2; break; }
 
                     break;
             }
         }
 
-        // If the 3 rounds are tied, the one who is first hand wins the game
+        // If the 3 rounds are tied, the one who is first hand wins the round
         if(player.getPlayedCards().size() == 3 && winner==0 && tieDefines){
             if(player.isFirstHand())
                 return 1;
@@ -191,7 +192,7 @@ public abstract class GameManagment extends GameInterface{
         return winner;
     }
 
-    private int whoWonRound(int roundNumber){
+    private int whoWonMatch(int roundNumber){
         int rankingJugador = player.getPlayedCards().getNotNullCards(roundNumber).rankingCard();
         int rankingAI = opponent.getPlayedCards().getNotNullCards(roundNumber).rankingCard();
 
@@ -307,14 +308,14 @@ public abstract class GameManagment extends GameInterface{
     protected void updatesTurn(){
         if(finishedGame)
             return;
-        if(checksWinnerOfGame()==1) {
+        if(checksWinnerOfRound()==1) {
             actionsIfPlayerWinsRound();
 
             anotherRound();
             updatesTurn();
             return;
         }
-        if(checksWinnerOfGame()==2) {
+        if(checksWinnerOfRound()==2) {
             actionsIfOpponentWinsRound();
 
             anotherRound();
