@@ -40,7 +40,7 @@ Para poder jugar al truco por internet, desde el lado de quien cree la sala de j
 - El puerto de la sala
 - El puerto siguiente de la sala (puerto de la sala + 1) que se crea automáticamente para el chat
 
-##### Servidor
+##### <ins>Servidor</ins>
 Se configura de la siguiente manera:
 
 > Suponiendo que la IP local de la computadora que crea la sala es de `192.168.0.25` en el puerto `1234` (automáticamente se asignará el puerto `1235`, en este caso, para el chat). Desde esa computadora se debe ingresar al router desde un navegador (ejemplo de dirección de router: `192.168.0.1`) y entrar en la opción "Port Forwarding" e ingresar...
@@ -56,7 +56,7 @@ Se configura de la siguiente manera:
 
 [Otro video que puede ayudar con la configuración del router...](https://www.youtube.com/watch?v=g6UTQjioi9I&t=258s)
 
-##### Cliente
+##### <ins>Cliente</ins>
 > Suponiendo que la IP pública de la computadora que crea la sala es de `12.161.50.5` en el puerto (de Sala) externo `1234`
 >
 > El cliente, deberá ingresar a la aplicación y conectarse a la Sala mediante la IP pública del creador de la sala (`12.161.50.5`) y el puerto de Sala (`1234`). El puerto de chat será conectado automáticamente a partir del puerto de la Sala
