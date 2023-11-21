@@ -30,12 +30,36 @@ Ah, por cierto, esta versión [no contiene la opción de cantar 'flor'](https://
 ### ¿El modo Multijugador es por LAN o por Internet?
 Este juego, además de ofrecer la posibilidad de jugar contra la aplicación (algoritmo), dispone de un modo multijugador en el cual podrás jugar con tus amigos en una partida de 1 vs 1 dentro de la misma red local (dados los permisos correspondientes en el firewall de quien cree la sala de juego). Estos últimos dos modos NO requieren de acceso a internet, aunque, otra opción (con Internet), gracias a la implementación P2P, permite jugar a dos personas en diferentes redes. Esta última opción requerirá de abrir un puerto en el router (que apunte al puerto correspondiente de la PC del servidor) en la red de la persona que cree la sala, para que la computadora cliente pueda comunicarse.
 
-#### ¿Cómo configurar el multijador por internet?
+#### ¿Cómo configurar el multijugador por LAN (local)?
+No hay necesidad de configurar nada para poder jugar en una red local. Solamente habilitar el puerto de la Sala (el que aparece en la sala de espera del creador de la misma) y del chat (que sería el puerto de la Sala + 1) en el Firewall en la computadora que crea la sala.
+
+Generalmente Windows pregunta al usuario para habilitar el puerto automáticamente al momento de crear la sala. En GNU/Linux, en caso de tener Firewall, se tendrá que hacer manualmente o desactivar el Firewall momentáneamente
+
+#### ¿Cómo configurar el multijugador por internet?
 Para poder jugar al truco por internet, desde el lado de quien cree la sala de juego (el servidor), debe de entrar al router y abrir los puertos para el juego o configurar el Port Forwarding hacia la computadora del creador de la sala. Los puertos a activar son:
 - El puerto de la sala
-- El puerto siguiente de la sala (puerto de la sala + 1) para el chat
+- El puerto siguiente de la sala (puerto de la sala + 1) que se crea automáticamente para el chat
 
-El cliente, a través de la IP pública y el puerto que se haya configurado en el router, se podrá conectar a la sala de juego.
+##### Servidor
+Se configura de la siguiente manera:
+
+> Suponiendo que la IP local de la computadora que crea la sala es de `192.168.0.25` en el puerto `1234` (automáticamente se asignará el puerto `1235`, en este caso, para el chat). Desde esa computadora se debe ingresar al router desde un navegador (ejemplo de dirección de router: `192.168.0.1`) y entrar en la opción "Port Forwarding" e ingresar...
+>
+> | Puerto Inicio (externo) | Puerto Final (externo) |      IP Local      | Puerto Inicio (local) |  Puerto Final (local) |      Protocolo     |
+> |:-----------------------:|:----------------------:|:------------------:|:---------------------:|:---------------------:|:------------------:|
+> |        **`1234`**       |       **`1235`**       | **`192.168.0.25`** |       **`1234`**      |       **`1235`**      | **`Ambos / Both`** |
+> |      (Puerto Sala)      |      (Puerto Chat)     |  (IP Computadora)  |     (Puerto Sala)     |     (Puerto Chat)     |    Ambos / Both    |
+>
+> Para obtener la IP pública de la sala, en la aplicación, cuando se cree la sala, en la ventana de espera se puede pulsar el botón verde a la derecha de la ventana que cambia entre IP Pública e IP Local
+
+[Video que puede ayudar con la configuración del router...](https://www.youtube.com/watch?v=DDB1QlkcRE0&t=108s)
+
+[Otro video que puede ayudar con la configuración del router...](https://www.youtube.com/watch?v=g6UTQjioi9I&t=258s)
+
+##### Cliente
+> Suponiendo que la IP pública de la computadora que crea la sala es de `12.161.50.5` en el puerto (de Sala) externo `1234`
+>
+> El cliente, deberá ingresar a la aplicación y conectarse a la Sala mediante la IP pública del creador de la sala (`12.161.50.5`) y el puerto de Sala (`1234`). El puerto de chat será conectado automáticamente a partir del puerto de la Sala
 
 ### ¿Cómo se juega el Truco argentino?
 [En este link de Wikipedia](https://es.wikipedia.org/wiki/Truco_argentino) hay una interesante guía sobre la historia del truco.
