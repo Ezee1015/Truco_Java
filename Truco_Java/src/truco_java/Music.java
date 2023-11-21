@@ -47,8 +47,12 @@ public class Music {
             clip = AudioSystem.getClip();
             clip.open(sound);
             android = false;
-        } catch (IOException | LineUnavailableException | UnsupportedAudioFileException l) {
+        } catch(LineUnavailableException r){
+            System.out.println("[ERROR] La interfaz de audio no permitió que se reprodujera el sonido...");
+            System.out.println(r.getMessage());
+        } catch (IOException | UnsupportedAudioFileException l) {
             JOptionPane.showMessageDialog(null, "Error con el sonido: " + l.getMessage());
+            l.printStackTrace();
         } catch (IllegalArgumentException ex){
             android = true;
             playWithMpv(soundFileName, 0);
