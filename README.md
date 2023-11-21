@@ -30,6 +30,13 @@ Ah, por cierto, esta versión [no contiene la opción de cantar 'flor'](https://
 ### ¿El modo Multijugador es por LAN o por Internet?
 Este juego, además de ofrecer la posibilidad de jugar contra la aplicación (algoritmo), dispone de un modo multijugador en el cual podrás jugar con tus amigos en una partida de 1 vs 1 dentro de la misma red local (dados los permisos correspondientes en el firewall de quien cree la sala de juego). Estos últimos dos modos NO requieren de acceso a internet, aunque, otra opción (con Internet), gracias a la implementación P2P, permite jugar a dos personas en diferentes redes. Esta última opción requerirá de abrir un puerto en el router (que apunte al puerto correspondiente de la PC del servidor) en la red de la persona que cree la sala, para que la computadora cliente pueda comunicarse.
 
+#### ¿Cómo configurar el multijador por internet?
+Para poder jugar al truco por internet, desde el lado de quien cree la sala de juego (el servidor), debe de entrar al router y abrir los puertos para el juego o configurar el Port Forwarding hacia la computadora del creador de la sala. Los puertos a activar son:
+- El puerto de la sala
+- El puerto siguiente de la sala (puerto de la sala + 1) para el chat
+
+El cliente, a través de la IP pública y el puerto que se haya configurado en el router, se podrá conectar a la sala de juego.
+
 ### ¿Cómo se juega el Truco argentino?
 [En este link de Wikipedia](https://es.wikipedia.org/wiki/Truco_argentino) hay una interesante guía sobre la historia del truco.
 
