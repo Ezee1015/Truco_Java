@@ -110,6 +110,8 @@ exit
 
 > Deberá ingresar la contraseña únicamente la primera vez que se juega. Luego de eso, quedará almacenada en la configuración y no le volverá a pedirla
 
+> PEQUEÑA ANOTACIÓN: He encontrado problemas en Termux al crear salas de juego multijugador. Personalmente, mi solución, es usar el puerto `8080` para poder crear la sala.
+
 ### Compilación
 > [!WARNING]
 > Para poder ejecutar el código fuente se necesitará las siguientes aplicaciones...
