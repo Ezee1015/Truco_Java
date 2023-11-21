@@ -65,7 +65,7 @@ public class Chat extends JFrame {
         background.add(backgroundHistory);
         history = new JTextPane();
         history.setBounds(10, 10, backgroundHistory.getWidth()-20, backgroundHistory.getHeight()-20);
-        history.setFont(new Font("Serif", Font.BOLD, 18));
+        history.setFont(new Font("Arial", Font.BOLD, 18));
         history.setVisible(true);
         history.setOpaque(false);
         history.setFocusable(false);
@@ -96,7 +96,7 @@ public class Chat extends JFrame {
         messageArea.setText("Mensaje");
         messageArea.setBounds(10, 10, backgroundMessage.getWidth()-20, backgroundMessage.getHeight()-20);
         messageArea.setLineWrap(true);
-        messageArea.setFont(new Font("Serif", Font.BOLD, 18));
+        messageArea.setFont(new Font("Arial", Font.BOLD, 18));
         messageArea.setVisible(true);
         messageArea.setForeground(Color.white);
         messageArea.setOpaque(false);
@@ -222,8 +222,8 @@ public class Chat extends JFrame {
       StyleContext sc = StyleContext.getDefaultStyleContext();
       AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
 
-      aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
-      aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+      aset = sc.addAttribute(aset, StyleConstants.FontFamily, tp.getFont().getName());
+      aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_LEFT);
 
       int len = tp.getDocument().getLength();
       tp.setCaretPosition(len);
