@@ -28,7 +28,7 @@ public class Music {
             clip.loop(100);
             android = false;
         } catch (IOException | LineUnavailableException | UnsupportedAudioFileException l) {
-            JOptionPane.showMessageDialog(null, "Error con el música: " + l.getMessage());
+            JOptionPane.showMessageDialog(null, "Error con la música: " + l.getMessage());
         } catch (UnsatisfiedLinkError | IllegalArgumentException ex) {
             android = true;
             playWithMpv(soundFileName, 1);
