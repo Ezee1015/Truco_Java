@@ -32,6 +32,7 @@ public class Chat extends JFrame {
     private final JScrollBar verticalHistory;
     private final String opponentName;
     private final JTextArea messageArea;
+    private final Chat window = this;
     private final Color playerColor   = Color.decode("#010a9");
     private final Color opponentColor = Color.decode("#9c0000");
     private final Color statusColor   = Color.decode("#FFC300");
@@ -137,9 +138,7 @@ public class Chat extends JFrame {
             dispose();
         });
 
-        socket.sendMessage("opened");
-
-        Thread thread = new Thread(){
+        Thread receiveMsgThread = new Thread(){
             public void run(){
               // Receive initial message of connection
               try { // Not sound when receiving other messages
@@ -156,7 +155,39 @@ public class Chat extends JFrame {
               }
             }
         };
-        thread.start();
+        receiveMsgThread.start();
+
+        Thread statusThread = new Thread(){
+            public void run(){
+              boolean oldVisible = window.isVisible();
+              // TODO: boolean oldFocus = window.isFocused();
+
+              while (true) {
+                boolean isVisible = window.isVisible();
+                if( oldVisible != isVisible ){
+                  oldVisible = isVisible;
+                  try{
+                    socket.sendMessage("visible " + isVisible);
+                  } catch (Exception e) {
+                    statusChat("Error enviando estado de ventana");
+                  }
+                }
+
+                // boolean isFocused = window.isVisible();
+                // if( oldFocus != isFocused ){
+                //   oldFocus = isFocused;
+                //   try{
+                //     socket.sendMessage("focused " + isFocused);
+                //   } catch (Exception e) {
+                //     statusChat("Error enviando estado de Foco");
+                //   }
+                // }
+
+                try { sleep(1000); } catch (InterruptedException ex) { }
+              }
+            }
+        };
+        statusThread.start();
   }
 
     public void sendMessage(Connection socket){
@@ -195,8 +226,11 @@ public class Chat extends JFrame {
                 appendToPane(history, "\n"+opponentName+": ", opponentColor);
                 appendToPane(history, msg_chat, Color.white);
                 break;
-            case "opened":
-                statusChat(opponentName + " se ha unido al chat");
+            case "visible":
+                if(scanner.nextBoolean())
+                  statusChat(opponentName + " se ha unido al chat");
+                else
+                  statusChat(opponentName + " ha salido del chat");
                 break;
             default:
                 // System.out.println("No se detecto la categoria del mensaje: " + cat);
