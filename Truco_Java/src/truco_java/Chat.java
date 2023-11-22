@@ -63,7 +63,7 @@ public class Chat extends JFrame {
 
         online.setBounds(323, 30, 100, 50);
         online.setFont(new Font("Arial", Font.BOLD, 12));
-        online.setVisible(true);
+        online.setVisible(false);
         online.setForeground(Color.green);
         background.add(online);
 
@@ -166,8 +166,8 @@ public class Chat extends JFrame {
 
         Thread statusThread = new Thread(){
             public void run(){
-              boolean oldVisible = window.isVisible();
-              boolean oldFocus = window.isFocused();
+              boolean oldVisible = false;
+              boolean oldFocus = false;
 
               while (true) {
                 boolean isVisible = window.isVisible();
