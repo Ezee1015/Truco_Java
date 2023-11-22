@@ -28,10 +28,11 @@ import javax.swing.text.StyleContext;
 
 public class Chat extends JFrame {
     private static final Music effects = new Music();
+    private final JLabel online = new JLabel("En Linea");
     private final JTextPane history;
     private final JScrollBar verticalHistory;
-    private final String opponentName;
     private final JTextArea messageArea;
+    private final String opponentName;
     private final Chat window = this;
     private final Color playerColor   = Color.decode("#010a9");
     private final Color opponentColor = Color.decode("#9c0000");
@@ -54,11 +55,17 @@ public class Chat extends JFrame {
         background.add(logo);
 
         JCheckBox notifications = new JCheckBox("Sonido", false);
-        notifications.setBounds(300, 10, 100, 50);
+        notifications.setBounds(315, 10, 100, 50);
         notifications.setOpaque(false);
         notifications.setSelected(Truco_Java.musicCheckBox.isSelected());
         notifications.setEnabled(Truco_Java.musicCheckBox.isSelected());
         background.add(notifications);
+
+        online.setBounds(323, 30, 100, 50);
+        online.setFont(new Font("Arial", Font.BOLD, 12));
+        online.setVisible(true);
+        online.setForeground(Color.green);
+        background.add(online);
 
         JLabel backgroundHistory = new JLabel(new ImageIcon(ImageIO.read(new File("src/truco_java/fondos/fondoChat.png")).getScaledInstance(380, 280, Image.SCALE_SMOOTH)));
         backgroundHistory.setBounds(10,70,380,280);
@@ -160,7 +167,7 @@ public class Chat extends JFrame {
         Thread statusThread = new Thread(){
             public void run(){
               boolean oldVisible = window.isVisible();
-              // TODO: boolean oldFocus = window.isFocused();
+              boolean oldFocus = window.isFocused();
 
               while (true) {
                 boolean isVisible = window.isVisible();
@@ -173,15 +180,15 @@ public class Chat extends JFrame {
                   }
                 }
 
-                // boolean isFocused = window.isVisible();
-                // if( oldFocus != isFocused ){
-                //   oldFocus = isFocused;
-                //   try{
-                //     socket.sendMessage("focused " + isFocused);
-                //   } catch (Exception e) {
-                //     statusChat("Error enviando estado de Foco");
-                //   }
-                // }
+                boolean isFocused = window.isFocused();
+                if( oldFocus != isFocused ){
+                  oldFocus = isFocused;
+                  try{
+                    socket.sendMessage("focused " + isFocused);
+                  } catch (Exception e) {
+                    statusChat("Error enviando estado de Foco");
+                  }
+                }
 
                 try { sleep(1000); } catch (InterruptedException ex) { }
               }
@@ -231,6 +238,9 @@ public class Chat extends JFrame {
                   statusChat(opponentName + " se ha unido al chat");
                 else
                   statusChat(opponentName + " ha salido del chat");
+                break;
+            case "focused":
+                online.setVisible(scanner.nextBoolean());
                 break;
             default:
                 // System.out.println("No se detecto la categoria del mensaje: " + cat);
