@@ -1,12 +1,31 @@
 package truco_java;
 
 import java.io.IOException;
+import java.net.Socket;
+import java.net.ServerSocket;
 
 public class Server extends Connection{
 
     public Server(String ip, int port) throws IOException{
-        super("server", ip, port);
+        super(ip, port);
+        ss = new ServerSocket(PORT);
+        cs = new Socket();
         cs = ss.accept();
+    }
+
+    protected void reconnect() throws IOException {
+      ss = new ServerSocket(PORT);
+      cs = new Socket();
+    }
+
+    public void killServer(){
+        try {
+            ss.close();
+            cs.close();
+        } catch (Exception e) {
+        }
+        ss = null;
+        cs = null;
     }
 
     public void sendKill(boolean oponentWins) throws IOException{

@@ -8,48 +8,21 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class Connection {
-    private int PORT = 1234;
-    private String HOST = "localhost";
+public abstract class Connection {
+    protected int PORT = 1234;
+    protected String HOST = "localhost";
     protected BufferedReader input;
     protected String mensajeServidor;
     protected ServerSocket ss;
     protected Socket cs;
     protected DataOutputStream outputServer, salidaCliente;
-    private String tipo;
     private char endOfCommand = '\n';
 
-    public Connection(String tipo, String ip, int puerto) throws IOException {
+    protected abstract void reconnect() throws IOException;
+
+    public Connection(String ip, int puerto) {
         HOST = ip;
         PORT = puerto;
-        this.tipo=tipo;
-        if(tipo.equalsIgnoreCase("server")) {
-            ss = new ServerSocket(PORT);
-            cs = new Socket();
-        } else {
-            cs = new Socket(HOST, PORT);
-        }
-    }
-
-    protected void reconnect() throws IOException {
-        if(tipo.equalsIgnoreCase("server")) {
-            ss = new ServerSocket(PORT);
-            cs = new Socket();
-        } else {
-            cs = new Socket(HOST, PORT);
-        }
-    }
-
-    public void killServer(){
-        if(!tipo.equals("server"))
-            return;
-        try {
-            ss.close();
-            cs.close();
-        } catch (Exception e) {
-        }
-        ss = null;
-        cs = null;
     }
 
     public String receiveMessage() throws IOException{
