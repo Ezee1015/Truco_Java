@@ -80,7 +80,7 @@ public class WaitingRoom extends JFrame {
             }
         });
 
-        JLabel waitLabel = new JLabel("Esperando conexion");
+        JLabel waitLabel = new JLabel("Esperando conexión");
         waitLabel.setBounds(130, 115, 250, 25);
         waitLabel.setFont(new Font("Arial", Font.BOLD, 25));
         waitLabel.setForeground(Color.WHITE);
