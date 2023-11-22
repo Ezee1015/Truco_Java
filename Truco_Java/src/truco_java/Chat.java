@@ -36,6 +36,7 @@ public class Chat extends JFrame {
     private final JTextPane history;
     private final JScrollBar verticalHistory;
     private final JTextArea messageArea;
+    private final JCheckBox notifications = new JCheckBox("Sonido", false);
     private final String opponentName;
     private final Chat window = this;
     private final Color playerColor   = Color.decode("#010a9");
@@ -58,7 +59,6 @@ public class Chat extends JFrame {
         logo.setVisible(true);
         background.add(logo);
 
-        JCheckBox notifications = new JCheckBox("Sonido", false);
         notifications.setBounds(315, 10, 100, 50);
         notifications.setOpaque(false);
         notifications.setSelected(Truco_Java.musicCheckBox.isSelected());
@@ -174,9 +174,11 @@ public class Chat extends JFrame {
         Thread receiveMsgThread = new Thread(){
             public void run(){
               // Receive initial message of connection
+              boolean soundStatus = notifications.isSelected();
               try { // Not sound when receiving other messages
+                notifications.setSelected(false);
                 while(socket.input.ready())
-                  receiveMessage(socket, false);
+                  receiveMessage(socket);
               } catch (Exception e) {
                 statusChat("Error recibiendo los mensaje iniciales");
               }
@@ -184,7 +186,8 @@ public class Chat extends JFrame {
               statusChat("Te has unido al chat");
 
               while(true){
-                receiveMessage(socket, notifications.isSelected());
+                notifications.setSelected(soundStatus);
+                receiveMessage(socket);
               }
             }
         };
@@ -258,12 +261,16 @@ public class Chat extends JFrame {
 
                 appendToPane(history, "\n"+opponentName+": ", opponentColor);
                 appendToPane(history, msg_chat, Color.white);
+
+                playNotification();
                 break;
             case "visible":
                 if(scanner.nextBoolean())
                   statusChat(opponentName + " se ha unido al chat");
                 else
                   statusChat(opponentName + " ha salido del chat");
+
+                playNotification();
                 break;
             case "focused":
                 online.setVisible(scanner.nextBoolean());
@@ -304,13 +311,9 @@ public class Chat extends JFrame {
       verticalHistory.setValue( verticalHistory.getMaximum() );
     }
 
-    private void receiveMessage (Connection socket, boolean soundNotification){
+    private void receiveMessage (Connection socket){
       try {
         decodeMessage(socket.receiveMessage());
-        if( soundNotification ) {
-          effects.setFile("src/truco_java/musica/pop.wav", 1);
-          effects.play();
-        }
       } catch (IOException ex) {
         statusChat("Ha sucedido un error al recibir los mensajes");
       }
@@ -329,6 +332,13 @@ public class Chat extends JFrame {
       } else {
         messageArea.setText("Mensaje...");
         messageArea.setForeground(Color.decode("#C8C8C8"));
+      }
+    }
+
+    private void playNotification (){
+      if( notifications.isSelected() && window.isVisible() ) {
+        effects.setFile("src/truco_java/musica/pop.wav", 1);
+        effects.play();
       }
     }
 }
