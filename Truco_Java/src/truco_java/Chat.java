@@ -242,7 +242,7 @@ public class Chat extends JFrame {
           effects.play();
         }
       } catch (IOException ex) {
-        statusChat("Ha sucedido un error al recibir los mensajes **");
+        statusChat("Ha sucedido un error al recibir los mensajes");
       }
     }
 
