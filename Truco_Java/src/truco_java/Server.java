@@ -3,6 +3,8 @@ package truco_java;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.ServerSocket;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
 
 public class Server extends Connection{
 
@@ -11,6 +13,7 @@ public class Server extends Connection{
         ss = new ServerSocket(PORT);
         cs = new Socket();
         cs = ss.accept();
+        input = new BufferedReader(new InputStreamReader(cs.getInputStream()));
     }
 
     protected void reconnect() throws IOException {

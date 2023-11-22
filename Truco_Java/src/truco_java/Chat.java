@@ -137,19 +137,19 @@ public class Chat extends JFrame {
             dispose();
         });
 
-        statusChat("Te has unido al chat");
         socket.sendMessage("opened");
 
         Thread thread = new Thread(){
             public void run(){
               // Receive initial message of connection
-              receiveMessage(socket, false);
               try { // Not sound when receiving other messages
                 while(socket.input.ready())
                   receiveMessage(socket, false);
               } catch (Exception e) {
                 statusChat("Error recibiendo los mensaje iniciales");
               }
+
+              statusChat("Te has unido al chat");
 
               while(true){
                 receiveMessage(socket, notifications.isSelected());
