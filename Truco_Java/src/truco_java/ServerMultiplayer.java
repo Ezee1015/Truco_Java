@@ -25,7 +25,7 @@ public class ServerMultiplayer extends GameManagment {
                     WaitingRoom waitingRoom = new WaitingRoom(playMenu, port, ServerMultiplayer.this);
                     waitingRoom.setIconImage(new ImageIcon("src/truco_java/fondos/icono.png").getImage());
                     waitingRoom.setResizable(false);
-                    waitingRoom.setTitle("Esperando Conección");
+                    waitingRoom.setTitle("Esperando Conexión");
                     waitingRoom.setBounds(0,0,500,300);
                     waitingRoom.setLocationRelativeTo(null);
                     waitingRoom.setVisible(true);
