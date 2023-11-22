@@ -56,21 +56,23 @@ public class WaitingRoom extends JFrame {
             effects.play();
 
             try {
-                  // Closes the server
                   new Client("localhost", port);
-                  while(serverInterface.server==null);
                   new Client("localhost", port+1);
-                  while(serverInterface.chat_socket==null);
             } catch (Exception ex) {
                   JOptionPane.showMessageDialog(null, "Ha sucedido un error al cerrar la conexión: " + ex.getMessage());
                   effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
                   effects.play();
             } finally {
-                  serverInterface.server.killServer();
-                  serverInterface.chat_socket.killServer();
-                  serverInterface.server = null;
-                  serverInterface.chat_socket = null;
-                  
+                  if(serverInterface.server != null){
+                    serverInterface.server.killServer();
+                    serverInterface.server = null;
+                  }
+
+                  if(serverInterface.chat_socket != null){
+                    serverInterface.chat_socket.killServer();
+                    serverInterface.chat_socket = null;
+                  }
+
                   // Closes the windows and shows the menu
                   menu.setVisible(true);
                   setVisible(false);
