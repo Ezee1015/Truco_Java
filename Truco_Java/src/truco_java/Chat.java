@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
@@ -100,17 +104,39 @@ public class Chat extends JFrame {
         backgroundMessage.setBounds(10,360,320,100);
         backgroundMessage.setVisible(true);
         background.add(backgroundMessage);
-        messageArea = new JTextArea();
-        messageArea.setText("Mensaje");
+        messageArea = new JTextArea("Mensaje...");
         messageArea.setBounds(10, 10, backgroundMessage.getWidth()-20, backgroundMessage.getHeight()-20);
         messageArea.setLineWrap(true);
         messageArea.setFont(new Font("Arial", Font.BOLD, 18));
         messageArea.setVisible(true);
-        messageArea.setForeground(Color.white);
+        messageArea.setForeground(Color.decode("#C8C8C8"));
         messageArea.setOpaque(false);
         backgroundMessage.add(messageArea);
         messageArea.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), sendAction);
-
+        messageArea.addFocusListener(new FocusListener() {
+          @Override
+          public void focusGained(FocusEvent e) {
+            if (messageArea.getText().equals("Mensaje..."))
+              messageAreaFocus(true);
+          }
+          @Override
+          public void focusLost(FocusEvent e) {
+            if (messageArea.getText().isEmpty())
+              messageAreaFocus(false);
+          }
+        });
+        messageArea.addKeyListener(new KeyListener() {
+          @Override
+          public void keyPressed(KeyEvent e) {
+            if(e.getKeyChar() == '\n') return;
+            if(messageArea.getText().equals("Mensaje..."))
+              messageAreaFocus(true);
+          }
+          @Override
+          public void keyTyped(KeyEvent e) { }
+          @Override
+          public void keyReleased(KeyEvent e) { }
+        });
 
         JScrollPane scrollMessage = new JScrollPane(messageArea);
         scrollMessage.setVisible(true);
@@ -200,7 +226,7 @@ public class Chat extends JFrame {
     public void sendMessage(Connection socket){
         try {
             String message = messageArea.getText();
-            if (message.isEmpty())
+            if (message.isEmpty() || message.equals("Mensaje..."))
               return;
 
             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
@@ -208,7 +234,7 @@ public class Chat extends JFrame {
             appendToPane(history, "\nVos: ", playerColor);
             appendToPane(history, message, Color.white);
             socket.sendMessage("msg " + message);
-            messageArea.setText("");
+            messageAreaFocus(false);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + ex.getMessage());
             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
@@ -294,5 +320,15 @@ public class Chat extends JFrame {
       if(!history.getText().isEmpty())
         appendToPane(history, "\n", Color.white);
       appendToPane(history, "** " + text + " **", statusColor);
+    }
+
+    private void messageAreaFocus(boolean focus){
+      if(focus){
+        messageArea.setText("");
+        messageArea.setForeground(Color.white);
+      } else {
+        messageArea.setText("Mensaje...");
+        messageArea.setForeground(Color.decode("#C8C8C8"));
+      }
     }
 }
