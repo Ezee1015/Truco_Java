@@ -31,9 +31,9 @@ Ah, por cierto, esta versión [no contiene la opción de cantar 'flor'](https://
 Este juego, además de ofrecer la posibilidad de jugar contra la aplicación (algoritmo), dispone de un modo multijugador en el cual podrás jugar con tus amigos en una partida de 1 vs 1 dentro de la misma red local (dados los permisos correspondientes en el firewall de quien cree la sala de juego). Estos últimos dos modos NO requieren de acceso a internet, aunque, otra opción (con Internet), gracias a la implementación P2P, permite jugar a dos personas en diferentes redes. Esta última opción requerirá de abrir un puerto en el router (que apunte al puerto correspondiente de la PC del servidor) en la red de la persona que cree la sala, para que la computadora cliente pueda comunicarse.
 
 #### ¿Cómo configurar el multijugador por LAN (local)?
-**No hay necesidad de configurar nada para poder jugar en una red local. Solamente habilitar el puerto de la Sala (el que aparece en la sala de espera del creador de la misma) y del chat (que sería el puerto de la Sala + 1) en el Firewall en la computadora que crea la sala.
+**No hay necesidad de configurar nada para poder jugar en una red local. Solamente habilitar el puerto de la Sala (el que aparece en la sala de espera del creador de la misma) y del chat (que sería el puerto de la Sala + 1) en el Firewall en la computadora que crea la sala.**
 
-Generalmente Windows pregunta al usuario para habilitar el puerto automáticamente al momento de crear la sala**. En GNU/Linux, en caso de tener Firewall, se tendrá que hacer manualmente o desactivar el Firewall momentáneamente
+**Generalmente Windows pregunta al usuario para habilitar el puerto automáticamente al momento de crear la sala**. En GNU/Linux, en caso de tener Firewall, se tendrá que hacer manualmente o desactivar el Firewall momentáneamente
 
 #### ¿Cómo configurar el multijugador por internet?
 Para poder jugar al truco por internet, desde el lado de quien cree la sala de juego (el servidor), debe de entrar al router y abrir los puertos para el juego o configurar el Port Forwarding hacia la computadora del creador de la sala. Los puertos a activar son:
