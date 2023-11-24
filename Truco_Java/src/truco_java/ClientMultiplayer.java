@@ -881,7 +881,7 @@ public class ClientMultiplayer extends GameInterface {
 
                 Thread thread1 = new Thread(){
                     public void run(){
-                        JOptionPane.showMessageDialog(null, "Has entrado a la sala de " + opponentName + ".\n Aprete el mazo para repartir y comenzar a jugar...");
+                        JOptionPane.showMessageDialog(null, "Has entrado a la sala de " + opponentName + ". Esperando a que el oponente reparta...");
                         effects.setFile("src/truco_java/musica/boton.wav", 1);
                         effects.play();
                     }

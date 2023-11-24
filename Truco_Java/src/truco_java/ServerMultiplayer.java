@@ -864,7 +864,7 @@ public class ServerMultiplayer extends GameManagment {
                 }
                 else opponentName = opponentName.substring(0, 1).toUpperCase()+opponentName.substring(1);
 
-                ThreadOptionPane(opponentName + " ha entrado en la sala. Esperando a que el oponente reparta...");
+                ThreadOptionPane(opponentName + " ha entrado en la sala.\n Aprete el mazo para repartir y comenzar a jugar...");
                 break;
             case "deck":
                 int points=0;
