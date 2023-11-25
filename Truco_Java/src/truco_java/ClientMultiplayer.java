@@ -465,6 +465,9 @@ public class ClientMultiplayer extends GameInterface {
             }
         };
         thread.start();
+
+        if(trucoLevel == 3)
+          truco.setEnabled(false);
         setBackground(0);
     }
 

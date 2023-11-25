@@ -368,7 +368,7 @@ public abstract class GameManagment extends GameInterface{
     }
 
     private void actionsInPlayersTurn(){
-        if(enabledToRetrucar < 2) truco.setEnabled(true);
+        if(enabledToRetrucar < 2 && trucoLevel != 3) truco.setEnabled(true);
 
         // If the last card that the AI has thrown is a 4, player can't say 'truco'
         if(opponent.getPlayedCards().size() == 3) if(opponent.getPlayedCards().getNotNullCards(2).rankingCard()==0) truco.setEnabled(false);
