@@ -39,7 +39,7 @@ public abstract class Connection {
 
             // Just in case. This can happen if the 'endOfCommand' gets sent twice
             // or there's an error in some communication and puts a \n in the beginning
-            if ( message.isEmpty() || message.isBlank() )
+            if ( message.isEmpty() )
               return receiveMessage();
 
             return message;
