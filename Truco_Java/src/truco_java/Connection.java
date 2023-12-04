@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public abstract class Connection {
     protected int PORT = 1234;
@@ -62,24 +63,28 @@ public abstract class Connection {
                 try {
                     reconnect();
                     sendMessage(message);
+                    return;
                 } catch (Exception ex) { }
             }
+            JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar o recibir el mensaje: " + e.getMessage());
+            Truco_Java.effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+            Truco_Java.effects.play();
         }
     }
 
-    public void sendEnvido(ArrayList<Integer> envidosDeclared, int trucoLevel, int enabledToRetrucar) throws IOException{
+    public void sendEnvido(ArrayList<Integer> envidosDeclared, int trucoLevel, int enabledToRetrucar) {
         sendMessage("envido " + String.valueOf(envidosDeclared.get(envidosDeclared.size()-1)) + " " + trucoLevel + " " + enabledToRetrucar);
     }
 
-    public void sendTruco(int trucoLevel, int enabledToRetrucar) throws IOException{
+    public void sendTruco(int trucoLevel, int enabledToRetrucar) {
         sendMessage("truco " + trucoLevel + " " + enabledToRetrucar);
     }
 
-    public void sendPerson(int number, String name) throws IOException{
+    public void sendPerson(int number, String name) {
         sendMessage("player " + number + " " + name);
     }
 
-    public void sendWithdraw() throws IOException{
+    public void sendWithdraw() {
         sendMessage("withdraw");
     }
 

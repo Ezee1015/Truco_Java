@@ -22,7 +22,7 @@ public class Client extends Connection {
         return receiveMessage();
     }
 
-    public void throwCard(int posCard) throws IOException{
+    public void throwCard(int posCard) {
         sendMessage("throw " + String.valueOf(posCard));
     }
 }

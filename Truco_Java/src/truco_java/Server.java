@@ -31,7 +31,7 @@ public class Server extends Connection{
         cs = null;
     }
 
-    public void sendKill(boolean oponentWins) throws IOException{
+    public void sendKill(boolean oponentWins) {
         sendMessage("kill " + oponentWins);
     }
 
@@ -71,7 +71,7 @@ public class Server extends Connection{
         sendMessage(message);
     }
 
-    public void printMessage(String message) throws IOException{
+    public void printMessage(String message) {
         sendMessage("print " + message);
     }
 }

@@ -111,14 +111,7 @@ public class ClientMultiplayer extends GameInterface {
         effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
         effects.play();
         if(dialogResult == JOptionPane.YES_OPTION){
-            try {
-                client.sendWithdraw();
-            } catch (Exception ex) {
-                connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + ex.getMessage());
-                effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                effects.play();
-            }
+            client.sendWithdraw();
             playMenu.setVisible(true);
             window.dispose();
             if(chat!=null) chat.dispose();
@@ -885,14 +878,7 @@ public class ClientMultiplayer extends GameInterface {
                     }
                 };
                 thread1.start();
-                try {
-                    client.sendPerson(PlayMenu.playerNumber+1, nombre);
-                } catch (Exception e) {
-                    connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                    JOptionPane.showMessageDialog(null, "Ha sucedido un error en la conexión: " + e.getMessage());
-                    effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                    effects.play();
-                }
+                client.sendPerson(PlayMenu.playerNumber+1, nombre);
                 pointsBackground.setIcon(getImageIcon("src/truco_java/puntaje/bg"+ opponentNumber +".png", 100, 150, false));
                 break;
             default:

@@ -43,7 +43,7 @@ public class Truco_Java extends JFrame{
 
     // Variables
     public static Music music = new Music();
-    private static final Music effects = new Music();
+    public static final Music effects = new Music();
     public static int gamesWonPlayer=0, gamesWonAi=0;
     private boolean easyMode = false;
     public static ArrayList<User> userList = new ArrayList<>();
