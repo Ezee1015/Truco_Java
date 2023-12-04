@@ -759,8 +759,6 @@ public class ClientMultiplayer extends GameInterface {
                     }
                 };
                 thread2.start();
-                Thread thread = new Thread(){
-                    public void run(){
                         try{
                             decodeMessage(client.receiveMessage());
                         } catch(IOException er){
@@ -769,9 +767,6 @@ public class ClientMultiplayer extends GameInterface {
                             effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
                             effects.play();
                         }
-                    }
-                };
-                thread.start();
                 break;
             case "kill":
                 if (scanf.nextBoolean()) //true when the player won

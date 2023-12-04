@@ -35,7 +35,7 @@ public class Server extends Connection{
         sendMessage("kill " + oponentWins);
     }
 
-    public void sendPoints(int playerPoints, int oponentPoints) throws IOException{
+    public void sendPoints(int playerPoints, int oponentPoints) {
         sendMessage("points " + playerPoints + " " + oponentPoints);
     }
 

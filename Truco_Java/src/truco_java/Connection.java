@@ -53,15 +53,16 @@ public abstract class Connection {
         return "";
     }
 
-    protected void sendMessage(String message) throws IOException{
+    protected void sendMessage(String message){
         try {
             outputServer = new DataOutputStream(cs.getOutputStream());
             outputServer.writeUTF(message + " " + endOfCommand);
         } catch (Exception e) {
             if(e.getMessage().equalsIgnoreCase("Socket is closed")){
-                reconnect();
-                sendMessage(message);
-                return;
+                try {
+                    reconnect();
+                    sendMessage(message);
+                } catch (Exception ex) { }
             }
         }
     }

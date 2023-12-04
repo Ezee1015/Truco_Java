@@ -386,15 +386,8 @@ public class ServerMultiplayer extends GameManagment {
         cardPlayer3Enabled=true;
         trucoLevel=0;
         drawButtons();
+        if(server.cs != null && server.cs.isConnected()) server.sendPoints(player.getPoints(), opponent.getPoints());
         updatePoints();
-        try {
-            server.sendPoints(player.getPoints(), opponent.getPoints());
-        } catch (Exception ex) {
-            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
         setBackground(0);
         updatesTurn();
         printsEnvidoMessage(0,false);
@@ -430,14 +423,7 @@ public class ServerMultiplayer extends GameManagment {
         trucoLevel=0;
         drawButtons();
         updatePoints();
-        try {
-            server.sendPoints(player.getPoints(), opponent.getPoints());
-        } catch (Exception ex) {
-            connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        if(server.cs != null && server.cs.isConnected()) server.sendPoints(player.getPoints(), opponent.getPoints());
         updatesTurn();
         printsEnvidoMessage(0,false);
     }
@@ -778,14 +764,7 @@ public class ServerMultiplayer extends GameManagment {
                     realEnvido.setVisible(false);
                     faltaEnvido.setVisible(false);
                     updatePoints();
-                    try {
-                        server.sendPoints(player.getPoints(), opponent.getPoints());
-                    } catch (Exception e) {
-                        connectionBackground.setIcon(new ImageIcon("src/truco_java/fondos/turnoError.png"));
-                        JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + e.getMessage());
-                        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-                        effects.play();
-                    }
+                    if(server.cs != null && server.cs.isConnected()) server.sendPoints(player.getPoints(), opponent.getPoints());
                     setBackground(0);
 
                     updatesTurn();
