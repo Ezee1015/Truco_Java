@@ -227,22 +227,16 @@ public class Chat extends JFrame {
   }
 
     public void sendMessage(Connection socket){
-        try {
-            String message = messageArea.getText();
-            if (message.isEmpty() || message.equals("Mensaje..."))
-              return;
+        String message = messageArea.getText();
+        if (message.isEmpty() || message.equals("Mensaje..."))
+          return;
 
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-            appendToPane(history, "\nVos: ", playerColor);
-            appendToPane(history, message, Color.white);
-            socket.sendMessage("msg " + message);
-            messageAreaFocus(false);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Ha sucedido un error al enviar el mensaje: " + ex.getMessage());
-            effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
-            effects.play();
-        }
+        effects.setFile("src/truco_java/musica/botonMenu.wav", 1);
+        effects.play();
+        appendToPane(history, "\nVos: ", playerColor);
+        appendToPane(history, message, Color.white);
+        socket.sendMessage("msg " + message);
+        messageAreaFocus(false);
     }
 
     public void decodeMessage (String message) {
