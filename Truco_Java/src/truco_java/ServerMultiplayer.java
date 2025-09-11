@@ -32,6 +32,8 @@ public class ServerMultiplayer extends GameManagment {
 
                     server = new Server("localhost", port);
                     chat_socket = new Server("localhost", port+1);
+                    server.listen();
+                    chat_socket.listen();
                     try {
                         exchangePlayersName();
                     } catch (Exception e) {

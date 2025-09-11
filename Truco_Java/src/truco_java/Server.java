@@ -11,14 +11,16 @@ public class Server extends Connection{
     public Server(String ip, int port) throws IOException{
         super(ip, port);
         ss = new ServerSocket(PORT);
-        cs = new Socket();
-        cs = ss.accept();
-        input = new BufferedReader(new InputStreamReader(cs.getInputStream()));
     }
 
     protected void reconnect() throws IOException {
-      ss = new ServerSocket(PORT);
-      cs = new Socket();
+        ss = new ServerSocket(PORT);
+        cs = new Socket();
+    }
+
+    public void listen() throws IOException {
+        cs = ss.accept();
+        input = new BufferedReader(new InputStreamReader(cs.getInputStream()));
     }
 
     public void killServer(){
