@@ -2,6 +2,11 @@
 
 ![Logo](Truco_Java/src/truco_java/fondos/logo.png)
 
+> [!NOTE]
+> This project is (kinda) unfinished and no longer maintained.
+>
+> Expect bugs and ugly code (because this was my first big project in high school :) )...
+
 ## Índice
 <!-- vim-markdown-toc GFM -->
 
