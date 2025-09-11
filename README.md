@@ -5,7 +5,7 @@
 > [!NOTE]
 > This project is (kinda) unfinished and no longer maintained.
 >
-> Expect bugs and ugly code (because this was my first big project in high school :) )...
+> Expect bugs and ugly code (because this was my first big project in high school 😄 )...
 
 ## Índice
 <!-- vim-markdown-toc GFM -->
